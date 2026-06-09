@@ -1,0 +1,24 @@
+{
+  "name": "imbiss-asia-doener-website",
+  "version": "1.0.0",
+  "description": "Statische Website für Imbiss Asia & Döner in Lunzenau",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./assets/css/styles.css --minify",
+    "watch": "tailwindcss -i ./src/input.css -o ./assets/css/styles.css --watch",
+    "preview": "npm run build && node tools/build-preview.js",
+    "serve": "npx serve ."
+  },
+  "keywords": [
+    "imbiss",
+    "doener",
+    "asiatisch",
+    "lunzenau",
+    "tailwindcss",
+    "static-site"
+  ],
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

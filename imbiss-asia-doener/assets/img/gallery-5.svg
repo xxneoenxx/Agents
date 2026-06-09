@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FBF6EF"/><stop offset="1" stop-color="#F3E8D9"/>
+  </linearGradient>
+  <radialGradient id="plate" cx="50%" cy="42%" r="60%">
+    <stop offset="0" stop-color="#FFFDFA"/><stop offset="1" stop-color="#ECE1D2"/>
+  </radialGradient>
+  
+</defs>
+
+  <rect width="900" height="900" fill="url(#bg)"/>
+  <circle cx="450" cy="414" r="324" fill="#F08A24" opacity="0.10"/>
+  <circle cx="450" cy="414" r="270" fill="#E0402F" opacity="0.08"/>
+  <ellipse cx="450" cy="439.2" rx="210" ry="193.20000000000002" fill="rgba(36,31,28,0.10)"/>
+  <ellipse cx="450" cy="414" rx="210" ry="189" fill="url(#plate)"/>
+  <ellipse cx="450" cy="414" rx="155.4" ry="138.6" fill="none" stroke="#E0D3C2" stroke-width="6.3"/><g transform="translate(450 396) scale(1.15)">
+    <path d="M -120 -6 A 120 120 0 0 0 120 -6 Z" fill="#E0402F"/>
+    <path d="M -120 -6 A 120 120 0 0 0 120 -6 Z" fill="none" stroke="#9C2316" stroke-width="6"/>
+    <ellipse cx="0" cy="-6" rx="120" ry="32" fill="#F08A24"/>
+    <ellipse cx="0" cy="-8" rx="106" ry="26" fill="#E3B774"/>
+    <path d="M -60 -20 q 30 -18 60 0" stroke="#7BA05B" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <circle cx="30" cy="-12" r="10" fill="#A6532E"/><circle cx="-26" cy="-6" r="9" fill="#A6532E"/>
+    <line x1="40" y1="-66" x2="118" y2="-156" stroke="#403933" stroke-width="7" stroke-linecap="round"/>
+    <line x1="58" y1="-64" x2="136" y2="-152" stroke="#403933" stroke-width="7" stroke-linecap="round"/>
+  </g>
+  <text x="450" y="874" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-weight="600" font-size="38" fill="#241F1C" opacity="0.6">Asia-Bowl</text>
+</svg>

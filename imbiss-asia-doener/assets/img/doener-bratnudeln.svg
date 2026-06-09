@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewBox="0 0 900 700" role="img">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FBF6EF"/><stop offset="1" stop-color="#F3E8D9"/>
+  </linearGradient>
+  <radialGradient id="plate" cx="50%" cy="42%" r="60%">
+    <stop offset="0" stop-color="#FFFDFA"/><stop offset="1" stop-color="#ECE1D2"/>
+  </radialGradient>
+  
+</defs>
+
+  <rect width="900" height="700" fill="url(#bg)"/>
+  <circle cx="450" cy="322" r="252" fill="#F08A24" opacity="0.10"/>
+  <circle cx="450" cy="322" r="210" fill="#E0402F" opacity="0.08"/>
+  <ellipse cx="450" cy="349.6" rx="230" ry="211.60000000000002" fill="rgba(36,31,28,0.10)"/>
+  <ellipse cx="450" cy="322" rx="230" ry="207" fill="url(#plate)"/>
+  <ellipse cx="450" cy="322" rx="170.2" ry="151.8" fill="none" stroke="#E0D3C2" stroke-width="6.8999999999999995"/><g transform="translate(450 294) scale(1.2)">
+    <path d="M -118 0 A 118 118 0 0 0 118 0 Z" fill="#E0402F"/>
+    <path d="M -118 0 A 118 118 0 0 0 118 0 Z" fill="none" stroke="#9C2316" stroke-width="6"/>
+    <ellipse cx="0" cy="0" rx="118" ry="30" fill="#F08A24"/>
+    <ellipse cx="0" cy="-2" rx="104" ry="24" fill="#E3B774"/>
+    <path d="M -66 -20 q 14 -34 28 0 q -14 30 0 56" stroke="#E3B774" stroke-width="7" fill="none" stroke-linecap="round" transform="rotate(-18 0 0)"/><path d="M -44 -20 q 14 -34 28 0 q -14 30 0 56" stroke="#E3B774" stroke-width="7" fill="none" stroke-linecap="round" transform="rotate(-12 0 0)"/><path d="M -22 -20 q 14 -34 28 0 q -14 30 0 56" stroke="#E3B774" stroke-width="7" fill="none" stroke-linecap="round" transform="rotate(-6 0 0)"/><path d="M 0 -20 q 14 -34 28 0 q -14 30 0 56" stroke="#E3B774" stroke-width="7" fill="none" stroke-linecap="round" transform="rotate(0 0 0)"/><path d="M 22 -20 q 14 -34 28 0 q -14 30 0 56" stroke="#E3B774" stroke-width="7" fill="none" stroke-linecap="round" transform="rotate(6 0 0)"/><path d="M 44 -20 q 14 -34 28 0 q -14 30 0 56" stroke="#E3B774" stroke-width="7" fill="none" stroke-linecap="round" transform="rotate(12 0 0)"/><path d="M 66 -20 q 14 -34 28 0 q -14 30 0 56" stroke="#E3B774" stroke-width="7" fill="none" stroke-linecap="round" transform="rotate(18 0 0)"/>
+    <path d="M -30 -16 q 14 -22 30 0" stroke="#7BA05B" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <circle cx="40" cy="-8" r="9" fill="#A6532E"/><circle cx="-46" cy="-4" r="8" fill="#A6532E"/>
+    <line x1="60" y1="-60" x2="120" y2="-150" stroke="#403933" stroke-width="7" stroke-linecap="round"/>
+    <line x1="78" y1="-58" x2="140" y2="-146" stroke="#403933" stroke-width="7" stroke-linecap="round"/>
+  </g><g transform="translate(216 350) scale(0.7)">
+    <path d="M -70 120 L -40 -120 Q 0 -150 40 -120 L 70 120 Q 0 150 -70 120 Z" fill="#E3B774"/>
+    <path d="M -70 120 L -40 -120 Q 0 -150 40 -120 L 70 120 Q 0 150 -70 120 Z" fill="none" stroke="#C9974F" stroke-width="6"/>
+    <path d="M -52 -70 Q 0 -95 52 -70" stroke="#7BA05B" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M -56 -30 Q 0 -8 56 -30" stroke="#A6532E" stroke-width="20" fill="none" stroke-linecap="round"/>
+    <path d="M -58 18 Q 0 42 58 18" stroke="#E0402F" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M -60 60 Q 0 84 60 60" stroke="#FFFDFA" stroke-width="12" fill="none" stroke-linecap="round"/>
+  </g>
+  <text x="450" y="674" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-weight="600" font-size="38" fill="#241F1C" opacity="0.6">Dönerfleisch mit Bratnudeln</text>
+</svg>
