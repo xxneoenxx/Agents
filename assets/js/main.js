@@ -14,6 +14,11 @@
 (function () {
   'use strict';
 
+  // Signalisiert dem CSS, dass JavaScript läuft. Erst dann werden .reveal-
+  // Elemente versteckt (und anschließend eingeblendet). Ohne JS bleibt
+  // der gesamte Inhalt sofort sichtbar.
+  document.documentElement.classList.add('js');
+
   const prefersReducedMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
   ).matches;

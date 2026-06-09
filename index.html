@@ -573,18 +573,20 @@
               </li>
             </ul>
 
-            <!-- Eingebettete Karte (OpenStreetMap, kein API-Key nötig) -->
+            <!-- Eingebettete Google-Maps-Karte (Standard-Embed, kein API-Key nötig).
+                 Adresse in der src-URL ggf. anpassen. -->
             <div class="overflow-hidden rounded-2xl shadow-card">
               <iframe
-                title="Standort Atelier Götz auf der Karte"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=12.910%2C50.842%2C12.928%2C50.850&layer=mapnik&marker=50.8456%2C12.9192"
+                title="Standort Atelier Götz auf Google Maps"
+                src="https://www.google.com/maps?q=Schlo%C3%9Fteichstra%C3%9Fe%201,%2009113%20Chemnitz&output=embed"
                 class="h-64 w-full border-0"
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen
               ></iframe>
             </div>
             <p class="text-sm">
-              <a href="https://www.openstreetmap.org/?mlat=50.8456&mlon=12.9192#map=17/50.8456/12.9192" class="text-terracotta hover:underline" target="_blank" rel="noopener">Größere Karte öffnen ↗</a>
+              <a href="https://www.google.com/maps/search/?api=1&query=Schlo%C3%9Fteichstra%C3%9Fe%201%2C%2009113%20Chemnitz" class="text-terracotta hover:underline" target="_blank" rel="noopener">In Google Maps öffnen ↗</a>
             </p>
           </div>
 

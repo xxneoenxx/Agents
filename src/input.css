@@ -92,14 +92,20 @@
  * IntersectionObserver (assets/js/main.js) eingeblendet (.is-visible).
  * ===================================================================== */
 @layer utilities {
-  .reveal {
+  /*
+   * Wichtig: Inhalte werden NUR versteckt, wenn JavaScript aktiv ist
+   * (die Klasse `js` wird per main.js an <html> gesetzt). So bleibt die
+   * gesamte Seite lesbar, falls JavaScript nicht ausgeführt wird –
+   * z. B. beim Öffnen der Datei in einer einfachen Vorschau.
+   */
+  .js .reveal {
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease-out, transform 0.7s ease-out;
     will-change: opacity, transform;
   }
 
-  .reveal.is-visible {
+  .js .reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
   }
