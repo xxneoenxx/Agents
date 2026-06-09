@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" role="img" aria-label="Atelier Götz">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EFE6D7"/>
+      <stop offset="1" stop-color="#8A9A7B" stop-opacity="0.35"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1100" fill="url(#g)"/>
+  <g fill="none" stroke="#B5673F" stroke-opacity="0.35" stroke-width="2">
+    <circle cx="800" cy="462" r="176"/>
+    <path d="M800 638 q 192 154.00000000000003 0 286 q -192 -132 0 -286" stroke-opacity="0.25"/>
+  </g>
+  <text x="50%" y="946" text-anchor="middle" font-family="Georgia, serif" font-size="100" fill="#B5673F">Atelier Götz</text>
+  <text x="50%" y="1023" text-anchor="middle" font-family="Arial, sans-serif" font-size="50" fill="#B5673F" fill-opacity="0.7">Platzhalter – echtes Foto einsetzen</text>
+</svg>

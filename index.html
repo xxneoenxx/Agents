@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================== -->
+  <!-- SEO: Titel & Meta-Beschreibung (hier ggf. anpassen)            -->
+  <!-- ============================================================== -->
+  <title>Atelier Götz – Coiffeur & Barbier in Chemnitz | Nachhaltiger Friseur</title>
+  <meta
+    name="description"
+    content="Atelier Götz – Ihr nachhaltiger Friseur & Barbier in Chemnitz. Moderne Schnitte, organische Produkte und individuelle Typberatung. 4,9 ★ aus 100 Google-Bewertungen. Jetzt Termin buchen."
+  />
+  <meta name="theme-color" content="#B5673F" />
+  <link rel="canonical" href="https://www.atelier-goetz-chemnitz.de/" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg" />
+
+  <!-- ============================================================== -->
+  <!-- Open Graph / Twitter (Vorschau beim Teilen in Social Media)    -->
+  <!-- Domain unten ggf. an die echte Adresse anpassen.               -->
+  <!-- ============================================================== -->
+  <meta property="og:type" content="business.business" />
+  <meta property="og:title" content="Atelier Götz – Coiffeur & Barbier in Chemnitz" />
+  <meta
+    property="og:description"
+    content="Ihr nachhaltiger Friseur & Barbier in Chemnitz. Organische Produkte, individuelle Typberatung. 4,9 ★ aus 100 Bewertungen."
+  />
+  <meta property="og:image" content="https://www.atelier-goetz-chemnitz.de/assets/img/og-image.svg" />
+  <meta property="og:url" content="https://www.atelier-goetz-chemnitz.de/" />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:site_name" content="Atelier Götz" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Atelier Götz – Coiffeur & Barbier in Chemnitz" />
+  <meta name="twitter:description" content="Ihr nachhaltiger Friseur & Barbier in Chemnitz. 4,9 ★ aus 100 Bewertungen." />
+  <meta name="twitter:image" content="https://www.atelier-goetz-chemnitz.de/assets/img/og-image.svg" />
+
+  <!-- ============================================================== -->
+  <!-- Google Fonts: Cormorant Garamond (Serif) + Inter (Sans)        -->
+  <!-- Andere Schrift? Hier UND in tailwind.config.js ändern.         -->
+  <!-- ============================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Generiertes Tailwind-CSS (per `npm run build` erzeugt) -->
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+
+  <!-- ============================================================== -->
+  <!-- JSON-LD: strukturierte Daten (Schema.org HairSalon)            -->
+  <!-- Adresse, Telefon, Öffnungszeiten, Bewertung – hier pflegen.    -->
+  <!-- ============================================================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HairSalon",
+    "name": "Atelier Götz – Coiffeur & Barbier",
+    "image": "https://www.atelier-goetz-chemnitz.de/assets/img/og-image.svg",
+    "url": "https://www.atelier-goetz-chemnitz.de/",
+    "telephone": "+4937133502111",
+    "priceRange": "€€",
+    "description": "Nachhaltiger Friseur & Barbier in Chemnitz mit organischen Produkten und individueller Typberatung.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Schloßteichstraße 1",
+      "postalCode": "09113",
+      "addressLocality": "Chemnitz",
+      "addressCountry": "DE"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 50.8456,
+      "longitude": 12.9192
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "100",
+      "bestRating": "5"
+    }
+  }
+  </script>
+</head>
+
+<body class="bg-cream text-anthracite">
+  <!-- Skip-Link für Screenreader / Tastatur -->
+  <a
+    href="#hero"
+    class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-terracotta focus:px-5 focus:py-2 focus:text-cream-50"
+  >
+    Zum Inhalt springen
+  </a>
+
+  <!-- ================================================================ -->
+  <!-- 1. STICKY-NAVIGATION                                             -->
+  <!-- ================================================================ -->
+  <header
+    data-header
+    class="fixed inset-x-0 top-0 z-50 transition-all duration-300 [&.is-scrolled]:bg-cream/90 [&.is-scrolled]:shadow-soft [&.is-scrolled]:backdrop-blur"
+  >
+    <nav class="container flex items-center justify-between py-4" aria-label="Hauptnavigation">
+      <!-- Logo / Salonname -->
+      <a href="#hero" class="flex items-center gap-3" aria-label="Atelier Götz – zur Startseite">
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-terracotta font-serif text-lg font-bold text-cream-50">AG</span>
+        <span class="font-serif text-xl font-semibold leading-none">
+          Atelier Götz
+          <span class="block text-xs font-sans font-medium uppercase tracking-[0.2em] text-anthracite-muted">Coiffeur &amp; Barbier</span>
+        </span>
+      </a>
+
+      <!-- Desktop-Navigation -->
+      <ul class="hidden items-center gap-8 lg:flex">
+        <li><a href="#ueber-uns" class="text-sm font-medium transition-colors hover:text-terracotta">Über uns</a></li>
+        <li><a href="#leistungen" class="text-sm font-medium transition-colors hover:text-terracotta">Leistungen</a></li>
+        <li><a href="#galerie" class="text-sm font-medium transition-colors hover:text-terracotta">Galerie</a></li>
+        <li><a href="#bewertungen" class="text-sm font-medium transition-colors hover:text-terracotta">Bewertungen</a></li>
+        <li><a href="#kontakt" class="text-sm font-medium transition-colors hover:text-terracotta">Kontakt</a></li>
+      </ul>
+
+      <div class="flex items-center gap-3">
+        <!-- Termin buchen: Anker zum Kontaktbereich. Alternativ echte Buchungs-URL eintragen. -->
+        <a href="#kontakt" class="btn-primary hidden sm:inline-flex">Termin buchen</a>
+
+        <!-- Hamburger (mobil) -->
+        <button
+          type="button"
+          data-menu-toggle
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Menü öffnen"
+          class="flex h-11 w-11 items-center justify-center rounded-full border border-anthracite/15 lg:hidden"
+        >
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobiles Menü -->
+    <div id="mobile-menu" data-mobile-menu class="hidden border-t border-anthracite/10 bg-cream/95 backdrop-blur lg:hidden">
+      <ul class="container flex flex-col gap-1 py-4">
+        <li><a href="#ueber-uns" class="block rounded-lg px-3 py-3 font-medium hover:bg-cream-200">Über uns</a></li>
+        <li><a href="#leistungen" class="block rounded-lg px-3 py-3 font-medium hover:bg-cream-200">Leistungen</a></li>
+        <li><a href="#galerie" class="block rounded-lg px-3 py-3 font-medium hover:bg-cream-200">Galerie</a></li>
+        <li><a href="#bewertungen" class="block rounded-lg px-3 py-3 font-medium hover:bg-cream-200">Bewertungen</a></li>
+        <li><a href="#kontakt" class="block rounded-lg px-3 py-3 font-medium hover:bg-cream-200">Kontakt</a></li>
+        <li class="pt-2"><a href="#kontakt" class="btn-primary w-full">Termin buchen</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============================================================== -->
+    <!-- 2. HERO                                                        -->
+    <!-- ============================================================== -->
+    <section id="hero" class="relative overflow-hidden pt-28 md:pt-32">
+      <div class="container grid items-center gap-12 pb-16 md:pb-24 lg:grid-cols-2 lg:gap-16">
+        <!-- Text -->
+        <div class="animate-fade-up">
+          <!-- Bewertungs-Badge -->
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-cream-50 px-4 py-2 shadow-card">
+            <span class="text-terracotta" aria-hidden="true">★★★★★</span>
+            <span class="text-sm font-semibold">4,9</span>
+            <span class="text-sm text-anthracite-muted">aus 100 Google-Bewertungen</span>
+          </div>
+
+          <h1 class="text-4xl leading-[1.1] md:text-5xl lg:text-6xl">
+            Atelier Götz
+            <span class="mt-2 block font-sans text-base font-medium uppercase tracking-[0.25em] text-terracotta md:text-lg">
+              Coiffeur &amp; Barbier
+            </span>
+          </h1>
+
+          <p class="mt-6 max-w-xl text-lg text-anthracite-light md:text-xl">
+            Ihr nachhaltiger Friseur &amp; Barbier in Chemnitz. Moderne Schnitte,
+            organische Produkte und eine individuelle Typberatung, die wirklich zu Ihnen passt.
+          </p>
+
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href="#kontakt" class="btn-primary">
+              Termin buchen
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
+            <!-- Klickbarer Anruf-Link -->
+            <a href="tel:+4937133502111" class="btn-secondary">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+              </svg>
+              0371 33502111
+            </a>
+          </div>
+
+          <!-- Vertrauens-Mikro-Hinweise -->
+          <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-anthracite-muted">
+            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-sage" aria-hidden="true"></span> Organische Produkte</li>
+            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-sage" aria-hidden="true"></span> Individuelle Typberatung</li>
+            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-sage" aria-hidden="true"></span> Mitten in Chemnitz</li>
+          </ul>
+        </div>
+
+        <!-- Bild -->
+        <div class="animate-fade-in">
+          <div class="relative">
+            <!-- hier echtes Foto einsetzen: /assets/img/hero.jpg (ersetzt hero.svg) -->
+            <img
+              src="/assets/img/hero.svg"
+              alt="Heller, moderner Friseursalon mit warmem Holz und natürlichen Materialien"
+              width="1600"
+              height="1100"
+              class="aspect-[4/3] w-full rounded-3xl object-cover shadow-soft"
+            />
+            <!-- Schwebende Info-Karte -->
+            <div class="absolute -bottom-5 -left-3 hidden rounded-2xl bg-cream-50 px-5 py-4 shadow-soft sm:block">
+              <p class="font-serif text-2xl font-semibold text-terracotta">4,9 ★</p>
+              <p class="text-xs text-anthracite-muted">100 zufriedene Bewertungen</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 3. ÜBER UNS / PHILOSOPHIE                                      -->
+    <!-- ============================================================== -->
+    <section id="ueber-uns" class="section">
+      <div class="container grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div class="reveal order-2 lg:order-1">
+          <!-- hier echtes Foto einsetzen: /assets/img/ueber-uns.jpg -->
+          <img
+            src="/assets/img/ueber-uns.svg"
+            alt="Friseurin berät eine Kundin in entspannter, natürlicher Salon-Atmosphäre"
+            width="1200"
+            height="1000"
+            loading="lazy"
+            class="aspect-[6/5] w-full rounded-3xl object-cover shadow-soft"
+          />
+        </div>
+
+        <div class="reveal order-1 lg:order-2">
+          <span class="section-eyebrow">Über uns</span>
+          <h2 class="section-title">Schönheit, die im Einklang mit der Natur entsteht</h2>
+          <p class="mt-5 text-lg text-anthracite-light">
+            Im Atelier Götz verbinden wir handwerkliches Können mit einem bewussten,
+            nachhaltigen Anspruch. Wir nehmen uns Zeit für Sie – für Ihren Typ, Ihren
+            Alltag und Ihre Wünsche.
+          </p>
+
+          <ul class="mt-8 space-y-6">
+            <li class="flex gap-4">
+              <span class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-sage-100 text-sage-700" aria-hidden="true">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c-3 4-6 6-6 10a6 6 0 0 0 12 0c0-4-3-6-6-10Z" />
+                </svg>
+              </span>
+              <div>
+                <h3 class="text-xl">Nachhaltigkeit</h3>
+                <p class="mt-1 text-anthracite-light">Ressourcenschonendes Arbeiten und Produkte, die Mensch und Umwelt respektieren.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-sage-100 text-sage-700" aria-hidden="true">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              </span>
+              <div>
+                <h3 class="text-xl">Organische Produkte</h3>
+                <p class="mt-1 text-anthracite-light">Hochwertige, natürliche Pflege für gesundes, glänzendes Haar – ohne unnötige Zusätze.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-sage-100 text-sage-700" aria-hidden="true">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 19.5a7.5 7.5 0 0 1 15 0v.75H4.5v-.75Z" />
+                </svg>
+              </span>
+              <div>
+                <h3 class="text-xl">Individuelle Typberatung</h3>
+                <p class="mt-1 text-anthracite-light">Ein Look, der zu Ihrem Gesicht, Ihrer Haarstruktur und Ihrem Leben passt.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 4. LEISTUNGEN                                                  -->
+    <!-- Preise sind Platzhalter: „ab XX €" → echte Preise eintragen.  -->
+    <!-- ============================================================== -->
+    <section id="leistungen" class="section bg-cream-200/50">
+      <div class="container">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="section-eyebrow">Leistungen</span>
+          <h2 class="section-title">Unser Angebot für Sie</h2>
+          <p class="mt-4 text-lg text-anthracite-light">
+            Vom klassischen Schnitt bis zur intensiven Haarkur – alles aus einer Hand.
+            Die angegebenen Preise sind Richtwerte (Platzhalter).
+          </p>
+        </div>
+
+        <!-- Karten-Raster -->
+        <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <!--
+            Vorlage einer Leistungskarte. Zum Anpassen einfach Titel, Text und
+            Preis ändern. Preis-Platzhalter: „ab XX €".
+          -->
+          <article class="card reveal">
+            <h3 class="text-2xl">Damenhaarschnitt</h3>
+            <p class="mt-2 text-anthracite-light">Waschen, Schnitt und Föhnen – abgestimmt auf Ihren Typ.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-1">
+            <h3 class="text-2xl">Herrenhaarschnitt</h3>
+            <p class="mt-2 text-anthracite-light">Präziser Schnitt und Finish, klassisch oder modern.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-2">
+            <h3 class="text-2xl">Haare färben</h3>
+            <p class="mt-2 text-anthracite-light">Gleichmäßige Farbe mit pflegenden, organischen Produkten.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal">
+            <h3 class="text-2xl">Haar-Highlights</h3>
+            <p class="mt-2 text-anthracite-light">Strähnen &amp; Balayage für natürliche Tiefe und Glanz.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-1">
+            <h3 class="text-2xl">Dauerwelle</h3>
+            <p class="mt-2 text-anthracite-light">Definierte Locken und Volumen, schonend umgesetzt.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-2">
+            <h3 class="text-2xl">Bart schneiden</h3>
+            <p class="mt-2 text-anthracite-light">Konturieren, Trimmen und Pflege für einen gepflegten Bart.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal">
+            <h3 class="text-2xl">Kinderhaarschnitt</h3>
+            <p class="mt-2 text-anthracite-light">Geduldig und liebevoll – auch für die Kleinsten.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-1">
+            <h3 class="text-2xl">Haircare</h3>
+            <p class="mt-2 text-anthracite-light">Intensive Pflege-Treatments für gesundes, kräftiges Haar.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-2">
+            <h3 class="text-2xl">Detox-Programm</h3>
+            <p class="mt-2 text-anthracite-light">Tiefenreinigung für Kopfhaut und Haar – der frische Neustart.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal">
+            <h3 class="text-2xl">Augenbrauen färben</h3>
+            <p class="mt-2 text-anthracite-light">Definierte Brauen, die Ihren Blick betonen.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-1">
+            <h3 class="text-2xl">Wimpern färben</h3>
+            <p class="mt-2 text-anthracite-light">Ausdrucksstarke Wimpern ganz ohne Mascara.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <!-- Abschluss-Karte mit CTA -->
+          <article class="card reveal reveal-delay-2 flex flex-col justify-between bg-sage-600 text-cream-50">
+            <div>
+              <h3 class="text-2xl text-cream-50">Noch Fragen?</h3>
+              <p class="mt-2 text-cream-100">Wir beraten Sie gern persönlich zu Preisen und Behandlungen.</p>
+            </div>
+            <a href="#kontakt" class="btn-light mt-6 self-start">Termin anfragen</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 5. GALERIE (mit Lightbox)                                     -->
+    <!-- ============================================================== -->
+    <section id="galerie" class="section">
+      <div class="container">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="section-eyebrow">Galerie</span>
+          <h2 class="section-title">Einblicke in unser Atelier</h2>
+          <p class="mt-4 text-lg text-anthracite-light">
+            Ein Eindruck von Ambiente, Handwerk und Ergebnissen. Bild anklicken zum Vergrößern.
+          </p>
+        </div>
+
+        <!-- Foto-Raster. Jede Kachel öffnet die Lightbox (data-lightbox). -->
+        <div class="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+          <!--
+            hier echte Fotos einsetzen: /assets/img/gallery-1.jpg … gallery-8.jpg
+            (ersetzen die .svg-Platzhalter mit gleichem Namen)
+          -->
+          <button type="button" data-lightbox class="reveal group block overflow-hidden rounded-2xl shadow-card">
+            <img src="/assets/img/gallery-1.svg" alt="Damenhaarschnitt – Ergebnis im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal reveal-delay-1 group block overflow-hidden rounded-2xl shadow-card">
+            <img src="/assets/img/gallery-2.svg" alt="Herrenhaarschnitt – Ergebnis im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal reveal-delay-2 group block overflow-hidden rounded-2xl shadow-card">
+            <img src="/assets/img/gallery-3.svg" alt="Haarfarbe und Highlights – Ergebnis im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal reveal-delay-3 group block overflow-hidden rounded-2xl shadow-card">
+            <img src="/assets/img/gallery-4.svg" alt="Barbier-Arbeit – gepflegter Bart im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal group block overflow-hidden rounded-2xl shadow-card">
+            <img src="/assets/img/gallery-5.svg" alt="Styling und Föhnen im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal reveal-delay-1 group block overflow-hidden rounded-2xl shadow-card">
+            <img src="/assets/img/gallery-6.svg" alt="Persönliche Typberatung im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal reveal-delay-2 group block overflow-hidden rounded-2xl shadow-card">
+            <img src="/assets/img/gallery-7.svg" alt="Detox- und Pflegebehandlung im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal reveal-delay-3 group block overflow-hidden rounded-2xl shadow-card">
+            <img src="/assets/img/gallery-8.svg" alt="Warmes, natürliches Salon-Ambiente im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox-Dialog (durch JS gesteuert, startet versteckt) -->
+    <div
+      data-lightbox-dialog
+      class="fixed inset-0 z-[90] hidden items-center justify-center bg-anthracite/90 p-4 backdrop-blur"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Bildansicht"
+    >
+      <button type="button" data-lightbox-prev aria-label="Vorheriges Bild" class="absolute left-4 top-1/2 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-cream-50/90 text-anthracite hover:bg-cream-50">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+      </button>
+
+      <img data-lightbox-image src="" alt="" class="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain shadow-soft" />
+
+      <button type="button" data-lightbox-next aria-label="Nächstes Bild" class="absolute right-4 top-1/2 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-cream-50/90 text-anthracite hover:bg-cream-50">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+      </button>
+
+      <button type="button" data-lightbox-close aria-label="Bildansicht schließen" class="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-cream-50/90 text-anthracite hover:bg-cream-50">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+      </button>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- 6. BEWERTUNGEN                                                 -->
+    <!-- Testimonials sind Platzhalter (keine echten Namen).           -->
+    <!-- ============================================================== -->
+    <section id="bewertungen" class="section bg-sage-600 text-cream-50">
+      <div class="container">
+        <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+          <!-- Bewertungs-Highlight -->
+          <div class="reveal lg:col-span-4">
+            <span class="section-eyebrow text-cream-100">Bewertungen</span>
+            <h2 class="section-title text-cream-50">Das sagen unsere Gäste</h2>
+            <div class="mt-6 flex items-end gap-4">
+              <p class="font-serif text-6xl font-bold leading-none">4,9</p>
+              <div class="pb-1">
+                <p class="text-terracotta-100" aria-hidden="true">★★★★★</p>
+                <p class="text-sm text-cream-100">aus 100 Google-Bewertungen</p>
+              </div>
+            </div>
+            <p class="mt-6 text-cream-100">
+              Ehrliches Feedback echter Kundinnen und Kunden. Werden Sie Teil davon –
+              wir freuen uns auf Ihren Besuch.
+            </p>
+          </div>
+
+          <!-- Testimonial-Karten -->
+          <div class="grid gap-6 sm:grid-cols-3 lg:col-span-8">
+            <figure class="reveal rounded-2xl bg-cream-50 p-6 text-anthracite shadow-soft">
+              <div class="text-terracotta" aria-hidden="true">★★★★★</div>
+              <blockquote class="mt-3 text-anthracite-light">
+                „Endlich ein Salon, der sich wirklich Zeit nimmt. Die Beratung war top und
+                mein Schnitt passt perfekt zu mir."
+              </blockquote>
+              <figcaption class="mt-4 text-sm font-semibold">Zufriedene Kundin · Chemnitz</figcaption>
+            </figure>
+
+            <figure class="reveal reveal-delay-1 rounded-2xl bg-cream-50 p-6 text-anthracite shadow-soft">
+              <div class="text-terracotta" aria-hidden="true">★★★★★</div>
+              <blockquote class="mt-3 text-anthracite-light">
+                „Tolle Atmosphäre, freundliches Team und ein Bartschnitt, der einfach sitzt.
+                Sehr zu empfehlen."
+              </blockquote>
+              <figcaption class="mt-4 text-sm font-semibold">Zufriedener Kunde · Chemnitz</figcaption>
+            </figure>
+
+            <figure class="reveal reveal-delay-2 rounded-2xl bg-cream-50 p-6 text-anthracite shadow-soft">
+              <div class="text-terracotta" aria-hidden="true">★★★★★</div>
+              <blockquote class="mt-3 text-anthracite-light">
+                „Die organischen Produkte sind ein Traum und meine Haare fühlen sich gesünder
+                an als je zuvor. Komme gerne wieder!"
+              </blockquote>
+              <figcaption class="mt-4 text-sm font-semibold">Zufriedene Kundin · Chemnitz</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 7. KONTAKT & BUCHUNG                                           -->
+    <!-- ============================================================== -->
+    <section id="kontakt" class="section">
+      <div class="container">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="section-eyebrow">Kontakt &amp; Buchung</span>
+          <h2 class="section-title">Vereinbaren Sie Ihren Termin</h2>
+          <p class="mt-4 text-lg text-anthracite-light">
+            Rufen Sie uns an, schreiben Sie uns oder kommen Sie vorbei – wir freuen uns auf Sie.
+          </p>
+        </div>
+
+        <div class="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-14">
+          <!-- Linke Spalte: Infos + Karte -->
+          <div class="reveal space-y-8">
+            <ul class="space-y-6">
+              <li class="flex gap-4">
+                <span class="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-terracotta-50 text-terracotta" aria-hidden="true">
+                  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+                </span>
+                <div>
+                  <h3 class="text-lg">Adresse</h3>
+                  <p class="text-anthracite-light">Schloßteichstraße 1<br />09113 Chemnitz</p>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <span class="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-terracotta-50 text-terracotta" aria-hidden="true">
+                  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>
+                </span>
+                <div>
+                  <h3 class="text-lg">Telefon</h3>
+                  <a href="tel:+4937133502111" class="text-terracotta hover:underline">0371 33502111</a>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <span class="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-terracotta-50 text-terracotta" aria-hidden="true">
+                  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                </span>
+                <div>
+                  <h3 class="text-lg">Öffnungszeiten</h3>
+                  <!-- Öffnungszeiten-Platzhalter: bitte echte Zeiten eintragen -->
+                  <p class="text-anthracite-light">Montag – Samstag: ab 09:00 Uhr<br />Sonntag: geschlossen</p>
+                </div>
+              </li>
+            </ul>
+
+            <!-- Eingebettete Karte (OpenStreetMap, kein API-Key nötig) -->
+            <div class="overflow-hidden rounded-2xl shadow-card">
+              <iframe
+                title="Standort Atelier Götz auf der Karte"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=12.910%2C50.842%2C12.928%2C50.850&layer=mapnik&marker=50.8456%2C12.9192"
+                class="h-64 w-full border-0"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+            <p class="text-sm">
+              <a href="https://www.openstreetmap.org/?mlat=50.8456&mlon=12.9192#map=17/50.8456/12.9192" class="text-terracotta hover:underline" target="_blank" rel="noopener">Größere Karte öffnen ↗</a>
+            </p>
+          </div>
+
+          <!-- Rechte Spalte: Kontaktformular -->
+          <div class="reveal reveal-delay-1">
+            <!--
+              KONTAKTFORMULAR (Formspree-ready):
+              1. Account auf https://formspree.io anlegen, Formular erstellen.
+              2. Die erhaltene Form-ID unten in der action-URL eintragen
+                 (DEIN_FORM_ID ersetzen).
+              Bis dahin zeigt das Formular einen Hinweis statt zu senden.
+            -->
+            <form
+              data-contact-form
+              action="https://formspree.io/f/DEIN_FORM_ID"
+              method="POST"
+              class="rounded-3xl bg-cream-50 p-7 shadow-soft md:p-9"
+            >
+              <div class="grid gap-5">
+                <div>
+                  <label for="name" class="mb-1.5 block text-sm font-semibold">Name</label>
+                  <input id="name" name="name" type="text" required autocomplete="name"
+                    class="w-full rounded-xl border border-anthracite/15 bg-white px-4 py-3 text-anthracite placeholder:text-anthracite-muted focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/40"
+                    placeholder="Ihr Name" />
+                </div>
+                <div class="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label for="email" class="mb-1.5 block text-sm font-semibold">E-Mail</label>
+                    <input id="email" name="email" type="email" required autocomplete="email"
+                      class="w-full rounded-xl border border-anthracite/15 bg-white px-4 py-3 text-anthracite placeholder:text-anthracite-muted focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/40"
+                      placeholder="name@beispiel.de" />
+                  </div>
+                  <div>
+                    <label for="phone" class="mb-1.5 block text-sm font-semibold">Telefon <span class="font-normal text-anthracite-muted">(optional)</span></label>
+                    <input id="phone" name="phone" type="tel" autocomplete="tel"
+                      class="w-full rounded-xl border border-anthracite/15 bg-white px-4 py-3 text-anthracite placeholder:text-anthracite-muted focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/40"
+                      placeholder="Ihre Telefonnummer" />
+                  </div>
+                </div>
+                <div>
+                  <label for="message" class="mb-1.5 block text-sm font-semibold">Nachricht</label>
+                  <textarea id="message" name="message" rows="4" required
+                    class="w-full rounded-xl border border-anthracite/15 bg-white px-4 py-3 text-anthracite placeholder:text-anthracite-muted focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/40"
+                    placeholder="Ihr Wunschtermin und Ihre Anliegen …"></textarea>
+                </div>
+
+                <!-- Einwilligung (DSGVO) -->
+                <label class="flex items-start gap-3 text-sm text-anthracite-light">
+                  <input type="checkbox" name="consent" required class="mt-1 h-4 w-4 rounded border-anthracite/30 text-terracotta focus:ring-terracotta" />
+                  <span>Ich bin mit der Verarbeitung meiner Daten gemäß <a href="/datenschutz.html" class="text-terracotta hover:underline">Datenschutzerklärung</a> einverstanden.</span>
+                </label>
+
+                <button type="submit" class="btn-primary w-full">Nachricht senden</button>
+
+                <!-- Statushinweis (durch JS gefüllt) -->
+                <p data-form-status class="hidden rounded-xl bg-sage-100 px-4 py-3 text-sm text-sage-700" role="status"></p>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Großer Buchungs-CTA -->
+        <div class="reveal mt-16 rounded-3xl bg-terracotta px-6 py-12 text-center text-cream-50 md:px-12">
+          <h2 class="text-3xl text-cream-50 md:text-4xl">Bereit für einen frischen Look?</h2>
+          <p class="mx-auto mt-3 max-w-xl text-cream-100">Sichern Sie sich Ihren Wunschtermin im Atelier Götz – telefonisch oder über das Kontaktformular.</p>
+          <div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+            <a href="tel:+4937133502111" class="btn-light">Jetzt anrufen: 0371 33502111</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================================================================ -->
+  <!-- 8. FOOTER                                                        -->
+  <!-- ================================================================ -->
+  <footer class="bg-anthracite text-cream-100">
+    <div class="container py-14">
+      <div class="grid gap-10 md:grid-cols-3">
+        <!-- Marke -->
+        <div>
+          <div class="flex items-center gap-3">
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-terracotta font-serif text-lg font-bold text-cream-50">AG</span>
+            <span class="font-serif text-xl font-semibold text-cream-50">Atelier Götz</span>
+          </div>
+          <p class="mt-4 max-w-xs text-sm text-cream-100/80">
+            Ihr nachhaltiger Friseur &amp; Barbier in Chemnitz. Organische Produkte,
+            individuelle Typberatung.
+          </p>
+        </div>
+
+        <!-- Navigation -->
+        <nav aria-label="Footer-Navigation">
+          <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-cream-50">Navigation</h2>
+          <ul class="mt-4 space-y-2 text-sm">
+            <li><a href="#ueber-uns" class="hover:text-terracotta-100">Über uns</a></li>
+            <li><a href="#leistungen" class="hover:text-terracotta-100">Leistungen</a></li>
+            <li><a href="#galerie" class="hover:text-terracotta-100">Galerie</a></li>
+            <li><a href="#bewertungen" class="hover:text-terracotta-100">Bewertungen</a></li>
+            <li><a href="#kontakt" class="hover:text-terracotta-100">Kontakt</a></li>
+          </ul>
+        </nav>
+
+        <!-- Kontakt + Social -->
+        <div>
+          <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-cream-50">Kontakt</h2>
+          <address class="mt-4 not-italic text-sm text-cream-100/80">
+            Schloßteichstraße 1<br />
+            09113 Chemnitz<br />
+            <a href="tel:+4937133502111" class="text-terracotta-100 hover:underline">0371 33502111</a>
+          </address>
+          <!-- Social-Platzhalter: echte Profil-Links eintragen -->
+          <div class="mt-5 flex gap-3">
+            <a href="#" aria-label="Instagram (Link eintragen)" class="flex h-10 w-10 items-center justify-center rounded-full bg-cream-100/10 transition-colors hover:bg-terracotta">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.17.05 1.8.25 2.23.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.42.37 1.06.42 2.23.06 1.3.07 1.69.07 4.9s0 3.6-.07 4.9c-.05 1.17-.25 1.8-.42 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.17-1.06.37-2.23.42-1.3.06-1.69.07-4.9.07s-3.6 0-4.9-.07c-1.17-.05-1.8-.25-2.23-.42a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.17-.42-.37-1.06-.42-2.23C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.05-1.17.25-1.8.42-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.17 1.06-.37 2.23-.42C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.15 0-3.52.01-4.76.07-.9.04-1.38.19-1.7.32-.43.16-.74.36-1.06.68-.32.32-.52.63-.68 1.06-.13.32-.28.8-.32 1.7C3.42 8.48 3.4 8.85 3.4 12s.02 3.52.08 4.76c.04.9.19 1.38.32 1.7.16.43.36.74.68 1.06.32.32.63.52 1.06.68.32.13.8.28 1.7.32 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c.9-.04 1.38-.19 1.7-.32.43-.16.74-.36 1.06-.68.32-.32.52-.63.68-1.06.13-.32.28-.8.32-1.7.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.04-.9-.19-1.38-.32-1.7a2.85 2.85 0 0 0-.68-1.06 2.85 2.85 0 0 0-1.06-.68c-.32-.13-.8-.28-1.7-.32C15.52 4.01 15.15 4 12 4Zm0 3.06A4.94 4.94 0 1 1 12 16.94 4.94 4.94 0 0 1 12 7.06Zm0 1.8a3.14 3.14 0 1 0 0 6.28 3.14 3.14 0 0 0 0-6.28Zm5.15-3.2a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z" /></svg>
+            </a>
+            <a href="#" aria-label="Facebook (Link eintragen)" class="flex h-10 w-10 items-center justify-center rounded-full bg-cream-100/10 transition-colors hover:bg-terracotta">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.1h-3.1V8.9c0-.9.25-1.5 1.55-1.5h1.65V4.6c-.29-.04-1.27-.12-2.41-.12-2.39 0-4.03 1.46-4.03 4.14v2.31H7.5V14h2.76v8h3.24Z" /></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Untere Leiste mit rechtlichen Links (in DE erforderlich) -->
+      <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-cream-100/15 pt-6 text-sm text-cream-100/70 md:flex-row">
+        <p>&copy; <span data-current-year>2026</span> Atelier Götz – Coiffeur &amp; Barbier. Alle Rechte vorbehalten.</p>
+        <ul class="flex gap-6">
+          <li><a href="/impressum.html" class="hover:text-terracotta-100">Impressum</a></li>
+          <li><a href="/datenschutz.html" class="hover:text-terracotta-100">Datenschutz</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interaktionen -->
+  <script src="/assets/js/main.js" defer></script>
+</body>
+</html>

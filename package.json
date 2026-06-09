@@ -1,0 +1,22 @@
+{
+  "name": "atelier-goetz-website",
+  "version": "1.0.0",
+  "description": "Statische Marketing-Website für Atelier Götz – Coiffeur & Barbier in Chemnitz",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./assets/css/styles.css --minify",
+    "watch": "tailwindcss -i ./src/input.css -o ./assets/css/styles.css --watch",
+    "serve": "npx serve ."
+  },
+  "keywords": [
+    "friseur",
+    "barbier",
+    "chemnitz",
+    "tailwindcss",
+    "static-site"
+  ],
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

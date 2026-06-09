@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Atelier Götz · Chemnitz">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E9CBB9"/>
+      <stop offset="1" stop-color="#8A9A7B" stop-opacity="0.35"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <g fill="none" stroke="#7E4327" stroke-opacity="0.35" stroke-width="2">
+    <circle cx="600" cy="264.59999999999997" r="100.8"/>
+    <path d="M600 365.4 q 144 88.2 0 163.8 q -144 -75.6 0 -163.8" stroke-opacity="0.25"/>
+  </g>
+  <text x="50%" y="541.8" text-anchor="middle" font-family="Georgia, serif" font-size="75" fill="#7E4327">Atelier Götz · Chemnitz</text>
+  <text x="50%" y="585.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" fill="#7E4327" fill-opacity="0.7">Platzhalter – echtes Foto einsetzen</text>
+</svg>

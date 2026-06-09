@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img" aria-label="Farbe & Highlights">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E9CBB9"/>
+      <stop offset="1" stop-color="#8A9A7B" stop-opacity="0.35"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="900" fill="url(#g)"/>
+  <g fill="none" stroke="#7E4327" stroke-opacity="0.35" stroke-width="2">
+    <circle cx="450" cy="378" r="144"/>
+    <path d="M450 522 q 108 126.00000000000001 0 234 q -108 -108 0 -234" stroke-opacity="0.25"/>
+  </g>
+  <text x="50%" y="774" text-anchor="middle" font-family="Georgia, serif" font-size="82" fill="#7E4327">Farbe & Highlights</text>
+  <text x="50%" y="837" text-anchor="middle" font-family="Arial, sans-serif" font-size="41" fill="#7E4327" fill-opacity="0.7">Platzhalter – echtes Foto einsetzen</text>
+</svg>
