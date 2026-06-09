@@ -1,15 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1000" viewBox="0 0 1200 1000" role="img" aria-label="Unser Salon">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#D8E0CF"/>
-      <stop offset="1" stop-color="#B5673F" stop-opacity="0.35"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="1000" fill="url(#g)"/>
-  <g fill="none" stroke="#586549" stroke-opacity="0.35" stroke-width="2">
-    <circle cx="600" cy="420" r="160"/>
-    <path d="M600 580 q 144 140 0 260 q -144 -120 0 -260" stroke-opacity="0.25"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1000" viewBox="0 0 1200 1000" role="img">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F7F2EA"/><stop offset="1" stop-color="#EFE6D7"/>
+  </linearGradient>
+  
+</defs>
+
+  <rect width="1200" height="1000" fill="url(#bg)"/>
+  <path d="M 260 460 A 340 340 0 0 1 940 460 Z" fill="#E9CBB9" opacity="0.6"/>
+  <path d="M 300 460 A 300 300 0 0 1 900 460 Z" fill="#D8E0CF" opacity="0.55"/>
+  
+  <g transform="translate(408.00000000000006 620) scale(1.5)" fill="#8A9A7B">
+    <rect x="-70" y="-110" width="140" height="120" rx="30"/>
+    <rect x="-86" y="10" width="172" height="46" rx="20"/>
+    <rect x="-10" y="56" width="20" height="70"/>
+    <ellipse cx="0" cy="138" rx="64" ry="16"/>
   </g>
-  <text x="50%" y="860" text-anchor="middle" font-family="Georgia, serif" font-size="109" fill="#586549">Unser Salon</text>
-  <text x="50%" y="930" text-anchor="middle" font-family="Arial, sans-serif" font-size="55" fill="#586549" fill-opacity="0.7">Platzhalter – echtes Foto einsetzen</text>
+  <g transform="translate(816.0000000000001 460) scale(1.5)">
+    <ellipse cx="0" cy="-10" rx="70" ry="86" fill="#B5673F"/>
+    <ellipse cx="0" cy="-10" rx="52" ry="68" fill="#F7F2EA"/>
+    <rect x="-12" y="70" width="24" height="70" rx="10" fill="#B5673F"/>
+    <rect x="-44" y="135" width="88" height="18" rx="9" fill="#B5673F"/>
+  </g>
+  <g stroke="#586549" stroke-width="4.199999999999999" fill="none" stroke-linecap="round">
+    <path d="M 192 568 C 192 484, 192 442, 192 400"/>
+  </g><g transform="translate(194 442) rotate(25) scale(1.4)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g transform="translate(138.8 477) rotate(200) scale(1.4)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g transform="translate(194 512) rotate(25) scale(1.4)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g transform="translate(138.8 540) rotate(200) scale(1.4)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g>
+
+  
 </svg>

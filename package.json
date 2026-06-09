@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tailwindcss -i ./src/input.css -o ./assets/css/styles.css --minify",
     "watch": "tailwindcss -i ./src/input.css -o ./assets/css/styles.css --watch",
+    "preview": "npm run build && node tools/build-preview.js",
     "serve": "npx serve ."
   },
   "keywords": [

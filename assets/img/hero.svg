@@ -1,15 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" role="img" aria-label="Atelier Götz">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#EFE6D7"/>
-      <stop offset="1" stop-color="#8A9A7B" stop-opacity="0.35"/>
-    </linearGradient>
-  </defs>
-  <rect width="1600" height="1100" fill="url(#g)"/>
-  <g fill="none" stroke="#B5673F" stroke-opacity="0.35" stroke-width="2">
-    <circle cx="800" cy="462" r="176"/>
-    <path d="M800 638 q 192 154.00000000000003 0 286 q -192 -132 0 -286" stroke-opacity="0.25"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" role="img">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F7F2EA"/><stop offset="1" stop-color="#EFE6D7"/>
+  </linearGradient>
+  
+</defs>
+
+  <rect width="1600" height="1100" fill="url(#bg)"/>
+  <path d="M 426 506 A 374 374 0 0 1 1174 506 Z" fill="#E9CBB9" opacity="0.6"/>
+  <path d="M 470 506 A 330 330 0 0 1 1130 506 Z" fill="#D8E0CF" opacity="0.55"/>
+  
+  <g stroke="#8A9A7B" stroke-width="4.800000000000001" fill="none" stroke-linecap="round">
+    <path d="M 208 522 C 208 426, 208 378, 208 330"/>
+  </g><g transform="translate(210 378) rotate(25) scale(1.6)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#8A9A7B"/></g><g transform="translate(147.2 418) rotate(200) scale(1.6)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#8A9A7B"/></g><g transform="translate(210 458) rotate(25) scale(1.6)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#8A9A7B"/></g><g transform="translate(147.2 490) rotate(200) scale(1.6)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#8A9A7B"/></g>
+  <g stroke="#586549" stroke-width="4.199999999999999" fill="none" stroke-linecap="round">
+    <path d="M 1392 542 C 1392 458, 1392 416, 1392 374"/>
+  </g><g transform="translate(1394 416) rotate(25) scale(1.4)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g transform="translate(1338.8 451) rotate(200) scale(1.4)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g transform="translate(1394 486) rotate(25) scale(1.4)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g transform="translate(1338.8 514) rotate(200) scale(1.4)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g>
+  <g transform="translate(800 440) scale(1.7)">
+    <!-- Schultern -->
+    <path d="M -150 260 C -150 150, -90 120, 0 120 C 90 120, 150 150, 150 260 Z" fill="#F7F2EA"/>
+    <!-- Haar hinten -->
+    <path d="M -120 40 C -150 -120, 150 -120, 120 40 C 150 120, 130 230, 90 250 C 120 120, 60 80, 0 78 C -60 80, -120 120, -90 250 C -130 230, -150 120, -120 40 Z" fill="#7E4327"/>
+    <!-- Gesicht -->
+    <ellipse cx="0" cy="20" rx="78" ry="92" fill="#E9CBB9"/>
+    <!-- Haaransatz vorne -->
+    <path d="M -82 10 C -90 -90, 90 -90, 82 10 C 50 -55, -50 -55, -82 10 Z" fill="#7E4327"/>
   </g>
-  <text x="50%" y="946" text-anchor="middle" font-family="Georgia, serif" font-size="100" fill="#B5673F">Atelier Götz</text>
-  <text x="50%" y="1023" text-anchor="middle" font-family="Arial, sans-serif" font-size="50" fill="#B5673F" fill-opacity="0.7">Platzhalter – echtes Foto einsetzen</text>
+
+  
 </svg>

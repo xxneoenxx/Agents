@@ -1,15 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img" aria-label="Farbe & Highlights">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#E9CBB9"/>
-      <stop offset="1" stop-color="#8A9A7B" stop-opacity="0.35"/>
-    </linearGradient>
-  </defs>
-  <rect width="900" height="900" fill="url(#g)"/>
-  <g fill="none" stroke="#7E4327" stroke-opacity="0.35" stroke-width="2">
-    <circle cx="450" cy="378" r="144"/>
-    <path d="M450 522 q 108 126.00000000000001 0 234 q -108 -108 0 -234" stroke-opacity="0.25"/>
-  </g>
-  <text x="50%" y="774" text-anchor="middle" font-family="Georgia, serif" font-size="82" fill="#7E4327">Farbe & Highlights</text>
-  <text x="50%" y="837" text-anchor="middle" font-family="Arial, sans-serif" font-size="41" fill="#7E4327" fill-opacity="0.7">Platzhalter – echtes Foto einsetzen</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F7F2EA"/><stop offset="1" stop-color="#EFE6D7"/>
+  </linearGradient>
+  
+</defs>
+
+  <rect width="900" height="900" fill="url(#bg)"/>
+  <path d="M 144 414 A 306 306 0 0 1 756 414 Z" fill="#E9CBB9" opacity="0.6"/>
+  <path d="M 180 414 A 270 270 0 0 1 720 414 Z" fill="#D8E0CF" opacity="0.55"/>
+  <g transform="translate(378 378) scale(0.95)">
+    <!-- Schultern -->
+    <path d="M -150 260 C -150 150, -90 120, 0 120 C 90 120, 150 150, 150 260 Z" fill="#F7F2EA"/>
+    <!-- Haar hinten -->
+    <path d="M -120 40 C -150 -120, 150 -120, 120 40 C 150 120, 130 230, 90 250 C 120 120, 60 80, 0 78 C -60 80, -120 120, -90 250 C -130 230, -150 120, -120 40 Z" fill="#B5673F"/>
+    <!-- Gesicht -->
+    <ellipse cx="0" cy="20" rx="78" ry="92" fill="#E9CBB9"/>
+    <!-- Haaransatz vorne -->
+    <path d="M -82 10 C -90 -90, 90 -90, 82 10 C 50 -55, -50 -55, -82 10 Z" fill="#B5673F"/>
+  </g><g transform="translate(702 270) rotate(-40) scale(0.9)"><rect x="-12" y="0" width="24" height="120" rx="12" fill="#B5673F"/></g><g transform="translate(702 270) rotate(-20) scale(0.9)"><rect x="-12" y="0" width="24" height="120" rx="12" fill="#7E4327"/></g><g transform="translate(702 270) rotate(0) scale(0.9)"><rect x="-12" y="0" width="24" height="120" rx="12" fill="#8A9A7B"/></g><g transform="translate(702 270) rotate(20) scale(0.9)"><rect x="-12" y="0" width="24" height="120" rx="12" fill="#586549"/></g><g transform="translate(702 270) rotate(40) scale(0.9)"><rect x="-12" y="0" width="24" height="120" rx="12" fill="#E9CBB9"/></g>
+  <text x="450" y="874" text-anchor="middle" font-family="Georgia, serif" font-size="32" fill="#2A2A28" opacity="0.55">Farbe & Highlights</text>
 </svg>
