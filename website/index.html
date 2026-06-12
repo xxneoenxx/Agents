@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Der Werkstoff Aluminium – Lernfeld 5, Nutzfahrzeugbau</title>
+<meta name="description" content="Handout zum Werkstoff Aluminium: Vorkommen, Herstellung, Legierungen, Festigkeitssteigerung und Anwendung im Nutzfahrzeugbau am Beispiel des Mercedes-Benz 2440 L.">
+<style>
+  :root{
+    --ink:#1d2226;
+    --ink-soft:#454d54;
+    --paper:#fbfaf7;
+    --rule:#d9d4c8;
+    --steel:#2f5d80;
+    --steel-d:#21425c;
+    --alu:#8b97a3;
+    --mark:#f3eee2;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+    font-size:18px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* Kopf */
+  .masthead{
+    border-bottom:3px double var(--ink);
+    padding:18px 24px 14px;
+    max-width:1180px;margin:0 auto;
+    display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;
+  }
+  .masthead .school{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    text-transform:uppercase;letter-spacing:.14em;font-size:12.5px;color:var(--ink-soft);
+  }
+  .masthead .school b{color:var(--ink);letter-spacing:.08em}
+  .masthead .meta{
+    font-family:"Helvetica Neue",Arial,sans-serif;font-size:12px;color:var(--ink-soft);text-align:right;
+  }
+  /* Titelblock */
+  .hero{max-width:1180px;margin:0 auto;padding:34px 24px 8px}
+  .kicker{font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;letter-spacing:.05em;
+    color:var(--steel);text-transform:uppercase;margin:0 0 8px}
+  .hero h1{font-size:43px;line-height:1.08;margin:0 0 10px;font-weight:700;letter-spacing:-.01em}
+  .hero .sub{font-size:20px;color:var(--ink-soft);font-style:italic;margin:0 0 4px;max-width:46ch}
+  /* Layout */
+  .wrap{max-width:1180px;margin:0 auto;padding:18px 24px 60px;display:grid;
+    grid-template-columns:230px 1fr;gap:46px;align-items:start}
+  /* Inhaltsverzeichnis */
+  nav.toc{position:sticky;top:24px;font-family:"Helvetica Neue",Arial,sans-serif;font-size:14px}
+  nav.toc h2{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-soft);
+    border-bottom:1px solid var(--rule);padding-bottom:7px;margin:0 0 10px}
+  nav.toc ol{list-style:none;margin:0;padding:0;counter-reset:s}
+  nav.toc li{counter-increment:s;margin:0 0 3px}
+  nav.toc a{display:block;text-decoration:none;color:var(--ink-soft);padding:4px 6px;border-left:2px solid transparent}
+  nav.toc a::before{content:counter(s) ".";color:var(--steel);font-weight:700;margin-right:8px}
+  nav.toc a:hover{color:var(--ink);border-left-color:var(--steel);background:var(--mark)}
+  /* Artikel */
+  article{max-width:none}
+  article section{padding-top:14px;margin-bottom:34px;counter-increment:sec}
+  article h2{font-size:27px;margin:18px 0 4px;letter-spacing:-.01em;
+    padding-bottom:6px;border-bottom:1px solid var(--rule)}
+  article h2::before{content:counter(sec) "  ";color:var(--steel);font-weight:700}
+  article{counter-reset:sec}
+  article h3{font-size:19px;font-family:"Helvetica Neue",Arial,sans-serif;margin:22px 0 4px;color:var(--steel-d)}
+  article p{margin:10px 0}
+  article .lead{font-size:19px;color:var(--ink-soft)}
+  mark{background:var(--mark);padding:0 .15em}
+  /* Figuren */
+  figure{margin:22px 0;border:1px solid var(--rule);background:#fff;padding:10px 10px 4px}
+  figure img{display:block;width:100%;height:auto}
+  figcaption{font-family:"Helvetica Neue",Arial,sans-serif;font-size:13.5px;color:var(--ink-soft);
+    padding:8px 4px 6px;border-top:1px solid var(--rule);margin-top:8px}
+  figcaption b{color:var(--ink)}
+  /* Listen */
+  article ul{margin:10px 0;padding-left:22px}
+  article li{margin:5px 0}
+  /* Zwei-Spalten Vor/Nachteil & Vergleich */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:18px 0}
+  .panel{border:1px solid var(--rule);padding:4px 18px 14px;background:#fff}
+  .panel h3{margin-top:14px}
+  .panel.pro h3{color:#2c7a4b}
+  .panel.con h3{color:#a23b32}
+  .panel ul{padding-left:20px}
+  .panel.pro li::marker{color:#2c7a4b}
+  .panel.con li::marker{color:#a23b32}
+  /* Definitionsbox / Merksatz */
+  .note{border-left:4px solid var(--steel);background:#fff;padding:12px 18px;margin:18px 0}
+  .note .tag{font-family:"Helvetica Neue",Arial,sans-serif;font-size:11.5px;text-transform:uppercase;
+    letter-spacing:.1em;color:var(--steel);display:block;margin-bottom:3px}
+  /* Tabelle */
+  table{border-collapse:collapse;width:100%;margin:16px 0;font-size:16.5px;background:#fff}
+  caption{font-family:"Helvetica Neue",Arial,sans-serif;font-size:13.5px;color:var(--ink-soft);
+    text-align:left;padding:0 0 8px;caption-side:bottom}
+  th,td{border:1px solid var(--rule);padding:9px 12px;text-align:left;vertical-align:top}
+  thead th{background:var(--steel);color:#fff;font-family:"Helvetica Neue",Arial,sans-serif;font-weight:600;font-size:15px}
+  tbody th{background:var(--mark);font-weight:700;width:30%}
+  /* Quellen */
+  .sources{font-size:15.5px;color:var(--ink-soft)}
+  .sources ol{padding-left:26px}
+  .sources li{margin:7px 0}
+  .sources a{color:var(--steel-d)}
+  footer{border-top:1px solid var(--rule);max-width:1180px;margin:0 auto;
+    padding:18px 24px 40px;font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;color:var(--ink-soft);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  /* Responsiv */
+  @media(max-width:820px){
+    .wrap{grid-template-columns:1fr;gap:0}
+    nav.toc{position:static;border-bottom:1px solid var(--rule);padding-bottom:14px;margin-bottom:20px}
+    nav.toc ol{columns:2}
+    .hero h1{font-size:33px}
+    .cols{grid-template-columns:1fr}
+    body{font-size:17px}
+  }
+  @media print{
+    nav.toc,footer .noprint{display:none}
+    body{background:#fff;font-size:11pt}
+    figure{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="school">
+    Berufliches Schulzentrum für Technik<br>
+    <b>Lernfeld&nbsp;5 · Nutzfahrzeugbau</b> · Werkstoffkunde
+  </div>
+  <div class="meta">
+    Lehrjahr 2 &nbsp;·&nbsp; Handout<br>
+    Stand: Juni&nbsp;2026
+  </div>
+</header>
+
+<div class="hero">
+  <p class="kicker">Werkstoffkunde — Handout zur Aufgabe „Aluminium"</p>
+  <h1>Der Werkstoff Aluminium</h1>
+  <p class="sub">Vorkommen, Herstellung, Legierungen und Anwendung – am Beispiel des Mercedes-Benz&nbsp;2440&nbsp;L.</p>
+</div>
+
+<div class="wrap">
+
+  <nav class="toc" aria-label="Inhalt">
+    <h2>Inhalt</h2>
+    <ol>
+      <li><a href="#ausgangslage">Ausgangslage</a></li>
+      <li><a href="#vorkommen">Vorkommen &amp; Abbau</a></li>
+      <li><a href="#eigenschaften">Vor- und Nachteile</a></li>
+      <li><a href="#herstellung">Herstellung</a></li>
+      <li><a href="#legierungen">Legierungen</a></li>
+      <li><a href="#festigkeit">Festigkeitssteigerung</a></li>
+      <li><a href="#anwendung">Anwendung im Betrieb</a></li>
+      <li><a href="#quellen">Quellen</a></li>
+    </ol>
+  </nav>
+
+  <article>
+
+    <section id="ausgangslage">
+      <h2>Ausgangslage</h2>
+      <p class="lead">In unserer Firma wird der abgebildete Mercedes-Benz&nbsp;2440&nbsp;L aufgebaut. Bei den
+      verwendeten Werkstoffen kam es zu Diskussionen – dieses Handout fasst das Wichtigste über
+      Aluminium zusammen, damit alle Kolleginnen und Kollegen auf demselben Stand sind.</p>
+      <p>Aluminium ist im Fahrzeugbau längst Alltag: Überall dort, wo Gewicht eingespart werden soll,
+      ohne dass die Korrosionsbeständigkeit leidet, ist es die erste Wahl. Die folgenden Abschnitte
+      gehen der Reihe nach auf Herkunft, Herstellung, Legierungen und Einsatz ein.</p>
+    </section>
+
+    <section id="vorkommen">
+      <h2>Vorkommen und Abbaugebiete</h2>
+      <p>Aluminium ist mit einem Massenanteil von rund <mark>8&nbsp;%</mark> das häufigste Metall
+      der Erdkruste und steht hinter Sauerstoff und Silicium an dritter Stelle aller Elemente.
+      Trotzdem findet man es nie als reines Metall: Es ist so reaktionsfreudig, dass es immer
+      chemisch gebunden in Mineralien vorliegt.</p>
+
+      <figure>
+        <img src="assets/vorkommen.png" alt="Balkendiagramm: Massenanteil der häufigsten Elemente in der Erdkruste, Aluminium etwa 8 Prozent.">
+        <figcaption><b>Abb.&nbsp;1:</b> Anteil der häufigsten Elemente an der Erdkruste. Aluminium ist das
+        häufigste Metall überhaupt.</figcaption>
+      </figure>
+
+      <p>Das wirtschaftlich wichtigste Erz ist <b>Bauxit</b>. Es enthält etwa 50–60&nbsp;% Aluminiumoxid
+      (Al<sub>2</sub>O<sub>3</sub>), daneben Eisen- und Siliciumoxide. Bauxit liegt häufig oberflächennah und
+      wird deshalb meist im offenen Tagebau gewonnen. Die großen Lagerstätten liegen in tropischen und
+      subtropischen Regionen.</p>
+
+      <figure>
+        <img src="assets/abbau.png" alt="Balkendiagramm der wichtigsten Bauxit fördernden Länder, angeführt von Australien und Guinea.">
+        <figcaption><b>Abb.&nbsp;2:</b> Wichtigste Förderländer von Bauxit (Größenordnung der Jahresförderung).</figcaption>
+      </figure>
+    </section>
+
+    <section id="eigenschaften">
+      <h2>Vor- und Nachteile des Werkstoffs</h2>
+      <p>Ob Aluminium die richtige Wahl ist, hängt vom Bauteil ab. Die folgende Gegenüberstellung zeigt,
+      warum es sich im Leichtbau durchgesetzt hat – und wo seine Grenzen liegen.</p>
+      <div class="cols">
+        <div class="panel pro">
+          <h3>Vorteile</h3>
+          <ul>
+            <li><b>Geringe Dichte</b> (2,7&nbsp;g/cm³) – nur etwa ein Drittel von Stahl.</li>
+            <li><b>Korrosionsbeständig</b> durch die dichte, selbstheilende Oxidschicht.</li>
+            <li><b>Gut umformbar</b> – walzen, pressen, tiefziehen, strangpressen.</li>
+            <li><b>Sehr gut leitfähig</b> für Wärme und elektrischen Strom.</li>
+            <li><b>Unmagnetisch</b> und lebensmittelecht.</li>
+            <li><b>Hervorragend recycelbar</b> – nur rund 5&nbsp;% der Primärenergie nötig.</li>
+          </ul>
+        </div>
+        <div class="panel con">
+          <h3>Nachteile</h3>
+          <ul>
+            <li><b>Geringere Festigkeit</b> als Stahl; auch der E-Modul beträgt nur ein Drittel.</li>
+            <li><b>Hoher Energiebedarf</b> bei der Primärgewinnung (Elektrolyse).</li>
+            <li><b>Teurer</b> als einfacher Baustahl.</li>
+            <li><b>Anspruchsvoller zu schweißen</b> – Oxidschicht und hohe Wärmeleitung.</li>
+            <li><b>Geringe Warmfestigkeit</b> – verliert bei Hitze schnell an Festigkeit.</li>
+            <li><b>Keine echte Dauerfestigkeitsgrenze</b> bei schwingender Belastung.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="herstellung">
+      <h2>Herstellung – vom Bauxit zum Aluminium</h2>
+      <p>Reines Aluminium wird in zwei Stufen gewonnen. Zuerst wird aus dem Erz die reine Tonerde
+      herausgelöst, anschließend wird daraus durch Elektrolyse das Metall abgeschieden.</p>
+
+      <h3>1. Bayer-Verfahren – Tonerde gewinnen</h3>
+      <p>Das gemahlene Bauxit wird in heißer Natronlauge gelöst. Dabei geht das Aluminiumoxid in Lösung,
+      während die unlöslichen Bestandteile (vor allem Eisenoxid, der „Rotschlamm") abgetrennt werden.
+      Aus der Lösung fällt man Aluminiumhydroxid aus und glüht es bei über 1000&nbsp;°C zu reiner
+      Tonerde (Al<sub>2</sub>O<sub>3</sub>).</p>
+
+      <h3>2. Schmelzflusselektrolyse (Hall-Héroult-Verfahren)</h3>
+      <p>Die Tonerde wird in geschmolzenem Kryolith bei etwa 950&nbsp;°C gelöst – das senkt den
+      Schmelzpunkt deutlich. Ein starker Gleichstrom zerlegt das Oxid: Das flüssige Aluminium sammelt
+      sich am Boden der Wanne (Kathode), der freigesetzte Sauerstoff verbrennt die Kohlenstoff-Anoden
+      zu CO<sub>2</sub>.</p>
+
+      <figure>
+        <img src="assets/herstellung.png" alt="Schema der Aluminiumherstellung: Bayer-Verfahren als Prozesskette und darunter eine Elektrolysezelle des Hall-Héroult-Verfahrens.">
+        <figcaption><b>Abb.&nbsp;3:</b> Die beiden Stufen der Aluminiumherstellung – Bayer-Verfahren (oben)
+        und Schmelzflusselektrolyse (unten).</figcaption>
+      </figure>
+
+      <div class="note">
+        <span class="tag">Merksatz</span>
+        Die Elektrolyse ist sehr energieintensiv (≈ 13–15&nbsp;kWh je kg). Genau deshalb lohnt sich
+        Recycling so stark: Eingeschmolzenes Aluminium braucht nur einen Bruchteil dieser Energie.
+      </div>
+    </section>
+
+    <section id="legierungen">
+      <h2>Aluminiumlegierungen</h2>
+      <p>Reines Aluminium ist für tragende Bauteile zu weich. Durch Legieren – also das gezielte Zugeben
+      anderer Elemente wie Magnesium, Silicium, Kupfer oder Mangan – lassen sich die Eigenschaften an
+      den jeweiligen Einsatz anpassen. Man unterscheidet die Legierungen nach zwei Gesichtspunkten.</p>
+
+      <figure>
+        <img src="assets/legierungen.png" alt="Baumdiagramm der Aluminiumlegierungen, aufgeteilt in Knet- und Gusslegierungen sowie aushärtbar und nicht aushärtbar.">
+        <figcaption><b>Abb.&nbsp;4:</b> Einteilung der Aluminiumlegierungen nach Verarbeitung
+        (Knet/Guss) und Aushärtbarkeit.</figcaption>
+      </figure>
+
+      <h3>Aushärtbar oder nicht aushärtbar?</h3>
+      <p>Bei <b>aushärtbaren</b> Legierungen (z.&nbsp;B. AlCuMg, AlMgSi) lässt sich die Festigkeit durch
+      eine Wärmebehandlung – die Ausscheidungshärtung – deutlich steigern. <b>Nicht aushärtbare</b>
+      Legierungen (z.&nbsp;B. AlMg, AlMn) reagieren darauf nicht; ihre Festigkeit erhöht man nur durch
+      Kaltverfestigung oder durch das Legieren selbst.</p>
+
+      <h3>Knetlegierung gegen Gusslegierung</h3>
+      <table>
+        <caption>Tab.&nbsp;1: Gegenüberstellung von Knet- und Gusslegierungen.</caption>
+        <thead>
+          <tr><th>Merkmal</th><th>Knetlegierung</th><th>Gusslegierung</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>Verarbeitung</th><td>Umformen: walzen, pressen, schmieden, ziehen</td><td>Vergießen: Sand-, Kokillen-, Druckguss</td></tr>
+          <tr><th>Legierungsanteil</th><td>eher gering → gut verformbar, zäh</td><td>hoch, vor allem Silicium → gut gießbar</td></tr>
+          <tr><th>Typische Erzeugnisse</th><td>Bleche, Profile, Rohre, Drähte</td><td>komplexe Gehäuse und Formteile</td></tr>
+          <tr><th>Beispiele</th><td>AlMg3, AlMgSi0,5, AlCuMg (Dural)</td><td>AlSi12, AlSi10Mg, G-AlSi</td></tr>
+          <tr><th>Im Nutzfahrzeug</th><td>Aufbauten, Bordwände, Planenrahmen</td><td>Getriebe- und Motorgehäuse, Halter</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="festigkeit">
+      <h2>Drei Wege zur höheren Festigkeit</h2>
+      <p>Die Festigkeit einer Aluminiumlegierung beruht darauf, das Abgleiten von Versetzungen im
+      Kristallgitter zu erschweren. Dafür gibt es im Wesentlichen drei Verfahren, die sich auch
+      kombinieren lassen.</p>
+
+      <figure>
+        <img src="assets/festigkeit.png" alt="Drei schematische Darstellungen: Mischkristallverfestigung, Kaltverfestigung und Ausscheidungshärtung.">
+        <figcaption><b>Abb.&nbsp;5:</b> Mischkristallverfestigung, Kaltverfestigung und Ausscheidungshärtung
+        im Vergleich.</figcaption>
+      </figure>
+
+      <h3>1. Mischkristallverfestigung</h3>
+      <p>Fremdatome (z.&nbsp;B. Magnesium oder Mangan) werden in das Gitter eingebaut. Sie verzerren es und
+      behindern so das Abgleiten der Atomebenen.</p>
+      <h3>2. Kaltverfestigung</h3>
+      <p>Beim Kaltumformen – etwa Walzen oder Ziehen – steigt die Versetzungsdichte. Die Versetzungen
+      stauen sich gegenseitig, der Werkstoff wird fester, allerdings auch spröder.</p>
+      <h3>3. Ausscheidungshärtung (Aushärten)</h3>
+      <p>In drei Schritten – Lösungsglühen, Abschrecken, Auslagern – bilden sich feinste Ausscheidungen,
+      die Versetzungen blockieren. Das funktioniert nur bei aushärtbaren Legierungen.</p>
+    </section>
+
+    <section id="anwendung">
+      <h2>Anwendung im Berufsalltag</h2>
+      <p>Am Mercedes-Benz&nbsp;2440&nbsp;L steckt Aluminium an vielen Stellen. Drei typische Bereiche aus
+      unserem Arbeitsalltag:</p>
+      <ul>
+        <li><b>Fahrerhaus und Aufbau:</b> Bordwände, Kofferaufbauten und Planenrahmen aus Aluprofilen
+        senken das Leergewicht und erhöhen damit die zulässige Nutzlast.</li>
+        <li><b>Antrieb und Fahrwerk:</b> Motor- und Getriebegehäuse, Ölwannen, Querträger und Felgen
+        werden als Aluminium-Gussteile ausgeführt.</li>
+        <li><b>Tanks und Behälter:</b> Kraftstoff- und Druckluftbehälter, Trittstufen und
+        Unterfahrschutz nutzen die Korrosionsbeständigkeit des Werkstoffs.</li>
+      </ul>
+      <div class="note">
+        <span class="tag">Kernnutzen</span>
+        Weniger Gewicht bedeutet im Nutzfahrzeug direkt mehr Nutzlast, weniger Kraftstoffverbrauch und
+        weniger CO<sub>2</sub> – bei gleicher Fahrleistung.
+      </div>
+    </section>
+
+    <section id="quellen" class="sources">
+      <h2>Quellen</h2>
+      <ol>
+        <li>Europa-Lehrmittel: <i>Fachkunde Metall.</i> 58.&nbsp;Auflage, Verlag Europa-Lehrmittel, Haan-Gruiten.</li>
+        <li>Roloff/Matek: <i>Maschinenelemente – Tabellenbuch.</i> Springer Vieweg.</li>
+        <li>Bargel/Schulze: <i>Werkstoffkunde.</i> Springer Verlag.</li>
+        <li>DIN EN 573 (Knetwerkstoffe) und DIN EN 1706 (Gussstücke), Beuth Verlag.</li>
+        <li>Bundesanstalt für Geowissenschaften und Rohstoffe (BGR) – Rohstoffdaten, <span>bgr.bund.de</span> (abgerufen Juni&nbsp;2026).</li>
+        <li>Aluminium Deutschland e.&nbsp;V., <span>aluminiumdeutschland.de</span> (abgerufen Juni&nbsp;2026).</li>
+        <li>Wikipedia: Artikel „Aluminium", „Bauxit", „Aluminiumherstellung" (abgerufen Juni&nbsp;2026).</li>
+        <li>Mercedes-Benz Trucks – technische Produktinformationen.</li>
+      </ol>
+      <p style="font-size:14px;margin-top:14px">Abbildungen 1–5: eigene, schematische Darstellungen.
+      Fahrzeugbezug nach Aufgabenblatt „Aluminium" (Lernfeld&nbsp;5).</p>
+    </section>
+
+  </article>
+</div>
+
+<footer>
+  <span>Handout „Der Werkstoff Aluminium" · Lernfeld 5, Nutzfahrzeugbau</span>
+  <span class="noprint">Tipp: über <kbd>Strg</kbd>+<kbd>P</kbd> als PDF/Ausdruck speichern.</span>
+</footer>
+
+</body>
+</html>
