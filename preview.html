@@ -2,6 +2,9 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8" />
+<!-- Markiert: JavaScript ist aktiv. Ohne JS (z. B. iOS-Schnellansicht)
+     bleiben alle Inhalte sichtbar und lesbar – Animationen entfallen dann nur. -->
+<script>document.documentElement.classList.add('js');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Bauernhof zum Silberbergwerk – Vorschau</title>
 <meta name="description" content="Erlebnisrestaurant & Pension Bauernhof zum Silberbergwerk – regionale Küche, Biergarten, Bowlingstollen und Pension in Limbach-Oberfrohna." />
@@ -121,10 +124,11 @@
   .dot.closed::before{background:#fbbf24}.dot.closed::after{background:#f59e0b}
   @keyframes ping{75%,100%{transform:scale(2);opacity:0}}
 
-  /* Reveal animation */
-  .reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
-  .reveal.left{transform:translateX(40px)}
-  .reveal.visible{opacity:1;transform:none}
+  /* Reveal animation – NUR aktiv, wenn JavaScript läuft (.js am <html>).
+     Ohne JS sind alle .reveal-Elemente normal sichtbar. */
+  .js .reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+  .js .reveal.left{transform:translateX(40px)}
+  .js .reveal.visible{opacity:1;transform:none}
 
   /* About / stats */
   .grid2{display:grid;gap:3rem;align-items:center}
@@ -262,7 +266,7 @@
 
   @media(prefers-reduced-motion:reduce){
     *{animation-duration:.001ms!important;transition-duration:.001ms!important}
-    .reveal{opacity:1;transform:none}
+    .reveal,.js .reveal{opacity:1!important;transform:none!important}
   }
 </style>
 </head>
@@ -306,7 +310,7 @@
     <div class="hero-vignette"></div>
   </div>
   <div class="hero-content container">
-    <div id="hero-badge"></div>
+    <div id="hero-badge"><span class="badge"><span class="dot open"></span>Tisch reservieren empfohlen</span></div>
     <p class="hero-tag">Erlebnisrestaurant &amp; Pension · seit 1996</p>
     <h1>Bauernhof zum<br><span class="gold">Silberbergwerk</span></h1>
     <p class="lead">Seit 1996 verwöhnen wir unsere Gäste mit gut bürgerlicher Küche aus frischen, regionalen Zutaten – serviert in historischem Ambiente rund um das alte Silberbergwerk.</p>
@@ -341,10 +345,10 @@
     </div>
     <div class="reveal left">
       <div class="stats">
-        <div class="stat card"><span class="num" data-count="30" data-suffix="+">0</span><span class="lbl">Jahre Erfahrung</span></div>
-        <div class="stat card"><span class="num" data-count="13" data-suffix="">0</span><span class="lbl">Gästebetten</span></div>
-        <div class="stat card"><span class="num" data-count="100" data-suffix="%">0</span><span class="lbl">Regionale Zutaten</span></div>
-        <div class="stat card"><span class="num" data-count="4" data-suffix=",8">0</span><span class="lbl">Sterne Bewertung</span></div>
+        <div class="stat card"><span class="num" data-count="30" data-suffix="+">30+</span><span class="lbl">Jahre Erfahrung</span></div>
+        <div class="stat card"><span class="num" data-count="13" data-suffix="">13</span><span class="lbl">Gästebetten</span></div>
+        <div class="stat card"><span class="num" data-count="100" data-suffix="%">100%</span><span class="lbl">Regionale Zutaten</span></div>
+        <div class="stat card"><span class="num" data-count="4" data-suffix=",8">4,8</span><span class="lbl">Sterne Bewertung</span></div>
       </div>
     </div>
   </div>
@@ -423,7 +427,7 @@
       <h2 class="title reveal" style="color:var(--cream)">Öffnungszeiten</h2>
       <p class="reveal" style="margin-top:1rem;max-width:28rem;color:rgba(247,241,230,.75)">Reserviere bequem online oder ruf uns einfach an – gerade an Wochenenden und Feiertagen empfehlen wir eine Reservierung.</p>
       <div class="reveal" style="margin-top:1.5rem;display:flex;flex-wrap:wrap;align-items:center;gap:1rem">
-        <div id="hours-badge"></div>
+        <div id="hours-badge"><span class="badge"><span class="dot open"></span>Reservierung empfohlen</span></div>
         <a href="tel:+49376095204" class="gold" style="display:inline-flex;align-items:center;gap:.5rem;font-weight:600">
           <svg class="svg-ico" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           037609 / 5204
@@ -436,7 +440,15 @@
           <svg class="svg-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           <span style="font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Wochenübersicht</span>
         </div>
-        <ul id="hours-list"></ul>
+        <ul id="hours-list">
+          <li class="hours-row"><span class="day">Montag</span><span class="closed-txt">Geschlossen</span></li>
+          <li class="hours-row"><span class="day">Dienstag</span><span>17:00–22:00</span></li>
+          <li class="hours-row"><span class="day">Mittwoch</span><span class="closed-txt">Geschlossen</span></li>
+          <li class="hours-row"><span class="day">Donnerstag</span><span>17:00–22:00</span></li>
+          <li class="hours-row"><span class="day">Freitag</span><span>11:00–14:00 · 17:00–22:00</span></li>
+          <li class="hours-row"><span class="day">Samstag</span><span>11:00–00:00</span></li>
+          <li class="hours-row"><span class="day">Sonntag</span><span>11:00–21:00</span></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -470,7 +482,18 @@
             <div class="field-row row3" style="display:grid">
               <div class="field"><label>Datum</label><input name="date" type="date" required><span class="err hidden"></span></div>
               <div class="field"><label>Uhrzeit</label><select name="time" required><option value="">Erst Datum wählen</option></select><span class="err hidden"></span></div>
-              <div class="field"><label>Personen</label><select name="guests" required></select><span class="err hidden"></span></div>
+              <div class="field"><label>Personen</label><select name="guests" required>
+                <option value="1">1 Person</option><option value="2" selected>2 Personen</option>
+                <option value="3">3 Personen</option><option value="4">4 Personen</option>
+                <option value="5">5 Personen</option><option value="6">6 Personen</option>
+                <option value="7">7 Personen</option><option value="8">8 Personen</option>
+                <option value="9">9 Personen</option><option value="10">10 Personen</option>
+                <option value="11">11 Personen</option><option value="12">12 Personen</option>
+                <option value="13">13 Personen</option><option value="14">14 Personen</option>
+                <option value="15">15 Personen</option><option value="16">16 Personen</option>
+                <option value="17">17 Personen</option><option value="18">18 Personen</option>
+                <option value="19">19 Personen</option>
+              </select><span class="err hidden"></span></div>
             </div>
             <div class="field"><label>Anlass (optional)</label><input name="occasion" placeholder="Geburtstag, Familienfeier …"></div>
             <div class="field"><label>Anmerkungen (optional)</label><textarea name="notes" rows="3" placeholder="Allergien, Kinderstuhl, Sitzplatzwunsch …"></textarea></div>
@@ -555,7 +578,15 @@
     </div>
     <div>
       <h4>Öffnungszeiten</h4>
-      <ul id="foot-hours"></ul>
+      <ul id="foot-hours">
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">Mo</span><span style="color:rgba(247,241,230,.8);text-align:right">geschl.</span></li>
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">Di</span><span style="color:rgba(247,241,230,.8);text-align:right">17:00–22:00</span></li>
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">Mi</span><span style="color:rgba(247,241,230,.8);text-align:right">geschl.</span></li>
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">Do</span><span style="color:rgba(247,241,230,.8);text-align:right">17:00–22:00</span></li>
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">Fr</span><span style="color:rgba(247,241,230,.8);text-align:right">11:00–14:00, 17:00–22:00</span></li>
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">Sa</span><span style="color:rgba(247,241,230,.8);text-align:right">11:00–00:00</span></li>
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">So</span><span style="color:rgba(247,241,230,.8);text-align:right">11:00–21:00</span></li>
+      </ul>
     </div>
     <div>
       <h4>Navigation</h4>
@@ -670,9 +701,7 @@ document.querySelectorAll("[data-count]").forEach(el=>cio.observe(el));
 
 // --- Reservation form (Demo) ----------------------------------------------
 const form=document.getElementById("res-form");
-const guestsSel=form.guests;
-for(let n=1;n<=19;n++){const o=document.createElement("option");o.value=n;o.textContent=n+(n===1?" Person":" Personen");guestsSel.appendChild(o);}
-guestsSel.value="2";
+const guestsSel=form.guests; // Optionen sind bereits statisch im HTML vorhanden
 const dateInput=form.date;
 dateInput.min=new Date().toISOString().split("T")[0];
 function slotsFor(dateStr){
