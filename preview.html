@@ -2,9 +2,16 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Bauernhof zum Silberbergwerk – Vorschau</title>
 <meta name="description" content="Erlebnisrestaurant & Pension Bauernhof zum Silberbergwerk – regionale Küche, Biergarten, Bowlingstollen und Pension in Limbach-Oberfrohna." />
+<!-- iOS: Vollbild-Verhalten beim Öffnen aus der Dateien-App / als Web-App -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Silberbergwerk" />
+<meta name="format-detection" content="telephone=yes" />
+<meta name="theme-color" content="#3d2b1f" />
+<!-- Schriften werden online geladen; offline greifen die System-Fallbacks. -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
@@ -17,13 +24,18 @@
     --gold:#c9a227;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth;scroll-padding-top:5rem}
+  html{scroll-behavior:smooth;scroll-padding-top:5rem;-webkit-text-size-adjust:100%;text-size-adjust:100%}
   body{
-    font-family:'Inter',system-ui,sans-serif;color:var(--bark);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--bark);
     background:var(--cream);
     background-image:radial-gradient(circle at 1px 1px, rgba(61,43,31,.06) 1px, transparent 0);
     background-size:22px 22px;line-height:1.6;-webkit-font-smoothing:antialiased;
+    -webkit-tap-highlight-color:rgba(168,96,45,.2);-webkit-overflow-scrolling:touch;
+    overflow-x:hidden;
   }
+  /* iOS: 16px Mindestgröße verhindert automatisches Zoomen beim Tippen */
+  input,select,textarea{font-size:16px}
+  h1,h2,h3,h4{font-family:'Playfair Display','Georgia',serif}
   h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif;line-height:1.15}
   a{color:inherit;text-decoration:none}
   .container{max-width:72rem;margin:0 auto;padding:0 1.5rem}
@@ -46,7 +58,7 @@
 
   /* Preview banner */
   .banner{background:var(--bark);color:var(--cream);text-align:center;
-    font-size:.8rem;padding:.5rem 1rem}
+    font-size:.8rem;padding:.5rem 1rem;padding-top:max(.5rem,env(safe-area-inset-top))}
   .banner b{color:var(--gold)}
 
   /* Navbar */
@@ -233,7 +245,8 @@
   .gold{color:var(--gold)}
 
   /* Floating */
-  .floating{position:fixed;bottom:1.25rem;right:1.25rem;z-index:40;display:flex;
+  .floating{position:fixed;right:max(1.25rem,env(safe-area-inset-right));
+    bottom:max(1.25rem,calc(env(safe-area-inset-bottom) + .5rem));z-index:40;display:flex;
     flex-direction:column;align-items:flex-end;gap:.75rem;opacity:0;transform:translateY(30px);
     pointer-events:none;transition:all .3s}
   .floating.show{opacity:1;transform:none;pointer-events:auto}
@@ -506,8 +519,17 @@
         </a>
       </div>
       <div class="reveal left">
-        <div class="map-frame">
-          <iframe title="Standort Bauernhof zum Silberbergwerk" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
+        <div class="map-frame" style="position:relative">
+          <!-- Offline-Fallback (sichtbar, bis die Karte geladen ist) -->
+          <a id="map-fallback" href="https://maps.google.com/?q=Bauernhof%20zum%20Silberbergwerk%2C%20Herrnsdorfer%20Str.%2032%2C%2009212%20Limbach-Oberfrohna" target="_blank" rel="noopener"
+            style="position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;text-align:center;padding:1.5rem;background:linear-gradient(135deg,var(--forest),var(--forest-light));color:var(--cream)">
+            <svg class="svg-ico" style="width:2.5rem;height:2.5rem" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span style="font-weight:600">Bauernhof zum Silberbergwerk</span>
+            <span style="font-size:.85rem;opacity:.85">Herrnsdorfer Str. 32, 09212 Limbach-Oberfrohna<br>Zum Öffnen in Karten tippen</span>
+          </a>
+          <iframe id="map-iframe" title="Standort Bauernhof zum Silberbergwerk" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
+            style="position:relative"
+            onload="var f=document.getElementById('map-fallback'); if(f) f.style.display='none';"
             src="https://maps.google.com/maps?q=Bauernhof%20zum%20Silberbergwerk%2C%20Herrnsdorfer%20Str.%2032%2C%2009212%20Limbach-Oberfrohna&hl=de&z=15&output=embed"></iframe>
         </div>
       </div>
