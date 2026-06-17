@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Website-Vorschauen</title>
+<meta name="theme-color" content="#0b0f14" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',-apple-system,system-ui,sans-serif;color:#e8edf3;background:#0b0f14;
+    min-height:100svh;line-height:1.6;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 15% -10%,rgba(47,109,240,.18),transparent 45%),radial-gradient(circle at 85% 0%,rgba(56,189,248,.12),transparent 42%);
+    background-attachment:fixed;padding:max(env(safe-area-inset-top),1rem) 1.25rem 3rem}
+  .wrap{max-width:60rem;margin:0 auto}
+  header{text-align:center;padding:3rem 0 2.5rem}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,6vw,3rem);letter-spacing:-.02em;line-height:1.05}
+  .grad{background:linear-gradient(to right,#7dd3fc,#38bdf8,#4f93ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  header p{margin-top:.75rem;color:#94a3b8;max-width:34rem;margin-inline:auto}
+  .grid{display:grid;gap:1.25rem;grid-template-columns:1fr}
+  @media(min-width:760px){.grid{grid-template-columns:1fr 1fr 1fr}}
+  a.card{display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);
+    border-radius:1.25rem;overflow:hidden;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s;backdrop-filter:blur(12px)}
+  a.card:hover{transform:translateY(-6px);border-color:rgba(56,189,248,.5)}
+  .thumb{height:7rem;display:flex;align-items:flex-end;padding:1rem;font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;color:#fff}
+  .t-elm{background:linear-gradient(135deg,#1d4ed8,#0b1220)}
+  .t-cine{background:linear-gradient(135deg,#7c2d12,#0a0a0a)}
+  .t-rest{background:linear-gradient(135deg,#a8602d,#3d2b1f)}
+  .body{padding:1.1rem 1.25rem 1.35rem}
+  .body h2{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;margin-bottom:.25rem}
+  .body p{font-size:.85rem;color:#94a3b8}
+  .open{margin-top:.9rem;display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;font-weight:600;color:#38bdf8}
+  footer{text-align:center;margin-top:2.5rem;font-size:.8rem;color:#64748b}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Website-<span class="grad">Vorschauen</span></h1>
+    <p>Tippe auf eine Vorschau, um sie mit allen Animationen direkt im Browser zu öffnen.</p>
+  </header>
+  <div class="grid">
+    <a class="card" href="elmtech/preview.html">
+      <div class="thumb t-elm">Elmtech</div>
+      <div class="body"><h2>Elmtech Verbundelemente</h2><p>Industrie · 3D-Verbundelement, Rückruf-System.</p><span class="open">Vorschau öffnen →</span></div>
+    </a>
+    <a class="card" href="cinema/preview.html">
+      <div class="thumb t-cine">CineStar</div>
+      <div class="body"><h2>CineStar Chemnitz</h2><p>Kino · Ticketbuchung mit Sitzplatzauswahl.</p><span class="open">Vorschau öffnen →</span></div>
+    </a>
+    <a class="card" href="preview.html">
+      <div class="thumb t-rest">Bauernhof</div>
+      <div class="body"><h2>Zum Silberbergwerk</h2><p>Restaurant · Tischreservierung &amp; Animationen.</p><span class="open">Vorschau öffnen →</span></div>
+    </a>
+  </div>
+  <footer>Statische Vorschauen · gehostet über GitHub Pages</footer>
+</div>
+</body>
+</html>
