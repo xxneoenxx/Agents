@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<!-- Markiert: JavaScript ist aktiv. Ohne JS (z. B. iOS-Schnellansicht)
+     bleiben alle Inhalte sichtbar und lesbar – Animationen entfallen dann nur. -->
+<script>document.documentElement.classList.add('js');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Bauernhof zum Silberbergwerk – Vorschau</title>
+<meta name="description" content="Erlebnisrestaurant & Pension Bauernhof zum Silberbergwerk – regionale Küche, Biergarten, Bowlingstollen und Pension in Limbach-Oberfrohna." />
+<!-- iOS: Vollbild-Verhalten beim Öffnen aus der Dateien-App / als Web-App -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Silberbergwerk" />
+<meta name="format-detection" content="telephone=yes" />
+<meta name="theme-color" content="#3d2b1f" />
+<!-- Schriften werden online geladen; offline greifen die System-Fallbacks. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --cream:#f7f1e6; --sand:#efe4cf;
+    --bark:#3d2b1f; --bark-light:#5a4233;
+    --forest:#3c5a40; --forest-light:#5b7d5e;
+    --copper:#a8602d; --copper-light:#c47b41;
+    --gold:#c9a227;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:5rem;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--bark);
+    background:var(--cream);
+    background-image:radial-gradient(circle at 1px 1px, rgba(61,43,31,.06) 1px, transparent 0);
+    background-size:22px 22px;line-height:1.6;-webkit-font-smoothing:antialiased;
+    -webkit-tap-highlight-color:rgba(168,96,45,.2);-webkit-overflow-scrolling:touch;
+    overflow-x:hidden;
+  }
+  /* iOS: 16px Mindestgröße verhindert automatisches Zoomen beim Tippen */
+  input,select,textarea{font-size:16px}
+  h1,h2,h3,h4{font-family:'Playfair Display','Georgia',serif}
+  h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif;line-height:1.15}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:72rem;margin:0 auto;padding:0 1.5rem}
+  .section{padding:5rem 0}
+  .eyebrow{display:inline-block;margin-bottom:.75rem;font-size:.8rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:.2em;color:var(--copper)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+    border-radius:999px;padding:.8rem 1.5rem;font-size:.9rem;font-weight:600;
+    cursor:pointer;border:none;transition:all .2s;text-align:center}
+  .btn-primary{background:var(--copper);color:var(--cream);box-shadow:0 10px 40px -12px rgba(61,43,31,.4)}
+  .btn-primary:hover{background:var(--copper-light);transform:translateY(-2px)}
+  .btn-secondary{background:rgba(247,241,230,.6);color:var(--bark);border:1px solid rgba(61,43,31,.2)}
+  .btn-secondary:hover{border-color:var(--copper);color:var(--copper)}
+  .btn-ghost{background:var(--forest);color:var(--cream)}
+  .btn-ghost:hover{background:var(--forest-light)}
+  .card{border-radius:1rem;border:1px solid rgba(61,43,31,.1);background:rgba(255,255,255,.7);
+    padding:1.5rem;box-shadow:0 4px 24px -8px rgba(61,43,31,.18);backdrop-filter:blur(6px)}
+  .svg-ico{width:1.25rem;height:1.25rem;stroke:currentColor;fill:none;stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+  /* Preview banner */
+  .banner{background:var(--bark);color:var(--cream);text-align:center;
+    font-size:.8rem;padding:.5rem 1rem;padding-top:max(.5rem,env(safe-area-inset-top))}
+  .banner b{color:var(--gold)}
+
+  /* Navbar */
+  header{position:fixed;inset:0 0 auto 0;z-index:40;transition:all .3s;top:33px}
+  header.scrolled{background:rgba(247,241,230,.92);backdrop-filter:blur(10px);
+    box-shadow:0 4px 24px -8px rgba(61,43,31,.18);top:0}
+  nav{height:5rem;display:flex;align-items:center;justify-content:space-between}
+  .logo b{font-family:'Playfair Display',serif;font-size:1.25rem;display:block}
+  .logo span{font-size:.65rem;text-transform:uppercase;letter-spacing:.25em;color:var(--copper)}
+  .nav-links{display:none;gap:2rem}
+  .nav-links a{font-size:.9rem;font-weight:500;color:rgba(61,43,31,.8)}
+  .nav-links a:hover{color:var(--copper)}
+  .nav-cta{display:flex;align-items:center;gap:.75rem}
+  .nav-phone{display:none;align-items:center;gap:.4rem;font-weight:600;font-size:.9rem}
+  .nav-phone:hover{color:var(--copper)}
+  @media(min-width:1024px){.nav-links{display:flex}}
+  @media(min-width:640px){.nav-phone{display:flex}}
+
+  /* Hero */
+  .hero{position:relative;min-height:100svh;display:flex;align-items:center;
+    justify-content:center;overflow:hidden;color:var(--cream);text-align:center}
+  .hero-bg{position:absolute;inset:0;z-index:-1;
+    background:linear-gradient(135deg,var(--bark),var(--bark-light) 50%,var(--forest))}
+  .blob{position:absolute;border-radius:50%;filter:blur(80px)}
+  .blob-1{left:-8rem;top:2.5rem;width:24rem;height:24rem;background:rgba(168,96,45,.3);
+    animation:float1 14s ease-in-out infinite}
+  .blob-2{right:-6rem;bottom:0;width:28rem;height:28rem;background:rgba(201,162,39,.2);
+    animation:float2 18s ease-in-out infinite}
+  .hero-vignette{position:absolute;inset:0;
+    background:radial-gradient(circle at center,transparent 30%,rgba(0,0,0,.55))}
+  @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,30px)}}
+  @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,-20px)}}
+  .hero-content{position:relative;padding:7rem 1.5rem 4rem}
+  .hero-tag{margin:0 0 1rem;font-size:.85rem;font-weight:600;text-transform:uppercase;
+    letter-spacing:.3em;color:var(--gold)}
+  .hero h1{font-size:clamp(2.5rem,8vw,4.5rem);margin-bottom:1.5rem}
+  .hero h1 .gold{color:var(--gold)}
+  .hero p.lead{max-width:42rem;margin:0 auto;font-size:1.1rem;color:rgba(247,241,230,.85)}
+  .hero-btns{margin-top:2.5rem;display:flex;flex-direction:column;gap:.75rem;align-items:center}
+  .hero-addr{margin-top:2rem;display:flex;align-items:center;justify-content:center;
+    gap:.5rem;font-size:.9rem;color:rgba(247,241,230,.7)}
+  @media(min-width:640px){.hero-btns{flex-direction:row;justify-content:center}}
+  .scroll-ind{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%)}
+  .scroll-ind div{width:1.5rem;height:2.5rem;border:2px solid rgba(247,241,230,.4);
+    border-radius:999px;display:flex;justify-content:center;padding-top:.4rem}
+  .scroll-ind span{width:.25rem;height:.5rem;border-radius:999px;background:rgba(247,241,230,.7);
+    animation:scrolldot 1.6s infinite}
+  @keyframes scrolldot{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+
+  /* Live badge */
+  .badge{display:inline-flex;align-items:center;gap:.5rem;border-radius:999px;
+    border:1px solid rgba(247,241,230,.2);background:rgba(247,241,230,.1);
+    padding:.4rem 1rem;font-size:.85rem;font-weight:500;margin-bottom:1.5rem}
+  .badge.light{border-color:rgba(61,43,31,.15);background:rgba(255,255,255,.7);color:var(--bark)}
+  .dot{position:relative;width:.65rem;height:.65rem;display:inline-flex}
+  .dot::before{content:'';position:absolute;inset:0;border-radius:50%;
+    animation:ping 1.5s cubic-bezier(0,0,.2,1) infinite}
+  .dot::after{content:'';position:relative;width:.65rem;height:.65rem;border-radius:50%}
+  .dot.open::before{background:#34d399}.dot.open::after{background:#10b981}
+  .dot.closed::before{background:#fbbf24}.dot.closed::after{background:#f59e0b}
+  @keyframes ping{75%,100%{transform:scale(2);opacity:0}}
+
+  /* Reveal animation – NUR aktiv, wenn JavaScript läuft (.js am <html>).
+     Ohne JS sind alle .reveal-Elemente normal sichtbar. */
+  .js .reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+  .js .reveal.left{transform:translateX(40px)}
+  .js .reveal.visible{opacity:1;transform:none}
+
+  /* About / stats */
+  .grid2{display:grid;gap:3rem;align-items:center}
+  @media(min-width:1024px){.grid2{grid-template-columns:1fr 1fr}}
+  h2.title{font-size:clamp(1.8rem,4vw,2.5rem);color:var(--bark)}
+  .muted{color:rgba(61,43,31,.75);margin-top:1.5rem}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+  .stat{text-align:center;transition:transform .3s}
+  .stat:hover{transform:translateY(-4px)}
+  .stat .num{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);
+    font-weight:700;color:var(--copper)}
+  .stat .lbl{font-size:.85rem;font-weight:500;color:rgba(61,43,31,.7);margin-top:.5rem;display:block}
+
+  /* Highlights */
+  .sand-bg{background:rgba(239,228,207,.6)}
+  .center{text-align:center;max-width:42rem;margin:0 auto}
+  .cards4{display:grid;gap:1.5rem;margin-top:3.5rem}
+  @media(min-width:640px){.cards4{grid-template-columns:1fr 1fr}}
+  @media(min-width:1024px){.cards4{grid-template-columns:repeat(4,1fr)}}
+  .hl-card{display:flex;flex-direction:column;align-items:flex-start;transition:transform .3s}
+  .hl-card:hover{transform:translateY(-8px)}
+  .hl-ico{width:3.5rem;height:3.5rem;border-radius:1rem;display:inline-flex;
+    align-items:center;justify-content:center;background:rgba(168,96,45,.1);
+    color:var(--copper);margin-bottom:1.25rem;transition:all .3s}
+  .hl-card:hover .hl-ico{background:var(--copper);color:var(--cream)}
+  .hl-card h3{font-size:1.25rem;margin-bottom:.5rem}
+  .hl-card p{font-size:.9rem;color:rgba(61,43,31,.7)}
+  .hl-ico .svg-ico{width:1.75rem;height:1.75rem}
+
+  /* Menu */
+  .menu-grid{display:grid;gap:2.5rem;margin-top:3.5rem}
+  @media(min-width:1024px){.menu-grid{grid-template-columns:repeat(3,1fr)}}
+  .menu-cat h3{border-bottom:2px solid rgba(168,96,45,.3);padding-bottom:.75rem;
+    font-size:1.5rem;margin-bottom:1.5rem}
+  .dish{margin-bottom:1.5rem}
+  .dish-head{display:flex;justify-content:space-between;gap:.75rem;align-items:baseline}
+  .dish-head h4{font-family:'Inter';font-weight:600;font-size:1rem}
+  .dish-price{white-space:nowrap;font-weight:600;color:var(--copper)}
+  .dish p{font-size:.875rem;color:rgba(61,43,31,.65);margin-top:.25rem}
+  .tag{display:inline-block;border-radius:999px;background:rgba(60,90,64,.1);
+    color:var(--forest);padding:.1rem .6rem;font-size:.7rem;font-weight:500;margin-top:.5rem;margin-right:.3rem}
+
+  /* Opening hours */
+  .dark-bg{background:var(--bark);color:var(--cream)}
+  .dark-bg .eyebrow{color:var(--gold)}
+  .hours-box{border-radius:1rem;border:1px solid rgba(247,241,230,.15);
+    background:rgba(247,241,230,.05);padding:2rem;backdrop-filter:blur(6px)}
+  .hours-box ul{list-style:none}
+  .hours-row{display:flex;justify-content:space-between;gap:1rem;padding:.75rem;
+    border-radius:.5rem;border-bottom:1px solid rgba(247,241,230,.1)}
+  .hours-row.today{background:rgba(201,162,39,.15)}
+  .hours-row.today .day{color:var(--gold)}
+  .today-pill{background:var(--gold);color:var(--bark);border-radius:999px;
+    padding:.1rem .5rem;font-size:.6rem;font-weight:700;text-transform:uppercase;margin-left:.5rem}
+  .closed-txt{color:rgba(247,241,230,.4)}
+
+  /* Reservation */
+  .res-grid{display:grid;gap:2.5rem;align-items:start}
+  @media(min-width:1024px){.res-grid{grid-template-columns:1fr 1.3fr}}
+  .phone-card{display:flex;align-items:center;gap:1rem;border-radius:1rem;
+    border:1px solid rgba(61,43,31,.1);background:rgba(255,255,255,.8);padding:1.25rem;
+    margin-top:1.5rem;box-shadow:0 4px 24px -8px rgba(61,43,31,.18);transition:all .2s}
+  .phone-card:hover{transform:translateY(-2px);border-color:var(--copper)}
+  .phone-ico{width:3rem;height:3rem;border-radius:50%;display:inline-flex;align-items:center;
+    justify-content:center;background:rgba(168,96,45,.1);color:var(--copper)}
+  .info-box{display:flex;gap:.75rem;border-radius:.75rem;background:rgba(60,90,64,.05);
+    padding:1rem;font-size:.875rem;color:rgba(61,43,31,.7);margin-top:1rem}
+  .field{display:block;margin-bottom:1.25rem}
+  .field label{display:block;margin-bottom:.4rem;font-size:.875rem;font-weight:500;color:rgba(61,43,31,.8)}
+  .field input,.field select,.field textarea{width:100%;border-radius:.75rem;
+    border:1px solid rgba(61,43,31,.15);background:#fff;padding:.75rem 1rem;
+    font-family:inherit;font-size:1rem;color:var(--bark);outline:none;transition:all .2s}
+  .field input:focus,.field select:focus,.field textarea:focus{
+    border-color:var(--copper);box-shadow:0 0 0 3px rgba(168,96,45,.3)}
+  .field-row{display:grid;gap:1.25rem}
+  @media(min-width:640px){.row2{grid-template-columns:1fr 1fr}.row3{grid-template-columns:1fr 1fr 1fr}}
+  .err{display:block;margin-top:.3rem;font-size:.75rem;font-weight:500;color:#dc2626}
+  .success{text-align:center;padding:2.5rem 1rem}
+  .success-ico{width:4rem;height:4rem;border-radius:50%;background:rgba(60,90,64,.1);
+    color:var(--forest);display:inline-flex;align-items:center;justify-content:center;
+    margin-bottom:1.25rem;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+  .hidden{display:none}
+
+  /* Contact / map */
+  .contact-grid{display:grid;gap:2rem}
+  @media(min-width:1024px){.contact-grid{grid-template-columns:1fr 1.4fr}}
+  .contact-card{display:flex;align-items:flex-start;gap:1rem;border-radius:1rem;
+    border:1px solid rgba(61,43,31,.1);background:rgba(255,255,255,.7);padding:1.25rem;
+    margin-bottom:1rem;box-shadow:0 4px 24px -8px rgba(61,43,31,.18);transition:all .2s}
+  a.contact-card:hover{transform:translateY(-2px);border-color:var(--copper)}
+  .contact-ico{width:2.75rem;height:2.75rem;border-radius:.75rem;flex-shrink:0;
+    display:inline-flex;align-items:center;justify-content:center;
+    background:rgba(168,96,45,.1);color:var(--copper)}
+  .contact-card .t{font-size:.75rem;font-weight:600;text-transform:uppercase;
+    letter-spacing:.05em;color:rgba(61,43,31,.5);display:block}
+  .contact-card .v{font-weight:500;margin-top:.15rem;display:block}
+  .map-frame{overflow:hidden;border-radius:1rem;border:1px solid rgba(61,43,31,.1);
+    box-shadow:0 4px 24px -8px rgba(61,43,31,.18);height:100%}
+  .map-frame iframe{width:100%;height:440px;border:0;display:block}
+
+  /* Footer */
+  footer{background:var(--bark);color:rgba(247,241,230,.8)}
+  .foot-grid{display:grid;gap:2.5rem;padding:4rem 0}
+  @media(min-width:640px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1024px){.foot-grid{grid-template-columns:repeat(4,1fr)}}
+  .foot-grid h4{font-family:'Inter';font-size:.85rem;font-weight:600;text-transform:uppercase;
+    letter-spacing:.05em;color:var(--cream);margin-bottom:1rem}
+  .foot-grid h3{color:var(--cream);font-size:1.25rem}
+  .foot-grid ul{list-style:none;font-size:.9rem}
+  .foot-grid li{margin-bottom:.6rem;display:flex;gap:.6rem}
+  .foot-grid a:hover{color:var(--gold)}
+  .foot-bottom{border-top:1px solid rgba(247,241,230,.1);font-size:.75rem;
+    color:rgba(247,241,230,.55);padding:1.5rem 0}
+  .foot-bottom .container{display:flex;flex-direction:column;gap:.75rem;
+    justify-content:space-between;align-items:center}
+  @media(min-width:640px){.foot-bottom .container{flex-direction:row}}
+  .gold{color:var(--gold)}
+
+  /* Floating */
+  .floating{position:fixed;right:max(1.25rem,env(safe-area-inset-right));
+    bottom:max(1.25rem,calc(env(safe-area-inset-bottom) + .5rem));z-index:40;display:flex;
+    flex-direction:column;align-items:flex-end;gap:.75rem;opacity:0;transform:translateY(30px);
+    pointer-events:none;transition:all .3s}
+  .floating.show{opacity:1;transform:none;pointer-events:auto}
+  .fab{width:3.5rem;height:3.5rem;border-radius:50%;display:inline-flex;align-items:center;
+    justify-content:center;background:var(--forest);color:var(--cream);
+    box-shadow:0 10px 40px -12px rgba(61,43,31,.5);transition:all .2s}
+  .fab:hover{transform:scale(1.05);background:var(--forest-light)}
+  .fab-res{display:inline-flex;align-items:center;gap:.5rem;border-radius:999px;
+    background:var(--copper);color:var(--cream);padding:.9rem 1.25rem;font-weight:600;
+    box-shadow:0 10px 40px -12px rgba(61,43,31,.5);transition:all .2s}
+  .fab-res:hover{transform:scale(1.05);background:var(--copper-light)}
+  @media(min-width:640px){.fab{display:none}}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+    .reveal,.js .reveal{opacity:1!important;transform:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  📄 <b>Statische Vorschau</b> · Design &amp; Animationen 1:1. Das echte Buchungssystem
+  (Datenbank, E-Mail) läuft in der Next.js-App via <b>npm run dev</b>. Das Formular hier zeigt nur den Ablauf.
+</div>
+
+<!-- NAVBAR -->
+<header id="navbar">
+  <div class="container">
+    <nav>
+      <a href="#top" class="logo">
+        <b>Bauernhof</b><span>zum Silberbergwerk</span>
+      </a>
+      <div class="nav-links">
+        <a href="#ueber-uns">Über uns</a>
+        <a href="#erlebnis">Erlebnis</a>
+        <a href="#speisekarte">Speisekarte</a>
+        <a href="#oeffnungszeiten">Öffnungszeiten</a>
+        <a href="#kontakt">Anfahrt</a>
+      </div>
+      <div class="nav-cta">
+        <a href="tel:+49376095204" class="nav-phone">
+          <svg class="svg-ico" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          037609 / 5204
+        </a>
+        <a href="#reservieren" class="btn btn-primary" style="padding:.6rem 1.25rem">Tisch reservieren</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="top" class="hero">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="hero-vignette"></div>
+  </div>
+  <div class="hero-content container">
+    <div id="hero-badge"><span class="badge"><span class="dot open"></span>Tisch reservieren empfohlen</span></div>
+    <p class="hero-tag">Erlebnisrestaurant &amp; Pension · seit 1996</p>
+    <h1>Bauernhof zum<br><span class="gold">Silberbergwerk</span></h1>
+    <p class="lead">Seit 1996 verwöhnen wir unsere Gäste mit gut bürgerlicher Küche aus frischen, regionalen Zutaten – serviert in historischem Ambiente rund um das alte Silberbergwerk.</p>
+    <div class="hero-btns">
+      <a href="#reservieren" class="btn btn-primary">
+        <svg class="svg-ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Online Tisch reservieren
+      </a>
+      <a href="tel:+49376095204" class="btn btn-secondary" style="background:rgba(247,241,230,.1);color:var(--cream);border-color:rgba(247,241,230,.3)">
+        <svg class="svg-ico" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        037609 / 5204
+      </a>
+    </div>
+    <div class="hero-addr">
+      <svg class="svg-ico" style="color:var(--gold)" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Herrnsdorfer Str. 32, 09212 Limbach-Oberfrohna
+    </div>
+  </div>
+  <div class="scroll-ind"><div><span></span></div></div>
+</section>
+
+<!-- ABOUT -->
+<section id="ueber-uns" class="section">
+  <div class="container grid2">
+    <div>
+      <span class="eyebrow reveal">Unsere Geschichte</span>
+      <h2 class="title reveal">Herzliche Gastlichkeit rund ums alte Silberbergwerk</h2>
+      <div class="muted reveal">
+        <p>Bereits seit Dezember 1996 heißen wir unsere Gäste im „Bauernhof zum Silberbergwerk“ willkommen. Was als kleine Ausflugsgaststätte begann, ist heute ein Erlebnisrestaurant mit eigener Pension – mitten im Zeitsprungland von Limbach-Oberfrohna.</p>
+        <p style="margin-top:1rem">Bei uns treffen ehrliche, gut bürgerliche Küche und regionale Spezialitäten auf historisches Ambiente. Fisch, Wild, Lamm, Rind und Geflügel beziehen wir von Produzenten aus der Region – frisch, saisonal und mit Liebe zubereitet.</p>
+      </div>
+    </div>
+    <div class="reveal left">
+      <div class="stats">
+        <div class="stat card"><span class="num" data-count="30" data-suffix="+">30+</span><span class="lbl">Jahre Erfahrung</span></div>
+        <div class="stat card"><span class="num" data-count="13" data-suffix="">13</span><span class="lbl">Gästebetten</span></div>
+        <div class="stat card"><span class="num" data-count="100" data-suffix="%">100%</span><span class="lbl">Regionale Zutaten</span></div>
+        <div class="stat card"><span class="num" data-count="4" data-suffix=",8">4,8</span><span class="lbl">Sterne Bewertung</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HIGHLIGHTS -->
+<section id="erlebnis" class="section sand-bg">
+  <div class="container">
+    <div class="center">
+      <span class="eyebrow reveal">Mehr als ein Restaurant</span>
+      <h2 class="title reveal">Ein Erlebnis für alle Sinne</h2>
+    </div>
+    <div class="cards4">
+      <article class="card hl-card reveal">
+        <span class="hl-ico"><svg class="svg-ico" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2M5 11v11M11 2v20M21 15V2a5 5 0 0 0-5 5v6h5zm0 0v7"/></svg></span>
+        <h3>Regionale Küche</h3>
+        <p>Fisch, Wild, Lamm, Rind &amp; Geflügel von Produzenten aus der Region – frisch und saisonal zubereitet.</p>
+      </article>
+      <article class="card hl-card reveal">
+        <span class="hl-ico"><svg class="svg-ico" viewBox="0 0 24 24"><path d="M17 11h1a3 3 0 0 1 0 6h-1M9 12v6M13 12v6M14 7.5c-1 0-1.44.5-3 .5s-2-.5-3-.5-1.72.5-2.5.5a2.5 2.5 0 0 1 0-5c.78 0 1.57.5 2.5.5S9.44 3 11 3s2 .5 3 .5 1.72-.5 2.5-.5a2.5 2.5 0 0 1 0 5c-.78 0-1.5-.5-2.5-.5z"/><path d="M5 8v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"/></svg></span>
+        <h3>Gemütlicher Biergarten</h3>
+        <p>An warmen Tagen genießen Sie Speisen und kühle Getränke unter freiem Himmel.</p>
+      </article>
+      <article class="card hl-card reveal">
+        <span class="hl-ico"><svg class="svg-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 12h.01M16 8h.01M9 9h.01"/></svg></span>
+        <h3>Bowlingstollen</h3>
+        <p>Unser historischer Stollen lädt zum Bowlen ein – ideal für Feiern und Firmenevents.</p>
+      </article>
+      <article class="card hl-card reveal">
+        <span class="hl-ico"><svg class="svg-ico" viewBox="0 0 24 24"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span>
+        <h3>Pension mit 13 Betten</h3>
+        <p>Bleiben Sie über Nacht: Einzel-, Doppel- und Dreibettzimmer, Frühstück inklusive.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="speisekarte" class="section">
+  <div class="container">
+    <div class="center">
+      <span class="eyebrow reveal">Aus unserer Küche</span>
+      <h2 class="title reveal">Speisekarte (Auszug)</h2>
+      <p class="muted reveal">Saisonale Gerichte aus frischen, regionalen Zutaten. Unsere Karte wechselt mit den Jahreszeiten – sprich uns gern auf Tagesempfehlungen an.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-cat reveal">
+        <h3>Vorspeisen &amp; Suppen</h3>
+        <div class="dish"><div class="dish-head"><h4>Herbstliche Kürbissuppe</h4><span class="dish-price">6,50 €</span></div><p>Cremige Suppe vom Hokkaido-Kürbis mit gerösteten Kernen und Kürbiskernöl.</p><span class="tag">vegetarisch</span></div>
+        <div class="dish"><div class="dish-head"><h4>Sächsischer Kartoffelsalat mit Wiener</h4><span class="dish-price">7,90 €</span></div><p>Hausgemacht nach Familienrezept, mit knackigen Gurken.</p></div>
+        <div class="dish"><div class="dish-head"><h4>Geräucherte Forellenfilets</h4><span class="dish-price">9,80 €</span></div><p>Auf Blattsalaten mit Meerrettich-Sahne und Bauernbrot.</p></div>
+      </div>
+      <div class="menu-cat reveal">
+        <h3>Hauptgerichte</h3>
+        <div class="dish"><div class="dish-head"><h4>Barbarie-Entenbrustfilet</h4><span class="dish-price">21,50 €</span></div><p>Zart geschmort, mit Wirsinggemüse und hausgemachten Wickelklößen.</p><span class="tag">Empfehlung</span></div>
+        <div class="dish"><div class="dish-head"><h4>Knuspriges Schweineschnitzel</h4><span class="dish-price">15,90 €</span></div><p>Paniertes Schnitzel mit Pommes frites oder Bratkartoffeln und Salat.</p></div>
+        <div class="dish"><div class="dish-head"><h4>Saftiges Putensteak „Bauernart“</h4><span class="dish-price">17,40 €</span></div><p>Mit Champignon-Rahmsauce, Kroketten und Marktgemüse.</p></div>
+        <div class="dish"><div class="dish-head"><h4>Geschmorte Lammkeule</h4><span class="dish-price">23,90 €</span></div><p>In Rotweinjus mit Rosmarinkartoffeln und Bohnen im Speckmantel.</p></div>
+        <div class="dish"><div class="dish-head"><h4>Gebratenes Zanderfilet</h4><span class="dish-price">20,80 €</span></div><p>Auf Blattspinat mit Salzkartoffeln und brauner Butter.</p><span class="tag">Fisch</span></div>
+      </div>
+      <div class="menu-cat reveal">
+        <h3>Desserts</h3>
+        <div class="dish"><div class="dish-head"><h4>Warmer Apfelstrudel</h4><span class="dish-price">6,90 €</span></div><p>Mit Vanilleeis und Sahne – wie bei Oma.</p><span class="tag">vegetarisch</span></div>
+        <div class="dish"><div class="dish-head"><h4>Sächsische Quarkkeulchen</h4><span class="dish-price">6,40 €</span></div><p>Mit Zimtzucker und Apfelmus.</p><span class="tag">vegetarisch</span></div>
+      </div>
+    </div>
+    <p class="reveal" style="text-align:center;margin-top:3rem;font-size:.875rem;color:rgba(61,43,31,.6)">Alle Preise in Euro inkl. MwSt. Bei Allergien oder Unverträglichkeiten beraten wir dich gern persönlich.</p>
+  </div>
+</section>
+
+<!-- OPENING HOURS -->
+<section id="oeffnungszeiten" class="section dark-bg">
+  <div class="container grid2">
+    <div>
+      <span class="eyebrow reveal">Wann wir für dich da sind</span>
+      <h2 class="title reveal" style="color:var(--cream)">Öffnungszeiten</h2>
+      <p class="reveal" style="margin-top:1rem;max-width:28rem;color:rgba(247,241,230,.75)">Reserviere bequem online oder ruf uns einfach an – gerade an Wochenenden und Feiertagen empfehlen wir eine Reservierung.</p>
+      <div class="reveal" style="margin-top:1.5rem;display:flex;flex-wrap:wrap;align-items:center;gap:1rem">
+        <div id="hours-badge"><span class="badge"><span class="dot open"></span>Reservierung empfohlen</span></div>
+        <a href="tel:+49376095204" class="gold" style="display:inline-flex;align-items:center;gap:.5rem;font-weight:600">
+          <svg class="svg-ico" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          037609 / 5204
+        </a>
+      </div>
+    </div>
+    <div class="reveal left">
+      <div class="hours-box">
+        <div style="display:flex;align-items:center;gap:.5rem;color:var(--gold);margin-bottom:1rem">
+          <svg class="svg-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span style="font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Wochenübersicht</span>
+        </div>
+        <ul id="hours-list">
+          <li class="hours-row"><span class="day">Montag</span><span class="closed-txt">Geschlossen</span></li>
+          <li class="hours-row"><span class="day">Dienstag</span><span>17:00–22:00</span></li>
+          <li class="hours-row"><span class="day">Mittwoch</span><span class="closed-txt">Geschlossen</span></li>
+          <li class="hours-row"><span class="day">Donnerstag</span><span>17:00–22:00</span></li>
+          <li class="hours-row"><span class="day">Freitag</span><span>11:00–14:00 · 17:00–22:00</span></li>
+          <li class="hours-row"><span class="day">Samstag</span><span>11:00–00:00</span></li>
+          <li class="hours-row"><span class="day">Sonntag</span><span>11:00–21:00</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section id="reservieren" class="section sand-bg">
+  <div class="container">
+    <div class="res-grid">
+      <div class="reveal">
+        <span class="eyebrow">Tisch reservieren</span>
+        <h2 class="title">Reserviere deinen Platz</h2>
+        <p class="muted">Sichere dir bequem in wenigen Sekunden einen Tisch. Du erhältst eine Bestätigung per E-Mail. Lieber persönlich? Wir sind telefonisch gern für dich da.</p>
+        <a href="tel:+49376095204" class="phone-card">
+          <span class="phone-ico"><svg class="svg-ico" style="width:1.5rem;height:1.5rem" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          <span><span style="font-size:.85rem;color:rgba(61,43,31,.6)">Telefonisch reservieren</span><span style="display:block;font-size:1.1rem;font-weight:700">037609 / 5204</span></span>
+        </a>
+        <div class="info-box">
+          <svg class="svg-ico" style="color:var(--forest)" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Größere Gruppen, Feiern oder unseren Bowlingstollen buchst du am besten telefonisch – wir planen dein Event individuell.</span>
+        </div>
+      </div>
+      <div class="reveal left">
+        <div class="card" style="padding:2rem">
+          <form id="res-form" novalidate>
+            <div class="field-row row2" style="display:grid">
+              <div class="field"><label>Name</label><input name="name" placeholder="Max Mustermann" required><span class="err hidden"></span></div>
+              <div class="field"><label>Telefon</label><input name="phone" type="tel" placeholder="0171 1234567" required><span class="err hidden"></span></div>
+            </div>
+            <div class="field"><label>E-Mail</label><input name="email" type="email" placeholder="max@beispiel.de" required><span class="err hidden"></span></div>
+            <div class="field-row row3" style="display:grid">
+              <div class="field"><label>Datum</label><input name="date" type="date" required><span class="err hidden"></span></div>
+              <div class="field"><label>Uhrzeit</label><select name="time" required><option value="">Erst Datum wählen</option></select><span class="err hidden"></span></div>
+              <div class="field"><label>Personen</label><select name="guests" required>
+                <option value="1">1 Person</option><option value="2" selected>2 Personen</option>
+                <option value="3">3 Personen</option><option value="4">4 Personen</option>
+                <option value="5">5 Personen</option><option value="6">6 Personen</option>
+                <option value="7">7 Personen</option><option value="8">8 Personen</option>
+                <option value="9">9 Personen</option><option value="10">10 Personen</option>
+                <option value="11">11 Personen</option><option value="12">12 Personen</option>
+                <option value="13">13 Personen</option><option value="14">14 Personen</option>
+                <option value="15">15 Personen</option><option value="16">16 Personen</option>
+                <option value="17">17 Personen</option><option value="18">18 Personen</option>
+                <option value="19">19 Personen</option>
+              </select><span class="err hidden"></span></div>
+            </div>
+            <div class="field"><label>Anlass (optional)</label><input name="occasion" placeholder="Geburtstag, Familienfeier …"></div>
+            <div class="field"><label>Anmerkungen (optional)</label><textarea name="notes" rows="3" placeholder="Allergien, Kinderstuhl, Sitzplatzwunsch …"></textarea></div>
+            <button type="submit" class="btn btn-primary" style="width:100%">
+              <svg class="svg-ico" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="m9 10 2 2 4-4"/></svg>
+              Reservierung anfragen
+            </button>
+            <p style="text-align:center;font-size:.75rem;color:rgba(61,43,31,.55);margin-top:1rem">Mit dem Absenden stimmst du zu, dass wir deine Angaben zur Bearbeitung der Reservierung verarbeiten.</p>
+          </form>
+          <div id="res-success" class="success hidden">
+            <span class="success-ico"><svg class="svg-ico" style="width:2.2rem;height:2.2rem" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <h3 style="font-size:1.5rem;color:var(--bark)">Anfrage gesendet!</h3>
+            <p style="max-width:24rem;margin:.75rem auto;color:rgba(61,43,31,.7)">Vielen Dank! Deine Reservierungsanfrage ist bei uns eingegangen. Wir bestätigen sie in Kürze.</p>
+            <button class="btn btn-secondary" id="res-reset" style="margin-top:1rem">Weitere Reservierung</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / MAP -->
+<section id="kontakt" class="section">
+  <div class="container">
+    <div class="center" style="margin-bottom:3rem">
+      <span class="eyebrow reveal">So findest du uns</span>
+      <h2 class="title reveal">Anfahrt &amp; Kontakt</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal" style="display:flex;flex-direction:column">
+        <div class="contact-card">
+          <span class="contact-ico"><svg class="svg-ico" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span><span class="t">Adresse</span><span class="v">Bauernhof zum Silberbergwerk<br>Herrnsdorfer Str. 32<br>09212 Limbach-Oberfrohna</span></span>
+        </div>
+        <a href="tel:+49376095204" class="contact-card">
+          <span class="contact-ico"><svg class="svg-ico" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          <span><span class="t">Telefon</span><span class="v">037609 / 5204</span></span>
+        </a>
+        <a href="mailto:info@bauernhof-silberbergwerk.de" class="contact-card">
+          <span class="contact-ico"><svg class="svg-ico" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></span>
+          <span><span class="t">E-Mail</span><span class="v">info@bauernhof-silberbergwerk.de</span></span>
+        </a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Bauernhof%20zum%20Silberbergwerk%2C%20Herrnsdorfer%20Str.%2032%2C%2009212%20Limbach-Oberfrohna" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:auto">
+          <svg class="svg-ico" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          Route planen
+        </a>
+      </div>
+      <div class="reveal left">
+        <div class="map-frame" style="position:relative">
+          <!-- Offline-Fallback (sichtbar, bis die Karte geladen ist) -->
+          <a id="map-fallback" href="https://maps.google.com/?q=Bauernhof%20zum%20Silberbergwerk%2C%20Herrnsdorfer%20Str.%2032%2C%2009212%20Limbach-Oberfrohna" target="_blank" rel="noopener"
+            style="position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;text-align:center;padding:1.5rem;background:linear-gradient(135deg,var(--forest),var(--forest-light));color:var(--cream)">
+            <svg class="svg-ico" style="width:2.5rem;height:2.5rem" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span style="font-weight:600">Bauernhof zum Silberbergwerk</span>
+            <span style="font-size:.85rem;opacity:.85">Herrnsdorfer Str. 32, 09212 Limbach-Oberfrohna<br>Zum Öffnen in Karten tippen</span>
+          </a>
+          <iframe id="map-iframe" title="Standort Bauernhof zum Silberbergwerk" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
+            style="position:relative"
+            onload="var f=document.getElementById('map-fallback'); if(f) f.style.display='none';"
+            src="https://maps.google.com/maps?q=Bauernhof%20zum%20Silberbergwerk%2C%20Herrnsdorfer%20Str.%2032%2C%2009212%20Limbach-Oberfrohna&hl=de&z=15&output=embed"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container foot-grid">
+    <div>
+      <h3>Bauernhof zum Silberbergwerk</h3>
+      <p class="gold" style="font-size:.85rem;text-transform:uppercase;letter-spacing:.2em;margin-top:.25rem">Erlebnisrestaurant &amp; Pension</p>
+      <p style="font-size:.9rem;margin-top:1rem;color:rgba(247,241,230,.65)">Seit 1996 gut bürgerliche Küche aus frischen, regionalen Zutaten in historischem Ambiente.</p>
+    </div>
+    <div>
+      <h4>Kontakt</h4>
+      <ul>
+        <li><svg class="svg-ico gold" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Herrnsdorfer Str. 32, 09212 Limbach-Oberfrohna</li>
+        <li><a href="tel:+49376095204"><svg class="svg-ico gold" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 037609 / 5204</a></li>
+        <li><a href="mailto:info@bauernhof-silberbergwerk.de"><svg class="svg-ico gold" style="width:1rem;height:1rem" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg> info@bauernhof-silberbergwerk.de</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Öffnungszeiten</h4>
+      <ul id="foot-hours">
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">Mo</span><span style="color:rgba(247,241,230,.8);text-align:right">geschl.</span></li>
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">Di</span><span style="color:rgba(247,241,230,.8);text-align:right">17:00–22:00</span></li>
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">Mi</span><span style="color:rgba(247,241,230,.8);text-align:right">geschl.</span></li>
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">Do</span><span style="color:rgba(247,241,230,.8);text-align:right">17:00–22:00</span></li>
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">Fr</span><span style="color:rgba(247,241,230,.8);text-align:right">11:00–14:00, 17:00–22:00</span></li>
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">Sa</span><span style="color:rgba(247,241,230,.8);text-align:right">11:00–00:00</span></li>
+        <li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">So</span><span style="color:rgba(247,241,230,.8);text-align:right">11:00–21:00</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#ueber-uns">Über uns</a></li>
+        <li><a href="#erlebnis">Erlebnis</a></li>
+        <li><a href="#speisekarte">Speisekarte</a></li>
+        <li><a href="#oeffnungszeiten">Öffnungszeiten</a></li>
+        <li><a href="#reservieren">Reservieren</a></li>
+        <li><a href="#kontakt">Anfahrt</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div class="container">
+      <p>© <span id="year"></span> Bauernhof zum Silberbergwerk. Alle Rechte vorbehalten.</p>
+      <p style="display:flex;gap:1rem"><a href="#">Impressum</a><a href="#">Datenschutz</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING -->
+<div class="floating" id="floating">
+  <a href="tel:+49376095204" class="fab" aria-label="Anrufen"><svg class="svg-ico" style="width:1.5rem;height:1.5rem" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+  <a href="#reservieren" class="fab-res"><svg class="svg-ico" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="m9 10 2 2 4-4"/></svg>Reservieren</a>
+</div>
+
+<script>
+// --- Öffnungszeiten (identisch zur App, lib/restaurant.ts) -----------------
+const t=(h,m=0)=>h*60+m;
+const HOURS=[
+  {day:1,label:"Montag",short:"Mo",ranges:[]},
+  {day:2,label:"Dienstag",short:"Di",ranges:[{from:t(17),to:t(22)}]},
+  {day:3,label:"Mittwoch",short:"Mi",ranges:[]},
+  {day:4,label:"Donnerstag",short:"Do",ranges:[{from:t(17),to:t(22)}]},
+  {day:5,label:"Freitag",short:"Fr",ranges:[{from:t(11),to:t(14)},{from:t(17),to:t(22)}]},
+  {day:6,label:"Samstag",short:"Sa",ranges:[{from:t(11),to:t(24)}]},
+  {day:0,label:"Sonntag",short:"So",ranges:[{from:t(11),to:t(21)}]},
+];
+const pad=n=>String(n).padStart(2,"0");
+const fmt=m=>pad(Math.floor(m/60)%24)+":"+pad(m%60);
+const fmtRange=r=>fmt(r.from)+"–"+fmt(r.to);
+
+function openStatus(now){
+  const map=new Map(HOURS.map(d=>[d.day,d]));
+  const mins=now.getHours()*60+now.getMinutes();
+  const today=map.get(now.getDay());
+  if(today){
+    for(const r of today.ranges){if(mins>=r.from&&mins<r.to)return{open:true,closesAt:fmt(r.to)};}
+    const up=today.ranges.find(r=>r.from>mins);
+    if(up)return{open:false,opensAt:fmt(up.from),when:"heute"};
+  }
+  for(let i=1;i<=7;i++){const d=map.get((now.getDay()+i)%7);
+    if(d&&d.ranges.length){return{open:false,opensAt:fmt(d.ranges[0].from),when:i===1?"morgen":d.label};}}
+  return{open:false};
+}
+function badgeHTML(light){
+  const s=openStatus(new Date());
+  const cls=s.open?"open":"closed";
+  const txt=s.open?("Jetzt geöffnet"+(s.closesAt?" · bis "+s.closesAt+" Uhr":""))
+    :("Geschlossen"+(s.opensAt?" · öffnet "+s.when+" "+s.opensAt+" Uhr":""));
+  return '<span class="badge'+(light?' light':'')+'"><span class="dot '+cls+'"></span>'+txt+'</span>';
+}
+document.getElementById("hero-badge").innerHTML=badgeHTML(false);
+document.getElementById("hours-badge").innerHTML=badgeHTML(false);
+
+// Stundenliste
+const todayDay=new Date().getDay();
+document.getElementById("hours-list").innerHTML=HOURS.map(d=>{
+  const closed=d.ranges.length===0;
+  const isToday=d.day===todayDay;
+  return '<li class="hours-row'+(isToday?' today':'')+'">'+
+    '<span class="day">'+d.label+(isToday?'<span class="today-pill">Heute</span>':'')+'</span>'+
+    '<span class="'+(closed?'closed-txt':'')+'">'+(closed?'Geschlossen':d.ranges.map(fmtRange).join(' · '))+'</span></li>';
+}).join("");
+document.getElementById("foot-hours").innerHTML=HOURS.map(d=>
+  '<li style="justify-content:space-between"><span style="color:rgba(247,241,230,.6)">'+d.short+'</span>'+
+  '<span style="color:rgba(247,241,230,.8);text-align:right">'+(d.ranges.length===0?'geschl.':d.ranges.map(fmtRange).join(', '))+'</span></li>'
+).join("");
+document.getElementById("year").textContent=new Date().getFullYear();
+
+// --- Navbar scroll ---------------------------------------------------------
+const nav=document.getElementById("navbar");
+const floating=document.getElementById("floating");
+function onScroll(){
+  nav.classList.toggle("scrolled",scrollY>24);
+  floating.classList.toggle("show",scrollY>innerHeight*0.8);
+}
+addEventListener("scroll",onScroll,{passive:true});onScroll();
+
+// --- Reveal on scroll ------------------------------------------------------
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");io.unobserve(e.target);}});
+},{threshold:0.12,rootMargin:"-40px"});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+// --- Count up --------------------------------------------------------------
+const cio=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target,end=+el.dataset.count,suf=el.dataset.suffix||"";
+    const start=performance.now(),dur=1600;
+    function tick(now){
+      const p=Math.min((now-start)/dur,1),eased=1-Math.pow(1-p,3);
+      el.textContent=Math.round(eased*end)+suf;
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);cio.unobserve(el);
+  });
+},{threshold:0.4});
+document.querySelectorAll("[data-count]").forEach(el=>cio.observe(el));
+
+// --- Reservation form (Demo) ----------------------------------------------
+const form=document.getElementById("res-form");
+const guestsSel=form.guests; // Optionen sind bereits statisch im HTML vorhanden
+const dateInput=form.date;
+dateInput.min=new Date().toISOString().split("T")[0];
+function slotsFor(dateStr){
+  if(!dateStr)return[];
+  const[y,m,d]=dateStr.split("-").map(Number);
+  const day=new Date(y,m-1,d).getDay();
+  const info=HOURS.find(o=>o.day===day);
+  if(!info||!info.ranges.length)return[];
+  const out=[];
+  info.ranges.forEach(r=>{for(let x=r.from;x<=r.to-30;x+=30)out.push(fmt(x));});
+  return out;
+}
+function refreshSlots(){
+  const slots=slotsFor(dateInput.value);
+  const sel=form.time;
+  if(!dateInput.value){sel.innerHTML='<option value="">Erst Datum wählen</option>';sel.disabled=true;return;}
+  if(!slots.length){sel.innerHTML='<option value="">Geschlossen</option>';sel.disabled=true;return;}
+  sel.disabled=false;
+  sel.innerHTML='<option value="">Bitte wählen</option>'+slots.map(s=>'<option value="'+s+'">'+s+' Uhr</option>').join("");
+}
+dateInput.addEventListener("change",refreshSlots);
+function setErr(name,msg){
+  const field=form[name].closest(".field");const err=field.querySelector(".err");
+  if(msg){err.textContent=msg;err.classList.remove("hidden");form[name].style.borderColor="#dc2626";}
+  else{err.classList.add("hidden");form[name].style.borderColor="";}
+}
+form.addEventListener("submit",ev=>{
+  ev.preventDefault();let ok=true;
+  ["name","phone","email","date","time"].forEach(n=>setErr(n,""));
+  if(form.name.value.trim().length<2){setErr("name","Bitte gib deinen Namen an.");ok=false;}
+  if(!/^[0-9+()/\s-]{5,}$/.test(form.phone.value.trim())){setErr("phone","Bitte gib eine gültige Telefonnummer an.");ok=false;}
+  if(!/^\S+@\S+\.\S+$/.test(form.email.value.trim())){setErr("email","Bitte gib eine gültige E-Mail-Adresse an.");ok=false;}
+  if(!form.date.value){setErr("date","Bitte wähle ein Datum.");ok=false;}
+  if(!form.time.value){setErr("time","Bitte wähle eine Uhrzeit.");ok=false;}
+  if(!ok)return;
+  form.classList.add("hidden");
+  document.getElementById("res-success").classList.remove("hidden");
+});
+document.getElementById("res-reset").addEventListener("click",()=>{
+  form.reset();guestsSel.value="2";refreshSlots();
+  document.getElementById("res-success").classList.add("hidden");
+  form.classList.remove("hidden");
+});
+refreshSlots();
+</script>
+</body>
+</html>

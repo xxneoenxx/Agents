@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-graphite text-steel-50/90 font-sans antialiased;
+    background-image:
+      radial-gradient(circle at 12% -10%, rgba(47, 109, 240, 0.16), transparent 42%),
+      radial-gradient(circle at 88% 0%, rgba(56, 189, 248, 0.12), transparent 40%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
+
+  ::selection {
+    @apply bg-brand/30 text-white;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .section {
+    @apply scroll-mt-20 py-20 sm:py-28;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3
+           text-sm font-semibold tracking-wide transition-all duration-200
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+           focus-visible:ring-offset-graphite;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand text-white shadow-glow hover:bg-brand-light
+           hover:-translate-y-0.5 focus-visible:ring-brand;
+  }
+
+  .btn-ghost {
+    @apply btn border border-white/15 bg-white/5 text-white backdrop-blur
+           hover:border-cyan/60 hover:text-cyan;
+  }
+
+  .eyebrow {
+    @apply mb-3 inline-flex items-center gap-2 text-xs font-semibold uppercase
+           tracking-[0.3em] text-cyan;
+  }
+
+  .glass {
+    @apply rounded-2xl border border-white/10 bg-white/[0.035] backdrop-blur-xl;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-steel-200;
+  }
+
+  .field-input {
+    @apply w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white
+           outline-none transition placeholder:text-steel-400/60
+           focus:border-brand/60 focus:ring-2 focus:ring-brand/20;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-cyan-soft via-cyan to-brand-light bg-clip-text text-transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
