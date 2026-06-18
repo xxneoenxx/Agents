@@ -1,0 +1,33 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Beispielbild Tankreinigung">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0f172a"/><stop offset="1" stop-color="#060912"/>
+    </linearGradient>
+    <linearGradient id="tank2" x1="280" y1="180" x2="520" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#e2e8f0"/><stop offset="1" stop-color="#94a3b8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg2)"/>
+  <g stroke="#94a3b8" stroke-opacity="0.08">
+    <path d="M0 150H800M0 300H800M0 450H800M200 0V600M400 0V600M600 0V600"/>
+  </g>
+  <rect y="470" width="800" height="130" fill="#0a0f1d"/>
+  <line x1="0" y1="470" x2="800" y2="470" stroke="#2dd4bf" stroke-opacity="0.5" stroke-width="2"/>
+  <!-- liegender Tank (Reinigungsöffnung) -->
+  <rect x="240" y="250" width="320" height="170" rx="85" fill="url(#tank2)"/>
+  <ellipse cx="240" cy="335" rx="40" ry="85" fill="#cbd5e1"/>
+  <circle cx="400" cy="280" r="26" fill="#0a0f1d" fill-opacity="0.6"/>
+  <circle cx="400" cy="280" r="26" stroke="#2dd4bf" stroke-width="3"/>
+  <!-- Reinigungs-Schlauch -->
+  <path d="M400 280C420 200 520 180 600 200" stroke="#2dd4bf" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <!-- Tropfen -->
+  <g fill="#5eead4">
+    <circle cx="360" cy="450" r="5"/><circle cx="420" cy="460" r="4"/><circle cx="480" cy="448" r="6"/>
+  </g>
+  <g transform="translate(40 40)">
+    <rect width="170" height="40" rx="20" fill="#0a0f1d" fill-opacity="0.7" stroke="#2dd4bf" stroke-opacity="0.4"/>
+    <circle cx="24" cy="20" r="6" fill="#2dd4bf"/>
+    <text x="42" y="26" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#5eead4">Reinigung</text>
+  </g>
+  <text x="40" y="560" font-family="Arial, sans-serif" font-size="14" fill="#64748b">Beispielbild · durch echtes Projektfoto ersetzen</text>
+</svg>

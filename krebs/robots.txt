@@ -1,0 +1,7 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /impressum
+Disallow: /datenschutz
+
+Sitemap: https://www.krebs-tanksysteme.de/sitemap.xml
