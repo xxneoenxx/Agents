@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #060912;
+  --foreground: #e2e8f0;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-steel-950 text-steel-100 font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Sichtbarer Fokusring für Tastaturbedienung */
+  :focus-visible {
+    @apply outline-none ring-2 ring-amber-500 ring-offset-2 ring-offset-steel-950 rounded;
+  }
+
+  ::selection {
+    @apply bg-amber-500/30 text-white;
+  }
+
+  section {
+    scroll-margin-top: 5rem;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+  }
+
+  .glass {
+    @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+  }
+
+  .glass-light {
+    @apply border border-steel-200/70 bg-white/80 backdrop-blur-md;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-amber-400 via-amber-500 to-teal-400 bg-clip-text text-transparent;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10
+           px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-amber-400;
+  }
+
+  /* Animierter Verlaufsrahmen für Karten/Highlights */
+  .border-shine {
+    position: relative;
+  }
+  .border-shine::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(130deg, rgba(245, 158, 11, 0.6), rgba(45, 212, 191, 0.35), transparent 60%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+/* Reduzierte Bewegung respektieren */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Custom Scrollbar (dezent, industriell) */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0f1d;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 9999px;
+  border: 2px solid #0a0f1d;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
