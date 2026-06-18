@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ArrowLeft, Cylinder } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { site } from "@/config/site";
+import { Logo } from "@/components/ui/Logo";
 
 export function LegalShell({
   title,
@@ -13,13 +14,8 @@ export function LegalShell({
     <div className="min-h-screen bg-steel-950">
       <header className="border-b border-white/10">
         <div className="container-page flex h-16 items-center justify-between lg:h-20">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-steel-950">
-              <Cylinder className="h-5 w-5" />
-            </span>
-            <span className="font-display text-lg font-bold text-white">
-              Krebs <span className="text-amber-400">Tanksysteme</span>
-            </span>
+          <Link href="/" aria-label={`${site.name} – Startseite`}>
+            <Logo />
           </Link>
           <Link
             href="/"

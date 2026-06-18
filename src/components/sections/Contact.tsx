@@ -4,12 +4,9 @@ import { Phone, Smartphone, Mail, MapPin, Clock, MessageCircle } from "lucide-re
 import { site } from "@/config/site";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { MapEmbed } from "@/components/ui/MapEmbed";
 
 export function Contact() {
-  const mapsSrc = `https://www.google.com/maps?q=${encodeURIComponent(
-    site.address.mapsQuery,
-  )}&output=embed`;
-
   return (
     <section id="kontakt" className="relative bg-steel-900 py-24 lg:py-32">
       <div className="container-page relative">
@@ -121,14 +118,7 @@ export function Contact() {
           {/* Karte */}
           <Reveal delay={0.1}>
             <div className="h-full min-h-[420px] overflow-hidden rounded-3xl border border-white/10">
-              <iframe
-                title={`Standort ${site.name}`}
-                src={mapsSrc}
-                className="h-full w-full grayscale-[0.3]"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                style={{ minHeight: 420, border: 0 }}
-              />
+              <MapEmbed />
             </div>
           </Reveal>
         </div>

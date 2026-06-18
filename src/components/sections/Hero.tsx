@@ -6,6 +6,7 @@ import { Phone, CalendarCheck, ShieldCheck, ChevronDown } from "lucide-react";
 import { site } from "@/config/site";
 import { Button } from "@/components/ui/Button";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SceneBoundary } from "@/components/three/SceneBoundary";
 
 const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
   ssr: false,
@@ -43,7 +44,13 @@ export function Hero() {
 
       {/* 3D-Szene (rechte Hälfte auf Desktop, Hintergrund auf Mobile) */}
       <div className="absolute inset-0 lg:left-1/3">
-        {reduced ? <StaticHeroVisual /> : <HeroScene />}
+        {reduced ? (
+          <StaticHeroVisual />
+        ) : (
+          <SceneBoundary fallback={<StaticHeroVisual />}>
+            <HeroScene />
+          </SceneBoundary>
+        )}
       </div>
 
       {/* Inhalt */}

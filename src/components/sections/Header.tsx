@@ -3,15 +3,17 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Menu, X, Cylinder } from "lucide-react";
+import { Phone, Menu, X } from "lucide-react";
 import { site } from "@/config/site";
 import { Button } from "@/components/ui/Button";
+import { Logo } from "@/components/ui/Logo";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Leistungen", href: "#leistungen" },
   { label: "Ablauf", href: "#ablauf" },
   { label: "Warum wir", href: "#warum" },
+  { label: "Referenzen", href: "#referenzen" },
   { label: "FAQ", href: "#faq" },
   { label: "Kontakt", href: "#kontakt" },
 ];
@@ -45,13 +47,8 @@ export function Header() {
       )}
     >
       <nav className="container-page flex h-16 items-center justify-between lg:h-20">
-        <Link href="#hauptinhalt" className="flex items-center gap-2.5" aria-label={`${site.name} – Startseite`}>
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-steel-950 shadow-glow">
-            <Cylinder className="h-5 w-5" />
-          </span>
-          <span className="font-display text-lg font-bold text-white">
-            Krebs <span className="text-amber-400">Tanksysteme</span>
-          </span>
+        <Link href="#hauptinhalt" aria-label={`${site.name} – Startseite`}>
+          <Logo />
         </Link>
 
         {/* Desktop-Navigation */}

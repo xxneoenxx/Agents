@@ -1,0 +1,40 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Beispielbild Tankdemontage">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0f172a"/><stop offset="1" stop-color="#060912"/>
+    </linearGradient>
+    <linearGradient id="tank1" x1="300" y1="180" x2="520" y2="460" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#cbd5e1"/><stop offset="1" stop-color="#64748b"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg1)"/>
+  <g stroke="#94a3b8" stroke-opacity="0.08">
+    <path d="M0 150H800M0 300H800M0 450H800M200 0V600M400 0V600M600 0V600"/>
+  </g>
+  <!-- Boden -->
+  <rect y="470" width="800" height="130" fill="#0a0f1d"/>
+  <line x1="0" y1="470" x2="800" y2="470" stroke="#f59e0b" stroke-opacity="0.5" stroke-width="2"/>
+  <!-- Tank (teilzerlegt) -->
+  <rect x="300" y="200" width="200" height="270" rx="100" fill="url(#tank1)"/>
+  <ellipse cx="400" cy="200" rx="100" ry="34" fill="#e2e8f0"/>
+  <rect x="296" y="270" width="208" height="10" rx="5" fill="#0a0f1d" fill-opacity="0.5"/>
+  <rect x="296" y="360" width="208" height="10" rx="5" fill="#0a0f1d" fill-opacity="0.5"/>
+  <!-- abgenommenes Segment -->
+  <g transform="rotate(-18 560 250)">
+    <rect x="520" y="210" width="120" height="70" rx="20" fill="#94a3b8"/>
+    <rect x="516" y="238" width="128" height="8" rx="4" fill="#0a0f1d" fill-opacity="0.5"/>
+  </g>
+  <!-- Rohr -->
+  <rect x="392" y="150" width="16" height="60" rx="8" fill="#cbd5e1"/>
+  <!-- Werkzeug-Funke (Akzent) -->
+  <circle cx="300" cy="430" r="6" fill="#fbbf24"/>
+  <circle cx="316" cy="420" r="3" fill="#fbbf24"/>
+  <circle cx="288" cy="446" r="3" fill="#f59e0b"/>
+  <!-- Badge -->
+  <g transform="translate(40 40)">
+    <rect width="180" height="40" rx="20" fill="#0a0f1d" fill-opacity="0.7" stroke="#f59e0b" stroke-opacity="0.4"/>
+    <circle cx="24" cy="20" r="6" fill="#f59e0b"/>
+    <text x="42" y="26" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#fbbf24">Demontage</text>
+  </g>
+  <text x="40" y="560" font-family="Arial, sans-serif" font-size="14" fill="#64748b">Beispielbild · durch echtes Projektfoto ersetzen</text>
+</svg>

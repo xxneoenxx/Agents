@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Cylinder, Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
 import { site } from "@/config/site";
 import { services } from "@/config/services";
+import { Logo } from "@/components/ui/Logo";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -12,14 +13,7 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Marke */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-steel-950">
-                <Cylinder className="h-5 w-5" />
-              </span>
-              <span className="font-display text-lg font-bold text-white">
-                Krebs <span className="text-amber-400">Tanksysteme</span>
-              </span>
-            </div>
+            <Logo />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-steel-400">
               {site.tagline}. {site.trust.whg} – {site.trust.tuv}.
             </p>
@@ -49,6 +43,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-steel-400">
               <li><a href="#ablauf" className="hover:text-amber-400">Ablauf</a></li>
               <li><a href="#warum" className="hover:text-amber-400">Warum wir</a></li>
+              <li><a href="#referenzen" className="hover:text-amber-400">Referenzen</a></li>
               <li><a href="#faq" className="hover:text-amber-400">FAQ</a></li>
               <li><a href="#anfrage" className="hover:text-amber-400">Anfrage / Termin</a></li>
               <li><a href="#kontakt" className="hover:text-amber-400">Kontakt</a></li>
