@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie } from "lucide-react";
+import { safeLocalGet, safeLocalSet } from "@/lib/utils";
 
 const STORAGE_KEY = "kt-cookie-consent";
 
@@ -16,14 +17,14 @@ export function CookieConsent() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && !localStorage.getItem(STORAGE_KEY)) {
+    if (!safeLocalGet(STORAGE_KEY)) {
       const t = setTimeout(() => setVisible(true), 800);
       return () => clearTimeout(t);
     }
   }, []);
 
   const decide = (value: "all" | "essential") => {
-    localStorage.setItem(STORAGE_KEY, value);
+    safeLocalSet(STORAGE_KEY, value);
     setVisible(false);
   };
 

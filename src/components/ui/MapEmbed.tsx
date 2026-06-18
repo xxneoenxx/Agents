@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { MapPin, ExternalLink } from "lucide-react";
 import { site } from "@/config/site";
+import { safeLocalGet, safeLocalSet } from "@/lib/utils";
 
 const STORAGE_KEY = "kt-maps-consent";
 
@@ -16,13 +17,13 @@ export function MapEmbed() {
   const [consented, setConsented] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && localStorage.getItem(STORAGE_KEY) === "1") {
+    if (safeLocalGet(STORAGE_KEY) === "1") {
       setConsented(true);
     }
   }, []);
 
   const accept = () => {
-    localStorage.setItem(STORAGE_KEY, "1");
+    safeLocalSet(STORAGE_KEY, "1");
     setConsented(true);
   };
 
