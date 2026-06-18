@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -34,6 +35,9 @@ const stepConfig: { title: string; fields: StepFields }[] = [
   { title: "Wunschtermin", fields: [] },
   { title: "Kontakt", fields: ["name", "phone", "email", "consent"] },
 ];
+
+// Statische Vorschau (GitHub Pages) hat keinen Server: Formular läuft im Demo-Modus.
+const STATIC_PREVIEW = process.env.NEXT_PUBLIC_STATIC_PREVIEW === "1";
 
 const inputClass =
   "w-full rounded-xl border border-white/10 bg-steel-950/60 px-4 py-3 text-white placeholder:text-steel-500 transition-colors focus:border-amber-400/60 focus:outline-none";
@@ -80,6 +84,12 @@ export function BookingForm() {
 
   const onSubmit = async (data: BookingInput) => {
     setStatus("sending");
+    // Demo-Modus der statischen Vorschau: Erfolg simulieren (kein Server-Aufruf).
+    if (STATIC_PREVIEW) {
+      await new Promise((r) => setTimeout(r, 900));
+      setStatus("success");
+      return;
+    }
     try {
       const res = await fetch("/api/booking", {
         method: "POST",
@@ -344,9 +354,9 @@ export function BookingForm() {
                               <span>
                                 Ich willige ein, dass meine Angaben zur Bearbeitung der Anfrage
                                 verarbeitet werden. Details in der{" "}
-                                <a href="/datenschutz" className="text-amber-400 underline">
+                                <Link href="/datenschutz" className="text-amber-400 underline">
                                   Datenschutzerklärung
-                                </a>
+                                </Link>
                                 .
                               </span>
                             </label>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { MapPin, ExternalLink } from "lucide-react";
 import { site } from "@/config/site";
 
@@ -59,9 +60,9 @@ export function MapEmbed() {
         <p className="mt-2 text-sm text-steel-400">
           Zum Schutz Ihrer Daten wird die Karte erst nach Ihrer Zustimmung geladen. Dabei können
           Daten an Google übertragen werden. Details in der{" "}
-          <a href="/datenschutz" className="text-amber-400 underline">
+          <Link href="/datenschutz" className="text-amber-400 underline">
             Datenschutzerklärung
-          </a>
+          </Link>
           .
         </p>
       </div>

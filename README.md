@@ -4,6 +4,27 @@ Produktionsreife Website für **Krebs Tanksysteme** (Tankbau-Demontage-Service, 
 mit 3D-Hero-Animation, durchgängigen Scroll-/Widget-Animationen, mehrstufigem Anfrage-/
 Buchungsformular (E-Mail-Versand) und Klick-zum-Anrufen-Telefonanbindung.
 
+## 🔗 Live-Vorschau (am iPhone öffnen)
+
+**GitHub Pages:** https://xxneoenxx.github.io/Agents/krebs/
+
+Voll interaktiv (3D, Animationen, Galerie), direkt in Safari/Chrome auf dem Smartphone öffenbar.
+Das Buchungsformular läuft in dieser Vorschau im **Demo-Modus** (zeigt Erfolg, versendet keine echte
+E-Mail – das übernimmt der Vercel-Betrieb mit Resend-Key).
+
+Vorschau neu erzeugen & deployen: `npm run build:static` erstellt `out/`; dieser Ordner wird in den
+Unterordner `krebs/` des `gh-pages`-Branches kopiert (bestehende Previews bleiben unberührt).
+
+## 🚀 Produktiv-Deployment auf Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fxxneoenxx%2FAgents&project-name=krebs-tanksysteme&env=RESEND_API_KEY,BOOKING_TO_EMAIL,BOOKING_FROM_EMAIL&envDescription=E-Mail-Versand%20der%20Anfragen%20(Resend))
+
+1. **PR #3 nach `main` mergen** (oder in Vercel den Production-Branch auf
+   `claude/booking-site-3d-animations-ndz8pn` setzen), damit Vercel den App-Code findet.
+2. Repository in Vercel importieren – Framework **Next.js** wird automatisch erkannt.
+3. Umgebungsvariablen setzen (siehe unten): `RESEND_API_KEY`, `BOOKING_TO_EMAIL`, `BOOKING_FROM_EMAIL`.
+4. Deploy. Für echten E-Mail-Versand die Absender-Domain in Resend verifizieren.
+
 ## Tech-Stack
 
 - **Next.js 14** (App Router) + **TypeScript**
