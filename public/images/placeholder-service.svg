@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-label="Platzhalter: Service">
+  <defs>
+    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2c343d"/>
+      <stop offset="1" stop-color="#14181c"/>
+    </linearGradient>
+    <pattern id="grid4" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#3a434d" stroke-width="1" opacity="0.4"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g4)"/>
+  <rect width="1200" height="800" fill="url(#grid4)"/>
+  <g transform="translate(600 360)" fill="none" stroke="#7e8a95" stroke-width="6" opacity="0.6">
+    <circle r="90"/>
+    <circle r="36"/>
+    <line x1="-150" y1="0" x2="-110" y2="0"/>
+    <line x1="110" y1="0" x2="150" y2="0"/>
+    <line x1="0" y1="-150" x2="0" y2="-110"/>
+    <line x1="0" y1="110" x2="0" y2="150"/>
+  </g>
+  <text x="600" y="560" text-anchor="middle" font-family="monospace" font-size="26" letter-spacing="8" fill="#f2a516">SERVICE &amp; PRÜFUNG</text>
+  <text x="600" y="600" text-anchor="middle" font-family="monospace" font-size="16" letter-spacing="4" fill="#7e8a95">FOTO FOLGT · /images/service</text>
+</svg>

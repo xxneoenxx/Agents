@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-label="Platzhalter: Tankfahrzeug">
+  <defs>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2c343d"/>
+      <stop offset="1" stop-color="#14181c"/>
+    </linearGradient>
+    <linearGradient id="alu" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c3cbd3"/>
+      <stop offset="1" stop-color="#7e8a95"/>
+    </linearGradient>
+    <pattern id="grid2" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#3a434d" stroke-width="1" opacity="0.4"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g2)"/>
+  <rect width="1200" height="800" fill="url(#grid2)"/>
+  <g transform="translate(600 380)">
+    <rect x="-300" y="-70" width="500" height="140" rx="70" fill="url(#alu)" opacity="0.9"/>
+    <rect x="-360" y="-10" width="80" height="80" rx="8" fill="#7e8a95"/>
+    <circle cx="-230" cy="100" r="46" fill="#191e24" stroke="#7e8a95" stroke-width="8"/>
+    <circle cx="90" cy="100" r="46" fill="#191e24" stroke="#7e8a95" stroke-width="8"/>
+    <rect x="150" y="-30" width="40" height="20" fill="#f2a516"/>
+  </g>
+  <text x="600" y="580" text-anchor="middle" font-family="monospace" font-size="26" letter-spacing="8" fill="#f2a516">ALU-TANKFAHRZEUG</text>
+  <text x="600" y="620" text-anchor="middle" font-family="monospace" font-size="16" letter-spacing="4" fill="#7e8a95">FOTO FOLGT · /images/tankfahrzeug</text>
+</svg>

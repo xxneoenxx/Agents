@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --graphit: #14181c;
+  --stahl: #232a31;
+  --alu: #c3cbd3;
+  --alu-dark: #7e8a95;
+  --adr: #f2a516;
+  --glut: #ff5a1f;
+  --papier: #ecedef;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-graphit text-alu antialiased font-sans;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--adr);
+    color: var(--graphit);
+  }
+
+  /* Visible keyboard focus everywhere */
+  :focus-visible {
+    outline: 2px solid var(--adr);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-semibold tracking-tight text-papier;
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  .container-edge {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+  }
+
+  /* Mono technical label — the datasheet voice */
+  .eyebrow {
+    @apply font-mono text-[0.7rem] uppercase tracking-ultra text-adr;
+  }
+
+  .eyebrow-muted {
+    @apply font-mono text-[0.7rem] uppercase tracking-ultra text-alu-dark;
+  }
+
+  .hairline {
+    @apply h-px w-full bg-alu-line/70;
+  }
+
+  /* Brushed-metal panel */
+  .metal-panel {
+    background:
+      linear-gradient(160deg, rgba(195, 203, 211, 0.06), rgba(126, 138, 149, 0.02)),
+      var(--stahl);
+    border: 1px solid rgba(58, 67, 77, 0.9);
+    box-shadow:
+      inset 0 1px 0 rgba(195, 203, 211, 0.08),
+      0 18px 40px -28px rgba(0, 0, 0, 0.9);
+  }
+
+  .metal-panel-hover {
+    transition:
+      transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+      border-color 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+
+  .metal-panel-hover:hover {
+    transform: translateY(-4px);
+    border-color: rgba(242, 165, 22, 0.55);
+    box-shadow:
+      inset 0 1px 0 rgba(195, 203, 211, 0.12),
+      0 26px 55px -28px rgba(0, 0, 0, 0.95);
+  }
+
+  /* Headline with a milled metallic sheen */
+  .text-metal {
+    background: linear-gradient(180deg, #f4f6f8 0%, #c3cbd3 45%, #8b97a3 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-shimmer {
+    background: linear-gradient(
+      100deg,
+      var(--alu-dark) 30%,
+      var(--papier) 50%,
+      var(--alu-dark) 70%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    @apply animate-shimmer;
+  }
+}
+
+/* Custom scrollbar — workshop feel */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--graphit);
+}
+::-webkit-scrollbar-thumb {
+  background: #39424c;
+  border-radius: 0;
+  border: 2px solid var(--graphit);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--adr);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
