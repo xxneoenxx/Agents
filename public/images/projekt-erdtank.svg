@@ -1,0 +1,38 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Beispielbild Erdtank-Stilllegung">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0f172a"/><stop offset="1" stop-color="#060912"/>
+    </linearGradient>
+    <linearGradient id="soil" x1="0" y1="300" x2="0" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1e293b"/><stop offset="1" stop-color="#0a0f1d"/>
+    </linearGradient>
+    <linearGradient id="tank4" x1="280" y1="360" x2="520" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#cbd5e1"/><stop offset="1" stop-color="#64748b"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg4)"/>
+  <!-- Himmel-Grid -->
+  <g stroke="#94a3b8" stroke-opacity="0.08">
+    <path d="M0 100H800M0 200H800M200 0V300M400 0V300M600 0V300"/>
+  </g>
+  <!-- Erdreich -->
+  <rect y="300" width="800" height="300" fill="url(#soil)"/>
+  <line x1="0" y1="300" x2="800" y2="300" stroke="#2dd4bf" stroke-opacity="0.4" stroke-width="2"/>
+  <!-- erdverlegter Tank -->
+  <rect x="250" y="380" width="300" height="150" rx="75" fill="url(#tank4)"/>
+  <ellipse cx="250" cy="455" rx="36" ry="75" fill="#94a3b8"/>
+  <!-- Domschacht -->
+  <rect x="370" y="300" width="60" height="90" fill="#334155"/>
+  <ellipse cx="400" cy="300" rx="30" ry="9" fill="#475569"/>
+  <circle cx="400" cy="345" r="16" fill="#0a0f1d"/>
+  <circle cx="400" cy="345" r="16" stroke="#2dd4bf" stroke-width="3"/>
+  <!-- Messsonde -->
+  <line x1="400" y1="300" x2="400" y2="150" stroke="#2dd4bf" stroke-width="4"/>
+  <circle cx="400" cy="150" r="8" fill="#5eead4"/>
+  <g transform="translate(40 40)">
+    <rect width="150" height="40" rx="20" fill="#0a0f1d" fill-opacity="0.7" stroke="#2dd4bf" stroke-opacity="0.4"/>
+    <circle cx="24" cy="20" r="6" fill="#2dd4bf"/>
+    <text x="42" y="26" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#5eead4">Erdtank</text>
+  </g>
+  <text x="40" y="560" font-family="Arial, sans-serif" font-size="14" fill="#64748b">Beispielbild · durch echtes Projektfoto ersetzen</text>
+</svg>
