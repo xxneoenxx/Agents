@@ -1,0 +1,16 @@
+# Abhängigkeiten
+node_modules/
+
+# Logs & Caches
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+.cache/
+
+# Editor
+.vscode/
+.idea/
+
+# Hinweis: assets/css/styles.css wird BEWUSST eingecheckt,
+# damit die Seite auch ohne lokalen Build sofort funktioniert.

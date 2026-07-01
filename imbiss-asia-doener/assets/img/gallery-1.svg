@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FBF6EF"/><stop offset="1" stop-color="#F3E8D9"/>
+  </linearGradient>
+  <radialGradient id="plate" cx="50%" cy="42%" r="60%">
+    <stop offset="0" stop-color="#FFFDFA"/><stop offset="1" stop-color="#ECE1D2"/>
+  </radialGradient>
+  
+</defs>
+
+  <rect width="900" height="900" fill="url(#bg)"/>
+  <circle cx="450" cy="414" r="324" fill="#F08A24" opacity="0.10"/>
+  <circle cx="450" cy="414" r="270" fill="#E0402F" opacity="0.08"/>
+  <g transform="translate(450 378) scale(1.4)">
+    <path d="M -70 120 L -40 -120 Q 0 -150 40 -120 L 70 120 Q 0 150 -70 120 Z" fill="#E3B774"/>
+    <path d="M -70 120 L -40 -120 Q 0 -150 40 -120 L 70 120 Q 0 150 -70 120 Z" fill="none" stroke="#C9974F" stroke-width="6"/>
+    <path d="M -52 -70 Q 0 -95 52 -70" stroke="#7BA05B" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M -56 -30 Q 0 -8 56 -30" stroke="#A6532E" stroke-width="20" fill="none" stroke-linecap="round"/>
+    <path d="M -58 18 Q 0 42 58 18" stroke="#E0402F" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M -60 60 Q 0 84 60 60" stroke="#FFFDFA" stroke-width="12" fill="none" stroke-linecap="round"/>
+  </g>
+  <text x="450" y="874" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-weight="600" font-size="38" fill="#241F1C" opacity="0.6">Döner &amp; Dürüm</text>
+</svg>

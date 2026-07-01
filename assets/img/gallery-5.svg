@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F7F2EA"/><stop offset="1" stop-color="#EFE6D7"/>
+  </linearGradient>
+  
+</defs>
+
+  <rect width="900" height="900" fill="url(#bg)"/>
+  <path d="M 144 414 A 306 306 0 0 1 756 414 Z" fill="#E9CBB9" opacity="0.6"/>
+  <path d="M 180 414 A 270 270 0 0 1 720 414 Z" fill="#D8E0CF" opacity="0.55"/>
+  <g transform="translate(450 378) scale(1.7)">
+    <circle cx="0" cy="-10" r="56" fill="#B5673F"/>
+    <circle cx="0" cy="-10" r="30" fill="#F7F2EA"/>
+    <path d="M 40 -34 L 110 -54 L 110 34 L 40 14 Z" fill="#B5673F"/>
+    <path d="M -8 44 C -8 90, -50 95, -50 140" stroke="#B5673F" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <rect x="-30" y="40" width="44" height="60" rx="14" fill="#B5673F"/>
+  </g>
+  <text x="450" y="874" text-anchor="middle" font-family="Georgia, serif" font-size="32" fill="#2A2A28" opacity="0.55">Styling & Föhnen</text>
+</svg>

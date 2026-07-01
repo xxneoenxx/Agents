@@ -1,0 +1,138 @@
+/*
+ * Tailwind-Quelldatei.
+ * Aus dieser Datei wird `assets/css/styles.css` generiert:
+ *   npm run build   → einmalig (minifiziert)
+ *   npm run watch   → baut bei jeder Änderung neu
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===================================================================== *
+ * BASIS-ANPASSUNGEN
+ * ===================================================================== */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Sticky-Header berücksichtigen, damit Anker-Ziele nicht verdeckt werden. */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    @apply bg-cream text-charcoal font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  /* Deutlich sichtbarer Fokus-Rahmen für Tastaturbedienung (Barrierefreiheit). */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-cream;
+  }
+}
+
+/* ===================================================================== *
+ * WIEDERVERWENDBARE KOMPONENTEN-KLASSEN
+ * ===================================================================== */
+@layer components {
+  /* --- Buttons ------------------------------------------------------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3
+           text-sm font-semibold tracking-wide transition-all duration-300
+           focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+
+  /* Primär-Button (Rot) – z. B. „Anrufen & bestellen". */
+  .btn-primary {
+    @apply btn bg-brand text-cream-50 shadow-soft
+           hover:bg-brand-600 hover:-translate-y-0.5 hover:shadow-lg;
+  }
+
+  /* Sekundär-Button (Outline). */
+  .btn-secondary {
+    @apply btn border border-charcoal/20 bg-transparent text-charcoal
+           hover:border-brand hover:text-brand hover:-translate-y-0.5;
+  }
+
+  /* Heller Button auf dunklem/farbigem Grund. */
+  .btn-light {
+    @apply btn bg-cream-50 text-charcoal shadow-soft
+           hover:bg-white hover:-translate-y-0.5;
+  }
+
+  /* --- Layout-Helfer ------------------------------------------------- */
+  .section {
+    @apply py-20 md:py-28;
+  }
+
+  .section-eyebrow {
+    @apply mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] text-brand;
+  }
+
+  .section-title {
+    @apply text-3xl leading-tight md:text-4xl lg:text-5xl;
+  }
+
+  /* --- Karten -------------------------------------------------------- */
+  .card {
+    @apply rounded-2xl bg-cream-50 shadow-card transition-all duration-300
+           hover:-translate-y-1 hover:shadow-soft;
+  }
+
+  /* Ein Eintrag in der Speisekarte (Name … Preis). */
+  .menu-item {
+    @apply flex items-baseline justify-between gap-3 py-3 border-b border-charcoal/10 last:border-0;
+  }
+}
+
+/* ===================================================================== *
+ * SCROLL-REVEAL ANIMATIONEN
+ * Wichtig: Inhalte werden NUR versteckt, wenn JavaScript aktiv ist
+ * (die Klasse `js` wird per main.js an <html> gesetzt). So bleibt die
+ * gesamte Seite lesbar, falls JavaScript nicht ausgeführt wird.
+ * ===================================================================== */
+@layer utilities {
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    will-change: opacity, transform;
+  }
+
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Gestaffeltes Einblenden. */
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+}
+
+/* ===================================================================== *
+ * NUTZER-EINSTELLUNG „REDUZIERTE BEWEGUNG" RESPEKTIEREN
+ * ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

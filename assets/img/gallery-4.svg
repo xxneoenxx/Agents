@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F7F2EA"/><stop offset="1" stop-color="#EFE6D7"/>
+  </linearGradient>
+  
+</defs>
+
+  <rect width="900" height="900" fill="url(#bg)"/>
+  <path d="M 144 414 A 306 306 0 0 1 756 414 Z" fill="#E9CBB9" opacity="0.6"/>
+  <path d="M 180 414 A 270 270 0 0 1 720 414 Z" fill="#D8E0CF" opacity="0.55"/>
+  <g transform="translate(342 378) scale(1.5)" stroke="#B5673F" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="-34" cy="70" r="26"/><circle cx="34" cy="70" r="26"/>
+    <path d="M -20 56 L 40 -70"/><path d="M 20 56 L -40 -70"/>
+  </g><g transform="translate(576 450) scale(1.4)" stroke="#586549" stroke-width="7" fill="none" stroke-linecap="round">
+    <path d="M -82 0 L 82 0 L 82 -22 L -82 -22 Z" fill="#586549" stroke="none"/><path d="M -70 0 L -70 40"/><path d="M -50 0 L -50 40"/><path d="M -30 0 L -30 40"/><path d="M -10 0 L -10 40"/><path d="M 10 0 L 10 40"/><path d="M 30 0 L 30 40"/><path d="M 50 0 L 50 40"/><path d="M 70 0 L 70 40"/>
+  </g>
+  <text x="450" y="874" text-anchor="middle" font-family="Georgia, serif" font-size="32" fill="#2A2A28" opacity="0.55">Bartpflege</text>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F7F2EA"/><stop offset="1" stop-color="#EFE6D7"/>
+  </linearGradient>
+  
+</defs>
+
+  <rect width="900" height="900" fill="url(#bg)"/>
+  <path d="M 144 414 A 306 306 0 0 1 756 414 Z" fill="#E9CBB9" opacity="0.6"/>
+  <path d="M 180 414 A 270 270 0 0 1 720 414 Z" fill="#D8E0CF" opacity="0.55"/>
+  <g transform="translate(450 540) scale(1.6)" fill="#B5673F">
+    <rect x="-70" y="-110" width="140" height="120" rx="30"/>
+    <rect x="-86" y="10" width="172" height="46" rx="20"/>
+    <rect x="-10" y="56" width="20" height="70"/>
+    <ellipse cx="0" cy="138" rx="64" ry="16"/>
+  </g><g stroke="#586549" stroke-width="3.9000000000000004" fill="none" stroke-linecap="round">
+    <path d="M 198 462 C 198 384, 198 345, 198 306"/>
+  </g><g transform="translate(200 345) rotate(25) scale(1.3)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g transform="translate(148.6 377.5) rotate(200) scale(1.3)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g transform="translate(200 410) rotate(25) scale(1.3)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g transform="translate(148.6 436) rotate(200) scale(1.3)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g stroke="#8A9A7B" stroke-width="3.5999999999999996" fill="none" stroke-linecap="round">
+    <path d="M 720 468 C 720 396, 720 360, 720 324"/>
+  </g><g transform="translate(722 360) rotate(25) scale(1.2)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#8A9A7B"/></g><g transform="translate(674.4 390) rotate(200) scale(1.2)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#8A9A7B"/></g><g transform="translate(722 420) rotate(25) scale(1.2)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#8A9A7B"/></g><g transform="translate(674.4 444) rotate(200) scale(1.2)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#8A9A7B"/></g>
+  <text x="450" y="874" text-anchor="middle" font-family="Georgia, serif" font-size="32" fill="#2A2A28" opacity="0.55">Salon-Ambiente</text>
+</svg>

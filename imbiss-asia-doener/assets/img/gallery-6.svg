@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FBF6EF"/><stop offset="1" stop-color="#F3E8D9"/>
+  </linearGradient>
+  <radialGradient id="plate" cx="50%" cy="42%" r="60%">
+    <stop offset="0" stop-color="#FFFDFA"/><stop offset="1" stop-color="#ECE1D2"/>
+  </radialGradient>
+  
+</defs>
+
+  <rect width="900" height="900" fill="url(#bg)"/>
+  <circle cx="450" cy="414" r="324" fill="#F08A24" opacity="0.10"/>
+  <circle cx="450" cy="414" r="270" fill="#E0402F" opacity="0.08"/>
+  <g transform="translate(450 396) scale(1.7)">
+    <path d="M -48 -70 L 48 -70 L 38 90 Q 0 100 -38 90 Z" fill="#E0402F"/>
+    <path d="M -48 -70 L 48 -70 L 44 -36 L -44 -36 Z" fill="#FBF6EF" opacity="0.9"/>
+    <rect x="14" y="-150" width="10" height="90" rx="5" fill="#F08A24" transform="rotate(12 19 -105)"/>
+    <ellipse cx="0" cy="-70" rx="48" ry="12" fill="#9C2316"/>
+  </g>
+  <text x="450" y="874" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-weight="600" font-size="38" fill="#241F1C" opacity="0.6">Getränke</text>
+</svg>

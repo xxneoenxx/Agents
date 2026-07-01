@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================== -->
+  <!-- SEO: Titel & Meta-Beschreibung (hier ggf. anpassen)            -->
+  <!-- ============================================================== -->
+  <title>Atelier Götz – Coiffeur & Barbier in Chemnitz | Nachhaltiger Friseur</title>
+  <meta
+    name="description"
+    content="Atelier Götz – Ihr nachhaltiger Friseur & Barbier in Chemnitz. Moderne Schnitte, organische Produkte und individuelle Typberatung. 4,9 ★ aus 100 Google-Bewertungen. Jetzt Termin buchen."
+  />
+  <meta name="theme-color" content="#B5673F" />
+  <link rel="canonical" href="https://www.atelier-goetz-chemnitz.de/" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkF0ZWxpZXIgR8O2dHoiPgogIDxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjQjU2NzNGIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iMzQiIGZpbGw9IiNGN0YyRUEiPkFHPC90ZXh0Pgo8L3N2Zz4K" />
+
+  <!-- ============================================================== -->
+  <!-- Open Graph / Twitter (Vorschau beim Teilen in Social Media)    -->
+  <!-- Domain unten ggf. an die echte Adresse anpassen.               -->
+  <!-- ============================================================== -->
+  <meta property="og:type" content="business.business" />
+  <meta property="og:title" content="Atelier Götz – Coiffeur & Barbier in Chemnitz" />
+  <meta
+    property="og:description"
+    content="Ihr nachhaltiger Friseur & Barbier in Chemnitz. Organische Produkte, individuelle Typberatung. 4,9 ★ aus 100 Bewertungen."
+  />
+  <meta property="og:image" content="https://www.atelier-goetz-chemnitz.dedata:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYzMCIgdmlld0JveD0iMCAwIDEyMDAgNjMwIiByb2xlPSJpbWciPgo8ZGVmcz4KICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNGN0YyRUEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNFRkU2RDciLz4KICA8L2xpbmVhckdyYWRpZW50PgogIAo8L2RlZnM+CgogIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYzMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDM4MCAzMDAgQSAyMjAgMjIwIDAgMCAxIDgyMCAzMDAgWiIgZmlsbD0iI0U5Q0JCOSIgb3BhY2l0eT0iMC41NSIvPgogIDxnIHN0cm9rZT0iIzhBOUE3QiIgc3Ryb2tlLXdpZHRoPSI0LjgwMDAwMDAwMDAwMDAwMSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxwYXRoIGQ9Ik0gMTUwIDM5MiBDIDE1MCAyOTYsIDE1MCAyNDgsIDE1MCAyMDAiLz4KICA8L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTUyIDI0OCkgcm90YXRlKDI1KSBzY2FsZSgxLjYpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzhBOUE3QiIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4OS4xOTk5OTk5OTk5OTk5OSAyODgpIHJvdGF0ZSgyMDApIHNjYWxlKDEuNikiPjxwYXRoIGQ9Ik0wIDAgUSAxOCAtMTAgMzYgMCBRIDE4IDEwIDAgMCBaIiBmaWxsPSIjOEE5QTdCIi8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE1MiAzMjgpIHJvdGF0ZSgyNSkgc2NhbGUoMS42KSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiM4QTlBN0IiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODkuMTk5OTk5OTk5OTk5OTkgMzYwKSByb3RhdGUoMjAwKSBzY2FsZSgxLjYpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzhBOUE3QiIvPjwvZz4KICA8ZyBzdHJva2U9IiM1ODY1NDkiIHN0cm9rZS13aWR0aD0iNC41IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPgogICAgPHBhdGggZD0iTSAxMDEwIDQxMCBDIDEwMTAgMzIwLCAxMDEwIDI3NSwgMTAxMCAyMzAiLz4KICA8L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAxMiAyNzUpIHJvdGF0ZSgyNSkgc2NhbGUoMS41KSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiM1ODY1NDkiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTUzIDMxMi41KSByb3RhdGUoMjAwKSBzY2FsZSgxLjUpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMDEyIDM1MCkgcm90YXRlKDI1KSBzY2FsZSgxLjUpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NTMgMzgwKSByb3RhdGUoMjAwKSBzY2FsZSgxLjUpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz4KICA8Y2lyY2xlIGN4PSI2MDAiIGN5PSIyNTAiIHI9IjcwIiBmaWxsPSIjQjU2NzNGIi8+CiAgPHRleHQgeD0iNjAwIiB5PSIyNTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iNTgiIGZpbGw9IiNGN0YyRUEiPkFHPC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iNzIiIGZpbGw9IiMyQTJBMjgiPkF0ZWxpZXIgR8O2dHo8L3RleHQ+CiAgPHRleHQgeD0iNjAwIiB5PSI0NjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOCIgbGV0dGVyLXNwYWNpbmc9IjYiIGZpbGw9IiNCNTY3M0YiPkNPSUZGRVVSICZhbXA7IEJBUkJJRVIgwrcgQ0hFTU5JVFo8L3RleHQ+Cgo8L3N2Zz4=" />
+  <meta property="og:url" content="https://www.atelier-goetz-chemnitz.de/" />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:site_name" content="Atelier Götz" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Atelier Götz – Coiffeur & Barbier in Chemnitz" />
+  <meta name="twitter:description" content="Ihr nachhaltiger Friseur & Barbier in Chemnitz. 4,9 ★ aus 100 Bewertungen." />
+  <meta name="twitter:image" content="https://www.atelier-goetz-chemnitz.dedata:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYzMCIgdmlld0JveD0iMCAwIDEyMDAgNjMwIiByb2xlPSJpbWciPgo8ZGVmcz4KICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNGN0YyRUEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNFRkU2RDciLz4KICA8L2xpbmVhckdyYWRpZW50PgogIAo8L2RlZnM+CgogIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYzMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDM4MCAzMDAgQSAyMjAgMjIwIDAgMCAxIDgyMCAzMDAgWiIgZmlsbD0iI0U5Q0JCOSIgb3BhY2l0eT0iMC41NSIvPgogIDxnIHN0cm9rZT0iIzhBOUE3QiIgc3Ryb2tlLXdpZHRoPSI0LjgwMDAwMDAwMDAwMDAwMSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxwYXRoIGQ9Ik0gMTUwIDM5MiBDIDE1MCAyOTYsIDE1MCAyNDgsIDE1MCAyMDAiLz4KICA8L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTUyIDI0OCkgcm90YXRlKDI1KSBzY2FsZSgxLjYpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzhBOUE3QiIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4OS4xOTk5OTk5OTk5OTk5OSAyODgpIHJvdGF0ZSgyMDApIHNjYWxlKDEuNikiPjxwYXRoIGQ9Ik0wIDAgUSAxOCAtMTAgMzYgMCBRIDE4IDEwIDAgMCBaIiBmaWxsPSIjOEE5QTdCIi8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE1MiAzMjgpIHJvdGF0ZSgyNSkgc2NhbGUoMS42KSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiM4QTlBN0IiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODkuMTk5OTk5OTk5OTk5OTkgMzYwKSByb3RhdGUoMjAwKSBzY2FsZSgxLjYpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzhBOUE3QiIvPjwvZz4KICA8ZyBzdHJva2U9IiM1ODY1NDkiIHN0cm9rZS13aWR0aD0iNC41IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPgogICAgPHBhdGggZD0iTSAxMDEwIDQxMCBDIDEwMTAgMzIwLCAxMDEwIDI3NSwgMTAxMCAyMzAiLz4KICA8L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAxMiAyNzUpIHJvdGF0ZSgyNSkgc2NhbGUoMS41KSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiM1ODY1NDkiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTUzIDMxMi41KSByb3RhdGUoMjAwKSBzY2FsZSgxLjUpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMDEyIDM1MCkgcm90YXRlKDI1KSBzY2FsZSgxLjUpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NTMgMzgwKSByb3RhdGUoMjAwKSBzY2FsZSgxLjUpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz4KICA8Y2lyY2xlIGN4PSI2MDAiIGN5PSIyNTAiIHI9IjcwIiBmaWxsPSIjQjU2NzNGIi8+CiAgPHRleHQgeD0iNjAwIiB5PSIyNTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iNTgiIGZpbGw9IiNGN0YyRUEiPkFHPC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iNzIiIGZpbGw9IiMyQTJBMjgiPkF0ZWxpZXIgR8O2dHo8L3RleHQ+CiAgPHRleHQgeD0iNjAwIiB5PSI0NjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOCIgbGV0dGVyLXNwYWNpbmc9IjYiIGZpbGw9IiNCNTY3M0YiPkNPSUZGRVVSICZhbXA7IEJBUkJJRVIgwrcgQ0hFTU5JVFo8L3RleHQ+Cgo8L3N2Zz4=" />
+
+  <!-- ============================================================== -->
+  <!-- Google Fonts: Cormorant Garamond (Serif) + Inter (Sans)        -->
+  <!-- Andere Schrift? Hier UND in tailwind.config.js ändern.         -->
+  <!-- ============================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Generiertes Tailwind-CSS (per `npm run build` erzeugt) -->
+  <style>
+*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }
+/*! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}html{scroll-behavior:smooth;scroll-padding-top:5.5rem}body{--tw-bg-opacity:1;background-color:rgb(247 242 234/var(--tw-bg-opacity,1));font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;--tw-text-opacity:1;color:rgb(42 42 40/var(--tw-text-opacity,1));-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}h1,h2,h3,h4{font-family:Cormorant Garamond,Georgia,serif;font-weight:600;letter-spacing:-.025em}:focus-visible{outline:2px solid transparent;outline-offset:2px;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000);--tw-ring-opacity:1;--tw-ring-color:rgb(181 103 63/var(--tw-ring-opacity,1));--tw-ring-offset-width:2px;--tw-ring-offset-color:#f7f2ea}.container{width:100%;margin-right:auto;margin-left:auto;padding-right:1.25rem;padding-left:1.25rem}@media (min-width:1200px){.container{max-width:1200px}}.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:9999px;padding:.75rem 1.5rem;font-size:.875rem;line-height:1.25rem;font-weight:600;letter-spacing:.025em;transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.3s}.btn-primary:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000);--tw-ring-offset-width:2px}.btn-primary{--tw-bg-opacity:1;background-color:rgb(181 103 63/var(--tw-bg-opacity,1));--tw-text-opacity:1;color:rgb(253 251 247/var(--tw-text-opacity,1));--tw-shadow:0 10px 30px -12px rgba(42,42,40,.18);--tw-shadow-colored:0 10px 30px -12px var(--tw-shadow-color)}.btn-primary,.btn-primary:hover{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.btn-primary:hover{--tw-translate-y:-0.125rem;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));--tw-bg-opacity:1;background-color:rgb(154 83 49/var(--tw-bg-opacity,1));--tw-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color)}.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:9999px;padding:.75rem 1.5rem;font-size:.875rem;line-height:1.25rem;font-weight:600;letter-spacing:.025em;transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.3s}.btn-secondary:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000);--tw-ring-offset-width:2px}.btn-secondary{border-width:1px;border-color:rgba(42,42,40,.2);background-color:transparent;--tw-text-opacity:1;color:rgb(42 42 40/var(--tw-text-opacity,1))}.btn-secondary:hover{--tw-translate-y:-0.125rem;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));--tw-border-opacity:1;border-color:rgb(181 103 63/var(--tw-border-opacity,1));--tw-text-opacity:1;color:rgb(181 103 63/var(--tw-text-opacity,1))}.btn-light{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:9999px;padding:.75rem 1.5rem;font-size:.875rem;line-height:1.25rem;font-weight:600;letter-spacing:.025em;transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.3s}.btn-light:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000);--tw-ring-offset-width:2px}.btn-light{--tw-bg-opacity:1;background-color:rgb(253 251 247/var(--tw-bg-opacity,1));--tw-text-opacity:1;color:rgb(42 42 40/var(--tw-text-opacity,1));--tw-shadow:0 10px 30px -12px rgba(42,42,40,.18);--tw-shadow-colored:0 10px 30px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.btn-light:hover{--tw-translate-y:-0.125rem;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity,1))}.section{padding-top:5rem;padding-bottom:5rem}@media (min-width:768px){.section{padding-top:7rem;padding-bottom:7rem}}.section-eyebrow{margin-bottom:.75rem;display:inline-block;font-size:.875rem;line-height:1.25rem;font-weight:600;text-transform:uppercase;letter-spacing:.2em;--tw-text-opacity:1;color:rgb(181 103 63/var(--tw-text-opacity,1))}.section-title{font-size:1.875rem;line-height:2.25rem;line-height:1.25}@media (min-width:768px){.section-title{font-size:2.25rem;line-height:2.5rem}}@media (min-width:1024px){.section-title{font-size:3rem;line-height:1}}.card{border-radius:1.25rem;--tw-bg-opacity:1;background-color:rgb(253 251 247/var(--tw-bg-opacity,1));padding:1.75rem;--tw-shadow:0 4px 20px -8px rgba(42,42,40,.15);--tw-shadow-colored:0 4px 20px -8px var(--tw-shadow-color);transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.3s}.card,.card:hover{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.card:hover{--tw-translate-y:-0.25rem;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));--tw-shadow:0 10px 30px -12px rgba(42,42,40,.18);--tw-shadow-colored:0 10px 30px -12px var(--tw-shadow-color)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0}.inset-x-0{left:0;right:0}.-bottom-5{bottom:-1.25rem}.-left-3{left:-.75rem}.left-4{left:1rem}.right-4{right:1rem}.top-0{top:0}.top-1{top:.25rem}.top-1\/2{top:50%}.top-4{top:1rem}.z-50{z-index:50}.z-\[90\]{z-index:90}.order-1{order:1}.order-2{order:2}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:.25rem}.mb-1\.5{margin-bottom:.375rem}.mb-6{margin-bottom:1.5rem}.mt-1{margin-top:.25rem}.mt-12{margin-top:3rem}.mt-14{margin-top:3.5rem}.mt-16{margin-top:4rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.mt-6{margin-top:1.5rem}.mt-7{margin-top:1.75rem}.mt-8{margin-top:2rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.aspect-\[4\/3\]{aspect-ratio:4/3}.aspect-\[6\/5\]{aspect-ratio:6/5}.aspect-square{aspect-ratio:1/1}.h-1{height:.25rem}.h-1\.5{height:.375rem}.h-10{height:2.5rem}.h-11{height:2.75rem}.h-12{height:3rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-64{height:16rem}.h-8{height:2rem}.max-h-\[85vh\]{max-height:85vh}.w-1{width:.25rem}.w-1\.5{width:.375rem}.w-10{width:2.5rem}.w-11{width:2.75rem}.w-12{width:3rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-6{width:1.5rem}.w-8{width:2rem}.w-full{width:100%}.max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}.max-w-\[90vw\]{max-width:90vw}.max-w-xl{max-width:36rem}.max-w-xs{max-width:20rem}.flex-none{flex:none}.-translate-y-1{--tw-translate-y:-0.25rem}.-translate-y-1,.-translate-y-1\/2{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.-translate-y-1\/2{--tw-translate-y:-50%}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes fade-in{0%{opacity:0}to{opacity:1}}.animate-fade-in{animation:fade-in 1s ease-out both}@keyframes fade-up{0%{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.animate-fade-up{animation:fade-up .8s ease-out both}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-10{gap:2.5rem}.gap-12{gap:3rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-x-6{-moz-column-gap:1.5rem;column-gap:1.5rem}.gap-y-2{row-gap:.5rem}.space-y-2>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.5rem*var(--tw-space-y-reverse))}.space-y-6>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem*var(--tw-space-y-reverse))}.space-y-8>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem*var(--tw-space-y-reverse))}.self-start{align-self:flex-start}.overflow-hidden{overflow:hidden}.rounded{border-radius:.25rem}.rounded-2xl{border-radius:1.25rem}.rounded-3xl{border-radius:1.75rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-anthracite{--tw-border-opacity:1;border-color:rgb(42 42 40/var(--tw-border-opacity,1))}.border-anthracite\/10{border-color:rgba(42,42,40,.1)}.border-anthracite\/15{border-color:rgba(42,42,40,.15)}.border-anthracite\/30{border-color:rgba(42,42,40,.3)}.border-cream-100{--tw-border-opacity:1;border-color:rgb(247 242 234/var(--tw-border-opacity,1))}.border-cream-100\/15{border-color:hsla(37,45%,94%,.15)}.bg-anthracite{--tw-bg-opacity:1;background-color:rgb(42 42 40/var(--tw-bg-opacity,1))}.bg-anthracite\/90{background-color:rgba(42,42,40,.9)}.bg-cream,.bg-cream-100{--tw-bg-opacity:1;background-color:rgb(247 242 234/var(--tw-bg-opacity,1))}.bg-cream-100\/10{background-color:hsla(37,45%,94%,.1)}.bg-cream-200{--tw-bg-opacity:1;background-color:rgb(239 230 215/var(--tw-bg-opacity,1))}.bg-cream-200\/50{background-color:hsla(38,43%,89%,.5)}.bg-cream-50{--tw-bg-opacity:1;background-color:rgb(253 251 247/var(--tw-bg-opacity,1))}.bg-cream-50\/90{background-color:hsla(40,60%,98%,.9)}.bg-cream\/95{background-color:hsla(37,45%,94%,.95)}.bg-sage{--tw-bg-opacity:1;background-color:rgb(138 154 123/var(--tw-bg-opacity,1))}.bg-sage-100{--tw-bg-opacity:1;background-color:rgb(216 224 207/var(--tw-bg-opacity,1))}.bg-sage-600{--tw-bg-opacity:1;background-color:rgb(111 126 97/var(--tw-bg-opacity,1))}.bg-terracotta{--tw-bg-opacity:1;background-color:rgb(181 103 63/var(--tw-bg-opacity,1))}.bg-terracotta-50{--tw-bg-opacity:1;background-color:rgb(246 233 225/var(--tw-bg-opacity,1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity,1))}.object-contain{-o-object-fit:contain;object-fit:contain}.object-cover{-o-object-fit:cover;object-fit:cover}.p-4{padding:1rem}.p-6{padding:1.5rem}.p-7{padding:1.75rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-14{padding-top:3.5rem;padding-bottom:3.5rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.pb-1{padding-bottom:.25rem}.pb-16{padding-bottom:4rem}.pt-2{padding-top:.5rem}.pt-28{padding-top:7rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.font-sans{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}.font-serif{font-family:Cormorant Garamond,Georgia,serif}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-6xl{font-size:3.75rem;line-height:1}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.not-italic{font-style:normal}.leading-\[1\.1\]{line-height:1.1}.leading-none{line-height:1}.tracking-\[0\.25em\]{letter-spacing:.25em}.tracking-\[0\.2em\]{letter-spacing:.2em}.text-anthracite{--tw-text-opacity:1;color:rgb(42 42 40/var(--tw-text-opacity,1))}.text-anthracite-light{--tw-text-opacity:1;color:rgb(74 74 70/var(--tw-text-opacity,1))}.text-anthracite-muted{--tw-text-opacity:1;color:rgb(110 110 104/var(--tw-text-opacity,1))}.text-cream-100{--tw-text-opacity:1;color:rgb(247 242 234/var(--tw-text-opacity,1))}.text-cream-100\/70{color:hsla(37,45%,94%,.7)}.text-cream-100\/80{color:hsla(37,45%,94%,.8)}.text-cream-50{--tw-text-opacity:1;color:rgb(253 251 247/var(--tw-text-opacity,1))}.text-sage-700{--tw-text-opacity:1;color:rgb(88 101 73/var(--tw-text-opacity,1))}.text-terracotta{--tw-text-opacity:1;color:rgb(181 103 63/var(--tw-text-opacity,1))}.text-terracotta-100{--tw-text-opacity:1;color:rgb(233 203 185/var(--tw-text-opacity,1))}.shadow-card{--tw-shadow:0 4px 20px -8px rgba(42,42,40,.15);--tw-shadow-colored:0 4px 20px -8px var(--tw-shadow-color)}.shadow-card,.shadow-soft{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-soft{--tw-shadow:0 10px 30px -12px rgba(42,42,40,.18);--tw-shadow-colored:0 10px 30px -12px var(--tw-shadow-color)}.ring-terracotta{--tw-ring-opacity:1;--tw-ring-color:rgb(181 103 63/var(--tw-ring-opacity,1))}.backdrop-blur{--tw-backdrop-blur:blur(8px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.duration-300{transition-duration:.3s}.duration-500{transition-duration:.5s}.ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}.js .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease-out,transform .7s ease-out;will-change:opacity,transform}.js .reveal.is-visible{opacity:1;transform:translateY(0)}.reveal-delay-1{transition-delay:.1s}.reveal-delay-2{transition-delay:.2s}.reveal-delay-3{transition-delay:.3s}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,:after,:before{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.reveal{opacity:1!important;transform:none!important}}.placeholder\:text-anthracite-muted::-moz-placeholder{--tw-text-opacity:1;color:rgb(110 110 104/var(--tw-text-opacity,1))}.placeholder\:text-anthracite-muted::placeholder{--tw-text-opacity:1;color:rgb(110 110 104/var(--tw-text-opacity,1))}.hover\:bg-cream-200:hover{--tw-bg-opacity:1;background-color:rgb(239 230 215/var(--tw-bg-opacity,1))}.hover\:bg-cream-50:hover{--tw-bg-opacity:1;background-color:rgb(253 251 247/var(--tw-bg-opacity,1))}.hover\:bg-terracotta:hover{--tw-bg-opacity:1;background-color:rgb(181 103 63/var(--tw-bg-opacity,1))}.hover\:text-terracotta:hover{--tw-text-opacity:1;color:rgb(181 103 63/var(--tw-text-opacity,1))}.hover\:text-terracotta-100:hover{--tw-text-opacity:1;color:rgb(233 203 185/var(--tw-text-opacity,1))}.hover\:underline:hover{text-decoration-line:underline}.focus\:not-sr-only:focus{position:static;width:auto;height:auto;padding:0;margin:0;overflow:visible;clip:auto;white-space:normal}.focus\:absolute:focus{position:absolute}.focus\:left-4:focus{left:1rem}.focus\:top-4:focus{top:1rem}.focus\:z-\[100\]:focus{z-index:100}.focus\:rounded-full:focus{border-radius:9999px}.focus\:border-terracotta:focus{--tw-border-opacity:1;border-color:rgb(181 103 63/var(--tw-border-opacity,1))}.focus\:bg-terracotta:focus{--tw-bg-opacity:1;background-color:rgb(181 103 63/var(--tw-bg-opacity,1))}.focus\:px-5:focus{padding-left:1.25rem;padding-right:1.25rem}.focus\:py-2:focus{padding-top:.5rem;padding-bottom:.5rem}.focus\:text-cream-50:focus{--tw-text-opacity:1;color:rgb(253 251 247/var(--tw-text-opacity,1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus\:ring-terracotta:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(181 103 63/var(--tw-ring-opacity,1))}.focus\:ring-terracotta\/40:focus{--tw-ring-color:rgba(181,103,63,.4)}.group:hover .group-hover\:scale-110{--tw-scale-x:1.1;--tw-scale-y:1.1;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@media (min-width:640px){.sm\:block{display:block}.sm\:inline-flex{display:inline-flex}.sm\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.sm\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.sm\:flex-row{flex-direction:row}}@media (min-width:768px){.md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.md\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.md\:flex-row{flex-direction:row}.md\:p-9{padding:2.25rem}.md\:px-12{padding-left:3rem;padding-right:3rem}.md\:pb-24{padding-bottom:6rem}.md\:pt-32{padding-top:8rem}.md\:text-4xl{font-size:2.25rem;line-height:2.5rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-lg{font-size:1.125rem;line-height:1.75rem}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}@media (min-width:1024px){.lg\:order-1{order:1}.lg\:order-2{order:2}.lg\:col-span-4{grid-column:span 4/span 4}.lg\:col-span-8{grid-column:span 8/span 8}.lg\:flex{display:flex}.lg\:hidden{display:none}.lg\:grid-cols-12{grid-template-columns:repeat(12,minmax(0,1fr))}.lg\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.lg\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.lg\:gap-12{gap:3rem}.lg\:gap-14{gap:3.5rem}.lg\:gap-16{gap:4rem}.lg\:text-6xl{font-size:3.75rem;line-height:1}}.\[\&\.is-scrolled\]\:bg-cream\/90.is-scrolled{background-color:hsla(37,45%,94%,.9)}.\[\&\.is-scrolled\]\:shadow-soft.is-scrolled{--tw-shadow:0 10px 30px -12px rgba(42,42,40,.18);--tw-shadow-colored:0 10px 30px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.\[\&\.is-scrolled\]\:backdrop-blur.is-scrolled{--tw-backdrop-blur:blur(8px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}
+</style>
+
+  <!-- ============================================================== -->
+  <!-- JSON-LD: strukturierte Daten (Schema.org HairSalon)            -->
+  <!-- Adresse, Telefon, Öffnungszeiten, Bewertung – hier pflegen.    -->
+  <!-- ============================================================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HairSalon",
+    "name": "Atelier Götz – Coiffeur & Barbier",
+    "image": "https://www.atelier-goetz-chemnitz.dedata:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYzMCIgdmlld0JveD0iMCAwIDEyMDAgNjMwIiByb2xlPSJpbWciPgo8ZGVmcz4KICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNGN0YyRUEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNFRkU2RDciLz4KICA8L2xpbmVhckdyYWRpZW50PgogIAo8L2RlZnM+CgogIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYzMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDM4MCAzMDAgQSAyMjAgMjIwIDAgMCAxIDgyMCAzMDAgWiIgZmlsbD0iI0U5Q0JCOSIgb3BhY2l0eT0iMC41NSIvPgogIDxnIHN0cm9rZT0iIzhBOUE3QiIgc3Ryb2tlLXdpZHRoPSI0LjgwMDAwMDAwMDAwMDAwMSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxwYXRoIGQ9Ik0gMTUwIDM5MiBDIDE1MCAyOTYsIDE1MCAyNDgsIDE1MCAyMDAiLz4KICA8L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTUyIDI0OCkgcm90YXRlKDI1KSBzY2FsZSgxLjYpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzhBOUE3QiIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4OS4xOTk5OTk5OTk5OTk5OSAyODgpIHJvdGF0ZSgyMDApIHNjYWxlKDEuNikiPjxwYXRoIGQ9Ik0wIDAgUSAxOCAtMTAgMzYgMCBRIDE4IDEwIDAgMCBaIiBmaWxsPSIjOEE5QTdCIi8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE1MiAzMjgpIHJvdGF0ZSgyNSkgc2NhbGUoMS42KSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiM4QTlBN0IiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODkuMTk5OTk5OTk5OTk5OTkgMzYwKSByb3RhdGUoMjAwKSBzY2FsZSgxLjYpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzhBOUE3QiIvPjwvZz4KICA8ZyBzdHJva2U9IiM1ODY1NDkiIHN0cm9rZS13aWR0aD0iNC41IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPgogICAgPHBhdGggZD0iTSAxMDEwIDQxMCBDIDEwMTAgMzIwLCAxMDEwIDI3NSwgMTAxMCAyMzAiLz4KICA8L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAxMiAyNzUpIHJvdGF0ZSgyNSkgc2NhbGUoMS41KSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiM1ODY1NDkiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTUzIDMxMi41KSByb3RhdGUoMjAwKSBzY2FsZSgxLjUpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMDEyIDM1MCkgcm90YXRlKDI1KSBzY2FsZSgxLjUpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NTMgMzgwKSByb3RhdGUoMjAwKSBzY2FsZSgxLjUpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz4KICA8Y2lyY2xlIGN4PSI2MDAiIGN5PSIyNTAiIHI9IjcwIiBmaWxsPSIjQjU2NzNGIi8+CiAgPHRleHQgeD0iNjAwIiB5PSIyNTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iNTgiIGZpbGw9IiNGN0YyRUEiPkFHPC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iNzIiIGZpbGw9IiMyQTJBMjgiPkF0ZWxpZXIgR8O2dHo8L3RleHQ+CiAgPHRleHQgeD0iNjAwIiB5PSI0NjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOCIgbGV0dGVyLXNwYWNpbmc9IjYiIGZpbGw9IiNCNTY3M0YiPkNPSUZGRVVSICZhbXA7IEJBUkJJRVIgwrcgQ0hFTU5JVFo8L3RleHQ+Cgo8L3N2Zz4=",
+    "url": "https://www.atelier-goetz-chemnitz.de/",
+    "telephone": "+4937133502111",
+    "priceRange": "€€",
+    "description": "Nachhaltiger Friseur & Barbier in Chemnitz mit organischen Produkten und individueller Typberatung.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Schloßteichstraße 1",
+      "postalCode": "09113",
+      "addressLocality": "Chemnitz",
+      "addressCountry": "DE"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 50.8456,
+      "longitude": 12.9192
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "100",
+      "bestRating": "5"
+    }
+  }
+  </script>
+</head>
+
+<body class="bg-cream text-anthracite">
+  <!-- Skip-Link für Screenreader / Tastatur -->
+  <a
+    href="#hero"
+    class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-terracotta focus:px-5 focus:py-2 focus:text-cream-50"
+  >
+    Zum Inhalt springen
+  </a>
+
+  <!-- ================================================================ -->
+  <!-- 1. STICKY-NAVIGATION                                             -->
+  <!-- ================================================================ -->
+  <header
+    data-header
+    class="fixed inset-x-0 top-0 z-50 transition-all duration-300 [&.is-scrolled]:bg-cream/90 [&.is-scrolled]:shadow-soft [&.is-scrolled]:backdrop-blur"
+  >
+    <nav class="container flex items-center justify-between py-4" aria-label="Hauptnavigation">
+      <!-- Logo / Salonname -->
+      <a href="#hero" class="flex items-center gap-3" aria-label="Atelier Götz – zur Startseite">
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-terracotta font-serif text-lg font-bold text-cream-50">AG</span>
+        <span class="font-serif text-xl font-semibold leading-none">
+          Atelier Götz
+          <span class="block text-xs font-sans font-medium uppercase tracking-[0.2em] text-anthracite-muted">Coiffeur &amp; Barbier</span>
+        </span>
+      </a>
+
+      <!-- Desktop-Navigation -->
+      <ul class="hidden items-center gap-8 lg:flex">
+        <li><a href="#ueber-uns" class="text-sm font-medium transition-colors hover:text-terracotta">Über uns</a></li>
+        <li><a href="#leistungen" class="text-sm font-medium transition-colors hover:text-terracotta">Leistungen</a></li>
+        <li><a href="#galerie" class="text-sm font-medium transition-colors hover:text-terracotta">Galerie</a></li>
+        <li><a href="#bewertungen" class="text-sm font-medium transition-colors hover:text-terracotta">Bewertungen</a></li>
+        <li><a href="#kontakt" class="text-sm font-medium transition-colors hover:text-terracotta">Kontakt</a></li>
+      </ul>
+
+      <div class="flex items-center gap-3">
+        <!-- Termin buchen: Anker zum Kontaktbereich. Alternativ echte Buchungs-URL eintragen. -->
+        <a href="#kontakt" class="btn-primary hidden sm:inline-flex">Termin buchen</a>
+
+        <!-- Hamburger (mobil) -->
+        <button
+          type="button"
+          data-menu-toggle
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Menü öffnen"
+          class="flex h-11 w-11 items-center justify-center rounded-full border border-anthracite/15 lg:hidden"
+        >
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobiles Menü -->
+    <div id="mobile-menu" data-mobile-menu class="hidden border-t border-anthracite/10 bg-cream/95 backdrop-blur lg:hidden">
+      <ul class="container flex flex-col gap-1 py-4">
+        <li><a href="#ueber-uns" class="block rounded-lg px-3 py-3 font-medium hover:bg-cream-200">Über uns</a></li>
+        <li><a href="#leistungen" class="block rounded-lg px-3 py-3 font-medium hover:bg-cream-200">Leistungen</a></li>
+        <li><a href="#galerie" class="block rounded-lg px-3 py-3 font-medium hover:bg-cream-200">Galerie</a></li>
+        <li><a href="#bewertungen" class="block rounded-lg px-3 py-3 font-medium hover:bg-cream-200">Bewertungen</a></li>
+        <li><a href="#kontakt" class="block rounded-lg px-3 py-3 font-medium hover:bg-cream-200">Kontakt</a></li>
+        <li class="pt-2"><a href="#kontakt" class="btn-primary w-full">Termin buchen</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============================================================== -->
+    <!-- 2. HERO                                                        -->
+    <!-- ============================================================== -->
+    <section id="hero" class="relative overflow-hidden pt-28 md:pt-32">
+      <div class="container grid items-center gap-12 pb-16 md:pb-24 lg:grid-cols-2 lg:gap-16">
+        <!-- Text -->
+        <div class="animate-fade-up">
+          <!-- Bewertungs-Badge -->
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-cream-50 px-4 py-2 shadow-card">
+            <span class="text-terracotta" aria-hidden="true">★★★★★</span>
+            <span class="text-sm font-semibold">4,9</span>
+            <span class="text-sm text-anthracite-muted">aus 100 Google-Bewertungen</span>
+          </div>
+
+          <h1 class="text-4xl leading-[1.1] md:text-5xl lg:text-6xl">
+            Atelier Götz
+            <span class="mt-2 block font-sans text-base font-medium uppercase tracking-[0.25em] text-terracotta md:text-lg">
+              Coiffeur &amp; Barbier
+            </span>
+          </h1>
+
+          <p class="mt-6 max-w-xl text-lg text-anthracite-light md:text-xl">
+            Ihr nachhaltiger Friseur &amp; Barbier in Chemnitz. Moderne Schnitte,
+            organische Produkte und eine individuelle Typberatung, die wirklich zu Ihnen passt.
+          </p>
+
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href="#kontakt" class="btn-primary">
+              Termin buchen
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
+            <!-- Klickbarer Anruf-Link -->
+            <a href="tel:+4937133502111" class="btn-secondary">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+              </svg>
+              0371 33502111
+            </a>
+          </div>
+
+          <!-- Vertrauens-Mikro-Hinweise -->
+          <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-anthracite-muted">
+            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-sage" aria-hidden="true"></span> Organische Produkte</li>
+            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-sage" aria-hidden="true"></span> Individuelle Typberatung</li>
+            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-sage" aria-hidden="true"></span> Mitten in Chemnitz</li>
+          </ul>
+        </div>
+
+        <!-- Bild -->
+        <div class="animate-fade-in">
+          <div class="relative">
+            <!-- hier echtes Foto einsetzen: /assets/img/hero.jpg (ersetzt hero.svg) -->
+            <img
+              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjExMDAiIHZpZXdCb3g9IjAgMCAxNjAwIDExMDAiIHJvbGU9ImltZyI+CjxkZWZzPgogIDxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI0Y3RjJFQSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0VGRTZENyIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgCjwvZGVmcz4KCiAgPHJlY3Qgd2lkdGg9IjE2MDAiIGhlaWdodD0iMTEwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDQyNiA1MDYgQSAzNzQgMzc0IDAgMCAxIDExNzQgNTA2IFoiIGZpbGw9IiNFOUNCQjkiIG9wYWNpdHk9IjAuNiIvPgogIDxwYXRoIGQ9Ik0gNDcwIDUwNiBBIDMzMCAzMzAgMCAwIDEgMTEzMCA1MDYgWiIgZmlsbD0iI0Q4RTBDRiIgb3BhY2l0eT0iMC41NSIvPgogIAogIDxnIHN0cm9rZT0iIzhBOUE3QiIgc3Ryb2tlLXdpZHRoPSI0LjgwMDAwMDAwMDAwMDAwMSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxwYXRoIGQ9Ik0gMjA4IDUyMiBDIDIwOCA0MjYsIDIwOCAzNzgsIDIwOCAzMzAiLz4KICA8L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjEwIDM3OCkgcm90YXRlKDI1KSBzY2FsZSgxLjYpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzhBOUE3QiIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNDcuMiA0MTgpIHJvdGF0ZSgyMDApIHNjYWxlKDEuNikiPjxwYXRoIGQ9Ik0wIDAgUSAxOCAtMTAgMzYgMCBRIDE4IDEwIDAgMCBaIiBmaWxsPSIjOEE5QTdCIi8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIxMCA0NTgpIHJvdGF0ZSgyNSkgc2NhbGUoMS42KSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiM4QTlBN0IiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQ3LjIgNDkwKSByb3RhdGUoMjAwKSBzY2FsZSgxLjYpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzhBOUE3QiIvPjwvZz4KICA8ZyBzdHJva2U9IiM1ODY1NDkiIHN0cm9rZS13aWR0aD0iNC4xOTk5OTk5OTk5OTk5OTkiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CiAgICA8cGF0aCBkPSJNIDEzOTIgNTQyIEMgMTM5MiA0NTgsIDEzOTIgNDE2LCAxMzkyIDM3NCIvPgogIDwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzk0IDQxNikgcm90YXRlKDI1KSBzY2FsZSgxLjQpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzM4LjggNDUxKSByb3RhdGUoMjAwKSBzY2FsZSgxLjQpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzk0IDQ4Nikgcm90YXRlKDI1KSBzY2FsZSgxLjQpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzM4LjggNTE0KSByb3RhdGUoMjAwKSBzY2FsZSgxLjQpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4MDAgNDQwKSBzY2FsZSgxLjcpIj4KICAgIDwhLS0gU2NodWx0ZXJuIC0tPgogICAgPHBhdGggZD0iTSAtMTUwIDI2MCBDIC0xNTAgMTUwLCAtOTAgMTIwLCAwIDEyMCBDIDkwIDEyMCwgMTUwIDE1MCwgMTUwIDI2MCBaIiBmaWxsPSIjRjdGMkVBIi8+CiAgICA8IS0tIEhhYXIgaGludGVuIC0tPgogICAgPHBhdGggZD0iTSAtMTIwIDQwIEMgLTE1MCAtMTIwLCAxNTAgLTEyMCwgMTIwIDQwIEMgMTUwIDEyMCwgMTMwIDIzMCwgOTAgMjUwIEMgMTIwIDEyMCwgNjAgODAsIDAgNzggQyAtNjAgODAsIC0xMjAgMTIwLCAtOTAgMjUwIEMgLTEzMCAyMzAsIC0xNTAgMTIwLCAtMTIwIDQwIFoiIGZpbGw9IiM3RTQzMjciLz4KICAgIDwhLS0gR2VzaWNodCAtLT4KICAgIDxlbGxpcHNlIGN4PSIwIiBjeT0iMjAiIHJ4PSI3OCIgcnk9IjkyIiBmaWxsPSIjRTlDQkI5Ii8+CiAgICA8IS0tIEhhYXJhbnNhdHogdm9ybmUgLS0+CiAgICA8cGF0aCBkPSJNIC04MiAxMCBDIC05MCAtOTAsIDkwIC05MCwgODIgMTAgQyA1MCAtNTUsIC01MCAtNTUsIC04MiAxMCBaIiBmaWxsPSIjN0U0MzI3Ii8+CiAgPC9nPgoKICAKPC9zdmc+"
+              alt="Heller, moderner Friseursalon mit warmem Holz und natürlichen Materialien"
+              width="1600"
+              height="1100"
+              class="aspect-[4/3] w-full rounded-3xl object-cover shadow-soft"
+            />
+            <!-- Schwebende Info-Karte -->
+            <div class="absolute -bottom-5 -left-3 hidden rounded-2xl bg-cream-50 px-5 py-4 shadow-soft sm:block">
+              <p class="font-serif text-2xl font-semibold text-terracotta">4,9 ★</p>
+              <p class="text-xs text-anthracite-muted">100 zufriedene Bewertungen</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 3. ÜBER UNS / PHILOSOPHIE                                      -->
+    <!-- ============================================================== -->
+    <section id="ueber-uns" class="section">
+      <div class="container grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div class="reveal order-2 lg:order-1">
+          <!-- hier echtes Foto einsetzen: /assets/img/ueber-uns.jpg -->
+          <img
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjEwMDAiIHZpZXdCb3g9IjAgMCAxMjAwIDEwMDAiIHJvbGU9ImltZyI+CjxkZWZzPgogIDxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI0Y3RjJFQSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0VGRTZENyIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgCjwvZGVmcz4KCiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iMTAwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDI2MCA0NjAgQSAzNDAgMzQwIDAgMCAxIDk0MCA0NjAgWiIgZmlsbD0iI0U5Q0JCOSIgb3BhY2l0eT0iMC42Ii8+CiAgPHBhdGggZD0iTSAzMDAgNDYwIEEgMzAwIDMwMCAwIDAgMSA5MDAgNDYwIFoiIGZpbGw9IiNEOEUwQ0YiIG9wYWNpdHk9IjAuNTUiLz4KICAKICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MDguMDAwMDAwMDAwMDAwMDYgNjIwKSBzY2FsZSgxLjUpIiBmaWxsPSIjOEE5QTdCIj4KICAgIDxyZWN0IHg9Ii03MCIgeT0iLTExMCIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIxMjAiIHJ4PSIzMCIvPgogICAgPHJlY3QgeD0iLTg2IiB5PSIxMCIgd2lkdGg9IjE3MiIgaGVpZ2h0PSI0NiIgcng9IjIwIi8+CiAgICA8cmVjdCB4PSItMTAiIHk9IjU2IiB3aWR0aD0iMjAiIGhlaWdodD0iNzAiLz4KICAgIDxlbGxpcHNlIGN4PSIwIiBjeT0iMTM4IiByeD0iNjQiIHJ5PSIxNiIvPgogIDwvZz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4MTYuMDAwMDAwMDAwMDAwMSA0NjApIHNjYWxlKDEuNSkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSItMTAiIHJ4PSI3MCIgcnk9Ijg2IiBmaWxsPSIjQjU2NzNGIi8+CiAgICA8ZWxsaXBzZSBjeD0iMCIgY3k9Ii0xMCIgcng9IjUyIiByeT0iNjgiIGZpbGw9IiNGN0YyRUEiLz4KICAgIDxyZWN0IHg9Ii0xMiIgeT0iNzAiIHdpZHRoPSIyNCIgaGVpZ2h0PSI3MCIgcng9IjEwIiBmaWxsPSIjQjU2NzNGIi8+CiAgICA8cmVjdCB4PSItNDQiIHk9IjEzNSIgd2lkdGg9Ijg4IiBoZWlnaHQ9IjE4IiByeD0iOSIgZmlsbD0iI0I1NjczRiIvPgogIDwvZz4KICA8ZyBzdHJva2U9IiM1ODY1NDkiIHN0cm9rZS13aWR0aD0iNC4xOTk5OTk5OTk5OTk5OTkiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CiAgICA8cGF0aCBkPSJNIDE5MiA1NjggQyAxOTIgNDg0LCAxOTIgNDQyLCAxOTIgNDAwIi8+CiAgPC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE5NCA0NDIpIHJvdGF0ZSgyNSkgc2NhbGUoMS40KSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiM1ODY1NDkiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTM4LjggNDc3KSByb3RhdGUoMjAwKSBzY2FsZSgxLjQpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxOTQgNTEyKSByb3RhdGUoMjUpIHNjYWxlKDEuNCkiPjxwYXRoIGQ9Ik0wIDAgUSAxOCAtMTAgMzYgMCBRIDE4IDEwIDAgMCBaIiBmaWxsPSIjNTg2NTQ5Ii8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEzOC44IDU0MCkgcm90YXRlKDIwMCkgc2NhbGUoMS40KSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiM1ODY1NDkiLz48L2c+CgogIAo8L3N2Zz4="
+            alt="Friseurin berät eine Kundin in entspannter, natürlicher Salon-Atmosphäre"
+            width="1200"
+            height="1000"
+            loading="lazy"
+            class="aspect-[6/5] w-full rounded-3xl object-cover shadow-soft"
+          />
+        </div>
+
+        <div class="reveal order-1 lg:order-2">
+          <span class="section-eyebrow">Über uns</span>
+          <h2 class="section-title">Schönheit, die im Einklang mit der Natur entsteht</h2>
+          <p class="mt-5 text-lg text-anthracite-light">
+            Im Atelier Götz verbinden wir handwerkliches Können mit einem bewussten,
+            nachhaltigen Anspruch. Wir nehmen uns Zeit für Sie – für Ihren Typ, Ihren
+            Alltag und Ihre Wünsche.
+          </p>
+
+          <ul class="mt-8 space-y-6">
+            <li class="flex gap-4">
+              <span class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-sage-100 text-sage-700" aria-hidden="true">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c-3 4-6 6-6 10a6 6 0 0 0 12 0c0-4-3-6-6-10Z" />
+                </svg>
+              </span>
+              <div>
+                <h3 class="text-xl">Nachhaltigkeit</h3>
+                <p class="mt-1 text-anthracite-light">Ressourcenschonendes Arbeiten und Produkte, die Mensch und Umwelt respektieren.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-sage-100 text-sage-700" aria-hidden="true">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              </span>
+              <div>
+                <h3 class="text-xl">Organische Produkte</h3>
+                <p class="mt-1 text-anthracite-light">Hochwertige, natürliche Pflege für gesundes, glänzendes Haar – ohne unnötige Zusätze.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-sage-100 text-sage-700" aria-hidden="true">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 19.5a7.5 7.5 0 0 1 15 0v.75H4.5v-.75Z" />
+                </svg>
+              </span>
+              <div>
+                <h3 class="text-xl">Individuelle Typberatung</h3>
+                <p class="mt-1 text-anthracite-light">Ein Look, der zu Ihrem Gesicht, Ihrer Haarstruktur und Ihrem Leben passt.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 4. LEISTUNGEN                                                  -->
+    <!-- Preise sind Platzhalter: „ab XX €" → echte Preise eintragen.  -->
+    <!-- ============================================================== -->
+    <section id="leistungen" class="section bg-cream-200/50">
+      <div class="container">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="section-eyebrow">Leistungen</span>
+          <h2 class="section-title">Unser Angebot für Sie</h2>
+          <p class="mt-4 text-lg text-anthracite-light">
+            Vom klassischen Schnitt bis zur intensiven Haarkur – alles aus einer Hand.
+            Die angegebenen Preise sind Richtwerte (Platzhalter).
+          </p>
+        </div>
+
+        <!-- Karten-Raster -->
+        <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <!--
+            Vorlage einer Leistungskarte. Zum Anpassen einfach Titel, Text und
+            Preis ändern. Preis-Platzhalter: „ab XX €".
+          -->
+          <article class="card reveal">
+            <h3 class="text-2xl">Damenhaarschnitt</h3>
+            <p class="mt-2 text-anthracite-light">Waschen, Schnitt und Föhnen – abgestimmt auf Ihren Typ.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-1">
+            <h3 class="text-2xl">Herrenhaarschnitt</h3>
+            <p class="mt-2 text-anthracite-light">Präziser Schnitt und Finish, klassisch oder modern.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-2">
+            <h3 class="text-2xl">Haare färben</h3>
+            <p class="mt-2 text-anthracite-light">Gleichmäßige Farbe mit pflegenden, organischen Produkten.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal">
+            <h3 class="text-2xl">Haar-Highlights</h3>
+            <p class="mt-2 text-anthracite-light">Strähnen &amp; Balayage für natürliche Tiefe und Glanz.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-1">
+            <h3 class="text-2xl">Dauerwelle</h3>
+            <p class="mt-2 text-anthracite-light">Definierte Locken und Volumen, schonend umgesetzt.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-2">
+            <h3 class="text-2xl">Bart schneiden</h3>
+            <p class="mt-2 text-anthracite-light">Konturieren, Trimmen und Pflege für einen gepflegten Bart.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal">
+            <h3 class="text-2xl">Kinderhaarschnitt</h3>
+            <p class="mt-2 text-anthracite-light">Geduldig und liebevoll – auch für die Kleinsten.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-1">
+            <h3 class="text-2xl">Haircare</h3>
+            <p class="mt-2 text-anthracite-light">Intensive Pflege-Treatments für gesundes, kräftiges Haar.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-2">
+            <h3 class="text-2xl">Detox-Programm</h3>
+            <p class="mt-2 text-anthracite-light">Tiefenreinigung für Kopfhaut und Haar – der frische Neustart.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal">
+            <h3 class="text-2xl">Augenbrauen färben</h3>
+            <p class="mt-2 text-anthracite-light">Definierte Brauen, die Ihren Blick betonen.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <article class="card reveal reveal-delay-1">
+            <h3 class="text-2xl">Wimpern färben</h3>
+            <p class="mt-2 text-anthracite-light">Ausdrucksstarke Wimpern ganz ohne Mascara.</p>
+            <p class="mt-4 font-serif text-xl font-semibold text-terracotta">ab XX €</p>
+          </article>
+
+          <!-- Abschluss-Karte mit CTA -->
+          <article class="card reveal reveal-delay-2 flex flex-col justify-between bg-sage-600 text-cream-50">
+            <div>
+              <h3 class="text-2xl text-cream-50">Noch Fragen?</h3>
+              <p class="mt-2 text-cream-100">Wir beraten Sie gern persönlich zu Preisen und Behandlungen.</p>
+            </div>
+            <a href="#kontakt" class="btn-light mt-6 self-start">Termin anfragen</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 5. GALERIE (mit Lightbox)                                     -->
+    <!-- ============================================================== -->
+    <section id="galerie" class="section">
+      <div class="container">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="section-eyebrow">Galerie</span>
+          <h2 class="section-title">Einblicke in unser Atelier</h2>
+          <p class="mt-4 text-lg text-anthracite-light">
+            Ein Eindruck von Ambiente, Handwerk und Ergebnissen. Bild anklicken zum Vergrößern.
+          </p>
+        </div>
+
+        <!-- Foto-Raster. Jede Kachel öffnet die Lightbox (data-lightbox). -->
+        <div class="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+          <!--
+            hier echte Fotos einsetzen: /assets/img/gallery-1.jpg … gallery-8.jpg
+            (ersetzen die .svg-Platzhalter mit gleichem Namen)
+          -->
+          <button type="button" data-lightbox class="reveal group block overflow-hidden rounded-2xl shadow-card">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iOTAwIiB2aWV3Qm94PSIwIDAgOTAwIDkwMCIgcm9sZT0iaW1nIj4KPGRlZnM+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJiZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRjdGMkVBIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUZFNkQ3Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KICAKPC9kZWZzPgoKICA8cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjkwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDE0NCA0MTQgQSAzMDYgMzA2IDAgMCAxIDc1NiA0MTQgWiIgZmlsbD0iI0U5Q0JCOSIgb3BhY2l0eT0iMC42Ii8+CiAgPHBhdGggZD0iTSAxODAgNDE0IEEgMjcwIDI3MCAwIDAgMSA3MjAgNDE0IFoiIGZpbGw9IiNEOEUwQ0YiIG9wYWNpdHk9IjAuNTUiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NTAgMzc4KSBzY2FsZSgxLjA1KSI+CiAgICA8IS0tIFNjaHVsdGVybiAtLT4KICAgIDxwYXRoIGQ9Ik0gLTE1MCAyNjAgQyAtMTUwIDE1MCwgLTkwIDEyMCwgMCAxMjAgQyA5MCAxMjAsIDE1MCAxNTAsIDE1MCAyNjAgWiIgZmlsbD0iI0Y3RjJFQSIvPgogICAgPCEtLSBIYWFyIGhpbnRlbiAtLT4KICAgIDxwYXRoIGQ9Ik0gLTEyMCA0MCBDIC0xNTAgLTEyMCwgMTUwIC0xMjAsIDEyMCA0MCBDIDE1MCAxMjAsIDEzMCAyMzAsIDkwIDI1MCBDIDEyMCAxMjAsIDYwIDgwLCAwIDc4IEMgLTYwIDgwLCAtMTIwIDEyMCwgLTkwIDI1MCBDIC0xMzAgMjMwLCAtMTUwIDEyMCwgLTEyMCA0MCBaIiBmaWxsPSIjN0U0MzI3Ii8+CiAgICA8IS0tIEdlc2ljaHQgLS0+CiAgICA8ZWxsaXBzZSBjeD0iMCIgY3k9IjIwIiByeD0iNzgiIHJ5PSI5MiIgZmlsbD0iI0U5Q0JCOSIvPgogICAgPCEtLSBIYWFyYW5zYXR6IHZvcm5lIC0tPgogICAgPHBhdGggZD0iTSAtODIgMTAgQyAtOTAgLTkwLCA5MCAtOTAsIDgyIDEwIEMgNTAgLTU1LCAtNTAgLTU1LCAtODIgMTAgWiIgZmlsbD0iIzdFNDMyNyIvPgogIDwvZz4KICA8dGV4dCB4PSI0NTAiIHk9Ijg3NCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiBmb250LXNpemU9IjMyIiBmaWxsPSIjMkEyQTI4IiBvcGFjaXR5PSIwLjU1Ij5EYW1lbmhhYXJzY2huaXR0PC90ZXh0Pgo8L3N2Zz4=" alt="Damenhaarschnitt – Ergebnis im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal reveal-delay-1 group block overflow-hidden rounded-2xl shadow-card">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iOTAwIiB2aWV3Qm94PSIwIDAgOTAwIDkwMCIgcm9sZT0iaW1nIj4KPGRlZnM+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJiZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRjdGMkVBIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUZFNkQ3Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KICAKPC9kZWZzPgoKICA8cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjkwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDE0NCA0MTQgQSAzMDYgMzA2IDAgMCAxIDc1NiA0MTQgWiIgZmlsbD0iI0U5Q0JCOSIgb3BhY2l0eT0iMC42Ii8+CiAgPHBhdGggZD0iTSAxODAgNDE0IEEgMjcwIDI3MCAwIDAgMSA3MjAgNDE0IFoiIGZpbGw9IiNEOEUwQ0YiIG9wYWNpdHk9IjAuNTUiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NTAgMzc4KSBzY2FsZSgxLjA1KSI+CiAgICA8cGF0aCBkPSJNIC0xNTAgMjYwIEMgLTE1MCAxNjAsIC05MCAxMzAsIDAgMTMwIEMgOTAgMTMwLCAxNTAgMTYwLCAxNTAgMjYwIFoiIGZpbGw9IiNGN0YyRUEiLz4KICAgIDxlbGxpcHNlIGN4PSIwIiBjeT0iMjAiIHJ4PSI3NiIgcnk9IjkwIiBmaWxsPSIjRTlDQkI5Ii8+CiAgICA8IS0tIEhhYXIgLS0+CiAgICA8cGF0aCBkPSJNIC04MCAtMTAgQyAtOTUgLTExMCwgOTUgLTExMCwgODAgLTEwIEMgNjAgLTcwLCAtNjAgLTcwLCAtODAgLTEwIFoiIGZpbGw9IiMyQTJBMjgiLz4KICAgIDwhLS0gQmFydCAtLT4KICAgIDxwYXRoIGQ9Ik0gLTcwIDQwIEMgLTcwIDExMCwgLTM1IDEzNSwgMCAxMzUgQyAzNSAxMzUsIDcwIDExMCwgNzAgNDAgQyA1MCA5MCwgLTUwIDkwLCAtNzAgNDAgWiIgZmlsbD0iIzJBMkEyOCIgb3BhY2l0eT0iMC45MiIvPgogIDwvZz4KICA8dGV4dCB4PSI0NTAiIHk9Ijg3NCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiBmb250LXNpemU9IjMyIiBmaWxsPSIjMkEyQTI4IiBvcGFjaXR5PSIwLjU1Ij5IZXJyZW5oYWFyc2Nobml0dDwvdGV4dD4KPC9zdmc+" alt="Herrenhaarschnitt – Ergebnis im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal reveal-delay-2 group block overflow-hidden rounded-2xl shadow-card">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iOTAwIiB2aWV3Qm94PSIwIDAgOTAwIDkwMCIgcm9sZT0iaW1nIj4KPGRlZnM+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJiZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRjdGMkVBIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUZFNkQ3Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KICAKPC9kZWZzPgoKICA8cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjkwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDE0NCA0MTQgQSAzMDYgMzA2IDAgMCAxIDc1NiA0MTQgWiIgZmlsbD0iI0U5Q0JCOSIgb3BhY2l0eT0iMC42Ii8+CiAgPHBhdGggZD0iTSAxODAgNDE0IEEgMjcwIDI3MCAwIDAgMSA3MjAgNDE0IFoiIGZpbGw9IiNEOEUwQ0YiIG9wYWNpdHk9IjAuNTUiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNzggMzc4KSBzY2FsZSgwLjk1KSI+CiAgICA8IS0tIFNjaHVsdGVybiAtLT4KICAgIDxwYXRoIGQ9Ik0gLTE1MCAyNjAgQyAtMTUwIDE1MCwgLTkwIDEyMCwgMCAxMjAgQyA5MCAxMjAsIDE1MCAxNTAsIDE1MCAyNjAgWiIgZmlsbD0iI0Y3RjJFQSIvPgogICAgPCEtLSBIYWFyIGhpbnRlbiAtLT4KICAgIDxwYXRoIGQ9Ik0gLTEyMCA0MCBDIC0xNTAgLTEyMCwgMTUwIC0xMjAsIDEyMCA0MCBDIDE1MCAxMjAsIDEzMCAyMzAsIDkwIDI1MCBDIDEyMCAxMjAsIDYwIDgwLCAwIDc4IEMgLTYwIDgwLCAtMTIwIDEyMCwgLTkwIDI1MCBDIC0xMzAgMjMwLCAtMTUwIDEyMCwgLTEyMCA0MCBaIiBmaWxsPSIjQjU2NzNGIi8+CiAgICA8IS0tIEdlc2ljaHQgLS0+CiAgICA8ZWxsaXBzZSBjeD0iMCIgY3k9IjIwIiByeD0iNzgiIHJ5PSI5MiIgZmlsbD0iI0U5Q0JCOSIvPgogICAgPCEtLSBIYWFyYW5zYXR6IHZvcm5lIC0tPgogICAgPHBhdGggZD0iTSAtODIgMTAgQyAtOTAgLTkwLCA5MCAtOTAsIDgyIDEwIEMgNTAgLTU1LCAtNTAgLTU1LCAtODIgMTAgWiIgZmlsbD0iI0I1NjczRiIvPgogIDwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3MDIgMjcwKSByb3RhdGUoLTQwKSBzY2FsZSgwLjkpIj48cmVjdCB4PSItMTIiIHk9IjAiIHdpZHRoPSIyNCIgaGVpZ2h0PSIxMjAiIHJ4PSIxMiIgZmlsbD0iI0I1NjczRiIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3MDIgMjcwKSByb3RhdGUoLTIwKSBzY2FsZSgwLjkpIj48cmVjdCB4PSItMTIiIHk9IjAiIHdpZHRoPSIyNCIgaGVpZ2h0PSIxMjAiIHJ4PSIxMiIgZmlsbD0iIzdFNDMyNyIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3MDIgMjcwKSByb3RhdGUoMCkgc2NhbGUoMC45KSI+PHJlY3QgeD0iLTEyIiB5PSIwIiB3aWR0aD0iMjQiIGhlaWdodD0iMTIwIiByeD0iMTIiIGZpbGw9IiM4QTlBN0IiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzAyIDI3MCkgcm90YXRlKDIwKSBzY2FsZSgwLjkpIj48cmVjdCB4PSItMTIiIHk9IjAiIHdpZHRoPSIyNCIgaGVpZ2h0PSIxMjAiIHJ4PSIxMiIgZmlsbD0iIzU4NjU0OSIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3MDIgMjcwKSByb3RhdGUoNDApIHNjYWxlKDAuOSkiPjxyZWN0IHg9Ii0xMiIgeT0iMCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjEyMCIgcng9IjEyIiBmaWxsPSIjRTlDQkI5Ii8+PC9nPgogIDx0ZXh0IHg9IjQ1MCIgeT0iODc0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iMzIiIGZpbGw9IiMyQTJBMjgiIG9wYWNpdHk9IjAuNTUiPkZhcmJlICYgSGlnaGxpZ2h0czwvdGV4dD4KPC9zdmc+" alt="Haarfarbe und Highlights – Ergebnis im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal reveal-delay-3 group block overflow-hidden rounded-2xl shadow-card">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iOTAwIiB2aWV3Qm94PSIwIDAgOTAwIDkwMCIgcm9sZT0iaW1nIj4KPGRlZnM+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJiZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRjdGMkVBIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUZFNkQ3Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KICAKPC9kZWZzPgoKICA8cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjkwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDE0NCA0MTQgQSAzMDYgMzA2IDAgMCAxIDc1NiA0MTQgWiIgZmlsbD0iI0U5Q0JCOSIgb3BhY2l0eT0iMC42Ii8+CiAgPHBhdGggZD0iTSAxODAgNDE0IEEgMjcwIDI3MCAwIDAgMSA3MjAgNDE0IFoiIGZpbGw9IiNEOEUwQ0YiIG9wYWNpdHk9IjAuNTUiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNDIgMzc4KSBzY2FsZSgxLjUpIiBzdHJva2U9IiNCNTY3M0YiIHN0cm9rZS13aWR0aD0iOSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICAgIDxjaXJjbGUgY3g9Ii0zNCIgY3k9IjcwIiByPSIyNiIvPjxjaXJjbGUgY3g9IjM0IiBjeT0iNzAiIHI9IjI2Ii8+CiAgICA8cGF0aCBkPSJNIC0yMCA1NiBMIDQwIC03MCIvPjxwYXRoIGQ9Ik0gMjAgNTYgTCAtNDAgLTcwIi8+CiAgPC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU3NiA0NTApIHNjYWxlKDEuNCkiIHN0cm9rZT0iIzU4NjU0OSIgc3Ryb2tlLXdpZHRoPSI3IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPgogICAgPHBhdGggZD0iTSAtODIgMCBMIDgyIDAgTCA4MiAtMjIgTCAtODIgLTIyIFoiIGZpbGw9IiM1ODY1NDkiIHN0cm9rZT0ibm9uZSIvPjxwYXRoIGQ9Ik0gLTcwIDAgTCAtNzAgNDAiLz48cGF0aCBkPSJNIC01MCAwIEwgLTUwIDQwIi8+PHBhdGggZD0iTSAtMzAgMCBMIC0zMCA0MCIvPjxwYXRoIGQ9Ik0gLTEwIDAgTCAtMTAgNDAiLz48cGF0aCBkPSJNIDEwIDAgTCAxMCA0MCIvPjxwYXRoIGQ9Ik0gMzAgMCBMIDMwIDQwIi8+PHBhdGggZD0iTSA1MCAwIEwgNTAgNDAiLz48cGF0aCBkPSJNIDcwIDAgTCA3MCA0MCIvPgogIDwvZz4KICA8dGV4dCB4PSI0NTAiIHk9Ijg3NCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiBmb250LXNpemU9IjMyIiBmaWxsPSIjMkEyQTI4IiBvcGFjaXR5PSIwLjU1Ij5CYXJ0cGZsZWdlPC90ZXh0Pgo8L3N2Zz4=" alt="Barbier-Arbeit – gepflegter Bart im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal group block overflow-hidden rounded-2xl shadow-card">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iOTAwIiB2aWV3Qm94PSIwIDAgOTAwIDkwMCIgcm9sZT0iaW1nIj4KPGRlZnM+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJiZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRjdGMkVBIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUZFNkQ3Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KICAKPC9kZWZzPgoKICA8cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjkwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDE0NCA0MTQgQSAzMDYgMzA2IDAgMCAxIDc1NiA0MTQgWiIgZmlsbD0iI0U5Q0JCOSIgb3BhY2l0eT0iMC42Ii8+CiAgPHBhdGggZD0iTSAxODAgNDE0IEEgMjcwIDI3MCAwIDAgMSA3MjAgNDE0IFoiIGZpbGw9IiNEOEUwQ0YiIG9wYWNpdHk9IjAuNTUiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NTAgMzc4KSBzY2FsZSgxLjcpIj4KICAgIDxjaXJjbGUgY3g9IjAiIGN5PSItMTAiIHI9IjU2IiBmaWxsPSIjQjU2NzNGIi8+CiAgICA8Y2lyY2xlIGN4PSIwIiBjeT0iLTEwIiByPSIzMCIgZmlsbD0iI0Y3RjJFQSIvPgogICAgPHBhdGggZD0iTSA0MCAtMzQgTCAxMTAgLTU0IEwgMTEwIDM0IEwgNDAgMTQgWiIgZmlsbD0iI0I1NjczRiIvPgogICAgPHBhdGggZD0iTSAtOCA0NCBDIC04IDkwLCAtNTAgOTUsIC01MCAxNDAiIHN0cm9rZT0iI0I1NjczRiIgc3Ryb2tlLXdpZHRoPSI5IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgIDxyZWN0IHg9Ii0zMCIgeT0iNDAiIHdpZHRoPSI0NCIgaGVpZ2h0PSI2MCIgcng9IjE0IiBmaWxsPSIjQjU2NzNGIi8+CiAgPC9nPgogIDx0ZXh0IHg9IjQ1MCIgeT0iODc0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iMzIiIGZpbGw9IiMyQTJBMjgiIG9wYWNpdHk9IjAuNTUiPlN0eWxpbmcgJiBGw7ZobmVuPC90ZXh0Pgo8L3N2Zz4=" alt="Styling und Föhnen im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal reveal-delay-1 group block overflow-hidden rounded-2xl shadow-card">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iOTAwIiB2aWV3Qm94PSIwIDAgOTAwIDkwMCIgcm9sZT0iaW1nIj4KPGRlZnM+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJiZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRjdGMkVBIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUZFNkQ3Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KICAKPC9kZWZzPgoKICA8cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjkwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDE0NCA0MTQgQSAzMDYgMzA2IDAgMCAxIDc1NiA0MTQgWiIgZmlsbD0iI0U5Q0JCOSIgb3BhY2l0eT0iMC42Ii8+CiAgPHBhdGggZD0iTSAxODAgNDE0IEEgMjcwIDI3MCAwIDAgMSA3MjAgNDE0IFoiIGZpbGw9IiNEOEUwQ0YiIG9wYWNpdHk9IjAuNTUiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NTAgMzYwKSBzY2FsZSgxLjcpIj4KICAgIDxlbGxpcHNlIGN4PSIwIiBjeT0iLTEwIiByeD0iNzAiIHJ5PSI4NiIgZmlsbD0iIzU4NjU0OSIvPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSItMTAiIHJ4PSI1MiIgcnk9IjY4IiBmaWxsPSIjRjdGMkVBIi8+CiAgICA8cmVjdCB4PSItMTIiIHk9IjcwIiB3aWR0aD0iMjQiIGhlaWdodD0iNzAiIHJ4PSIxMCIgZmlsbD0iIzU4NjU0OSIvPgogICAgPHJlY3QgeD0iLTQ0IiB5PSIxMzUiIHdpZHRoPSI4OCIgaGVpZ2h0PSIxOCIgcng9IjkiIGZpbGw9IiM1ODY1NDkiLz4KICA8L2c+CiAgPHRleHQgeD0iNDUwIiB5PSI4NzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC1zaXplPSIzMiIgZmlsbD0iIzJBMkEyOCIgb3BhY2l0eT0iMC41NSI+VHlwYmVyYXR1bmc8L3RleHQ+Cjwvc3ZnPg==" alt="Persönliche Typberatung im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal reveal-delay-2 group block overflow-hidden rounded-2xl shadow-card">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iOTAwIiB2aWV3Qm94PSIwIDAgOTAwIDkwMCIgcm9sZT0iaW1nIj4KPGRlZnM+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJiZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRjdGMkVBIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUZFNkQ3Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KICAKPC9kZWZzPgoKICA8cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjkwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDE0NCA0MTQgQSAzMDYgMzA2IDAgMCAxIDc1NiA0MTQgWiIgZmlsbD0iI0U5Q0JCOSIgb3BhY2l0eT0iMC42Ii8+CiAgPHBhdGggZD0iTSAxODAgNDE0IEEgMjcwIDI3MCAwIDAgMSA3MjAgNDE0IFoiIGZpbGw9IiNEOEUwQ0YiIG9wYWNpdHk9IjAuNTUiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNjAgNDE0KSBzY2FsZSgxLjUpIj4KICAgIDxyZWN0IHg9Ii0xNiIgeT0iLTkyIiB3aWR0aD0iMzIiIGhlaWdodD0iMjYiIHJ4PSI2IiBmaWxsPSIjNTg2NTQ5Ii8+CiAgICA8cmVjdCB4PSItNDAiIHk9Ii02NiIgd2lkdGg9IjgwIiBoZWlnaHQ9IjE1MCIgcng9IjIyIiBmaWxsPSIjOEE5QTdCIi8+CiAgICA8cmVjdCB4PSItNDAiIHk9Ii0yMCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjRjdGMkVBIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPC9nPjxnIHN0cm9rZT0iI0I1NjczRiIgc3Ryb2tlLXdpZHRoPSIzLjU5OTk5OTk5OTk5OTk5OTYiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CiAgICA8cGF0aCBkPSJNIDU3NiA0NTAgQyA1NzYgMzc4LCA1NzYgMzQyLCA1NzYgMzA2Ii8+CiAgPC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU3OCAzNDIpIHJvdGF0ZSgyNSkgc2NhbGUoMS4yKSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiNCNTY3M0YiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTMwLjQgMzcyKSByb3RhdGUoMjAwKSBzY2FsZSgxLjIpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iI0I1NjczRiIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1NzggNDAyKSByb3RhdGUoMjUpIHNjYWxlKDEuMikiPjxwYXRoIGQ9Ik0wIDAgUSAxOCAtMTAgMzYgMCBRIDE4IDEwIDAgMCBaIiBmaWxsPSIjQjU2NzNGIi8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUzMC40IDQyNikgcm90YXRlKDIwMCkgc2NhbGUoMS4yKSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiNCNTY3M0YiLz48L2c+CiAgPHRleHQgeD0iNDUwIiB5PSI4NzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC1zaXplPSIzMiIgZmlsbD0iIzJBMkEyOCIgb3BhY2l0eT0iMC41NSI+RGV0b3ggJiBDYXJlPC90ZXh0Pgo8L3N2Zz4=" alt="Detox- und Pflegebehandlung im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+          <button type="button" data-lightbox class="reveal reveal-delay-3 group block overflow-hidden rounded-2xl shadow-card">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iOTAwIiB2aWV3Qm94PSIwIDAgOTAwIDkwMCIgcm9sZT0iaW1nIj4KPGRlZnM+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJiZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRjdGMkVBIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUZFNkQ3Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KICAKPC9kZWZzPgoKICA8cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjkwMCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNIDE0NCA0MTQgQSAzMDYgMzA2IDAgMCAxIDc1NiA0MTQgWiIgZmlsbD0iI0U5Q0JCOSIgb3BhY2l0eT0iMC42Ii8+CiAgPHBhdGggZD0iTSAxODAgNDE0IEEgMjcwIDI3MCAwIDAgMSA3MjAgNDE0IFoiIGZpbGw9IiNEOEUwQ0YiIG9wYWNpdHk9IjAuNTUiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NTAgNTQwKSBzY2FsZSgxLjYpIiBmaWxsPSIjQjU2NzNGIj4KICAgIDxyZWN0IHg9Ii03MCIgeT0iLTExMCIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIxMjAiIHJ4PSIzMCIvPgogICAgPHJlY3QgeD0iLTg2IiB5PSIxMCIgd2lkdGg9IjE3MiIgaGVpZ2h0PSI0NiIgcng9IjIwIi8+CiAgICA8cmVjdCB4PSItMTAiIHk9IjU2IiB3aWR0aD0iMjAiIGhlaWdodD0iNzAiLz4KICAgIDxlbGxpcHNlIGN4PSIwIiBjeT0iMTM4IiByeD0iNjQiIHJ5PSIxNiIvPgogIDwvZz48ZyBzdHJva2U9IiM1ODY1NDkiIHN0cm9rZS13aWR0aD0iMy45MDAwMDAwMDAwMDAwMDA0IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPgogICAgPHBhdGggZD0iTSAxOTggNDYyIEMgMTk4IDM4NCwgMTk4IDM0NSwgMTk4IDMwNiIvPgogIDwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDAgMzQ1KSByb3RhdGUoMjUpIHNjYWxlKDEuMykiPjxwYXRoIGQ9Ik0wIDAgUSAxOCAtMTAgMzYgMCBRIDE4IDEwIDAgMCBaIiBmaWxsPSIjNTg2NTQ5Ii8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0OC42IDM3Ny41KSByb3RhdGUoMjAwKSBzY2FsZSgxLjMpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzU4NjU0OSIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDAgNDEwKSByb3RhdGUoMjUpIHNjYWxlKDEuMykiPjxwYXRoIGQ9Ik0wIDAgUSAxOCAtMTAgMzYgMCBRIDE4IDEwIDAgMCBaIiBmaWxsPSIjNTg2NTQ5Ii8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0OC42IDQzNikgcm90YXRlKDIwMCkgc2NhbGUoMS4zKSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiM1ODY1NDkiLz48L2c+PGcgc3Ryb2tlPSIjOEE5QTdCIiBzdHJva2Utd2lkdGg9IjMuNTk5OTk5OTk5OTk5OTk5NiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxwYXRoIGQ9Ik0gNzIwIDQ2OCBDIDcyMCAzOTYsIDcyMCAzNjAsIDcyMCAzMjQiLz4KICA8L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzIyIDM2MCkgcm90YXRlKDI1KSBzY2FsZSgxLjIpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzhBOUE3QiIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NzQuNCAzOTApIHJvdGF0ZSgyMDApIHNjYWxlKDEuMikiPjxwYXRoIGQ9Ik0wIDAgUSAxOCAtMTAgMzYgMCBRIDE4IDEwIDAgMCBaIiBmaWxsPSIjOEE5QTdCIi8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDcyMiA0MjApIHJvdGF0ZSgyNSkgc2NhbGUoMS4yKSI+PHBhdGggZD0iTTAgMCBRIDE4IC0xMCAzNiAwIFEgMTggMTAgMCAwIFoiIGZpbGw9IiM4QTlBN0IiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjc0LjQgNDQ0KSByb3RhdGUoMjAwKSBzY2FsZSgxLjIpIj48cGF0aCBkPSJNMCAwIFEgMTggLTEwIDM2IDAgUSAxOCAxMCAwIDAgWiIgZmlsbD0iIzhBOUE3QiIvPjwvZz4KICA8dGV4dCB4PSI0NTAiIHk9Ijg3NCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiBmb250LXNpemU9IjMyIiBmaWxsPSIjMkEyQTI4IiBvcGFjaXR5PSIwLjU1Ij5TYWxvbi1BbWJpZW50ZTwvdGV4dD4KPC9zdmc+" alt="Warmes, natürliches Salon-Ambiente im Atelier Götz" width="900" height="900" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox-Dialog (durch JS gesteuert, startet versteckt) -->
+    <div
+      data-lightbox-dialog
+      class="fixed inset-0 z-[90] hidden items-center justify-center bg-anthracite/90 p-4 backdrop-blur"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Bildansicht"
+    >
+      <button type="button" data-lightbox-prev aria-label="Vorheriges Bild" class="absolute left-4 top-1/2 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-cream-50/90 text-anthracite hover:bg-cream-50">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+      </button>
+
+      <img data-lightbox-image src="" alt="" class="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain shadow-soft" />
+
+      <button type="button" data-lightbox-next aria-label="Nächstes Bild" class="absolute right-4 top-1/2 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-cream-50/90 text-anthracite hover:bg-cream-50">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+      </button>
+
+      <button type="button" data-lightbox-close aria-label="Bildansicht schließen" class="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-cream-50/90 text-anthracite hover:bg-cream-50">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+      </button>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- 6. BEWERTUNGEN                                                 -->
+    <!-- Testimonials sind Platzhalter (keine echten Namen).           -->
+    <!-- ============================================================== -->
+    <section id="bewertungen" class="section bg-sage-600 text-cream-50">
+      <div class="container">
+        <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+          <!-- Bewertungs-Highlight -->
+          <div class="reveal lg:col-span-4">
+            <span class="section-eyebrow text-cream-100">Bewertungen</span>
+            <h2 class="section-title text-cream-50">Das sagen unsere Gäste</h2>
+            <div class="mt-6 flex items-end gap-4">
+              <p class="font-serif text-6xl font-bold leading-none">4,9</p>
+              <div class="pb-1">
+                <p class="text-terracotta-100" aria-hidden="true">★★★★★</p>
+                <p class="text-sm text-cream-100">aus 100 Google-Bewertungen</p>
+              </div>
+            </div>
+            <p class="mt-6 text-cream-100">
+              Ehrliches Feedback echter Kundinnen und Kunden. Werden Sie Teil davon –
+              wir freuen uns auf Ihren Besuch.
+            </p>
+          </div>
+
+          <!-- Testimonial-Karten -->
+          <div class="grid gap-6 sm:grid-cols-3 lg:col-span-8">
+            <figure class="reveal rounded-2xl bg-cream-50 p-6 text-anthracite shadow-soft">
+              <div class="text-terracotta" aria-hidden="true">★★★★★</div>
+              <blockquote class="mt-3 text-anthracite-light">
+                „Endlich ein Salon, der sich wirklich Zeit nimmt. Die Beratung war top und
+                mein Schnitt passt perfekt zu mir."
+              </blockquote>
+              <figcaption class="mt-4 text-sm font-semibold">Zufriedene Kundin · Chemnitz</figcaption>
+            </figure>
+
+            <figure class="reveal reveal-delay-1 rounded-2xl bg-cream-50 p-6 text-anthracite shadow-soft">
+              <div class="text-terracotta" aria-hidden="true">★★★★★</div>
+              <blockquote class="mt-3 text-anthracite-light">
+                „Tolle Atmosphäre, freundliches Team und ein Bartschnitt, der einfach sitzt.
+                Sehr zu empfehlen."
+              </blockquote>
+              <figcaption class="mt-4 text-sm font-semibold">Zufriedener Kunde · Chemnitz</figcaption>
+            </figure>
+
+            <figure class="reveal reveal-delay-2 rounded-2xl bg-cream-50 p-6 text-anthracite shadow-soft">
+              <div class="text-terracotta" aria-hidden="true">★★★★★</div>
+              <blockquote class="mt-3 text-anthracite-light">
+                „Die organischen Produkte sind ein Traum und meine Haare fühlen sich gesünder
+                an als je zuvor. Komme gerne wieder!"
+              </blockquote>
+              <figcaption class="mt-4 text-sm font-semibold">Zufriedene Kundin · Chemnitz</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 7. KONTAKT & BUCHUNG                                           -->
+    <!-- ============================================================== -->
+    <section id="kontakt" class="section">
+      <div class="container">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="section-eyebrow">Kontakt &amp; Buchung</span>
+          <h2 class="section-title">Vereinbaren Sie Ihren Termin</h2>
+          <p class="mt-4 text-lg text-anthracite-light">
+            Rufen Sie uns an, schreiben Sie uns oder kommen Sie vorbei – wir freuen uns auf Sie.
+          </p>
+        </div>
+
+        <div class="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-14">
+          <!-- Linke Spalte: Infos + Karte -->
+          <div class="reveal space-y-8">
+            <ul class="space-y-6">
+              <li class="flex gap-4">
+                <span class="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-terracotta-50 text-terracotta" aria-hidden="true">
+                  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+                </span>
+                <div>
+                  <h3 class="text-lg">Adresse</h3>
+                  <p class="text-anthracite-light">Schloßteichstraße 1<br />09113 Chemnitz</p>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <span class="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-terracotta-50 text-terracotta" aria-hidden="true">
+                  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>
+                </span>
+                <div>
+                  <h3 class="text-lg">Telefon</h3>
+                  <a href="tel:+4937133502111" class="text-terracotta hover:underline">0371 33502111</a>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <span class="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-terracotta-50 text-terracotta" aria-hidden="true">
+                  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                </span>
+                <div>
+                  <h3 class="text-lg">Öffnungszeiten</h3>
+                  <!-- Öffnungszeiten-Platzhalter: bitte echte Zeiten eintragen -->
+                  <p class="text-anthracite-light">Montag – Samstag: ab 09:00 Uhr<br />Sonntag: geschlossen</p>
+                </div>
+              </li>
+            </ul>
+
+            <!-- Eingebettete Google-Maps-Karte (Standard-Embed, kein API-Key nötig).
+                 Adresse in der src-URL ggf. anpassen. -->
+            <a href="https://www.google.com/maps/search/?api=1&query=Schlo%C3%9Fteichstra%C3%9Fe%201%2C%2009113%20Chemnitz" target="_blank" rel="noopener" class="flex h-64 w-full flex-col items-center justify-center gap-2 rounded-2xl bg-sage-100 text-center text-sage-700 shadow-card">
+    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+    <span class="font-semibold">Google-Maps-Karte</span>
+    <span class="text-sm">Schloßteichstraße 1, 09113 Chemnitz</span>
+    <span class="text-xs">(in der Live-Website als interaktive Karte eingebettet)</span>
+  </a>
+            <p class="text-sm">
+              <a href="https://www.google.com/maps/search/?api=1&query=Schlo%C3%9Fteichstra%C3%9Fe%201%2C%2009113%20Chemnitz" class="text-terracotta hover:underline" target="_blank" rel="noopener">In Google Maps öffnen ↗</a>
+            </p>
+          </div>
+
+          <!-- Rechte Spalte: Kontaktformular -->
+          <div class="reveal reveal-delay-1">
+            <!--
+              KONTAKTFORMULAR (Formspree-ready):
+              1. Account auf https://formspree.io anlegen, Formular erstellen.
+              2. Die erhaltene Form-ID unten in der action-URL eintragen
+                 (DEIN_FORM_ID ersetzen).
+              Bis dahin zeigt das Formular einen Hinweis statt zu senden.
+            -->
+            <form
+              data-contact-form
+              action="https://formspree.io/f/DEIN_FORM_ID"
+              method="POST"
+              class="rounded-3xl bg-cream-50 p-7 shadow-soft md:p-9"
+            >
+              <div class="grid gap-5">
+                <div>
+                  <label for="name" class="mb-1.5 block text-sm font-semibold">Name</label>
+                  <input id="name" name="name" type="text" required autocomplete="name"
+                    class="w-full rounded-xl border border-anthracite/15 bg-white px-4 py-3 text-anthracite placeholder:text-anthracite-muted focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/40"
+                    placeholder="Ihr Name" />
+                </div>
+                <div class="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label for="email" class="mb-1.5 block text-sm font-semibold">E-Mail</label>
+                    <input id="email" name="email" type="email" required autocomplete="email"
+                      class="w-full rounded-xl border border-anthracite/15 bg-white px-4 py-3 text-anthracite placeholder:text-anthracite-muted focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/40"
+                      placeholder="name@beispiel.de" />
+                  </div>
+                  <div>
+                    <label for="phone" class="mb-1.5 block text-sm font-semibold">Telefon <span class="font-normal text-anthracite-muted">(optional)</span></label>
+                    <input id="phone" name="phone" type="tel" autocomplete="tel"
+                      class="w-full rounded-xl border border-anthracite/15 bg-white px-4 py-3 text-anthracite placeholder:text-anthracite-muted focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/40"
+                      placeholder="Ihre Telefonnummer" />
+                  </div>
+                </div>
+                <div>
+                  <label for="message" class="mb-1.5 block text-sm font-semibold">Nachricht</label>
+                  <textarea id="message" name="message" rows="4" required
+                    class="w-full rounded-xl border border-anthracite/15 bg-white px-4 py-3 text-anthracite placeholder:text-anthracite-muted focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/40"
+                    placeholder="Ihr Wunschtermin und Ihre Anliegen …"></textarea>
+                </div>
+
+                <!-- Einwilligung (DSGVO) -->
+                <label class="flex items-start gap-3 text-sm text-anthracite-light">
+                  <input type="checkbox" name="consent" required class="mt-1 h-4 w-4 rounded border-anthracite/30 text-terracotta focus:ring-terracotta" />
+                  <span>Ich bin mit der Verarbeitung meiner Daten gemäß <a href="#" title="Im echten Upload als datenschutz.html verfügbar" class="text-terracotta hover:underline">Datenschutzerklärung</a> einverstanden.</span>
+                </label>
+
+                <button type="submit" class="btn-primary w-full">Nachricht senden</button>
+
+                <!-- Statushinweis (durch JS gefüllt) -->
+                <p data-form-status class="hidden rounded-xl bg-sage-100 px-4 py-3 text-sm text-sage-700" role="status"></p>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Großer Buchungs-CTA -->
+        <div class="reveal mt-16 rounded-3xl bg-terracotta px-6 py-12 text-center text-cream-50 md:px-12">
+          <h2 class="text-3xl text-cream-50 md:text-4xl">Bereit für einen frischen Look?</h2>
+          <p class="mx-auto mt-3 max-w-xl text-cream-100">Sichern Sie sich Ihren Wunschtermin im Atelier Götz – telefonisch oder über das Kontaktformular.</p>
+          <div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+            <a href="tel:+4937133502111" class="btn-light">Jetzt anrufen: 0371 33502111</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================================================================ -->
+  <!-- 8. FOOTER                                                        -->
+  <!-- ================================================================ -->
+  <footer class="bg-anthracite text-cream-100">
+    <div class="container py-14">
+      <div class="grid gap-10 md:grid-cols-3">
+        <!-- Marke -->
+        <div>
+          <div class="flex items-center gap-3">
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-terracotta font-serif text-lg font-bold text-cream-50">AG</span>
+            <span class="font-serif text-xl font-semibold text-cream-50">Atelier Götz</span>
+          </div>
+          <p class="mt-4 max-w-xs text-sm text-cream-100/80">
+            Ihr nachhaltiger Friseur &amp; Barbier in Chemnitz. Organische Produkte,
+            individuelle Typberatung.
+          </p>
+        </div>
+
+        <!-- Navigation -->
+        <nav aria-label="Footer-Navigation">
+          <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-cream-50">Navigation</h2>
+          <ul class="mt-4 space-y-2 text-sm">
+            <li><a href="#ueber-uns" class="hover:text-terracotta-100">Über uns</a></li>
+            <li><a href="#leistungen" class="hover:text-terracotta-100">Leistungen</a></li>
+            <li><a href="#galerie" class="hover:text-terracotta-100">Galerie</a></li>
+            <li><a href="#bewertungen" class="hover:text-terracotta-100">Bewertungen</a></li>
+            <li><a href="#kontakt" class="hover:text-terracotta-100">Kontakt</a></li>
+          </ul>
+        </nav>
+
+        <!-- Kontakt + Social -->
+        <div>
+          <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-cream-50">Kontakt</h2>
+          <address class="mt-4 not-italic text-sm text-cream-100/80">
+            Schloßteichstraße 1<br />
+            09113 Chemnitz<br />
+            <a href="tel:+4937133502111" class="text-terracotta-100 hover:underline">0371 33502111</a>
+          </address>
+          <!-- Social-Platzhalter: echte Profil-Links eintragen -->
+          <div class="mt-5 flex gap-3">
+            <a href="#" aria-label="Instagram (Link eintragen)" class="flex h-10 w-10 items-center justify-center rounded-full bg-cream-100/10 transition-colors hover:bg-terracotta">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.17.05 1.8.25 2.23.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.42.37 1.06.42 2.23.06 1.3.07 1.69.07 4.9s0 3.6-.07 4.9c-.05 1.17-.25 1.8-.42 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.17-1.06.37-2.23.42-1.3.06-1.69.07-4.9.07s-3.6 0-4.9-.07c-1.17-.05-1.8-.25-2.23-.42a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.17-.42-.37-1.06-.42-2.23C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.05-1.17.25-1.8.42-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.17 1.06-.37 2.23-.42C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.15 0-3.52.01-4.76.07-.9.04-1.38.19-1.7.32-.43.16-.74.36-1.06.68-.32.32-.52.63-.68 1.06-.13.32-.28.8-.32 1.7C3.42 8.48 3.4 8.85 3.4 12s.02 3.52.08 4.76c.04.9.19 1.38.32 1.7.16.43.36.74.68 1.06.32.32.63.52 1.06.68.32.13.8.28 1.7.32 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c.9-.04 1.38-.19 1.7-.32.43-.16.74-.36 1.06-.68.32-.32.52-.63.68-1.06.13-.32.28-.8.32-1.7.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.04-.9-.19-1.38-.32-1.7a2.85 2.85 0 0 0-.68-1.06 2.85 2.85 0 0 0-1.06-.68c-.32-.13-.8-.28-1.7-.32C15.52 4.01 15.15 4 12 4Zm0 3.06A4.94 4.94 0 1 1 12 16.94 4.94 4.94 0 0 1 12 7.06Zm0 1.8a3.14 3.14 0 1 0 0 6.28 3.14 3.14 0 0 0 0-6.28Zm5.15-3.2a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z" /></svg>
+            </a>
+            <a href="#" aria-label="Facebook (Link eintragen)" class="flex h-10 w-10 items-center justify-center rounded-full bg-cream-100/10 transition-colors hover:bg-terracotta">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.1h-3.1V8.9c0-.9.25-1.5 1.55-1.5h1.65V4.6c-.29-.04-1.27-.12-2.41-.12-2.39 0-4.03 1.46-4.03 4.14v2.31H7.5V14h2.76v8h3.24Z" /></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Untere Leiste mit rechtlichen Links (in DE erforderlich) -->
+      <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-cream-100/15 pt-6 text-sm text-cream-100/70 md:flex-row">
+        <p>&copy; <span data-current-year>2026</span> Atelier Götz – Coiffeur &amp; Barbier. Alle Rechte vorbehalten.</p>
+        <ul class="flex gap-6">
+          <li><a href="#" title="Im echten Upload als impressum.html verfügbar" class="hover:text-terracotta-100">Impressum</a></li>
+          <li><a href="#" title="Im echten Upload als datenschutz.html verfügbar" class="hover:text-terracotta-100">Datenschutz</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interaktionen -->
+  <script>
+/* =====================================================================
+ * Atelier Götz – Website-Interaktionen (Vanilla JavaScript, keine Libs)
+ *
+ * Enthält:
+ *   1. Mobiles Navigationsmenü (Hamburger-Toggle)
+ *   2. Header-Schatten beim Scrollen
+ *   3. Scroll-Reveal per IntersectionObserver
+ *   4. Galerie-Lightbox (mit Tastatur-Bedienung & Fokus-Trap)
+ *   5. Aktuelles Jahr im Footer
+ *   6. Kontaktformular: einfache Client-Validierung
+ *
+ * Alle Effekte respektieren `prefers-reduced-motion`.
+ * ===================================================================== */
+(function () {
+  'use strict';
+
+  // Signalisiert dem CSS, dass JavaScript läuft. Erst dann werden .reveal-
+  // Elemente versteckt (und anschließend eingeblendet). Ohne JS bleibt
+  // der gesamte Inhalt sofort sichtbar.
+  document.documentElement.classList.add('js');
+
+  const prefersReducedMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initMobileMenu();
+    initHeaderScroll();
+    initScrollReveal();
+    initLightbox();
+    initCurrentYear();
+    initContactForm();
+  });
+
+  /* ------------------------------------------------------------------ *
+   * 1. Mobiles Navigationsmenü
+   * ------------------------------------------------------------------ */
+  function initMobileMenu() {
+    const toggle = document.querySelector('[data-menu-toggle]');
+    const menu = document.querySelector('[data-mobile-menu]');
+    if (!toggle || !menu) return;
+
+    const closeMenu = function () {
+      menu.classList.add('hidden');
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+
+    const openMenu = function () {
+      menu.classList.remove('hidden');
+      toggle.setAttribute('aria-expanded', 'true');
+    };
+
+    toggle.addEventListener('click', function () {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      isOpen ? closeMenu() : openMenu();
+    });
+
+    // Menü schließen, sobald ein Link angeklickt wurde.
+    menu.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Mit ESC schließen.
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMenu();
+    });
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 2. Header bekommt beim Scrollen einen dezenten Schatten / Hintergrund
+   * ------------------------------------------------------------------ */
+  function initHeaderScroll() {
+    const header = document.querySelector('[data-header]');
+    if (!header) return;
+
+    const onScroll = function () {
+      if (window.scrollY > 20) {
+        header.classList.add('is-scrolled');
+      } else {
+        header.classList.remove('is-scrolled');
+      }
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 3. Scroll-Reveal: Elemente mit .reveal sanft einblenden
+   * ------------------------------------------------------------------ */
+  function initScrollReveal() {
+    const elements = document.querySelectorAll('.reveal');
+    if (!elements.length) return;
+
+    // Bei reduzierter Bewegung sofort alles anzeigen.
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+      elements.forEach(function (el) {
+        el.classList.add('is-visible');
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target); // nur einmal animieren
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    elements.forEach(function (el) {
+      observer.observe(el);
+    });
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 4. Galerie-Lightbox
+   *    Öffnet das angeklickte Bild groß; ESC / Klick / Button schließt.
+   *    Tastatur: Pfeiltasten blättern, Fokus bleibt im Dialog (Trap).
+   * ------------------------------------------------------------------ */
+  function initLightbox() {
+    const triggers = Array.prototype.slice.call(
+      document.querySelectorAll('[data-lightbox]')
+    );
+    const lightbox = document.querySelector('[data-lightbox-dialog]');
+    if (!triggers.length || !lightbox) return;
+
+    const imageEl = lightbox.querySelector('[data-lightbox-image]');
+    const closeBtn = lightbox.querySelector('[data-lightbox-close]');
+    const prevBtn = lightbox.querySelector('[data-lightbox-prev]');
+    const nextBtn = lightbox.querySelector('[data-lightbox-next]');
+    let currentIndex = 0;
+    let lastFocused = null;
+
+    const showImage = function (index) {
+      currentIndex = (index + triggers.length) % triggers.length;
+      const source = triggers[currentIndex];
+      const img = source.querySelector('img');
+      if (img) {
+        imageEl.src = img.getAttribute('src');
+        imageEl.alt = img.getAttribute('alt') || '';
+      }
+    };
+
+    const openLightbox = function (index) {
+      lastFocused = document.activeElement;
+      showImage(index);
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    };
+
+    const closeLightbox = function () {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    };
+
+    triggers.forEach(function (trigger, index) {
+      trigger.addEventListener('click', function (e) {
+        e.preventDefault();
+        openLightbox(index);
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    if (nextBtn)
+      nextBtn.addEventListener('click', function () {
+        showImage(currentIndex + 1);
+      });
+    if (prevBtn)
+      prevBtn.addEventListener('click', function () {
+        showImage(currentIndex - 1);
+      });
+
+    // Klick auf den dunklen Hintergrund schließt die Lightbox.
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    // Tastatur-Steuerung inkl. einfachem Fokus-Trap.
+    document.addEventListener('keydown', function (e) {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+      if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+      if (e.key === 'Tab') {
+        const focusable = lightbox.querySelectorAll('button');
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 5. Aktuelles Jahr in den Footer schreiben
+   * ------------------------------------------------------------------ */
+  function initCurrentYear() {
+    const yearEl = document.querySelector('[data-current-year]');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 6. Kontaktformular – einfache Validierung vor dem Absenden
+   *    Hinweis: Das eigentliche Versenden übernimmt der im <form action>
+   *    hinterlegte Dienst (z. B. Formspree). Siehe README.
+   * ------------------------------------------------------------------ */
+  function initContactForm() {
+    const form = document.querySelector('[data-contact-form]');
+    if (!form) return;
+
+    const status = form.querySelector('[data-form-status]');
+
+    form.addEventListener('submit', function (e) {
+      // Browser-eigene Validierung nutzen (required, type=email …).
+      if (!form.checkValidity()) {
+        e.preventDefault();
+        form.reportValidity();
+        return;
+      }
+
+      // Solange noch kein echter Endpoint hinterlegt ist, Absenden abfangen
+      // und einen freundlichen Hinweis zeigen (verhindert „toten" Button).
+      const action = form.getAttribute('action') || '';
+      if (action.indexOf('DEIN_FORM_ID') !== -1 || action === '') {
+        e.preventDefault();
+        if (status) {
+          status.textContent =
+            'Formular bereit. Bitte im Code die Formspree-ID eintragen (siehe README), damit Nachrichten zugestellt werden.';
+          status.classList.remove('hidden');
+        }
+      }
+    });
+  }
+})();
+
+</script>
+
+  <div style="position:fixed;left:0;right:0;bottom:0;z-index:200;background:#2A2A28;color:#F7F2EA;font:14px/1.4 Inter,system-ui,sans-serif;padding:10px 16px;text-align:center">
+    Eigenständige Vorschau (Bilder = Illustrationen, Karte als Vorschau) &middot; für den echten Upload <code>index.html</code> verwenden.
+  </div>
+</body>
+</html>

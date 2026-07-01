@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F7F2EA"/><stop offset="1" stop-color="#EFE6D7"/>
+  </linearGradient>
+  
+</defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <path d="M 380 300 A 220 220 0 0 1 820 300 Z" fill="#E9CBB9" opacity="0.55"/>
+  <g stroke="#8A9A7B" stroke-width="4.800000000000001" fill="none" stroke-linecap="round">
+    <path d="M 150 392 C 150 296, 150 248, 150 200"/>
+  </g><g transform="translate(152 248) rotate(25) scale(1.6)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#8A9A7B"/></g><g transform="translate(89.19999999999999 288) rotate(200) scale(1.6)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#8A9A7B"/></g><g transform="translate(152 328) rotate(25) scale(1.6)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#8A9A7B"/></g><g transform="translate(89.19999999999999 360) rotate(200) scale(1.6)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#8A9A7B"/></g>
+  <g stroke="#586549" stroke-width="4.5" fill="none" stroke-linecap="round">
+    <path d="M 1010 410 C 1010 320, 1010 275, 1010 230"/>
+  </g><g transform="translate(1012 275) rotate(25) scale(1.5)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g transform="translate(953 312.5) rotate(200) scale(1.5)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g transform="translate(1012 350) rotate(25) scale(1.5)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g><g transform="translate(953 380) rotate(200) scale(1.5)"><path d="M0 0 Q 18 -10 36 0 Q 18 10 0 0 Z" fill="#586549"/></g>
+  <circle cx="600" cy="250" r="70" fill="#B5673F"/>
+  <text x="600" y="250" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="58" fill="#F7F2EA">AG</text>
+  <text x="600" y="400" text-anchor="middle" font-family="Georgia, serif" font-size="72" fill="#2A2A28">Atelier Götz</text>
+  <text x="600" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" letter-spacing="6" fill="#B5673F">COIFFEUR &amp; BARBIER · CHEMNITZ</text>
+
+</svg>

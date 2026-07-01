@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F7F2EA"/><stop offset="1" stop-color="#EFE6D7"/>
+  </linearGradient>
+  
+</defs>
+
+  <rect width="900" height="900" fill="url(#bg)"/>
+  <path d="M 144 414 A 306 306 0 0 1 756 414 Z" fill="#E9CBB9" opacity="0.6"/>
+  <path d="M 180 414 A 270 270 0 0 1 720 414 Z" fill="#D8E0CF" opacity="0.55"/>
+  <g transform="translate(450 360) scale(1.7)">
+    <ellipse cx="0" cy="-10" rx="70" ry="86" fill="#586549"/>
+    <ellipse cx="0" cy="-10" rx="52" ry="68" fill="#F7F2EA"/>
+    <rect x="-12" y="70" width="24" height="70" rx="10" fill="#586549"/>
+    <rect x="-44" y="135" width="88" height="18" rx="9" fill="#586549"/>
+  </g>
+  <text x="450" y="874" text-anchor="middle" font-family="Georgia, serif" font-size="32" fill="#2A2A28" opacity="0.55">Typberatung</text>
+</svg>
