@@ -36,6 +36,22 @@ export const BALANCE = {
   // Hintergrund-Tab keine riesigen Zeitspruenge in einem Frame verrechnet.
   // Offline-Einnahmen werden spaeter separat (Phase 4) behandelt.
   maxTickDeltaMs: 1_000,
+
+  // Renovierung: jede Stufe multipliziert den Umsatz des Lokals.
+  renovation: {
+    multiplier: 1.5,
+  },
+
+  // Prestige / Investoren: verdiente Investoren aus dem Lebenszeit-Umsatz,
+  // jeder gibt einen permanenten globalen Umsatz-Bonus.
+  prestige: {
+    // Skalierung: Investoren = floor(sqrt(totalEarned / scale)).
+    scale: 10_000,
+    // Permanenter Umsatz-Bonus je Investor (2 %).
+    bonusPerInvestor: 0.02,
+    // Mindest-Lebenszeit-Umsatz, bevor Prestige moeglich ist.
+    minEarnedToPrestige: 1_000_000,
+  },
 } as const;
 
 export type Balance = typeof BALANCE;

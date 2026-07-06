@@ -1,14 +1,14 @@
-// HTML-HUD-Overlay: obere Leiste (Muenzen, Einkommen, Marketing-Boost),
-// Kauf-Modus-Umschalter (x1/x10/Max) und das Stations-Panel mit Karten.
-// Liest den Zustand ueber den GameController und ruft dessen Aktionen auf.
+// HTML-HUD-Overlay: obere Leiste (Muenzen/Einkommen/Boost), Weltsteuerung und
+// ein einklappbares Panel mit Tabs: Laeden (Stationen), Karte (Restaurants),
+// Upgrades und Investoren (Prestige). Liest den Zustand ueber den GameController.
 
-import { STATIONS } from '@data/stations';
 import { formatNumber } from '@core/format';
 import { milestoneMultiplier } from '@core/economy';
 import type { GameController, BuyAmount } from '@core/game';
+import type { StationDef } from '@data/stations';
 
-interface StationCard {
-  root: HTMLDivElement;
+interface Pane {
+  el: HTMLElement;
   update: (nowMs: number) => void;
 }
 
@@ -16,118 +16,126 @@ export interface Hud {
   update: (nowMs: number) => void;
 }
 
-// Formatiert Millisekunden als "12s".
 function formatSeconds(ms: number): string {
   return `${Math.ceil(ms / 1000)}s`;
 }
 
+function makeButton(cls: string): HTMLButtonElement {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = cls;
+  return b;
+}
+
 export function createHud(root: HTMLElement, game: GameController): Hud {
   root.innerHTML = '';
-
-  // Aktueller Kauf-Modus (x1 / x10 / Max).
   let buyMode: BuyAmount = 1;
 
   // --- Obere Leiste ---------------------------------------------------------
   const top = document.createElement('div');
   top.className = 'hud-top';
-
   const coinsBox = document.createElement('div');
   coinsBox.className = 'hud-coins';
+  coinsBox.innerHTML = '<span aria-hidden="true">🪙</span> ';
   const coinsValue = document.createElement('span');
   coinsValue.className = 'hud-coin';
-  coinsBox.innerHTML = '<span aria-hidden="true">🪙</span> ';
   coinsBox.appendChild(coinsValue);
-
   const incomeValue = document.createElement('div');
   incomeValue.className = 'hud-income';
+  const boostBtn = makeButton('btn btn-boost');
+  boostBtn.addEventListener('click', () => game.activateMarketing(performance.now()));
+  top.append(coinsBox, incomeValue, boostBtn);
 
-  const boostBtn = document.createElement('button');
-  boostBtn.className = 'btn btn-boost';
-  boostBtn.type = 'button';
-  boostBtn.addEventListener('click', () => {
-    game.activateMarketing(performance.now());
-  });
-
-  top.appendChild(coinsBox);
-  top.appendChild(incomeValue);
-  top.appendChild(boostBtn);
-
-  // --- Weltsteuerung (Zentrier-Button) --------------------------------------
+  // --- Weltsteuerung --------------------------------------------------------
   const worldControls = document.createElement('div');
   worldControls.className = 'world-controls';
-  const centerBtn = document.createElement('button');
-  centerBtn.type = 'button';
-  centerBtn.className = 'btn-round';
+  const centerBtn = makeButton('btn-round');
   centerBtn.title = 'Ansicht zentrieren';
   centerBtn.textContent = '🎯';
   centerBtn.addEventListener('click', () => game.bus.emit('cameraCenter', null));
   worldControls.appendChild(centerBtn);
 
-  // --- Panel (unten) --------------------------------------------------------
+  // --- Panel ----------------------------------------------------------------
   const panel = document.createElement('div');
   panel.className = 'panel';
 
-  // Einklapp-Griff, um die lebendige Welt freizugeben.
-  const handle = document.createElement('button');
-  handle.type = 'button';
-  handle.className = 'panel-handle';
+  const handle = makeButton('panel-handle');
   const handleLabel = document.createElement('span');
-  handleLabel.textContent = 'Läden';
+  handleLabel.textContent = 'Menü';
   const handleArrow = document.createElement('span');
   handleArrow.className = 'panel-arrow';
   handleArrow.textContent = '▾';
-  handle.appendChild(handleLabel);
-  handle.appendChild(handleArrow);
+  handle.append(handleLabel, handleArrow);
   handle.addEventListener('click', () => {
     const collapsed = panel.classList.toggle('collapsed');
     handleArrow.textContent = collapsed ? '▴' : '▾';
   });
-  panel.appendChild(handle);
 
-  // Kauf-Modus-Umschalter
-  const buyModeBar = document.createElement('div');
-  buyModeBar.className = 'buymode';
-  const modes: { label: string; value: BuyAmount }[] = [
-    { label: '×1', value: 1 },
-    { label: '×10', value: 10 },
-    { label: 'Max', value: 'max' },
+  // Restaurant-Kopf: Name + Renovieren
+  const header = document.createElement('div');
+  header.className = 'resto-header';
+  const restoName = document.createElement('div');
+  restoName.className = 'resto-name';
+  const renovateBtn = makeButton('btn btn-renovate');
+  renovateBtn.addEventListener('click', () => game.renovate());
+  header.append(restoName, renovateBtn);
+
+  // Tab-Leiste
+  const tabbar = document.createElement('div');
+  tabbar.className = 'tabbar';
+  const content = document.createElement('div');
+  content.className = 'pane-container';
+
+  const panes: Record<string, Pane> = {
+    stations: buildStationsPane(game, () => buyMode, (m) => (buyMode = m)),
+    map: buildMapPane(game),
+    upgrades: buildUpgradesPane(game),
+    investors: buildInvestorsPane(game),
+  };
+
+  const tabs: { key: string; label: string }[] = [
+    { key: 'stations', label: '🍔 Läden' },
+    { key: 'map', label: '🗺️ Karte' },
+    { key: 'upgrades', label: '⭐ Upgrades' },
+    { key: 'investors', label: '💼 Investoren' },
   ];
-  const modeButtons: { value: BuyAmount; el: HTMLButtonElement }[] = [];
-  for (const m of modes) {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'buymode-btn';
-    b.textContent = m.label;
+  let activeTab = 'stations';
+  const tabButtons: { key: string; el: HTMLButtonElement }[] = [];
+  for (const t of tabs) {
+    const b = makeButton('tab-btn');
+    b.textContent = t.label;
     b.addEventListener('click', () => {
-      buyMode = m.value;
-      modeButtons.forEach((mb) => mb.el.classList.toggle('active', mb.value === buyMode));
+      activeTab = t.key;
+      for (const [key, pane] of Object.entries(panes)) {
+        pane.el.style.display = key === activeTab ? '' : 'none';
+      }
+      tabButtons.forEach((tb) => tb.el.classList.toggle('active', tb.key === activeTab));
+      if (panel.classList.contains('collapsed')) {
+        panel.classList.remove('collapsed');
+        handleArrow.textContent = '▾';
+      }
     });
-    modeButtons.push({ value: m.value, el: b });
-    buyModeBar.appendChild(b);
+    tabButtons.push({ key: t.key, el: b });
+    tabbar.appendChild(b);
   }
-  modeButtons[0].el.classList.add('active');
+  tabButtons[0].el.classList.add('active');
 
-  const list = document.createElement('div');
-  list.className = 'stations';
+  for (const [key, pane] of Object.entries(panes)) {
+    pane.el.style.display = key === activeTab ? '' : 'none';
+    content.appendChild(pane.el);
+  }
 
-  panel.appendChild(buyModeBar);
-  panel.appendChild(list);
+  panel.append(handle, header, tabbar, content);
+  root.append(top, worldControls, panel);
 
-  root.appendChild(top);
-  root.appendChild(worldControls);
-  root.appendChild(panel);
-
-  // --- Stationskarten -------------------------------------------------------
-  const cards: StationCard[] = STATIONS.map((def, index) =>
-    createStationCard(def, index, game, () => buyMode),
-  );
-  cards.forEach((c) => list.appendChild(c.root));
+  // Beim Restaurantwechsel die Stationskarten neu aufbauen.
+  game.bus.on('restaurantChanged', () => {
+    (panes.stations as ReturnType<typeof buildStationsPane>).rebuild();
+  });
 
   // --- Gesamt-Update --------------------------------------------------------
   function update(nowMs: number): void {
-    const state = game.getState();
-    coinsValue.textContent = formatNumber(state.coins);
-
+    coinsValue.textContent = formatNumber(game.getState().coins);
     const perSec = game.incomePerSecond(nowMs);
     incomeValue.textContent = perSec > 0 ? `${formatNumber(perSec)} / Sek.` : '';
 
@@ -146,31 +154,89 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
       boostBtn.disabled = false;
     }
 
-    for (const c of cards) c.update(nowMs);
+    // Restaurant-Kopf
+    const reno = game.getRenovationInfo();
+    restoName.textContent = reno.name;
+    if (reno.maxed) {
+      renovateBtn.textContent = 'Voll ausgebaut';
+      renovateBtn.disabled = true;
+    } else {
+      renovateBtn.innerHTML = `Renovieren<br><small>${formatNumber(reno.nextCost ?? 0)} 🪙</small>`;
+      renovateBtn.disabled = game.getState().coins < (reno.nextCost ?? Infinity);
+    }
+
+    panes[activeTab].update(nowMs);
   }
 
   update(performance.now());
   return { update };
 }
 
-function createStationCard(
-  def: (typeof STATIONS)[number],
-  index: number,
+// --- Pane: Stationen --------------------------------------------------------
+
+function buildStationsPane(
   game: GameController,
   getBuyMode: () => BuyAmount,
-): StationCard {
+  setBuyMode: (m: BuyAmount) => void,
+): Pane & { rebuild: () => void } {
+  const el = document.createElement('div');
+  el.className = 'pane';
+
+  const buyModeBar = document.createElement('div');
+  buyModeBar.className = 'buymode';
+  const modes: { label: string; value: BuyAmount }[] = [
+    { label: '×1', value: 1 },
+    { label: '×10', value: 10 },
+    { label: 'Max', value: 'max' },
+  ];
+  const modeButtons: { value: BuyAmount; el: HTMLButtonElement }[] = [];
+  for (const m of modes) {
+    const b = makeButton('buymode-btn');
+    b.textContent = m.label;
+    b.addEventListener('click', () => {
+      setBuyMode(m.value);
+      modeButtons.forEach((mb) => mb.el.classList.toggle('active', mb.value === getBuyMode()));
+    });
+    modeButtons.push({ value: m.value, el: b });
+    buyModeBar.appendChild(b);
+  }
+  modeButtons[0].el.classList.add('active');
+
+  const list = document.createElement('div');
+  list.className = 'stations';
+  el.append(buyModeBar, list);
+
+  let cards: { root: HTMLElement; update: () => void }[] = [];
+
+  function rebuild(): void {
+    list.innerHTML = '';
+    const defs = game.currentStationDefs();
+    cards = defs.map((def, i) => createStationCard(def, i, defs, game, getBuyMode));
+    cards.forEach((c) => list.appendChild(c.root));
+  }
+  rebuild();
+
+  return {
+    el,
+    rebuild,
+    update: () => cards.forEach((c) => c.update()),
+  };
+}
+
+function createStationCard(
+  def: StationDef,
+  index: number,
+  defs: StationDef[],
+  game: GameController,
+  getBuyMode: () => BuyAmount,
+): { root: HTMLElement; update: () => void } {
   const card = document.createElement('div');
   card.className = 'card';
 
-  // Klick auf die Karte (nicht auf Buttons) startet manuell einen Zyklus.
-  const tapArea = document.createElement('button');
-  tapArea.type = 'button';
-  tapArea.className = 'card-tap';
-
+  const tapArea = makeButton('card-tap');
   const emoji = document.createElement('div');
   emoji.className = 'card-emoji';
   emoji.textContent = def.emoji;
-
   const info = document.createElement('div');
   info.className = 'card-info';
   const nameEl = document.createElement('div');
@@ -178,75 +244,47 @@ function createStationCard(
   nameEl.textContent = def.name;
   const ownedEl = document.createElement('div');
   ownedEl.className = 'card-owned';
-  info.appendChild(nameEl);
-  info.appendChild(ownedEl);
-
-  // Fortschrittsbalken
+  info.append(nameEl, ownedEl);
   const progressWrap = document.createElement('div');
   progressWrap.className = 'card-progress';
   const progressFill = document.createElement('div');
   progressFill.className = 'card-progress-fill';
   progressWrap.appendChild(progressFill);
+  tapArea.append(emoji, info, progressWrap);
+  tapArea.addEventListener('click', () => game.tapStation(def.id));
 
-  tapArea.appendChild(emoji);
-  tapArea.appendChild(info);
-  tapArea.appendChild(progressWrap);
-  tapArea.addEventListener('click', () => {
-    game.tapStation(def.id);
-  });
-
-  // Aktionsleiste (Kaufen / Manager)
   const actions = document.createElement('div');
   actions.className = 'card-actions';
+  const buyBtn = makeButton('btn btn-buy');
+  buyBtn.addEventListener('click', () => game.buyUnits(def.id, getBuyMode()));
+  const managerBtn = makeButton('btn btn-manager');
+  managerBtn.addEventListener('click', () => game.hireManager(def.id));
+  actions.append(buyBtn, managerBtn);
 
-  const buyBtn = document.createElement('button');
-  buyBtn.type = 'button';
-  buyBtn.className = 'btn btn-buy';
-  buyBtn.addEventListener('click', () => {
-    game.buyUnits(def.id, getBuyMode());
-  });
-
-  const managerBtn = document.createElement('button');
-  managerBtn.type = 'button';
-  managerBtn.className = 'btn btn-manager';
-  managerBtn.addEventListener('click', () => {
-    game.hireManager(def.id);
-  });
-
-  actions.appendChild(buyBtn);
-  actions.appendChild(managerBtn);
-
-  // Sperr-Overlay fuer noch nicht freigeschaltete Stationen.
   const lock = document.createElement('div');
   lock.className = 'card-lock';
-  const prevName = index > 0 ? STATIONS[index - 1].name : '';
+  const prevName = index > 0 ? defs[index - 1].name : '';
   lock.textContent = `🔒 Erst „${prevName}" eröffnen`;
 
-  card.appendChild(tapArea);
-  card.appendChild(actions);
-  card.appendChild(lock);
+  card.append(tapArea, actions, lock);
 
-  function update(_nowMs: number): void {
-    const state = game.getState();
-    const st = state.stations[index];
+  function update(): void {
+    const st = game.currentRestaurant().stations[index];
+    if (!st) return;
+    const coins = game.getState().coins;
     const unlocked = game.isUnlocked(index);
-
     card.classList.toggle('locked', !unlocked);
     lock.style.display = unlocked ? 'none' : 'flex';
     if (!unlocked) return;
 
-    // Besitz + aktiver Meilenstein-Multiplikator
     const mult = milestoneMultiplier(st.owned);
     ownedEl.innerHTML =
       `Anzahl: <b>${st.owned}</b>` + (mult > 1 ? ` <span class="tag">×${mult}</span>` : '');
-
-    // Fortschritt
     progressFill.style.width = `${game.cycleProgress(def.id) * 100}%`;
 
-    // Kauf-Button
     const mode = getBuyMode();
     const { count, cost } = game.costFor(def.id, mode);
-    const affordable = count > 0 && state.coins >= cost - 1e-6;
+    const affordable = count > 0 && coins >= cost - 1e-6;
     if (st.owned === 0) {
       buyBtn.innerHTML = `Eröffnen<br><small>${formatNumber(cost)} 🪙</small>`;
     } else {
@@ -255,21 +293,162 @@ function createStationCard(
     }
     buyBtn.disabled = !affordable;
 
-    // Manager-Button
     if (st.manager) {
       managerBtn.innerHTML = 'Manager ✓';
       managerBtn.classList.add('hired');
       managerBtn.disabled = true;
     } else {
       managerBtn.classList.remove('hired');
-      const canHire = st.owned > 0 && state.coins >= def.managerCost - 1e-6;
       managerBtn.innerHTML = `Manager<br><small>${formatNumber(def.managerCost)} 🪙</small>`;
-      managerBtn.disabled = !canHire;
+      managerBtn.disabled = !(st.owned > 0 && coins >= def.managerCost - 1e-6);
     }
-
-    // Tippen nur sinnvoll ohne Manager und mit Einheit.
     tapArea.classList.toggle('tappable', st.owned > 0 && !st.manager);
   }
 
   return { root: card, update };
+}
+
+// --- Pane: Karte (Restaurants) ---------------------------------------------
+
+function buildMapPane(game: GameController): Pane {
+  const el = document.createElement('div');
+  el.className = 'pane map-pane';
+
+  interface Row {
+    root: HTMLElement;
+    btn: HTMLButtonElement;
+    badge: HTMLElement;
+    id: string;
+    update: () => void;
+  }
+  const rows: Row[] = game.listRestaurants().map((item) => {
+    const root = document.createElement('div');
+    root.className = 'map-row';
+    const icon = document.createElement('div');
+    icon.className = 'map-emoji';
+    icon.textContent = item.emoji;
+    const nameEl = document.createElement('div');
+    nameEl.className = 'map-name';
+    const badge = document.createElement('span');
+    badge.className = 'map-badge';
+    const btn = makeButton('btn btn-travel');
+    btn.addEventListener('click', () => {
+      const it = game.listRestaurants().find((r) => r.id === item.id)!;
+      if (it.unlocked) game.travelTo(item.id);
+      else game.unlockRestaurant(item.id);
+    });
+    nameEl.appendChild(badge);
+    root.append(icon, nameEl, btn);
+
+    const update = (): void => {
+      const it = game.listRestaurants().find((r) => r.id === item.id)!;
+      badge.textContent = it.name;
+      root.classList.toggle('current', it.isCurrent);
+      if (it.isCurrent) {
+        btn.textContent = 'Hier ✓';
+        btn.disabled = true;
+      } else if (it.unlocked) {
+        btn.textContent = 'Reisen';
+        btn.disabled = false;
+      } else {
+        btn.innerHTML = `Eröffnen<br><small>${formatNumber(it.unlockCost)} 🪙</small>`;
+        btn.disabled = game.getState().coins < it.unlockCost;
+      }
+    };
+    return { root, btn, badge, id: item.id, update };
+  });
+  rows.forEach((r) => el.appendChild(r.root));
+
+  return { el, update: () => rows.forEach((r) => r.update()) };
+}
+
+// --- Pane: Upgrades ---------------------------------------------------------
+
+function buildUpgradesPane(game: GameController): Pane {
+  const el = document.createElement('div');
+  el.className = 'pane upgrades-pane';
+
+  const rows = game.listUpgrades().map((item) => {
+    const root = document.createElement('div');
+    root.className = 'upgrade-row';
+    const icon = document.createElement('div');
+    icon.className = 'upgrade-emoji';
+    icon.textContent = item.def.emoji;
+    const info = document.createElement('div');
+    info.className = 'upgrade-info';
+    const name = document.createElement('div');
+    name.className = 'upgrade-name';
+    const desc = document.createElement('div');
+    desc.className = 'upgrade-desc';
+    desc.textContent = item.def.description;
+    info.append(name, desc);
+    const btn = makeButton('btn btn-buy');
+    btn.addEventListener('click', () => game.buyUpgrade(item.def.id));
+    root.append(icon, info, btn);
+
+    const update = (): void => {
+      const it = game.listUpgrades().find((u) => u.def.id === item.def.id)!;
+      name.innerHTML = `${it.def.name} <span class="tag">Stufe ${it.level}/${it.def.maxLevel}</span>`;
+      if (it.maxed) {
+        btn.textContent = 'Max';
+        btn.disabled = true;
+      } else {
+        btn.innerHTML = `Kaufen<br><small>${formatNumber(it.cost)} 🪙</small>`;
+        btn.disabled = game.getState().coins < it.cost;
+      }
+    };
+    return { root, update };
+  });
+  rows.forEach((r) => el.appendChild(r.root));
+
+  return { el, update: () => rows.forEach((r) => r.update()) };
+}
+
+// --- Pane: Investoren (Prestige) -------------------------------------------
+
+function buildInvestorsPane(game: GameController): Pane {
+  const el = document.createElement('div');
+  el.className = 'pane investors-pane';
+
+  const summary = document.createElement('div');
+  summary.className = 'investors-summary';
+  const hint = document.createElement('p');
+  hint.className = 'investors-hint';
+  hint.textContent =
+    'Investoren geben einen dauerhaften Umsatz-Bonus. Ein Neuanfang setzt Münzen, ' +
+    'Restaurants und Upgrades zurück – deine Investoren bleiben.';
+  const btn = makeButton('btn btn-prestige');
+  let armed = false;
+
+  btn.addEventListener('click', () => {
+    if (!game.getPrestigeInfo().can) return;
+    if (!armed) {
+      armed = true;
+      return;
+    }
+    game.prestige();
+    armed = false;
+  });
+
+  el.append(summary, hint, btn);
+
+  const update = (): void => {
+    const p = game.getPrestigeInfo();
+    summary.innerHTML =
+      `<div class="inv-line"><span>Investoren</span><b>${formatNumber(p.investors)}</b></div>` +
+      `<div class="inv-line"><span>Dauerbonus</span><b>×${p.multiplier.toFixed(2)}</b></div>` +
+      `<div class="inv-line"><span>Jetzt neu</span><b>+${formatNumber(p.gain)}</b></div>`;
+    if (!p.can) {
+      armed = false;
+      btn.textContent = p.gain > 0 ? 'Noch nicht genug Umsatz' : 'Keine neuen Investoren';
+      btn.disabled = true;
+    } else {
+      btn.disabled = false;
+      btn.textContent = armed
+        ? `Wirklich? +${formatNumber(p.gain)} Investoren`
+        : `Neuanfang für +${formatNumber(p.gain)} Investoren`;
+    }
+  };
+
+  return { el, update };
 }

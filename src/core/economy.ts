@@ -92,6 +92,14 @@ export function cycleTimeMs(def: StationDef, owned: number): number {
 }
 
 /**
+ * Umsatz-Multiplikator eines Restaurants aus seiner Renovierungsstufe:
+ *   renovation.multiplier ^ level
+ */
+export function restaurantMultiplier(level: number): number {
+  return Math.pow(BALANCE.renovation.multiplier, level);
+}
+
+/**
  * Umsatz einer Station pro abgeschlossenem Zyklus:
  *   owned * baseRevenue * Meilenstein-Multiplikator * globalMult * boostMult
  */

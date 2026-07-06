@@ -12,7 +12,7 @@ function fresh(coins = 0): GameController {
 describe('Startzustand', () => {
   it('erste Station besitzt eine Einheit, ist aber nicht automatisch aktiv', () => {
     const gc = fresh();
-    const st = gc.getState().stations[0];
+    const st = gc.currentRestaurant().stations[0];
     expect(st.owned).toBe(1);
     expect(st.active).toBe(false);
     expect(st.manager).toBe(false);
@@ -30,13 +30,13 @@ describe('Tippen (manueller Zyklus)', () => {
   it('startet einen Zyklus und zahlt nach Ablauf einmal aus, dann Stopp', () => {
     const gc = fresh();
     expect(gc.tapStation('lemonade')).toBe(true);
-    expect(gc.getState().stations[0].active).toBe(true);
+    expect(gc.currentRestaurant().stations[0].active).toBe(true);
 
     gc.tick(0); // Zeitbasis
     gc.tick(800); // ein Zyklus (Limonade: 800ms, Umsatz 1)
     expect(gc.getState().coins).toBeCloseTo(1);
     // Ohne Manager stoppt die Station nach der Auszahlung.
-    expect(gc.getState().stations[0].active).toBe(false);
+    expect(gc.currentRestaurant().stations[0].active).toBe(false);
   });
 
   it('ohne Einheiten kein Zyklus', () => {
@@ -52,7 +52,7 @@ describe('Einheiten kaufen', () => {
     const cost = totalCostFor(4, 1, 10);
     gc.getState().coins = cost;
     expect(gc.buyUnits('lemonade', 10)).toBe(10);
-    expect(gc.getState().stations[0].owned).toBe(11);
+    expect(gc.currentRestaurant().stations[0].owned).toBe(11);
     expect(gc.getState().coins).toBeCloseTo(0);
   });
 
@@ -61,7 +61,7 @@ describe('Einheiten kaufen', () => {
     const bought = gc.buyUnits('lemonade', 'max');
     expect(bought).toBeGreaterThan(0);
     expect(gc.getState().coins).toBeGreaterThanOrEqual(0);
-    expect(gc.getState().stations[0].owned).toBe(1 + bought);
+    expect(gc.currentRestaurant().stations[0].owned).toBe(1 + bought);
   });
 });
 
@@ -70,7 +70,7 @@ describe('Manager', () => {
     const gc = fresh(60); // Manager-Kosten Limonade = 60
     expect(gc.hireManager('lemonade')).toBe(true);
     expect(gc.getState().coins).toBeCloseTo(0);
-    const st = gc.getState().stations[0];
+    const st = gc.currentRestaurant().stations[0];
     expect(st.manager).toBe(true);
     expect(st.active).toBe(true);
 
@@ -79,7 +79,7 @@ describe('Manager', () => {
     gc.tick(800);
     gc.tick(1600);
     expect(gc.getState().coins).toBeCloseTo(2);
-    expect(gc.getState().stations[0].active).toBe(true); // laeuft weiter
+    expect(gc.currentRestaurant().stations[0].active).toBe(true); // laeuft weiter
   });
 
   it('ohne Einheiten kein Manager', () => {
@@ -135,5 +135,70 @@ describe('Event-Bus', () => {
     gc.tick(0);
     gc.tick(800);
     expect(last).toBeCloseTo(1);
+  });
+});
+
+describe('Renovieren', () => {
+  it('hebt die Stufe und multipliziert das Einkommen', () => {
+    const gc = fresh(250_060);
+    gc.hireManager('lemonade'); // -60 -> 250000 uebrig = Renovierungskosten
+    const base = gc.incomePerSecond(0);
+    expect(gc.renovate()).toBe(true);
+    expect(gc.currentRestaurant().level).toBe(1);
+    expect(gc.incomePerSecond(0)).toBeCloseTo(base * 1.5, 5);
+  });
+
+  it('ohne genug Geld keine Renovierung', () => {
+    const gc = fresh(1000);
+    expect(gc.renovate()).toBe(false);
+  });
+});
+
+describe('Restaurants freischalten & reisen', () => {
+  it('eroeffnet ein Restaurant und reist dorthin', () => {
+    const gc = fresh(500_000);
+    expect(gc.unlockRestaurant('bistro')).toBe(true);
+    expect(gc.getState().coins).toBeCloseTo(0);
+    expect(gc.getState().currentRestaurantId).toBe('bistro');
+    expect(gc.currentRestaurant().stations[0].owned).toBe(1);
+    // Zurueckreisen ins offene erste Lokal.
+    expect(gc.travelTo('street')).toBe(true);
+    expect(gc.getState().currentRestaurantId).toBe('street');
+  });
+
+  it('gesperrtes Restaurant kann nicht bereist werden', () => {
+    const gc = fresh(0);
+    expect(gc.travelTo('bistro')).toBe(false);
+  });
+});
+
+describe('Upgrades', () => {
+  it('kauft ein Upgrade und erhoeht den globalen Multiplikator', () => {
+    const gc = fresh(5_000);
+    expect(gc.effectiveGlobalMultiplier()).toBeCloseTo(1);
+    expect(gc.buyUpgrade('ingredients')).toBe(true);
+    expect(gc.getState().upgrades.ingredients).toBe(1);
+    expect(gc.effectiveGlobalMultiplier()).toBeCloseTo(1.5);
+  });
+});
+
+describe('Prestige', () => {
+  it('setzt zurueck, behaelt Investoren und permanenten Bonus', () => {
+    const gc = fresh(999_999);
+    gc.getState().totalEarned = 1_000_000; // -> sqrt(1e6/1e4) = 10 Investoren
+    gc.buyUnits('lemonade', 1); // etwas Fortschritt, wird zurueckgesetzt
+    expect(gc.getPrestigeInfo().gain).toBe(10);
+    expect(gc.prestige()).toBe(true);
+    expect(gc.getState().investors).toBe(10);
+    expect(gc.getState().coins).toBe(0);
+    expect(gc.getState().totalEarned).toBe(0);
+    expect(gc.currentRestaurant().stations[0].owned).toBe(1); // frisch
+    expect(gc.effectiveGlobalMultiplier()).toBeCloseTo(1.2); // 1 + 10*0.02
+  });
+
+  it('kein Prestige unter Mindestumsatz', () => {
+    const gc = fresh(0);
+    gc.getState().totalEarned = 100;
+    expect(gc.prestige()).toBe(false);
   });
 });

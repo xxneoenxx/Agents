@@ -179,11 +179,12 @@ body {
 }
 
 .panel.collapsed {
-  max-height: 52px;
+  max-height: 48px;
 }
 
-.panel.collapsed .buymode,
-.panel.collapsed .stations {
+.panel.collapsed .resto-header,
+.panel.collapsed .tabbar,
+.panel.collapsed .pane-container {
   display: none;
 }
 
@@ -381,6 +382,188 @@ body {
   font-size: 0.9rem;
   text-align: center;
   padding: 8px;
+}
+
+/* --- Restaurant-Kopf ------------------------------------------------------ */
+.resto-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 4px 8px;
+}
+
+.resto-name {
+  flex: 1;
+  font-weight: 900;
+  font-size: 1.02rem;
+  color: var(--ink);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-renovate {
+  background: var(--violet);
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  min-height: 40px;
+  text-align: center;
+}
+
+/* --- Tabs ------------------------------------------------------------------ */
+.tabbar {
+  display: flex;
+  gap: 4px;
+  padding: 0 2px 6px;
+}
+
+.tab-btn {
+  flex: 1;
+  border: none;
+  background: #f3ece0;
+  color: var(--ink-soft);
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+  padding: 8px 2px;
+  min-height: 40px;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background: var(--ink);
+  color: var(--card);
+}
+
+.pane-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom));
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* --- Karte (Restaurants) --------------------------------------------------- */
+.map-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid rgba(58, 42, 31, 0.08);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+}
+
+.map-row.current {
+  border-color: var(--green);
+  background: #f2fbf6;
+}
+
+.map-emoji {
+  font-size: 1.8rem;
+  width: 42px;
+  text-align: center;
+}
+
+.map-name {
+  flex: 1;
+  font-weight: 900;
+  color: var(--ink);
+  min-width: 0;
+}
+
+.btn-travel {
+  background: var(--accent);
+  min-width: 118px;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* --- Upgrades -------------------------------------------------------------- */
+.upgrade-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid rgba(58, 42, 31, 0.08);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+}
+
+.upgrade-emoji {
+  font-size: 1.8rem;
+  width: 42px;
+  text-align: center;
+}
+
+.upgrade-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.upgrade-name {
+  font-weight: 900;
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+
+.upgrade-name .tag {
+  background: var(--coin);
+  color: var(--ink);
+  font-weight: 900;
+  border-radius: 999px;
+  padding: 0 6px;
+  font-size: 0.68rem;
+}
+
+.upgrade-desc {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+/* --- Investoren (Prestige) ------------------------------------------------- */
+.investors-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  border: 2px solid rgba(124, 92, 255, 0.25);
+}
+
+.inv-line {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.inv-line span {
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.investors-hint {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  padding: 0 4px;
+}
+
+.btn-prestige {
+  background: var(--violet);
+  font-size: 0.9rem;
+  padding: 12px;
+  text-align: center;
 }
 
 /* Bewegungsreduktion respektieren */

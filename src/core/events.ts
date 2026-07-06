@@ -53,6 +53,12 @@ export interface GameEvents extends Record<string, unknown> {
   stationStarted: string;
   /** Anfrage der UI, die Weltkamera zu zentrieren. */
   cameraCenter: null;
+  /** Aktuelles Restaurant hat sich geaendert (Reise/Renovierung/Freischaltung). */
+  restaurantChanged: string;
+  /** Ein Upgrade wurde gekauft (Upgrade-Id). */
+  upgradeChanged: string;
+  /** Prestige durchgefuehrt; Nutzlast = neue Investorenzahl. */
+  prestiged: number;
 }
 
 // Gemeinsamer Bus fuer die gesamte App.

@@ -2,6 +2,26 @@
 
 Alle nennenswerten Änderungen pro Phase.
 
+## Phase 3 – Fortschritt & Meta
+
+- **Mehrere Restaurants** (`src/data/restaurants.ts`): 3 Lokale (Imbissmeile, Bistro, Gourmet-Tempel)
+  mit eigenem Thema/Stationen; State auf Multi-Restaurant umgebaut (`core/state.ts`). Münzen sind
+  global, gemanagte Stationen verdienen auch in nicht besuchten Lokalen weiter (`tick` über alle).
+- **Weltkarte/Reisen** (HUD-Tab „Karte"): Restaurants freischalten (Münzkosten) und bereisen.
+- **Renovieren** (`core/progression.ts`): Lokal-Stufen mit neuem Namen + Umsatz-Multiplikator
+  (`restaurantMultiplier`), Renovier-Button im Panel-Kopf.
+- **Prestige/Investoren** (`core/prestige.ts`): Investoren aus Lebenszeit-Umsatz, permanenter
+  globaler Umsatz-Bonus; Neuanfang setzt Münzen/Restaurants/Upgrades zurück, behält Investoren
+  (zweistufige Bestätigung im HUD-Tab „Investoren").
+- **Upgrade-Karten** (`src/data/upgrades.ts`): globale, permanente Umsatz-Multiplikatoren mit
+  eskalierenden Kosten (HUD-Tab „Upgrades").
+- **HUD-Umbau**: Tab-Leiste (Läden · Karte · Upgrades · Investoren), Restaurant-Kopf; WorldScene
+  zeigt Theme + Stände des aktuellen Lokals und initialisiert bei Reise/Renovierung neu.
+- **Tests**: `tests/meta.test.ts` (10) + erweiterte `game.test.ts` → gesamt **53 grün**.
+
+**Fertig, wenn:** Weg vom ersten Stand über Renovierungen bis zu 3 freischaltbaren Restaurants
+inkl. Prestige spielbar. ✓
+
 ## Phase 2 – Lebendige Welt
 
 - **Animierte Kunden** (`src/game/entities/Customer.ts` + `systems/CustomerSpawner.ts`):

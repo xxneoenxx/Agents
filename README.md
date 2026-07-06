@@ -59,9 +59,10 @@ public/                # Icons, statische Assets
 
 ## Entwicklungsstand
 
-Aktuell: **Phase 2 – Lebendige Welt** (siehe `CHANGELOG.md`). Zusätzlich zum Kern-Loop laufen jetzt
-animierte Kunden (Spawn → Warteschlange → Bedienung → Abgang mit Münzflug), Manager stehen als
-Figuren an ihren Ständen, und die Kamera lässt sich schwenken/zoomen. Der ausgearbeitete
+Aktuell: **Phase 3 – Fortschritt & Meta** (siehe `CHANGELOG.md`). Neben dem Kern-Loop und der
+lebendigen Welt gibt es jetzt: Renovieren (Lokal-Stufen), 3 freischaltbare Restaurants mit
+Weltkarte/Reisen, globale Upgrade-Karten und Prestige/Investoren (permanenter Bonus). Als Nächstes
+folgen Investoren-NPCs, Offline-Einnahmen, Speichern und Sound (Phase 4). Der ausgearbeitete
 Kunst-/Design-Pass (eigene Sprites) folgt in Phase 5.
 
 ## Sprache & Recht
