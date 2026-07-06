@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Platzhalter-App-Icon (eigene Grafik). Echte PNG-Icons folgen in Phase 5. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFC24B" />
+      <stop offset="1" stop-color="#FF8A3D" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#bg)" />
+  <circle cx="256" cy="256" r="150" fill="#FFC72C" stroke="#E0A800" stroke-width="20" />
+  <text
+    x="256"
+    y="326"
+    font-family="Nunito, Arial, sans-serif"
+    font-size="200"
+    font-weight="900"
+    text-anchor="middle"
+    fill="#3A2A1F"
+  >
+    B
+  </text>
+</svg>

@@ -1,0 +1,109 @@
+/* Grund-Layout: zentrierte Spielflaeche, Canvas unten, UI-Overlay darueber.
+   Hochformat zuerst, mit sinnvoller Maximalbreite auf grossen Screens. */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+body {
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--sky) 0%, var(--sky2) 100%);
+  /* Safe-Area-Insets fuer Notch-Geraete */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+}
+
+/* Der Phaser-Canvas wird in #game-root eingehaengt und fuellt den Bildschirm. */
+#game-root {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+#game-root canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* HTML-Overlay fuer HUD/Menues ueber dem Canvas. */
+#ui-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  /* Overlay leitet Klicks standardmaessig durch; einzelne Bedienelemente fangen sie wieder ab. */
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+
+#ui-overlay > * {
+  pointer-events: auto;
+}
+
+/* --- Hallo-Welt-HUD (Phase 0, Platzhalter) --- */
+.hud-topbar {
+  align-self: center;
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 10px 18px;
+  box-shadow: var(--shadow-soft);
+  font-weight: 800;
+  max-width: min(92vw, 560px);
+}
+
+.hud-coin {
+  color: var(--coin);
+  text-shadow: 0 1px 0 rgba(58, 42, 31, 0.25);
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-badge {
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--card);
+  background: var(--violet);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+.hud-hint {
+  margin-top: auto;
+  margin-bottom: max(16px, env(safe-area-inset-bottom));
+  align-self: center;
+  color: var(--ink-soft);
+  background: var(--card);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  box-shadow: var(--shadow-soft);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Bewegungsreduktion respektieren */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
