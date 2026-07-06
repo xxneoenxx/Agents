@@ -2,6 +2,25 @@
 
 Alle nennenswerten Änderungen pro Phase.
 
+## Phase 4 – Investoren, Events, Offline, Speichern, Sound
+
+- **Großinvestor-NPCs** (`game/entities/Investor.ts`): erscheinen gelegentlich, laufen (mit
+  Glitzern) durch die Szene und bieten beim Antippen einen **Deal** an (Sofort-Bonus, Umsatz-Boost
+  oder permanente Investoren) – Dialog mit Annehmen/Ablehnen.
+- **Events**: gelegentliche **Rush Hour** (Kundenansturm) über den Spawner.
+- **Offline-Einnahmen** (`core/offline.ts`): passives Einkommen der Manager über alle Restaurants,
+  gedeckelt (Standard 4 Std.); „Willkommen zurück"-Popup mit Betrag.
+- **Speichern/Laden** (`core/save.ts`): Spielstand + Zeitstempel in localStorage, Autospeichern
+  (alle 15 s, bei `visibilitychange`/`pagehide`), versioniert.
+- **Einstellungen** (⚙️): Sound an/aus, Hinweis zur Bewegungsreduktion, Spielstand zurücksetzen
+  (zweistufig bestätigt).
+- **Sound** (`game/systems/AudioManager.ts`): kurze, **prozedural per WebAudio** erzeugte SFX
+  (Servieren/Münze/Kauf/Level-up/Deal) – keine externen Assets, abschaltbar, Autoplay-konform.
+- **Tests**: `tests/offline.test.ts` (9, inkl. Offline-Cap, Save-Roundtrip, Deals) → gesamt **62 grün**.
+
+**Fertig, wenn:** Spielstand übersteht Neuladen, Offline-Einnahmen funktionieren, Investoren
+erscheinen ab und zu mit antippbaren Deals, Ton an/aus. ✓
+
 ## Phase 3 – Fortschritt & Meta
 
 - **Mehrere Restaurants** (`src/data/restaurants.ts`): 3 Lokale (Imbissmeile, Bistro, Gourmet-Tempel)

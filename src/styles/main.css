@@ -566,6 +566,105 @@ body {
   text-align: center;
 }
 
+/* --- Modals ---------------------------------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(58, 42, 31, 0.5);
+  padding: 20px;
+}
+
+.modal {
+  width: min(92vw, 380px);
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 18px;
+  text-align: center;
+  animation: modal-pop 0.18s ease;
+}
+
+@keyframes modal-pop {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-title {
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.modal-text {
+  color: var(--ink-soft);
+  font-weight: 600;
+  line-height: 1.4;
+  font-size: 0.94rem;
+}
+
+.modal-body .coin-amount {
+  color: #d69a00;
+}
+
+.deal-offer {
+  margin-top: 10px;
+  font-weight: 900;
+  color: var(--violet);
+  font-size: 1.05rem;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 800;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  min-height: var(--tap-min);
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background: var(--green);
+  color: #fff;
+  box-shadow: var(--shadow-btn);
+}
+
+.btn-secondary {
+  background: #efe7d9;
+  color: var(--ink);
+}
+
+.btn-danger {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:active,
+.btn-danger:active {
+  transform: translateY(2px);
+}
+
 /* Bewegungsreduktion respektieren */
 @media (prefers-reduced-motion: reduce) {
   * {

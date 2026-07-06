@@ -59,11 +59,11 @@ public/                # Icons, statische Assets
 
 ## Entwicklungsstand
 
-Aktuell: **Phase 3 – Fortschritt & Meta** (siehe `CHANGELOG.md`). Neben dem Kern-Loop und der
-lebendigen Welt gibt es jetzt: Renovieren (Lokal-Stufen), 3 freischaltbare Restaurants mit
-Weltkarte/Reisen, globale Upgrade-Karten und Prestige/Investoren (permanenter Bonus). Als Nächstes
-folgen Investoren-NPCs, Offline-Einnahmen, Speichern und Sound (Phase 4). Der ausgearbeitete
-Kunst-/Design-Pass (eigene Sprites) folgt in Phase 5.
+Aktuell: **Phase 4 – Investoren, Events, Offline, Speichern, Sound** (siehe `CHANGELOG.md`). Das
+Spiel speichert automatisch (localStorage) und übersteht Neuladen, rechnet Offline-Einnahmen an
+(„Willkommen zurück"), lässt gelegentlich Großinvestoren mit antippbaren Deals auftreten, hat eine
+Rush Hour, Einstellungen (Sound/Reset) und prozedurale SFX. Als Nächstes folgt der ausgearbeitete
+Kunst-/Design-Pass, Achievements und Balancing/Release-QA (Phase 5).
 
 ## Sprache & Recht
 

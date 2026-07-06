@@ -22,6 +22,11 @@ export interface RestaurantState {
   stations: StationState[];
 }
 
+export interface GameSettings {
+  /** Sound/SFX aktiviert. */
+  sound: boolean;
+}
+
 export interface GameState {
   /** Globaler Muenzstand (ueber alle Restaurants geteilt). */
   coins: number;
@@ -38,6 +43,8 @@ export interface GameState {
   boostUntilMs: number;
   boostCooldownUntilMs: number;
   boostFactor: number;
+  /** Einstellungen (Sound etc.). */
+  settings: GameSettings;
 }
 
 function createStations(restaurantIndex: number): StationState[] {
@@ -69,6 +76,7 @@ export function createInitialState(): GameState {
     boostUntilMs: 0,
     boostCooldownUntilMs: 0,
     boostFactor: BALANCE.marketing.factor,
+    settings: { sound: true },
   };
 }
 

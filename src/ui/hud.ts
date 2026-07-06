@@ -4,7 +4,9 @@
 
 import { formatNumber } from '@core/format';
 import { milestoneMultiplier } from '@core/economy';
+import { clearSave } from '@core/save';
 import type { GameController, BuyAmount } from '@core/game';
+import type { InvestorDeal } from '@core/events';
 import type { StationDef } from '@data/stations';
 
 interface Pane {
@@ -18,6 +20,61 @@ export interface Hud {
 
 function formatSeconds(ms: number): string {
   return `${Math.ceil(ms / 1000)}s`;
+}
+
+function formatDuration(seconds: number): string {
+  const s = Math.floor(seconds);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  if (h > 0) return `${h} Std. ${m} Min.`;
+  if (m > 0) return `${m} Min.`;
+  return `${s} Sek.`;
+}
+
+interface ModalAction {
+  label: string;
+  cls: string;
+  onClick: () => void;
+}
+
+// Baut ein modales Overlay auf und gibt eine Schliessen-Funktion zurueck.
+function showModal(
+  host: HTMLElement,
+  opts: { title: string; bodyHtml: string; actions: ModalAction[]; dismissable?: boolean },
+): () => void {
+  const backdrop = document.createElement('div');
+  backdrop.className = 'modal-backdrop';
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+  const title = document.createElement('div');
+  title.className = 'modal-title';
+  title.textContent = opts.title;
+  const body = document.createElement('div');
+  body.className = 'modal-body';
+  body.innerHTML = opts.bodyHtml;
+  const actions = document.createElement('div');
+  actions.className = 'modal-actions';
+
+  const close = (): void => backdrop.remove();
+
+  for (const a of opts.actions) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = a.cls;
+    btn.textContent = a.label;
+    btn.addEventListener('click', () => a.onClick());
+    actions.appendChild(btn);
+  }
+
+  modal.append(title, body, actions);
+  backdrop.appendChild(modal);
+  if (opts.dismissable !== false) {
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) close();
+    });
+  }
+  host.appendChild(backdrop);
+  return close;
 }
 
 function makeButton(cls: string): HTMLButtonElement {
@@ -53,7 +110,11 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
   centerBtn.title = 'Ansicht zentrieren';
   centerBtn.textContent = '🎯';
   centerBtn.addEventListener('click', () => game.bus.emit('cameraCenter', null));
-  worldControls.appendChild(centerBtn);
+  const settingsBtn = makeButton('btn-round');
+  settingsBtn.title = 'Einstellungen';
+  settingsBtn.textContent = '⚙️';
+  settingsBtn.addEventListener('click', () => openSettings());
+  worldControls.append(centerBtn, settingsBtn);
 
   // --- Panel ----------------------------------------------------------------
   const panel = document.createElement('div');
@@ -127,6 +188,84 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
 
   panel.append(handle, header, tabbar, content);
   root.append(top, worldControls, panel);
+
+  // --- Modals ---------------------------------------------------------------
+  function openSettings(confirmingReset = false): void {
+    let close = (): void => {};
+    close = showModal(root, {
+      title: '⚙️ Einstellungen',
+      bodyHtml:
+        '<p class="modal-text">Bewegungsreduktion folgt automatisch der System­einstellung ' +
+        '(<i>prefers-reduced-motion</i>).</p>',
+      actions: [
+        {
+          label: `🔊 Sound: ${game.isSoundOn() ? 'An' : 'Aus'}`,
+          cls: 'btn-secondary',
+          onClick: () => {
+            game.setSound(!game.isSoundOn());
+            close();
+            openSettings(false);
+          },
+        },
+        confirmingReset
+          ? {
+              label: '⚠️ Wirklich löschen!',
+              cls: 'btn-danger',
+              onClick: () => {
+                clearSave();
+                game.hardReset();
+                close();
+              },
+            }
+          : {
+              label: 'Spielstand zurücksetzen',
+              cls: 'btn-danger',
+              onClick: () => {
+                close();
+                openSettings(true);
+              },
+            },
+        { label: 'Schließen', cls: 'btn-secondary', onClick: () => close() },
+      ],
+    });
+  }
+
+  // Willkommen zurueck (Offline-Einnahmen).
+  game.bus.on('offlineEarnings', (p) => {
+    if (p.earned <= 0) return;
+    let close = (): void => {};
+    close = showModal(root, {
+      title: '👋 Willkommen zurück!',
+      bodyHtml:
+        `<p class="modal-text">Deine Manager haben in <b>${formatDuration(p.seconds)}</b> ` +
+        `Abwesenheit <b class="coin-amount">${formatNumber(p.earned)} 🪙</b> verdient.` +
+        (p.capped ? '<br><small>(auf die Offline-Obergrenze begrenzt)</small>' : '') +
+        '</p>',
+      actions: [{ label: 'Einsammeln', cls: 'btn-primary', onClick: () => close() }],
+    });
+  });
+
+  // Investor-Deal.
+  game.bus.on('investorDeal', (deal: InvestorDeal) => {
+    let close = (): void => {};
+    close = showModal(root, {
+      title: '💼 Großinvestor',
+      bodyHtml:
+        '<p class="modal-text">Ein Großinvestor macht dir ein Angebot:</p>' +
+        `<p class="deal-offer">${deal.label}</p>`,
+      actions: [
+        {
+          label: 'Annehmen',
+          cls: 'btn-primary',
+          onClick: () => {
+            game.acceptDeal(deal, performance.now());
+            close();
+          },
+        },
+        { label: 'Ablehnen', cls: 'btn-secondary', onClick: () => close() },
+      ],
+    });
+  });
 
   // Beim Restaurantwechsel die Stationskarten neu aufbauen.
   game.bus.on('restaurantChanged', () => {

@@ -42,6 +42,26 @@ export const BALANCE = {
     multiplier: 1.5,
   },
 
+  // Grossinvestor-NPC: erscheint gelegentlich, laeuft durch die Szene und
+  // bietet beim Antippen einen Deal an.
+  investor: {
+    appearMinMs: 45_000,
+    appearMaxMs: 90_000,
+    stayMs: 12_000, // so lange ist er antippbar
+    cashSeconds: 180, // Sofort-Bonus = so viele Sekunden Umsatz
+    boostFactor: 5,
+    boostDurationMs: 20_000,
+    minInvestorsGrant: 1,
+    maxInvestorsGrant: 3,
+  },
+
+  // Rush Hour: gelegentlicher Kundenansturm (nur visuell) mit Zeitfenster.
+  rush: {
+    everyMinMs: 60_000,
+    everyMaxMs: 150_000,
+    durationMs: 15_000,
+  },
+
   // Prestige / Investoren: verdiente Investoren aus dem Lebenszeit-Umsatz,
   // jeder gibt einen permanenten globalen Umsatz-Bonus.
   prestige: {

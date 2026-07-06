@@ -19,7 +19,7 @@ import {
   upgradeIncomeMultiplier,
   type UpgradeDef,
 } from '@data/upgrades';
-import { EventBus, type GameEvents } from '@core/events';
+import { EventBus, type GameEvents, type InvestorDeal } from '@core/events';
 import {
   cycleTimeMs,
   maxAffordable,
@@ -35,6 +35,7 @@ import {
   canPrestige,
 } from '@core/prestige';
 import { nextRenovationCost } from '@core/progression';
+import { offlineEarnings, passiveIncomePerSecond, type OfflineResult } from '@core/offline';
 import {
   createInitialState,
   findRestaurant,
@@ -66,10 +67,13 @@ export interface RestaurantListItem {
   level: number;
 }
 
+export type { InvestorDeal };
+
 export class GameController {
   readonly bus: EventBus<GameEvents>;
   private state: GameState;
   private lastTickMs = -1;
+  private rushUntilMs = 0;
 
   constructor(state: GameState = createInitialState(), bus?: EventBus<GameEvents>) {
     this.state = state;
@@ -256,6 +260,65 @@ export class GameController {
     return true;
   }
 
+  // --- Investoren-Deals & Events --------------------------------------------
+
+  /** Erzeugt einen zufaelligen Investor-Deal (fuer den NPC beim Antippen). */
+  generateInvestorDeal(): InvestorDeal {
+    const cfg = BALANCE.investor;
+    const roll = Math.random();
+    if (roll < 0.5) {
+      const perSec = passiveIncomePerSecond(this.state);
+      // Fallback, falls noch kein passives Einkommen: kleiner Startbonus.
+      const amount = Math.max(perSec * cfg.cashSeconds, 50);
+      return { kind: 'cash', amount, label: `+${Math.round(cfg.cashSeconds)} Sek. Umsatz sofort` };
+    }
+    if (roll < 0.85) {
+      return {
+        kind: 'boost',
+        factor: cfg.boostFactor,
+        durationMs: cfg.boostDurationMs,
+        label: `Umsatz ×${cfg.boostFactor} für ${Math.round(cfg.boostDurationMs / 1000)}s`,
+      };
+    }
+    const count =
+      Math.floor(Math.random() * (cfg.maxInvestorsGrant - cfg.minInvestorsGrant + 1)) +
+      cfg.minInvestorsGrant;
+    return { kind: 'investors', count, label: `+${count} Investoren (dauerhaft)` };
+  }
+
+  /** Nimmt einen Investor-Deal an und wendet ihn an. */
+  acceptDeal(deal: InvestorDeal, nowMs: number): void {
+    switch (deal.kind) {
+      case 'cash':
+        this.state.totalEarned += deal.amount;
+        this.setCoins(this.state.coins + deal.amount);
+        break;
+      case 'boost':
+        this.state.boostUntilMs = nowMs + deal.durationMs;
+        this.state.boostFactor = deal.factor;
+        this.bus.emit('boostChanged', {
+          activeUntilMs: this.state.boostUntilMs,
+          cooldownUntilMs: this.state.boostCooldownUntilMs,
+          factor: deal.factor,
+        });
+        break;
+      case 'investors':
+        this.state.investors += deal.count;
+        this.bus.emit('prestiged', this.state.investors);
+        break;
+    }
+  }
+
+  /** Startet eine Rush Hour (nur visuell relevant fuer den Spawner). */
+  startRush(nowMs: number): void {
+    this.rushUntilMs = nowMs + BALANCE.rush.durationMs;
+    this.bus.emit('eventChanged', { type: 'rush', activeUntilMs: this.rushUntilMs });
+  }
+
+  isRushActive(nowMs: number): boolean {
+    return nowMs < this.rushUntilMs;
+  }
+
   // --- Prestige --------------------------------------------------------------
 
   prestige(): boolean {
@@ -294,21 +357,39 @@ export class GameController {
 
   /** Passives Einkommen pro Sekunde ueber alle Restaurants (automatisiert). */
   incomePerSecond(nowMs: number): number {
-    const globalMult = this.effectiveGlobalMultiplier();
-    const boost = this.boostMultiplier(nowMs);
-    let sum = 0;
-    for (const restaurant of this.state.restaurants) {
-      if (!restaurant.unlocked) continue;
-      const defs = getRestaurantDef(restaurant.id)?.stations ?? [];
-      const rmult = restaurantMultiplier(restaurant.level) * globalMult;
-      restaurant.stations.forEach((st, i) => {
-        if (!st.manager || st.owned <= 0) return;
-        const def = defs[i];
-        const rev = revenuePerCycle(def, st.owned, rmult, boost);
-        sum += (rev * 1000) / cycleTimeMs(def, st.owned);
-      });
+    return passiveIncomePerSecond(this.state) * this.boostMultiplier(nowMs);
+  }
+
+  // --- Offline / Einstellungen / Reset --------------------------------------
+
+  /** Rechnet Offline-Einnahmen fuer eine verstrichene Zeit an. */
+  applyOffline(elapsedMs: number): OfflineResult {
+    const result = offlineEarnings(this.state, elapsedMs);
+    if (result.earned > 0) {
+      this.state.totalEarned += result.earned;
+      this.setCoins(this.state.coins + result.earned);
     }
-    return sum;
+    return result;
+  }
+
+  isSoundOn(): boolean {
+    return this.state.settings.sound;
+  }
+
+  setSound(on: boolean): void {
+    this.state.settings.sound = on;
+    this.bus.emit('soundChanged', on);
+  }
+
+  /** Harter Reset auf den Startzustand (Einstellungen bleiben erhalten). */
+  hardReset(): void {
+    const keepSound = this.state.settings.sound;
+    this.state = createInitialState();
+    this.state.settings.sound = keepSound;
+    this.lastTickMs = -1;
+    this.bus.emit('coinsChanged', this.state.coins);
+    this.bus.emit('restaurantChanged', this.state.currentRestaurantId);
+    this.bus.emit('soundChanged', keepSound);
   }
 
   cycleProgress(id: string): number {

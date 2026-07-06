@@ -5,21 +5,23 @@ import { PreloadScene } from '@game/scenes/PreloadScene';
 import { WorldScene } from '@game/scenes/WorldScene';
 import { createHud } from '@ui/hud';
 import { GameController } from '@core/game';
+import { loadGame, saveGame } from '@core/save';
+import { AudioManager } from '@game/systems/AudioManager';
 
-// Einstiegspunkt: Zustand/Controller erzeugen, Phaser starten, DOM-HUD aufbauen,
-// den Spiel-Loop treiben und den PWA-ServiceWorker registrieren.
+// Einstiegspunkt: Spielstand laden (inkl. Offline-Einnahmen), Controller + Phaser
+// starten, DOM-HUD aufbauen, Sound verdrahten, Loop treiben, autospeichern, PWA.
 
 const gameRoot = document.getElementById('game-root');
 const uiOverlay = document.getElementById('ui-overlay');
-
 if (!gameRoot || !uiOverlay) {
   throw new Error('DOM-Container (#game-root / #ui-overlay) nicht gefunden.');
 }
 
-// Zentraler Spiel-Controller (haelt Zustand + Loop-Logik, engine-unabhaengig).
-const controller = new GameController();
+// Gespeicherten Zustand laden (falls vorhanden).
+const loaded = loadGame();
+const controller = new GameController(loaded?.state);
 
-// Phaser-Konfiguration. Skaliert responsiv auf die volle Flaeche.
+// Phaser-Konfiguration.
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: gameRoot,
@@ -31,27 +33,40 @@ const config: Phaser.Types.Core.GameConfig = {
     height: '100%',
   },
   scene: [BootScene, PreloadScene, WorldScene],
-  render: {
-    antialias: true,
-    pixelArt: false,
-  },
+  render: { antialias: true, pixelArt: false },
 };
 
 const phaserGame = new Phaser.Game(config);
-// Controller fuer die Szenen bereitstellen.
 phaserGame.registry.set('controller', controller);
 
-// HTML-HUD ueber dem Canvas aufbauen.
+// HTML-HUD.
 const hud = createHud(uiOverlay, controller);
 
-// Im Dev-Modus den Controller zum Debuggen/Testen bereitstellen.
 if (import.meta.env.DEV) {
-  (window as unknown as { __game: GameController }).__game = controller;
+  (window as unknown as { __game: GameController; __save: unknown }).__game = controller;
+  (window as unknown as { __save: unknown }).__save = { saveGame, loadGame };
+}
+
+// --- Sound ----------------------------------------------------------------
+const audio = new AudioManager(controller.isSoundOn());
+controller.bus.on('soundChanged', (on) => audio.setEnabled(on));
+controller.bus.on('stationStarted', () => audio.play('serve'));
+controller.bus.on('stationPaid', () => audio.play('coin'));
+controller.bus.on('upgradeChanged', () => audio.play('buy'));
+controller.bus.on('restaurantChanged', () => audio.play('buy'));
+controller.bus.on('prestiged', () => audio.play('levelup'));
+controller.bus.on('investorDeal', () => audio.play('deal'));
+// AudioContext erst nach der ersten Nutzergeste starten (Autoplay-Richtlinien).
+window.addEventListener('pointerdown', () => audio.resume(), { once: true });
+
+// --- Offline-Einnahmen ----------------------------------------------------
+if (loaded) {
+  const elapsed = Date.now() - loaded.savedAt;
+  const result = controller.applyOffline(elapsed);
+  if (result.earned > 0) controller.bus.emit('offlineEarnings', result);
 }
 
 // --- Spiel-Loop -----------------------------------------------------------
-// Ein rAF-Loop treibt die Wirtschaftssimulation jeden Frame (mit Delta-Cap im
-// Controller) und aktualisiert die HUD-Texte nur ~10x/Sekunde.
 let lastHudMs = 0;
 function frame(nowMs: number): void {
   controller.tick(nowMs);
@@ -62,6 +77,13 @@ function frame(nowMs: number): void {
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
+
+// --- Autospeichern --------------------------------------------------------
+setInterval(() => saveGame(controller.getState()), 15_000);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') saveGame(controller.getState());
+});
+window.addEventListener('pagehide', () => saveGame(controller.getState()));
 
 // PWA-ServiceWorker registrieren (Auto-Update).
 registerSW({ immediate: true });

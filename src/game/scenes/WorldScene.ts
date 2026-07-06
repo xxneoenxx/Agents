@@ -1,7 +1,9 @@
 import Phaser from 'phaser';
+import { BALANCE } from '@data/balance';
 import type { StationDef } from '@data/stations';
 import type { GameController } from '@core/game';
 import { ManagerFigure } from '@game/entities/ManagerFigure';
+import { Investor } from '@game/entities/Investor';
 import { CustomerSpawner, type SpawnerTuning } from '@game/systems/CustomerSpawner';
 import { CameraController } from '@game/systems/CameraController';
 
@@ -26,6 +28,7 @@ export class WorldScene extends Phaser.Scene {
   private worldWidth = 0;
   private layoutSignature = '';
   private unsubs: (() => void)[] = [];
+  private investor?: Investor;
 
   constructor() {
     super({ key: 'WorldScene' });
@@ -80,6 +83,10 @@ export class WorldScene extends Phaser.Scene {
     this.events.once('shutdown', () => this.cleanup());
     this.events.once('destroy', () => this.cleanup());
     this.scale.on('resize', this.handleResize, this);
+
+    // Gelegentliche Ereignisse planen.
+    this.scheduleInvestor();
+    this.scheduleRush();
   }
 
   update(time: number, delta: number): void {
@@ -148,6 +155,53 @@ export class WorldScene extends Phaser.Scene {
     this.restaurantLayer.add(stall);
   }
 
+  // --- Ereignisse: Investor & Rush Hour -------------------------------------
+
+  private scheduleInvestor(): void {
+    const delay = Phaser.Math.Between(BALANCE.investor.appearMinMs, BALANCE.investor.appearMaxMs);
+    this.time.delayedCall(delay, () => {
+      this.spawnInvestor();
+      this.scheduleInvestor();
+    });
+  }
+
+  private spawnInvestor(): void {
+    if (this.investor) return; // nur einer zur Zeit
+    const cam = this.cameras.main;
+    const y = this.laneY - 46;
+    const left = cam.scrollX - 40;
+    const right = cam.scrollX + cam.width / cam.zoom + 40;
+    // Zufaellige Laufrichtung.
+    const fromRight = Math.random() < 0.5;
+    const from = fromRight ? right : left;
+    const to = fromRight ? left : right;
+
+    const inv = new Investor(
+      this,
+      () => {
+        const deal = this.controller.generateInvestorDeal();
+        this.controller.bus.emit('investorDeal', deal);
+        this.clearInvestor();
+      },
+      this.reducedMotion,
+    );
+    this.investor = inv;
+    inv.walkAcross(from, to, y, () => this.clearInvestor());
+  }
+
+  private clearInvestor(): void {
+    this.investor?.stopAndDestroy();
+    this.investor = undefined;
+  }
+
+  private scheduleRush(): void {
+    const delay = Phaser.Math.Between(BALANCE.rush.everyMinMs, BALANCE.rush.everyMaxMs);
+    this.time.delayedCall(delay, () => {
+      this.controller.startRush(performance.now());
+      this.scheduleRush();
+    });
+  }
+
   // --- Betriebsamkeit --------------------------------------------------------
 
   private computeTuning(): SpawnerTuning {
@@ -158,10 +212,12 @@ export class WorldScene extends Phaser.Scene {
       if (this.controller.isUnlocked(i)) unlocked++;
       if (st.manager) managers++;
     });
+    const rush = this.controller.isRushActive(performance.now());
+    const rushSpawn = rush ? 0.35 : 1;
     return {
-      spawnIntervalMs: Phaser.Math.Clamp(1100 / (1 + managers * 0.6), 260, 1100),
-      serveIntervalMs: Phaser.Math.Clamp(1300 / (1 + managers * 0.7), 260, 1300),
-      maxQueue: Phaser.Math.Clamp(3 + unlocked, 3, 10),
+      spawnIntervalMs: Phaser.Math.Clamp((1100 / (1 + managers * 0.6)) * rushSpawn, 180, 1100),
+      serveIntervalMs: Phaser.Math.Clamp(1300 / (1 + managers * 0.7), 220, 1300),
+      maxQueue: Phaser.Math.Clamp(3 + unlocked + (rush ? 4 : 0), 3, 14),
     };
   }
 
@@ -185,6 +241,7 @@ export class WorldScene extends Phaser.Scene {
   private cleanup(): void {
     this.unsubs.forEach((off) => off());
     this.unsubs = [];
+    this.clearInvestor();
     this.spawner?.destroy();
     this.camControl?.destroy();
     this.scale.off('resize', this.handleResize, this);
