@@ -41,7 +41,16 @@ export class EventBus<Events extends Record<string, unknown>> {
 
 // Zentrale Ereignis-Typen des Spiels. Wird in spaeteren Phasen erweitert.
 export interface GameEvents extends Record<string, unknown> {
+  /** Neuer Muenzstand. */
   coinsChanged: number;
+  /** Id einer Station, deren Zustand sich geaendert hat (Kauf/Manager/Zyklus). */
+  stationChanged: string;
+  /** Auszahlung einer Station (fuer visuelles Feedback / "Juice"). */
+  stationPaid: { id: string; amount: number };
+  /** Marketing-Boost-Status hat sich geaendert. */
+  boostChanged: { activeUntilMs: number; cooldownUntilMs: number; factor: number };
+  /** Ein Produktionszyklus wurde manuell (durch Tippen) gestartet. */
+  stationStarted: string;
 }
 
 // Gemeinsamer Bus fuer die gesamte App.

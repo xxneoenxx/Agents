@@ -1,5 +1,5 @@
-/* Grund-Layout: zentrierte Spielflaeche, Canvas unten, UI-Overlay darueber.
-   Hochformat zuerst, mit sinnvoller Maximalbreite auf grossen Screens. */
+/* Grund-Layout + HUD/Panel. Hochformat zuerst, mit Maximalbreite auf grossen
+   Screens. Canvas unten, HTML-UI-Overlay darueber. */
 
 * {
   box-sizing: border-box;
@@ -21,12 +21,8 @@ body {
   font-family: var(--font-ui);
   color: var(--ink);
   background: linear-gradient(180deg, var(--sky) 0%, var(--sky2) 100%);
-  /* Safe-Area-Insets fuer Notch-Geraete */
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
-    env(safe-area-inset-left);
 }
 
-/* Der Phaser-Canvas wird in #game-root eingehaengt und fuellt den Bildschirm. */
 #game-root {
   position: fixed;
   inset: 0;
@@ -39,65 +35,285 @@ body {
   height: 100% !important;
 }
 
-/* HTML-Overlay fuer HUD/Menues ueber dem Canvas. */
+/* HTML-Overlay: leitet Klicks durch, einzelne Bedienelemente fangen sie ab. */
 #ui-overlay {
   position: fixed;
   inset: 0;
   z-index: 10;
-  /* Overlay leitet Klicks standardmaessig durch; einzelne Bedienelemente fangen sie wieder ab. */
   pointer-events: none;
   display: flex;
   flex-direction: column;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
 }
 
 #ui-overlay > * {
   pointer-events: auto;
 }
 
-/* --- Hallo-Welt-HUD (Phase 0, Platzhalter) --- */
-.hud-topbar {
+/* --- Obere Leiste --------------------------------------------------------- */
+.hud-top {
   align-self: center;
-  margin-top: 12px;
+  width: min(96vw, 560px);
+  margin-top: 10px;
   display: flex;
-  gap: 12px;
   align-items: center;
+  gap: 10px;
   background: var(--card);
   border-radius: var(--radius-lg);
-  padding: 10px 18px;
+  padding: 8px 14px;
   box-shadow: var(--shadow-soft);
-  font-weight: 800;
-  max-width: min(92vw, 560px);
+}
+
+.hud-coins {
+  font-weight: 900;
+  font-size: 1.25rem;
+  white-space: nowrap;
 }
 
 .hud-coin {
   color: var(--coin);
-  text-shadow: 0 1px 0 rgba(58, 42, 31, 0.25);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 0 rgba(58, 42, 31, 0.22);
+}
+
+.hud-income {
+  flex: 1;
+  color: var(--green);
+  font-weight: 800;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Buttons (allgemein) -------------------------------------------------- */
+.btn {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 800;
+  color: var(--card);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  min-height: var(--tap-min);
+  box-shadow: var(--shadow-btn);
+  transition:
+    transform 0.06s ease,
+    filter 0.12s ease;
+  line-height: 1.1;
+}
+
+.btn small {
+  font-weight: 700;
+  opacity: 0.92;
+  font-size: 0.72rem;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(58, 42, 31, 0.22);
+}
+
+.btn:disabled {
+  cursor: default;
+  filter: grayscale(0.5) brightness(0.9);
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.btn-boost {
+  background: var(--violet);
+  font-size: 0.82rem;
+  white-space: nowrap;
+  padding: 8px 12px;
+}
+
+.btn-boost.is-active {
+  background: var(--green);
+  opacity: 1;
+  filter: none;
+}
+
+/* --- Panel (Bottom-Sheet) ------------------------------------------------- */
+.panel {
+  margin-top: auto;
+  align-self: center;
+  width: min(96vw, 560px);
+  max-height: 62vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: 0 -8px 24px rgba(58, 42, 31, 0.18);
+  padding: 10px 10px 0;
+  margin-bottom: 0;
+}
+
+.buymode {
+  display: flex;
+  gap: 6px;
+  padding: 2px 2px 8px;
+  justify-content: center;
+}
+
+.buymode-btn {
+  flex: 1;
+  max-width: 120px;
+  border: 2px solid rgba(58, 42, 31, 0.15);
+  background: #fff;
+  color: var(--ink-soft);
+  font-family: inherit;
+  font-weight: 900;
+  border-radius: 999px;
+  padding: 8px 4px;
+  min-height: var(--tap-min);
+  cursor: pointer;
+}
+
+.buymode-btn.active {
+  background: var(--ink);
+  color: var(--card);
+  border-color: var(--ink);
+}
+
+.stations {
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 2px calc(10px + env(safe-area-inset-bottom));
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --- Stationskarte -------------------------------------------------------- */
+.card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: stretch;
+  background: #fff;
+  border: 2px solid rgba(58, 42, 31, 0.08);
+  border-radius: var(--radius-md);
+  padding: 8px;
+}
+
+.card.locked {
+  opacity: 0.85;
+}
+
+.card-tap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: default;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.card-tap.tappable {
+  cursor: pointer;
+  background: linear-gradient(180deg, #fff, #fff7e8);
+}
+
+.card-tap.tappable:active {
+  transform: scale(0.98);
+}
+
+.card-emoji {
+  font-size: 2rem;
+  width: 48px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-name {
+  font-weight: 900;
+  color: var(--ink);
+  font-size: 0.98rem;
+}
+
+.card-owned {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
   font-variant-numeric: tabular-nums;
 }
 
-.hud-badge {
-  font-size: 0.72rem;
+.card-owned .tag {
+  background: var(--coin);
+  color: var(--ink);
   font-weight: 900;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--card);
-  background: var(--violet);
   border-radius: 999px;
-  padding: 3px 10px;
+  padding: 0 6px;
+  font-size: 0.72rem;
 }
 
-.hud-hint {
-  margin-top: auto;
-  margin-bottom: max(16px, env(safe-area-inset-bottom));
-  align-self: center;
-  color: var(--ink-soft);
-  background: var(--card);
+.card-progress {
+  grid-column: 1 / -1;
+  height: 8px;
+  background: rgba(58, 42, 31, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.card-progress-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--green), #4fd39a);
+  border-radius: 999px;
+}
+
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+  min-width: 128px;
+}
+
+.btn-buy {
+  background: var(--accent);
+  font-size: 0.82rem;
+  padding: 8px 10px;
+}
+
+.btn-manager {
+  background: var(--green);
+  font-size: 0.78rem;
+  padding: 8px 10px;
+}
+
+.btn-manager.hired {
+  opacity: 1;
+  filter: none;
+  background: #1c9e63;
+}
+
+.card-lock {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 253, 247, 0.86);
   border-radius: var(--radius-md);
-  padding: 8px 14px;
-  box-shadow: var(--shadow-soft);
-  font-weight: 700;
+  color: var(--ink-soft);
+  font-weight: 800;
   font-size: 0.9rem;
   text-align: center;
+  padding: 8px;
 }
 
 /* Bewegungsreduktion respektieren */

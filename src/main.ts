@@ -4,8 +4,10 @@ import { BootScene } from '@game/scenes/BootScene';
 import { PreloadScene } from '@game/scenes/PreloadScene';
 import { WorldScene } from '@game/scenes/WorldScene';
 import { createHud } from '@ui/hud';
+import { GameController } from '@core/game';
 
-// Einstiegspunkt: Phaser starten, DOM-HUD aufbauen, PWA-ServiceWorker registrieren.
+// Einstiegspunkt: Zustand/Controller erzeugen, Phaser starten, DOM-HUD aufbauen,
+// den Spiel-Loop treiben und den PWA-ServiceWorker registrieren.
 
 const gameRoot = document.getElementById('game-root');
 const uiOverlay = document.getElementById('ui-overlay');
@@ -13,6 +15,9 @@ const uiOverlay = document.getElementById('ui-overlay');
 if (!gameRoot || !uiOverlay) {
   throw new Error('DOM-Container (#game-root / #ui-overlay) nicht gefunden.');
 }
+
+// Zentraler Spiel-Controller (haelt Zustand + Loop-Logik, engine-unabhaengig).
+const controller = new GameController();
 
 // Phaser-Konfiguration. Skaliert responsiv auf die volle Flaeche.
 const config: Phaser.Types.Core.GameConfig = {
@@ -32,12 +37,31 @@ const config: Phaser.Types.Core.GameConfig = {
   },
 };
 
-// Spiel starten.
-new Phaser.Game(config);
+const phaserGame = new Phaser.Game(config);
+// Controller fuer die Szenen bereitstellen.
+phaserGame.registry.set('controller', controller);
 
 // HTML-HUD ueber dem Canvas aufbauen.
-createHud(uiOverlay);
+const hud = createHud(uiOverlay, controller);
 
-// PWA-ServiceWorker registrieren (Auto-Update). Fehler still schlucken,
-// damit der Dev-Betrieb ohne SW ungestoert laeuft.
+// Im Dev-Modus den Controller zum Debuggen/Testen bereitstellen.
+if (import.meta.env.DEV) {
+  (window as unknown as { __game: GameController }).__game = controller;
+}
+
+// --- Spiel-Loop -----------------------------------------------------------
+// Ein rAF-Loop treibt die Wirtschaftssimulation jeden Frame (mit Delta-Cap im
+// Controller) und aktualisiert die HUD-Texte nur ~10x/Sekunde.
+let lastHudMs = 0;
+function frame(nowMs: number): void {
+  controller.tick(nowMs);
+  if (nowMs - lastHudMs >= 100) {
+    hud.update(nowMs);
+    lastHudMs = nowMs;
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+// PWA-ServiceWorker registrieren (Auto-Update).
 registerSW({ immediate: true });

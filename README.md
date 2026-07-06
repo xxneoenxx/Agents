@@ -59,7 +59,9 @@ public/                # Icons, statische Assets
 
 ## Entwicklungsstand
 
-Aktuell: **Phase 0 – Setup & Gerüst** (siehe `CHANGELOG.md`). Der Kern-Loop folgt in Phase 1.
+Aktuell: **Phase 1 – Kern-Loop** (siehe `CHANGELOG.md`). Spielbar: tippen zum Servieren, Einheiten
+kaufen (×1/×10/Max), Manager einstellen, Meilenstein-Boni, Marketing-Boost. Als Nächstes folgt die
+lebendige Welt (animierte Kunden) in Phase 2.
 
 ## Sprache & Recht
 

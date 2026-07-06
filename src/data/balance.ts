@@ -20,6 +20,22 @@ export const BALANCE = {
 
   // Startkapital der Spielerin.
   startingCoins: 0,
+
+  // Anzahl Einheiten der ersten Station zu Spielbeginn (damit sofort getippt
+  // und Umsatz erzielt werden kann).
+  startingUnitsFirstStation: 1,
+
+  // Marketing-Boost: befristeter globaler Umsatz-Multiplikator mit Abklingzeit.
+  marketing: {
+    factor: 3, // x3 Umsatz waehrend des Boosts
+    durationMs: 30_000, // 30 Sekunden aktiv
+    cooldownMs: 90_000, // danach 90 Sekunden Abklingzeit
+  },
+
+  // Obergrenze fuer die pro Tick verarbeitete Zeit (Delta-Cap), damit ein
+  // Hintergrund-Tab keine riesigen Zeitspruenge in einem Frame verrechnet.
+  // Offline-Einnahmen werden spaeter separat (Phase 4) behandelt.
+  maxTickDeltaMs: 1_000,
 } as const;
 
 export type Balance = typeof BALANCE;
