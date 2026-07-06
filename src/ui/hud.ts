@@ -52,9 +52,37 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
   top.appendChild(incomeValue);
   top.appendChild(boostBtn);
 
+  // --- Weltsteuerung (Zentrier-Button) --------------------------------------
+  const worldControls = document.createElement('div');
+  worldControls.className = 'world-controls';
+  const centerBtn = document.createElement('button');
+  centerBtn.type = 'button';
+  centerBtn.className = 'btn-round';
+  centerBtn.title = 'Ansicht zentrieren';
+  centerBtn.textContent = '🎯';
+  centerBtn.addEventListener('click', () => game.bus.emit('cameraCenter', null));
+  worldControls.appendChild(centerBtn);
+
   // --- Panel (unten) --------------------------------------------------------
   const panel = document.createElement('div');
   panel.className = 'panel';
+
+  // Einklapp-Griff, um die lebendige Welt freizugeben.
+  const handle = document.createElement('button');
+  handle.type = 'button';
+  handle.className = 'panel-handle';
+  const handleLabel = document.createElement('span');
+  handleLabel.textContent = 'Läden';
+  const handleArrow = document.createElement('span');
+  handleArrow.className = 'panel-arrow';
+  handleArrow.textContent = '▾';
+  handle.appendChild(handleLabel);
+  handle.appendChild(handleArrow);
+  handle.addEventListener('click', () => {
+    const collapsed = panel.classList.toggle('collapsed');
+    handleArrow.textContent = collapsed ? '▴' : '▾';
+  });
+  panel.appendChild(handle);
 
   // Kauf-Modus-Umschalter
   const buyModeBar = document.createElement('div');
@@ -86,6 +114,7 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
   panel.appendChild(list);
 
   root.appendChild(top);
+  root.appendChild(worldControls);
   root.appendChild(panel);
 
   // --- Stationskarten -------------------------------------------------------

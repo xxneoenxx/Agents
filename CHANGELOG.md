@@ -2,6 +2,24 @@
 
 Alle nennenswerten Änderungen pro Phase.
 
+## Phase 2 – Lebendige Welt
+
+- **Animierte Kunden** (`src/game/entities/Customer.ts` + `systems/CustomerSpawner.ts`):
+  Spawn am Rand → Warteschlange → Bedienung → Abgang nach links, mit Lauf-Bob und
+  Farbvarianten. **Objekt-Pooling** für Kunden und Münzen (Cap für 60 fps).
+- **Münz-Juice**: beim Bedienen steigt eine Münze auf.
+- **Manager als Figuren** (`entities/ManagerFigure.ts`): stehen mit Kochmütze an „ihrer"
+  Station und wippen (Idle), respektieren `prefers-reduced-motion`.
+- **Restaurant-Layout** (`WorldScene`): Wand, Boden, durchgehender Counter, ein Stand je
+  freigeschalteter Station; baut sich bei Freischaltung/Manager-Einstellung neu auf.
+- **Kamera** (`systems/CameraController.ts`): Ziehen zum Schwenken, Scrollrad + Pinch zum
+  Zoomen, weiche Grenzen, sanftes Zentrieren (🎯-Button im HUD).
+- **UI**: einklappbares „Läden"-Panel (gibt die Welt frei), Zentrier-Button.
+- Spawn-/Bedientempo und Schlangenlänge skalieren mit dem Fortschritt (Manager/Freischaltungen).
+
+**Fertig, wenn:** Kundenstrom sichtbar und flüssig, Bedienung nachvollziehbar, Kamera per
+Touch und Maus. ✓
+
 ## Phase 1 – Kern-Loop
 
 - **Wirtschaftslogik** in `src/core/economy.ts` (rein, engine-unabhängig): Einheiten-Kosten

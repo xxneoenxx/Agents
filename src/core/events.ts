@@ -51,6 +51,8 @@ export interface GameEvents extends Record<string, unknown> {
   boostChanged: { activeUntilMs: number; cooldownUntilMs: number; factor: number };
   /** Ein Produktionszyklus wurde manuell (durch Tippen) gestartet. */
   stationStarted: string;
+  /** Anfrage der UI, die Weltkamera zu zentrieren. */
+  cameraCenter: null;
 }
 
 // Gemeinsamer Bus fuer die gesamte App.

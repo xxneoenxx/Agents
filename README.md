@@ -59,9 +59,10 @@ public/                # Icons, statische Assets
 
 ## Entwicklungsstand
 
-Aktuell: **Phase 1 – Kern-Loop** (siehe `CHANGELOG.md`). Spielbar: tippen zum Servieren, Einheiten
-kaufen (×1/×10/Max), Manager einstellen, Meilenstein-Boni, Marketing-Boost. Als Nächstes folgt die
-lebendige Welt (animierte Kunden) in Phase 2.
+Aktuell: **Phase 2 – Lebendige Welt** (siehe `CHANGELOG.md`). Zusätzlich zum Kern-Loop laufen jetzt
+animierte Kunden (Spawn → Warteschlange → Bedienung → Abgang mit Münzflug), Manager stehen als
+Figuren an ihren Ständen, und die Kamera lässt sich schwenken/zoomen. Der ausgearbeitete
+Kunst-/Design-Pass (eigene Sprites) folgt in Phase 5.
 
 ## Sprache & Recht
 

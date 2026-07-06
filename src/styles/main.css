@@ -136,19 +136,86 @@ body {
   filter: none;
 }
 
+/* --- Weltsteuerung --------------------------------------------------------- */
+.world-controls {
+  position: fixed;
+  right: max(12px, env(safe-area-inset-right));
+  top: 42%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-round {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+  font-size: 1.3rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.btn-round:active {
+  transform: translateY(2px);
+}
+
 /* --- Panel (Bottom-Sheet) ------------------------------------------------- */
 .panel {
   margin-top: auto;
   align-self: center;
   width: min(96vw, 560px);
-  max-height: 62vh;
+  max-height: 44vh;
   display: flex;
   flex-direction: column;
   background: var(--card);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   box-shadow: 0 -8px 24px rgba(58, 42, 31, 0.18);
-  padding: 10px 10px 0;
+  padding: 4px 10px 0;
   margin-bottom: 0;
+  transition: max-height 0.2s ease;
+}
+
+.panel.collapsed {
+  max-height: 52px;
+}
+
+.panel.collapsed .buymode,
+.panel.collapsed .stations {
+  display: none;
+}
+
+.panel-handle {
+  position: relative;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-weight: 900;
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 12px 16px 6px;
+}
+
+.panel-handle::before {
+  content: '';
+  position: absolute;
+  margin-top: -6px;
+  width: 40px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(58, 42, 31, 0.18);
+  transform: translateX(-50%);
+  left: 50%;
+}
+
+.panel-arrow {
+  font-size: 0.9rem;
 }
 
 .buymode {
