@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "Vyra": {
+      "type": "http",
+      "url": "https://api.usevyra.com/mcp"
+    }
+  }
+}
