@@ -269,21 +269,23 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
     });
   });
 
-  // Erfolgs-Toasts.
+  // Toasts (Erfolge + Event-Benachrichtigungen).
   const toastHost = document.createElement('div');
   toastHost.className = 'toast-host';
   root.appendChild(toastHost);
-  game.bus.on('achievementUnlocked', (def) => {
+  function showToast(icon: string, html: string): void {
     const toast = document.createElement('div');
     toast.className = 'toast';
-    const reward = def.reward > 0 ? ` · +${formatNumber(def.reward)} 🪙` : '';
-    toast.innerHTML =
-      `<span class="toast-icon">${def.icon}</span>` +
-      `<span><b>Ziel erreicht:</b> ${def.name}${reward}</span>`;
+    toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${html}</span>`;
     toastHost.appendChild(toast);
     setTimeout(() => toast.classList.add('out'), 3200);
     setTimeout(() => toast.remove(), 3600);
+  }
+  game.bus.on('achievementUnlocked', (def) => {
+    const reward = def.reward > 0 ? ` · +${formatNumber(def.reward)} 🪙` : '';
+    showToast(def.icon, `<b>Ziel erreicht:</b> ${def.name}${reward}`);
   });
+  game.bus.on('notify', (n) => showToast(n.icon, `<b>${n.title}</b>`));
 
   // Beim Restaurantwechsel die Stationskarten neu aufbauen.
   game.bus.on('restaurantChanged', () => {

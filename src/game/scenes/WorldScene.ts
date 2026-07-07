@@ -87,6 +87,7 @@ export class WorldScene extends Phaser.Scene {
     // Gelegentliche Ereignisse planen.
     this.scheduleInvestor();
     this.scheduleRush();
+    this.scheduleCelebrity();
   }
 
   update(time: number, delta: number): void {
@@ -241,6 +242,17 @@ export class WorldScene extends Phaser.Scene {
     this.time.delayedCall(delay, () => {
       this.controller.startRush(performance.now());
       this.scheduleRush();
+    });
+  }
+
+  private scheduleCelebrity(): void {
+    const delay = Phaser.Math.Between(
+      BALANCE.celebrity.everyMinMs,
+      BALANCE.celebrity.everyMaxMs,
+    );
+    this.time.delayedCall(delay, () => {
+      this.controller.startCelebrity(performance.now());
+      this.scheduleCelebrity();
     });
   }
 

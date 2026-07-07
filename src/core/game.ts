@@ -320,10 +320,28 @@ export class GameController {
   startRush(nowMs: number): void {
     this.rushUntilMs = nowMs + BALANCE.rush.durationMs;
     this.bus.emit('eventChanged', { type: 'rush', activeUntilMs: this.rushUntilMs });
+    this.bus.emit('notify', { icon: '🏃', title: 'Rush Hour! Mehr Kundschaft.' });
   }
 
   isRushActive(nowMs: number): boolean {
     return nowMs < this.rushUntilMs;
+  }
+
+  /**
+   * Startet einen Promi-Besuch: kurzer, starker Umsatz-Schub plus Kundenandrang.
+   * Nutzt dieselben Boost-Felder wie das Marketing (ein aktiver Boost zur Zeit).
+   */
+  startCelebrity(nowMs: number): void {
+    const c = BALANCE.celebrity;
+    this.state.boostUntilMs = nowMs + c.durationMs;
+    this.state.boostFactor = c.factor;
+    this.rushUntilMs = Math.max(this.rushUntilMs, nowMs + c.durationMs);
+    this.bus.emit('boostChanged', {
+      activeUntilMs: this.state.boostUntilMs,
+      cooldownUntilMs: this.state.boostCooldownUntilMs,
+      factor: c.factor,
+    });
+    this.bus.emit('notify', { icon: '🌟', title: `Promi-Besuch! Umsatz ×${c.factor}` });
   }
 
   // --- Prestige --------------------------------------------------------------

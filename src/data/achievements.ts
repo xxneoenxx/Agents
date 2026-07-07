@@ -126,6 +126,30 @@ export const ACHIEVEMENTS: AchievementDef[] = [
     reward: 1_000_000,
     progress: (s) => ratio(s.restaurantsUnlocked, 3),
   },
+  {
+    id: 'earn-1b',
+    name: 'Milliardenschwer',
+    description: '1 Mrd. Umsatz erreichen',
+    icon: '🏦',
+    reward: 5_000_000,
+    progress: (s) => ratio(s.totalEarned, 1_000_000_000),
+  },
+  {
+    id: 'all-renovated',
+    name: 'Rundum saniert',
+    description: 'Ein Lokal voll ausbauen (Stufe 2)',
+    icon: '🏗️',
+    reward: 250_000,
+    progress: (s) => ratio(s.maxRenovation, 2),
+  },
+  {
+    id: 'prestige-veteran',
+    name: 'Investoren-Magnet',
+    description: '100 Investoren sammeln',
+    icon: '🤝',
+    reward: 0,
+    progress: (s) => ratio(s.investors, 100),
+  },
 ];
 
 /** Ist ein Achievement erfuellt? */

@@ -139,6 +139,19 @@ describe('Event-Bus', () => {
   });
 });
 
+describe('Promi-Besuch', () => {
+  it('gibt einen kurzen starken Boost und loest Andrang aus', () => {
+    const gc = fresh();
+    let notified = false;
+    gc.bus.on('notify', () => (notified = true));
+    gc.startCelebrity(0);
+    expect(gc.boostMultiplier(0)).toBe(4);
+    expect(gc.isRushActive(0)).toBe(true);
+    expect(gc.boostMultiplier(21_000)).toBe(1); // nach 20s vorbei
+    expect(notified).toBe(true);
+  });
+});
+
 describe('Renovieren', () => {
   it('hebt die Stufe und multipliziert das Einkommen', () => {
     const gc = fresh(250_060);

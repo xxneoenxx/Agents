@@ -84,6 +84,8 @@ export interface GameEvents extends Record<string, unknown> {
   offlineEarnings: OfflinePayload;
   /** Ein Achievement wurde freigeschaltet. */
   achievementUnlocked: AchievementDef;
+  /** Allgemeine Kurzbenachrichtigung (Toast), z. B. fuer Events. */
+  notify: { icon: string; title: string };
 }
 
 // Gemeinsamer Bus fuer die gesamte App.

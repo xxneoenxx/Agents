@@ -64,6 +64,14 @@ export const BALANCE = {
     durationMs: 15_000,
   },
 
+  // Promi-Besuch: seltenes Event mit kurzem, starkem Umsatz-Schub + Andrang.
+  celebrity: {
+    everyMinMs: 120_000,
+    everyMaxMs: 240_000,
+    durationMs: 20_000,
+    factor: 4,
+  },
+
   // Prestige / Investoren: verdiente Investoren aus dem Lebenszeit-Umsatz,
   // jeder gibt einen permanenten globalen Umsatz-Bonus.
   prestige: {

@@ -48,6 +48,15 @@ describe('Achievements', () => {
     expect(unlocked).toContain('first-investors');
   });
 
+  it('erkennt Umsatz- und Renovierungs-Ziele', () => {
+    const gc = fresh();
+    gc.getState().totalEarned = 1_000_000_000;
+    gc.getState().restaurants[0].level = 2;
+    gc.checkAchievements();
+    expect(gc.getState().achievements['earn-1b']).toBe(true);
+    expect(gc.getState().achievements['all-renovated']).toBe(true);
+  });
+
   it('listAchievements liefert Fortschritt 0..1', () => {
     const gc = fresh();
     gc.getState().stats.taps = 25; // Haelfte von 50

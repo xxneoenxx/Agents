@@ -2,6 +2,13 @@
 
 Alle nennenswerten Änderungen pro Phase.
 
+## Ergänzungen (nach Release)
+
+- **Promi-Besuch-Event** (§6.6): seltenes Ereignis mit kurzem, starkem Umsatz-Schub (×4) und
+  Kundenandrang. Rush Hour und Promi-Besuch zeigen jetzt **Toast-Benachrichtigungen** (`notify`-Event).
+- **3 weitere Achievements**: „Milliardenschwer" (1 Mrd. Umsatz), „Rundum saniert" (Lokal Stufe 2),
+  „Investoren-Magnet" (100 Investoren). Tests → **70 grün**.
+
 ## Phase 5 – Kunst-Pass, Achievements, Balance, Release
 
 - **Achievements/Ziele** (`src/data/achievements.ts`, `core`): 11 Ziele mit Fortschritt und
