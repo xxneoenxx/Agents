@@ -4,6 +4,9 @@ Alle nennenswerten Änderungen pro Phase.
 
 ## Ergänzungen (nach Release)
 
+- **Themen-Deko je Restaurant**: Lichterkette (Akzentfarbe) plus stilabhängige Boden-Deko –
+  Imbissmeile (Topfpflanzen), Bistro (Sonnenschirm-Tische), Gourmet-Tempel (goldene Kandelaber).
+  `RestaurantTheme` um `accent` + `deco` erweitert.
 - **Eigene SVG-Sprites** (handgezeichnet, `public/sprites/`): 3 Kunden-Varianten, Koch/Manager,
   Großinvestor, Verkaufsstand und Münze ersetzen die Primitiv-Formen. In Phaser via `load.svg`
   (2× gerastert) geladen; Kunden mit Blickrichtung (flipX) und Lauf-Bob. Bedienpunkt/Kamera an die

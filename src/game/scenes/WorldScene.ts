@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { BALANCE } from '@data/balance';
 import type { StationDef } from '@data/stations';
+import type { RestaurantTheme } from '@data/restaurants';
 import type { GameController } from '@core/game';
 import { ManagerFigure } from '@game/entities/ManagerFigure';
 import { Investor } from '@game/entities/Investor';
@@ -101,20 +102,12 @@ export class WorldScene extends Phaser.Scene {
 
   // --- Zeichnen --------------------------------------------------------------
 
-  private drawBackdrop(theme: { wall: number; floor: number; counter: number }): void {
+  private drawBackdrop(theme: RestaurantTheme): void {
     const { height } = this.scale;
     const w = this.worldWidth;
     const horizon = this.laneY - 30;
 
     this.add.rectangle(w / 2, horizon / 2, w, horizon, theme.wall).setDepth(0);
-
-    // Wanddeko: dezente Fenster/Bilder.
-    for (let x = 90; x < w; x += 260) {
-      this.add
-        .rectangle(x, horizon * 0.42, 70, 54, 0xffffff, 0.14)
-        .setStrokeStyle(3, 0x000000, 0.08)
-        .setDepth(0);
-    }
 
     // Boden mit abwechselnden Fliesen-Streifen.
     this.add
@@ -128,24 +121,64 @@ export class WorldScene extends Phaser.Scene {
     }
     this.add.rectangle(w / 2, horizon, w, 6, 0x000000, 0.12).setDepth(0);
 
-    // Deko-Pflanzen entlang des Bodens.
-    for (let x = 60; x < w; x += 210) {
-      this.drawPlant(x, this.laneY + 40);
-    }
-
     this.add
       .rectangle(w / 2, this.laneY - 16, w, 26, theme.counter)
       .setStrokeStyle(3, 0x3a2a1f)
       .setDepth(1);
+
+    this.drawThemeDeco(theme);
   }
 
-  // Kleine Topfpflanze als Deko.
+  // Themenspezifische Deko: Lichterkette oben + Boden-Deko je Stil.
+  private drawThemeDeco(theme: RestaurantTheme): void {
+    const w = this.worldWidth;
+
+    // Lichterkette entlang der Wand.
+    const lightY = 26;
+    this.add.rectangle(w / 2, lightY - 6, w, 2, 0x000000, 0.25).setDepth(0);
+    let bulb = 0;
+    for (let x = 40; x < w; x += 56) {
+      const color = bulb % 2 === 0 ? theme.accent : 0xfff2c2;
+      this.add.circle(x, lightY, 5, color).setDepth(0).setStrokeStyle(1.5, 0x3a2a1f, 0.3);
+      bulb++;
+    }
+
+    // Boden-Deko je Stil.
+    for (let x = 60; x < w; x += 210) {
+      if (theme.deco === 'street') this.drawPlant(x, this.laneY + 40);
+      else if (theme.deco === 'bistro') this.drawParasol(x, this.laneY + 42, theme.accent);
+      else this.drawCandelabra(x, this.laneY + 42, theme.accent);
+    }
+  }
+
+  // Kleine Topfpflanze (Imbissmeile).
   private drawPlant(x: number, y: number): void {
     const p = this.add.container(x, y).setDepth(2);
     p.add(this.add.rectangle(0, 6, 20, 16, 0xcc7a45).setStrokeStyle(2, 0x3a2a1f));
     p.add(this.add.circle(-6, -6, 9, 0x3fae57));
     p.add(this.add.circle(6, -4, 10, 0x54c46a));
     p.add(this.add.circle(0, -14, 9, 0x3fae57));
+  }
+
+  // Bistro-Tisch mit Sonnenschirm.
+  private drawParasol(x: number, y: number, accent: number): void {
+    const p = this.add.container(x, y).setDepth(2);
+    p.add(this.add.ellipse(0, 12, 30, 8, 0x000000, 0.12));
+    p.add(this.add.rectangle(0, 2, 18, 14, 0xfffdf7).setStrokeStyle(2, 0x3a2a1f)); // Tisch
+    p.add(this.add.rectangle(0, -14, 3, 20, 0x8a5a2b)); // Stange
+    p.add(this.add.triangle(0, -20, -20, 0, 20, 0, 0, -14, accent).setStrokeStyle(2, 0x3a2a1f)); // Schirm
+  }
+
+  // Goldener Kandelaber (Gourmet-Tempel).
+  private drawCandelabra(x: number, y: number, accent: number): void {
+    const p = this.add.container(x, y).setDepth(2);
+    p.add(this.add.ellipse(0, 12, 24, 7, 0x000000, 0.15));
+    p.add(this.add.rectangle(0, 0, 5, 26, accent).setStrokeStyle(2, 0x3a2a1f)); // Staender
+    p.add(this.add.rectangle(0, -14, 22, 4, accent).setStrokeStyle(2, 0x3a2a1f)); // Arm
+    for (const dx of [-9, 0, 9]) {
+      p.add(this.add.rectangle(dx, -18, 3, 6, 0xfffdf7)); // Kerze
+      p.add(this.add.circle(dx, -22, 3, 0xffa53d)); // Flamme
+    }
   }
 
   private stallX(index: number): number {

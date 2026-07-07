@@ -11,10 +11,16 @@ export interface RenovationLevel {
   cost: number;
 }
 
+export type DecoStyle = 'street' | 'bistro' | 'gourmet';
+
 export interface RestaurantTheme {
   wall: number;
   floor: number;
   counter: number;
+  /** Akzentfarbe (Lichterketten, Deko). */
+  accent: number;
+  /** Deko-Stil des Lokals. */
+  deco: DecoStyle;
 }
 
 export interface RestaurantDef {
@@ -93,7 +99,7 @@ export const RESTAURANTS: RestaurantDef[] = [
     id: 'street',
     name: 'Bellas Imbissmeile',
     emoji: '🛖',
-    theme: { wall: 0xffd27a, floor: 0x8fce6a, counter: 0xfffdf7 },
+    theme: { wall: 0xffd27a, floor: 0x8fce6a, counter: 0xfffdf7, accent: 0xff5c5c, deco: 'street' },
     unlockCost: 0,
     stations: streetStations,
     renovations: [
@@ -105,7 +111,7 @@ export const RESTAURANTS: RestaurantDef[] = [
     id: 'bistro',
     name: 'Bellas Bistro',
     emoji: '🍽️',
-    theme: { wall: 0xf6c9a8, floor: 0x9fb8d8, counter: 0xfff4e6 },
+    theme: { wall: 0xf6c9a8, floor: 0x9fb8d8, counter: 0xfff4e6, accent: 0x7c5cff, deco: 'bistro' },
     unlockCost: 500_000,
     stations: bistroStations,
     renovations: [
@@ -117,7 +123,7 @@ export const RESTAURANTS: RestaurantDef[] = [
     id: 'gourmet',
     name: 'Bellas Gourmet-Tempel',
     emoji: '⭐',
-    theme: { wall: 0x3a2a4f, floor: 0x5c4a6e, counter: 0xffe9a8 },
+    theme: { wall: 0x3a2a4f, floor: 0x5c4a6e, counter: 0xffe9a8, accent: 0xffc72c, deco: 'gourmet' },
     unlockCost: 50_000_000_000,
     stations: gourmetStations,
     renovations: [
