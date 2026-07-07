@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 64" width="48" height="64">
+  <!-- Koch/Manager (eigene Grafik) -->
+  <rect x="16" y="46" width="7" height="15" rx="3.5" fill="#3a2a1f"/>
+  <rect x="25" y="46" width="7" height="15" rx="3.5" fill="#3a2a1f"/>
+  <rect x="7" y="30" width="7" height="17" rx="3.5" fill="#fffdf7" stroke="#3a2a1f" stroke-width="2"/>
+  <rect x="34" y="30" width="7" height="17" rx="3.5" fill="#fffdf7" stroke="#3a2a1f" stroke-width="2"/>
+  <rect x="12" y="25" width="24" height="27" rx="10" fill="#fffdf7" stroke="#3a2a1f" stroke-width="2"/>
+  <!-- Schuerze -->
+  <rect x="18" y="34" width="12" height="18" rx="3" fill="#ffe3b0" stroke="#3a2a1f" stroke-width="1.5"/>
+  <!-- Kopf -->
+  <circle cx="24" cy="17" r="10" fill="#ffd9a0" stroke="#3a2a1f" stroke-width="2"/>
+  <circle cx="20.5" cy="17" r="1.5" fill="#3a2a1f"/>
+  <circle cx="27.5" cy="17" r="1.5" fill="#3a2a1f"/>
+  <path d="M21 21 q3 2.5 6 0" stroke="#3a2a1f" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Kochmuetze -->
+  <rect x="16" y="7" width="16" height="6" rx="2" fill="#ffffff" stroke="#3a2a1f" stroke-width="2"/>
+  <circle cx="18" cy="6" r="5" fill="#ffffff" stroke="#3a2a1f" stroke-width="2"/>
+  <circle cx="24" cy="4" r="6" fill="#ffffff" stroke="#3a2a1f" stroke-width="2"/>
+  <circle cx="30" cy="6" r="5" fill="#ffffff" stroke="#3a2a1f" stroke-width="2"/>
+</svg>

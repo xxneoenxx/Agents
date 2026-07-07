@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Muenze (eigene Grafik) -->
+  <circle cx="12" cy="12" r="10" fill="#ffc72c" stroke="#e0a800" stroke-width="2"/>
+  <circle cx="12" cy="12" r="6" fill="none" stroke="#e0a800" stroke-width="1.5" opacity="0.6"/>
+  <text x="12" y="16" font-family="Nunito, Arial, sans-serif" font-size="10" font-weight="900"
+        text-anchor="middle" fill="#b07d00">$</text>
+  <circle cx="9" cy="9" r="2" fill="#ffffff" opacity="0.85"/>
+</svg>

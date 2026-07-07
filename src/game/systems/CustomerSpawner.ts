@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { Customer, CUSTOMER_TINTS } from '@game/entities/Customer';
+import { Customer } from '@game/entities/Customer';
 
 // Kunden-System: Spawn -> Warteschlange -> Bedienung -> Abgang, mit Objekt-
 // Pooling (Kunden + Muenzen) fuer 60 fps. Rein visuell und von der Wirtschaft
@@ -35,7 +35,7 @@ const MAX_COINS = 24;
 
 export class CustomerSpawner {
   private customerPool: Customer[] = [];
-  private coinPool: Phaser.GameObjects.Container[] = [];
+  private coinPool: Phaser.GameObjects.Image[] = [];
   private queue: QueueEntry[] = [];
   private spawnAcc = 0;
   private serveAcc = 0;
@@ -86,8 +86,7 @@ export class CustomerSpawner {
     const c = this.obtainCustomer();
     if (!c) return;
 
-    const tint = CUSTOMER_TINTS[Phaser.Math.Between(0, CUSTOMER_TINTS.length - 1)];
-    c.spawn(this.layout.spawnX, this.layout.laneY, tint);
+    c.spawn(this.layout.spawnX, this.layout.laneY);
 
     const entry: QueueEntry = { c, arrived: false };
     const slot = this.queue.length;
@@ -123,7 +122,7 @@ export class CustomerSpawner {
 
   // --- Muenzen (Juice) ------------------------------------------------------
 
-  private obtainCoin(): Phaser.GameObjects.Container | undefined {
+  private obtainCoin(): Phaser.GameObjects.Image | undefined {
     let coin = this.coinPool.find((x) => !x.visible);
     if (!coin && this.coinPool.length < MAX_COINS) {
       coin = this.createCoin();
@@ -132,13 +131,12 @@ export class CustomerSpawner {
     return coin;
   }
 
-  private createCoin(): Phaser.GameObjects.Container {
-    const coin = this.scene.add.container(0, 0);
-    const disc = this.scene.add.circle(0, 0, 8, 0xffc72c).setStrokeStyle(2, 0xe0a800);
-    const shine = this.scene.add.circle(-2, -2, 2.5, 0xffffff, 0.9);
-    coin.add([disc, shine]);
-    coin.setDepth(20).setVisible(false);
-    return coin;
+  private createCoin(): Phaser.GameObjects.Image {
+    return this.scene.add
+      .image(0, 0, 'coin')
+      .setDisplaySize(22, 22)
+      .setDepth(20)
+      .setVisible(false);
   }
 
   private spawnCoin(x: number, y: number): void {

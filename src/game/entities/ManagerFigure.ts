@@ -1,23 +1,15 @@
 import Phaser from 'phaser';
 
-// Manager-Figur, die nach dem Einstellen an "ihrer" Station steht und leicht
-// wippt (Idle-Animation). Programmatische Formen inkl. angedeuteter Kochmuetze.
-
+// Manager-Figur (Koch-Sprite), die nach dem Einstellen an "ihrer" Station steht
+// und leicht wippt (Idle-Animation).
 export class ManagerFigure extends Phaser.GameObjects.Container {
   constructor(scene: Phaser.Scene, x: number, y: number, reducedMotion = false) {
     super(scene, x, y);
 
     const shadow = scene.add.ellipse(0, 2, 30, 9, 0x000000, 0.15);
     const figure = scene.add.container(0, 0);
-    const body = scene.add
-      .rectangle(0, -16, 24, 30, 0xfffdf7)
-      .setStrokeStyle(2, 0x3a2a1f)
-      .setOrigin(0.5, 1);
-    const head = scene.add.circle(0, -30, 10, 0xffd9a0).setStrokeStyle(2, 0x3a2a1f);
-    // Kochmuetze
-    const hat = scene.add.rectangle(0, -40, 20, 8, 0xffffff).setStrokeStyle(2, 0x3a2a1f);
-    const hatTop = scene.add.circle(0, -44, 8, 0xffffff).setStrokeStyle(2, 0x3a2a1f);
-    figure.add([body, head, hat, hatTop]);
+    const img = scene.add.image(0, 0, 'chef').setOrigin(0.5, 1).setDisplaySize(40, 54);
+    figure.add(img);
 
     this.add([shadow, figure]);
     scene.add.existing(this);

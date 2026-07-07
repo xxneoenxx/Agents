@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 
-// Grossinvestor-NPC: auffaellige Figur (Zylinder, Anzug, Aktenkoffer) mit
-// Glitzern. Laeuft langsam durch die Szene und ist antippbar. Programmatische
-// Formen (keine externen Assets).
+// Grossinvestor-NPC (Zylinder-Sprite mit Glitzern). Laeuft langsam durch die
+// Szene und ist antippbar.
 export class Investor extends Phaser.GameObjects.Container {
   private figure: Phaser.GameObjects.Container;
+  private img: Phaser.GameObjects.Image;
   private walkTween?: Phaser.Tweens.Tween;
   private tapped = false;
 
@@ -17,35 +17,29 @@ export class Investor extends Phaser.GameObjects.Container {
 
     const shadow = scene.add.ellipse(0, 2, 40, 12, 0x000000, 0.18);
     this.figure = scene.add.container(0, 0);
-    const body = scene.add
-      .rectangle(0, -18, 30, 38, 0x3a2a4f)
-      .setStrokeStyle(2, 0x1c1330)
-      .setOrigin(0.5, 1);
-    const tie = scene.add.triangle(0, -30, 0, 0, 4, 8, -4, 8, 0xffc72c);
-    const head = scene.add.circle(0, -40, 11, 0xffd9a0).setStrokeStyle(2, 0x3a2a1f);
-    const hatBrim = scene.add.rectangle(0, -50, 26, 5, 0x1c1330);
-    const hatTop = scene.add.rectangle(0, -58, 18, 14, 0x1c1330).setOrigin(0.5, 1);
-    const briefcase = scene.add.rectangle(18, -12, 14, 11, 0x8a5a2b).setStrokeStyle(2, 0x3a2a1f);
-    this.figure.add([body, tie, head, hatBrim, hatTop, briefcase]);
-
-    const sparkle = scene.add.text(16, -64, '✨', { fontSize: '18px' }).setOrigin(0.5);
+    this.img = scene.add.image(0, 0, 'investor').setOrigin(0.5, 1).setDisplaySize(50, 62);
+    this.figure.add(this.img);
+    const sparkle = scene.add.text(18, -58, '✨', { fontSize: '18px' }).setOrigin(0.5);
 
     this.add([shadow, this.figure, sparkle]);
     scene.add.existing(this);
     this.setDepth(8);
 
     // Antippbereich.
-    this.setSize(48, 80);
+    this.setSize(52, 66);
     this.setInteractive(
-      new Phaser.Geom.Rectangle(-24, -72, 48, 80),
+      new Phaser.Geom.Rectangle(-26, -64, 52, 66),
       Phaser.Geom.Rectangle.Contains,
     );
-    this.on('pointerdown', (_p: Phaser.Input.Pointer, _x: number, _y: number, e?: Phaser.Types.Input.EventData) => {
-      e?.stopPropagation?.();
-      if (this.tapped) return;
-      this.tapped = true;
-      this.onTap();
-    });
+    this.on(
+      'pointerdown',
+      (_p: Phaser.Input.Pointer, _x: number, _y: number, e?: Phaser.Types.Input.EventData) => {
+        e?.stopPropagation?.();
+        if (this.tapped) return;
+        this.tapped = true;
+        this.onTap();
+      },
+    );
 
     if (!reducedMotion) {
       scene.tweens.add({
@@ -71,7 +65,7 @@ export class Investor extends Phaser.GameObjects.Container {
   /** Laeuft langsam von fromX nach toX (auf Hoehe y); danach onDone. */
   walkAcross(fromX: number, toX: number, y: number, onDone: () => void): void {
     this.setPosition(fromX, y);
-    this.figure.setScale(toX < fromX ? -1 : 1, 1);
+    this.img.setFlipX(toX < fromX);
     const dist = Math.abs(toX - fromX);
     this.walkTween = this.scene.tweens.add({
       targets: this,

@@ -1,18 +1,16 @@
 import Phaser from 'phaser';
-import { ASSETS } from '@data/assets';
+import { SPRITES } from '@data/assets';
 
-// PreloadScene: laedt Assets aus dem Manifest und zeigt einen simplen
-// Ladebalken. In Phase 0 ist das Manifest leer -> direkt weiter zur WorldScene.
+// PreloadScene: laedt die SVG-Sprites (bei doppelter Groesse gerastert fuer
+// Schaerfe) und wechselt dann zur WorldScene.
 export class PreloadScene extends Phaser.Scene {
   constructor() {
     super({ key: 'PreloadScene' });
   }
 
   preload(): void {
-    // Assets gemaess Manifest registrieren (aktuell leer).
-    for (const asset of ASSETS) {
-      if (asset.type === 'image') this.load.image(asset.key, asset.path);
-      if (asset.type === 'audio') this.load.audio(asset.key, asset.path);
+    for (const s of SPRITES) {
+      this.load.svg(s.key, s.path, { width: s.width * 2, height: s.height * 2 });
     }
   }
 

@@ -52,15 +52,18 @@ export class WorldScene extends Phaser.Scene {
 
     this.restaurantLayer = this.add.container(0, 0).setDepth(3);
 
-    const serviceX = this.worldWidth * 0.42;
+    // Bedienpunkt am Eingang (vor dem ersten Stand); die Schlange reicht nach
+    // rechts an der Theke entlang. So sind die Kunden ab dem ersten Stand sichtbar.
+    const slotSpacing = 46;
+    const serviceX = LEFT_MARGIN;
     this.spawner = new CustomerSpawner(
       this,
       {
-        spawnX: this.worldWidth + 60,
-        exitX: -60,
+        spawnX: serviceX + 12 * slotSpacing + 160, // von rechts hereinlaufen
+        exitX: serviceX - 140, // nach links hinaus
         serviceX,
         laneY: this.laneY + 14,
-        slotSpacing: 46,
+        slotSpacing,
       },
       () => this.computeTuning(),
     );
@@ -69,7 +72,7 @@ export class WorldScene extends Phaser.Scene {
       minZoom: 0.5,
       maxZoom: 1.8,
       defaultZoom: 1,
-      focusX: serviceX,
+      focusX: serviceX + STALL_SPACING, // erste Staende + Schlange im Blick
       focusY: this.laneY,
     });
     this.camControl.setBounds(0, 0, this.worldWidth, height);
@@ -168,25 +171,16 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private drawStall(x: number, emoji: string, name: string, owned: boolean): void {
-    const baseY = this.laneY - 28;
+    const baseY = this.laneY - 6;
     const stall = this.add.container(x, baseY);
-    stall.add(this.add.rectangle(0, -34, 96, 62, 0xfffdf7).setStrokeStyle(3, 0x3a2a1f));
-    stall.add(this.add.text(0, -40, emoji, { fontSize: '30px' }).setOrigin(0.5));
-
-    // Gestreifte Markise mit Bogen-Unterkante.
-    const awningW = 112;
-    const stripes = 7;
-    const stripeW = awningW / stripes;
-    stall.add(this.add.rectangle(0, -70, awningW, 18, 0xffffff).setStrokeStyle(3, 0x3a2a1f));
-    for (let s = 0; s < stripes; s++) {
-      if (s % 2 === 0) continue;
-      const sx = -awningW / 2 + stripeW * s + stripeW / 2;
-      stall.add(this.add.rectangle(sx, -70, stripeW, 16, 0xff5c5c));
-      stall.add(this.add.triangle(sx, -60, -stripeW / 2, 0, stripeW / 2, 0, 0, 8, 0xff5c5c));
-    }
+    // Stand-Sprite (Bude + Markise), Boden bei y=0.
+    stall.add(this.add.image(0, 4, 'stall').setOrigin(0.5, 1).setDisplaySize(120, 104));
+    // Gericht-Emoji auf dem Schild.
+    stall.add(this.add.text(0, -56, emoji, { fontSize: '30px' }).setOrigin(0.5));
+    // Name auf der Theke.
     stall.add(
       this.add
-        .text(0, -2, name, {
+        .text(0, -14, name, {
           fontFamily: 'Nunito, Arial, sans-serif',
           fontSize: '12px',
           fontStyle: '800',

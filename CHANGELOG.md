@@ -4,6 +4,11 @@ Alle nennenswerten Änderungen pro Phase.
 
 ## Ergänzungen (nach Release)
 
+- **Eigene SVG-Sprites** (handgezeichnet, `public/sprites/`): 3 Kunden-Varianten, Koch/Manager,
+  Großinvestor, Verkaufsstand und Münze ersetzen die Primitiv-Formen. In Phaser via `load.svg`
+  (2× gerastert) geladen; Kunden mit Blickrichtung (flipX) und Lauf-Bob. Bedienpunkt/Kamera an die
+  Stände gelegt, sodass die Warteschlange ab dem ersten Stand sichtbar ist.
+
 - **Promi-Besuch-Event** (§6.6): seltenes Ereignis mit kurzem, starkem Umsatz-Schub (×4) und
   Kundenandrang. Rush Hour und Promi-Besuch zeigen jetzt **Toast-Benachrichtigungen** (`notify`-Event).
 - **3 weitere Achievements**: „Milliardenschwer" (1 Mrd. Umsatz), „Rundum saniert" (Lokal Stufe 2),

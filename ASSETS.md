@@ -14,7 +14,8 @@ Jedes verwendete externe Asset wird hier mit Quelle und Lizenz dokumentiert.
 | App-/Favicon                  | `public/favicon.svg`     | Projekt      | eigen (proprietär)|
 | App-Icon (SVG)                | `public/icons/icon.svg`  | Projekt      | eigen (proprietär)|
 | App-Icons (PNG 192/512)       | `public/icons/icon-*.png`| Projekt (via `scripts/generate-icons.mjs`) | eigen (proprietär)|
-| Welt-/Figuren-Grafik          | programmatisch (Phaser)  | Projekt      | eigen (proprietär)|
+| Figuren-/Stand-/Münz-Sprites  | `public/sprites/*.svg`   | Projekt (handgezeichnetes SVG) | eigen (proprietär)|
+| Welt-Kulisse (Wand/Boden/Deko)| programmatisch (Phaser)  | Projekt      | eigen (proprietär)|
 | SFX (Servieren/Münze/…)       | prozedural (WebAudio)    | Projekt      | eigen (proprietär)|
 
 ## Externe Assets (frei lizenziert)
