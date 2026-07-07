@@ -5,7 +5,7 @@
 import type { GameState } from '@core/state';
 
 const SAVE_KEY = 'bfe:save';
-const SAVE_VERSION = 4;
+const SAVE_VERSION = 5;
 
 interface SaveEnvelope {
   v: number;
@@ -49,8 +49,10 @@ export function loadGame(): LoadResult | null {
     if (env.v !== SAVE_VERSION || !env.state || !Array.isArray(env.state.restaurants)) {
       return null;
     }
-    // Fehlende Einstellungen mit Standard auffuellen (Vorwaertskompatibilitaet).
+    // Fehlende Felder mit Standard auffuellen (Vorwaertskompatibilitaet).
     if (!env.state.settings) env.state.settings = { sound: true };
+    if (!env.state.stats) env.state.stats = { taps: 0, payouts: 0 };
+    if (!env.state.achievements) env.state.achievements = {};
     return { state: env.state, savedAt: env.savedAt };
   } catch {
     return null;

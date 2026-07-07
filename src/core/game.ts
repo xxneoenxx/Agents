@@ -37,6 +37,12 @@ import {
 import { nextRenovationCost } from '@core/progression';
 import { offlineEarnings, passiveIncomePerSecond, type OfflineResult } from '@core/offline';
 import {
+  ACHIEVEMENTS,
+  isAchieved,
+  type AchState,
+  type AchievementDef,
+} from '@data/achievements';
+import {
   createInitialState,
   findRestaurant,
   getCurrentRestaurant,
@@ -166,6 +172,7 @@ export class GameController {
     const st = loc.station;
     if (st.owned <= 0 || st.active || st.manager) return false;
     st.active = true;
+    this.state.stats.taps += 1;
     this.bus.emit('stationStarted', id);
     this.bus.emit('stationChanged', id);
     return true;
@@ -495,6 +502,7 @@ export class GameController {
         }
         if (paid > 0) {
           totalPaid += paid;
+          this.state.stats.payouts += 1;
           this.bus.emit('stationPaid', { id: st.id, amount: paid });
           this.bus.emit('stationChanged', st.id);
         }
@@ -505,5 +513,61 @@ export class GameController {
       this.state.totalEarned += totalPaid;
       this.setCoins(this.state.coins + totalPaid);
     }
+
+    this.checkAchievements();
+  }
+
+  // --- Achievements ----------------------------------------------------------
+
+  private achState(): AchState {
+    let stationsOwned = 0;
+    let managers = 0;
+    let restaurantsUnlocked = 0;
+    let maxRenovation = 0;
+    for (const r of this.state.restaurants) {
+      if (r.unlocked) restaurantsUnlocked++;
+      maxRenovation = Math.max(maxRenovation, r.level);
+      for (const st of r.stations) {
+        stationsOwned += st.owned;
+        if (st.manager) managers++;
+      }
+    }
+    let upgradeLevels = 0;
+    for (const v of Object.values(this.state.upgrades)) upgradeLevels += v;
+
+    return {
+      totalEarned: this.state.totalEarned,
+      payouts: this.state.stats.payouts,
+      taps: this.state.stats.taps,
+      stationsOwned,
+      managers,
+      restaurantsUnlocked,
+      maxRenovation,
+      investors: this.state.investors,
+      upgradeLevels,
+    };
+  }
+
+  /** Prueft alle Achievements; schaltet neue frei, zahlt Belohnung, meldet sie. */
+  checkAchievements(): void {
+    const snap = this.achState();
+    for (const def of ACHIEVEMENTS) {
+      if (this.state.achievements[def.id]) continue;
+      if (isAchieved(def, snap)) {
+        this.state.achievements[def.id] = true;
+        if (def.reward > 0) this.setCoins(this.state.coins + def.reward);
+        this.bus.emit('achievementUnlocked', def);
+      }
+    }
+  }
+
+  /** Liste aller Achievements mit Fortschritt/Status (fuer die UI). */
+  listAchievements(): { def: AchievementDef; done: boolean; progress: number }[] {
+    const snap = this.achState();
+    return ACHIEVEMENTS.map((def) => ({
+      def,
+      done: !!this.state.achievements[def.id],
+      progress: Math.min(1, def.progress(snap)),
+    }));
   }
 }

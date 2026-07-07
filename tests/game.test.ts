@@ -78,7 +78,8 @@ describe('Manager', () => {
     gc.tick(0);
     gc.tick(800);
     gc.tick(1600);
-    expect(gc.getState().coins).toBeCloseTo(2);
+    // totalEarned = reiner Umsatz (ohne Achievement-Belohnungen).
+    expect(gc.getState().totalEarned).toBeCloseTo(2);
     expect(gc.currentRestaurant().stations[0].active).toBe(true); // laeuft weiter
   });
 
@@ -95,7 +96,7 @@ describe('Delta-Cap im Loop', () => {
     gc.tick(0);
     // 100 Sekunden Sprung -> auf 1000ms gedeckelt -> nur ein 800ms-Zyklus.
     gc.tick(100_000);
-    expect(gc.getState().coins).toBeCloseTo(1);
+    expect(gc.getState().totalEarned).toBeCloseTo(1);
   });
 });
 

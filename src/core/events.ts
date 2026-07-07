@@ -39,6 +39,8 @@ export class EventBus<Events extends Record<string, unknown>> {
   }
 }
 
+import type { AchievementDef } from '@data/achievements';
+
 // Investor-Deal (vom Grossinvestor-NPC beim Antippen angeboten).
 export type InvestorDeal =
   | { kind: 'cash'; amount: number; label: string }
@@ -80,6 +82,8 @@ export interface GameEvents extends Record<string, unknown> {
   investorDeal: InvestorDeal;
   /** Offline-Einnahmen beim Laden (Willkommen zurueck). */
   offlineEarnings: OfflinePayload;
+  /** Ein Achievement wurde freigeschaltet. */
+  achievementUnlocked: AchievementDef;
 }
 
 // Gemeinsamer Bus fuer die gesamte App.

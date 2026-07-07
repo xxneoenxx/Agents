@@ -27,6 +27,13 @@ export interface GameSettings {
   sound: boolean;
 }
 
+export interface GameStats {
+  /** Manuelle Tipp-Aktionen. */
+  taps: number;
+  /** Anzahl Auszahlungen (Proxy fuer bediente Kunden). */
+  payouts: number;
+}
+
 export interface GameState {
   /** Globaler Muenzstand (ueber alle Restaurants geteilt). */
   coins: number;
@@ -45,6 +52,10 @@ export interface GameState {
   boostFactor: number;
   /** Einstellungen (Sound etc.). */
   settings: GameSettings;
+  /** Kennzahlen fuer Achievements. */
+  stats: GameStats;
+  /** Freigeschaltete Achievements (id -> true). */
+  achievements: Record<string, boolean>;
 }
 
 function createStations(restaurantIndex: number): StationState[] {
@@ -77,6 +88,8 @@ export function createInitialState(): GameState {
     boostCooldownUntilMs: 0,
     boostFactor: BALANCE.marketing.factor,
     settings: { sound: true },
+    stats: { taps: 0, payouts: 0 },
+    achievements: {},
   };
 }
 
