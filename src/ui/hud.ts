@@ -152,6 +152,7 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
     map: buildMapPane(game),
     upgrades: buildUpgradesPane(game),
     investors: buildInvestorsPane(game),
+    achievements: buildAchievementsPane(game),
   };
 
   const tabs: { key: string; label: string }[] = [
@@ -159,6 +160,7 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
     { key: 'map', label: '🗺️ Karte' },
     { key: 'upgrades', label: '⭐ Upgrades' },
     { key: 'investors', label: '💼 Investoren' },
+    { key: 'achievements', label: '🏆 Ziele' },
   ];
   let activeTab = 'stations';
   const tabButtons: { key: string; el: HTMLButtonElement }[] = [];
@@ -265,6 +267,22 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
         { label: 'Ablehnen', cls: 'btn-secondary', onClick: () => close() },
       ],
     });
+  });
+
+  // Erfolgs-Toasts.
+  const toastHost = document.createElement('div');
+  toastHost.className = 'toast-host';
+  root.appendChild(toastHost);
+  game.bus.on('achievementUnlocked', (def) => {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    const reward = def.reward > 0 ? ` · +${formatNumber(def.reward)} 🪙` : '';
+    toast.innerHTML =
+      `<span class="toast-icon">${def.icon}</span>` +
+      `<span><b>Ziel erreicht:</b> ${def.name}${reward}</span>`;
+    toastHost.appendChild(toast);
+    setTimeout(() => toast.classList.add('out'), 3200);
+    setTimeout(() => toast.remove(), 3600);
   });
 
   // Beim Restaurantwechsel die Stationskarten neu aufbauen.
@@ -590,4 +608,48 @@ function buildInvestorsPane(game: GameController): Pane {
   };
 
   return { el, update };
+}
+
+// --- Pane: Ziele (Achievements) --------------------------------------------
+
+function buildAchievementsPane(game: GameController): Pane {
+  const el = document.createElement('div');
+  el.className = 'pane achievements-pane';
+
+  const rows = game.listAchievements().map((item) => {
+    const root = document.createElement('div');
+    root.className = 'ach-row';
+    const icon = document.createElement('div');
+    icon.className = 'ach-emoji';
+    icon.textContent = item.def.icon;
+    const info = document.createElement('div');
+    info.className = 'ach-info';
+    const name = document.createElement('div');
+    name.className = 'ach-name';
+    const desc = document.createElement('div');
+    desc.className = 'ach-desc';
+    desc.textContent = item.def.description;
+    const bar = document.createElement('div');
+    bar.className = 'ach-bar';
+    const fill = document.createElement('div');
+    fill.className = 'ach-bar-fill';
+    bar.appendChild(fill);
+    info.append(name, desc, bar);
+    const status = document.createElement('div');
+    status.className = 'ach-status';
+    root.append(icon, info, status);
+
+    const update = (): void => {
+      const it = game.listAchievements().find((a) => a.def.id === item.def.id)!;
+      const rewardTxt = it.def.reward > 0 ? ` (+${formatNumber(it.def.reward)} 🪙)` : '';
+      name.innerHTML = `${it.def.name}<small class="ach-reward">${rewardTxt}</small>`;
+      fill.style.width = `${Math.round(it.progress * 100)}%`;
+      root.classList.toggle('done', it.done);
+      status.textContent = it.done ? '✓' : `${Math.round(it.progress * 100)}%`;
+    };
+    return { root, update };
+  });
+  rows.forEach((r) => el.appendChild(r.root));
+
+  return { el, update: () => rows.forEach((r) => r.update()) };
 }

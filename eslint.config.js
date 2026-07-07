@@ -5,7 +5,7 @@ import tsparser from '@typescript-eslint/parser';
 // Flache ESLint-Konfiguration (ESLint 9) fuer TypeScript.
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**', 'dev-dist/**', '*.config.js'],
+    ignores: ['dist/**', 'node_modules/**', 'dev-dist/**', '*.config.js', 'scripts/**'],
   },
   js.configs.recommended,
   {

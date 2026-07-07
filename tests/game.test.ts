@@ -191,7 +191,8 @@ describe('Prestige', () => {
     expect(gc.getPrestigeInfo().gain).toBe(10);
     expect(gc.prestige()).toBe(true);
     expect(gc.getState().investors).toBe(10);
-    expect(gc.getState().coins).toBe(0);
+    // Nach dem Neuanfang wieder auf Startkapital.
+    expect(gc.getState().coins).toBe(createInitialState().coins);
     expect(gc.getState().totalEarned).toBe(0);
     expect(gc.currentRestaurant().stations[0].owned).toBe(1); // frisch
     expect(gc.effectiveGlobalMultiplier()).toBeCloseTo(1.2); // 1 + 10*0.02

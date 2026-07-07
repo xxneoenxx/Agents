@@ -11,9 +11,11 @@ Jedes verwendete externe Asset wird hier mit Quelle und Lizenz dokumentiert.
 
 | Asset                         | Datei                    | Erstellt von | Lizenz            |
 | ----------------------------- | ------------------------ | ------------ | ----------------- |
-| App-/Favicon (Platzhalter)    | `public/favicon.svg`     | Projekt      | eigen (proprietär)|
-| App-Icon (Platzhalter)        | `public/icons/icon.svg`  | Projekt      | eigen (proprietär)|
-| Welt-Platzhaltergrafik        | programmatisch (Phaser)  | Projekt      | eigen (proprietär)|
+| App-/Favicon                  | `public/favicon.svg`     | Projekt      | eigen (proprietär)|
+| App-Icon (SVG)                | `public/icons/icon.svg`  | Projekt      | eigen (proprietär)|
+| App-Icons (PNG 192/512)       | `public/icons/icon-*.png`| Projekt (via `scripts/generate-icons.mjs`) | eigen (proprietär)|
+| Welt-/Figuren-Grafik          | programmatisch (Phaser)  | Projekt      | eigen (proprietär)|
+| SFX (Servieren/Münze/…)       | prozedural (WebAudio)    | Projekt      | eigen (proprietär)|
 
 ## Externe Assets (frei lizenziert)
 

@@ -11,12 +11,20 @@ export const CUSTOMER_TINTS = [
 
 const WALK_SPEED_PX_PER_MS = 0.11; // ~110 px/s
 
+// Haar-/Hautvarianten fuer mehr Vielfalt in der Menge.
+const HAIR_TINTS = [0x3a2a1f, 0x6b4226, 0x111111, 0xa8602a, 0xf0c060, 0x8a4fbf] as const;
+const SKIN_TINTS = [0xffd9a0, 0xf1c27d, 0xe0ac69, 0xc68642, 0x8d5524] as const;
+
 export class Customer extends Phaser.GameObjects.Container {
   /** Ob die Figur gerade in Benutzung ist (Pooling). */
   inUse = false;
 
   private figure: Phaser.GameObjects.Container;
   private torso: Phaser.GameObjects.Rectangle;
+  private armL: Phaser.GameObjects.Rectangle;
+  private armR: Phaser.GameObjects.Rectangle;
+  private hair: Phaser.GameObjects.Arc;
+  private head: Phaser.GameObjects.Arc;
   private bobTween?: Phaser.Tweens.Tween;
   private walkTween?: Phaser.Tweens.Tween;
 
@@ -26,12 +34,17 @@ export class Customer extends Phaser.GameObjects.Container {
     const shadow = scene.add.ellipse(0, 2, 32, 10, 0x000000, 0.15);
 
     this.figure = scene.add.container(0, 0);
+    // Arme (hinter dem Koerper), faerben sich mit dem Koerper.
+    this.armL = scene.add.rectangle(-11, -20, 6, 20, 0xff5c5c).setStrokeStyle(2, 0x3a2a1f);
+    this.armR = scene.add.rectangle(11, -20, 6, 20, 0xff5c5c).setStrokeStyle(2, 0x3a2a1f);
     this.torso = scene.add
       .rectangle(0, -16, 24, 30, 0xff5c5c)
       .setStrokeStyle(2, 0x3a2a1f)
       .setOrigin(0.5, 1);
-    const head = scene.add.circle(0, -30, 10, 0xffd9a0).setStrokeStyle(2, 0x3a2a1f);
-    this.figure.add([this.torso, head]);
+    // Haar (hinter/ueber dem Kopf), Kopf ueberdeckt das Gesicht.
+    this.hair = scene.add.circle(0, -33, 11, 0x3a2a1f);
+    this.head = scene.add.circle(0, -30, 10, 0xffd9a0).setStrokeStyle(2, 0x3a2a1f);
+    this.figure.add([this.armL, this.armR, this.torso, this.hair, this.head]);
 
     this.add([shadow, this.figure]);
     scene.add.existing(this);
@@ -42,6 +55,10 @@ export class Customer extends Phaser.GameObjects.Container {
   spawn(x: number, y: number, tint: number): void {
     this.setPosition(x, y);
     this.torso.setFillStyle(tint);
+    this.armL.setFillStyle(tint);
+    this.armR.setFillStyle(tint);
+    this.hair.setFillStyle(HAIR_TINTS[Phaser.Math.Between(0, HAIR_TINTS.length - 1)]);
+    this.head.setFillStyle(SKIN_TINTS[Phaser.Math.Between(0, SKIN_TINTS.length - 1)]);
     this.figure.setScale(1, 1);
     this.figure.y = 0;
     this.inUse = true;

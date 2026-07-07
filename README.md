@@ -59,11 +59,14 @@ public/                # Icons, statische Assets
 
 ## Entwicklungsstand
 
-Aktuell: **Phase 4 – Investoren, Events, Offline, Speichern, Sound** (siehe `CHANGELOG.md`). Das
-Spiel speichert automatisch (localStorage) und übersteht Neuladen, rechnet Offline-Einnahmen an
-(„Willkommen zurück"), lässt gelegentlich Großinvestoren mit antippbaren Deals auftreten, hat eine
-Rush Hour, Einstellungen (Sound/Reset) und prozedurale SFX. Als Nächstes folgt der ausgearbeitete
-Kunst-/Design-Pass, Achievements und Balancing/Release-QA (Phase 5).
+**Phasen 0–5 abgeschlossen** (siehe `CHANGELOG.md`). Das Spiel ist als **PWA installierbar**
+(PNG-Icons, Offline-Cache), speichert automatisch und übersteht Neuladen, hat den kompletten
+Idle-Loop (tippen/kaufen/Manager/Meilensteine/Boosts), eine lebendige Welt (Kunden, Manager,
+Investoren-NPCs, Rush Hour), Fortschritt & Meta (Renovieren, 3 Restaurants + Weltkarte, Upgrades,
+Prestige), Offline-Einnahmen, Einstellungen, prozedurale SFX, **Achievements/Ziele** und einen
+Optik-Pass. Balancing über `src/data/balance.ts` ist zentral und weiter feinjustierbar.
+
+Icons neu erzeugen: `npm run gen:icons`.
 
 ## Sprache & Recht
 

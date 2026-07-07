@@ -103,14 +103,45 @@ export class WorldScene extends Phaser.Scene {
     const horizon = this.laneY - 30;
 
     this.add.rectangle(w / 2, horizon / 2, w, horizon, theme.wall).setDepth(0);
+
+    // Wanddeko: dezente Fenster/Bilder.
+    for (let x = 90; x < w; x += 260) {
+      this.add
+        .rectangle(x, horizon * 0.42, 70, 54, 0xffffff, 0.14)
+        .setStrokeStyle(3, 0x000000, 0.08)
+        .setDepth(0);
+    }
+
+    // Boden mit abwechselnden Fliesen-Streifen.
     this.add
       .rectangle(w / 2, (horizon + height) / 2, w, height - horizon, theme.floor)
       .setDepth(0);
+    const tileW = 64;
+    for (let x = 0; x < w; x += tileW * 2) {
+      this.add
+        .rectangle(x + tileW / 2, (horizon + height) / 2, tileW, height - horizon, 0x000000, 0.05)
+        .setDepth(0);
+    }
     this.add.rectangle(w / 2, horizon, w, 6, 0x000000, 0.12).setDepth(0);
+
+    // Deko-Pflanzen entlang des Bodens.
+    for (let x = 60; x < w; x += 210) {
+      this.drawPlant(x, this.laneY + 40);
+    }
+
     this.add
       .rectangle(w / 2, this.laneY - 16, w, 26, theme.counter)
       .setStrokeStyle(3, 0x3a2a1f)
       .setDepth(1);
+  }
+
+  // Kleine Topfpflanze als Deko.
+  private drawPlant(x: number, y: number): void {
+    const p = this.add.container(x, y).setDepth(2);
+    p.add(this.add.rectangle(0, 6, 20, 16, 0xcc7a45).setStrokeStyle(2, 0x3a2a1f));
+    p.add(this.add.circle(-6, -6, 9, 0x3fae57));
+    p.add(this.add.circle(6, -4, 10, 0x54c46a));
+    p.add(this.add.circle(0, -14, 9, 0x3fae57));
   }
 
   private stallX(index: number): number {
@@ -139,8 +170,19 @@ export class WorldScene extends Phaser.Scene {
     const baseY = this.laneY - 28;
     const stall = this.add.container(x, baseY);
     stall.add(this.add.rectangle(0, -34, 96, 62, 0xfffdf7).setStrokeStyle(3, 0x3a2a1f));
-    stall.add(this.add.rectangle(0, -70, 112, 18, 0xff5c5c).setStrokeStyle(3, 0x3a2a1f));
     stall.add(this.add.text(0, -40, emoji, { fontSize: '30px' }).setOrigin(0.5));
+
+    // Gestreifte Markise mit Bogen-Unterkante.
+    const awningW = 112;
+    const stripes = 7;
+    const stripeW = awningW / stripes;
+    stall.add(this.add.rectangle(0, -70, awningW, 18, 0xffffff).setStrokeStyle(3, 0x3a2a1f));
+    for (let s = 0; s < stripes; s++) {
+      if (s % 2 === 0) continue;
+      const sx = -awningW / 2 + stripeW * s + stripeW / 2;
+      stall.add(this.add.rectangle(sx, -70, stripeW, 16, 0xff5c5c));
+      stall.add(this.add.triangle(sx, -60, -stripeW / 2, 0, stripeW / 2, 0, 0, 8, 0xff5c5c));
+    }
     stall.add(
       this.add
         .text(0, -2, name, {

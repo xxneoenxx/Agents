@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --write \"src/**/*.{ts,css}\" \"tests/**/*.ts\""
+    "format": "prettier --write \"src/**/*.{ts,css}\" \"tests/**/*.ts\"",
+    "gen:icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

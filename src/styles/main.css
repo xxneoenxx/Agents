@@ -416,18 +416,25 @@ body {
   display: flex;
   gap: 4px;
   padding: 0 2px 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabbar::-webkit-scrollbar {
+  display: none;
 }
 
 .tab-btn {
-  flex: 1;
+  flex: 1 0 auto;
   border: none;
   background: #f3ece0;
   color: var(--ink-soft);
   font-family: inherit;
   font-weight: 800;
-  font-size: 0.8rem;
+  font-size: 0.76rem;
+  white-space: nowrap;
   border-radius: var(--radius-sm);
-  padding: 8px 2px;
+  padding: 8px 8px;
   min-height: 40px;
   cursor: pointer;
 }
@@ -663,6 +670,135 @@ body {
 .btn-primary:active,
 .btn-danger:active {
   transform: translateY(2px);
+}
+
+/* --- Ziele (Achievements) -------------------------------------------------- */
+.ach-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid rgba(58, 42, 31, 0.08);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+}
+
+.ach-row.done {
+  border-color: var(--green);
+  background: #f2fbf6;
+}
+
+.ach-emoji {
+  font-size: 1.7rem;
+  width: 40px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.ach-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.ach-name {
+  font-weight: 900;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.ach-reward {
+  font-weight: 700;
+  color: var(--ink-soft);
+  font-size: 0.74rem;
+}
+
+.ach-desc {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  margin-bottom: 4px;
+}
+
+.ach-bar {
+  height: 6px;
+  background: rgba(58, 42, 31, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.ach-bar-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--coin), #ffd95a);
+  border-radius: 999px;
+}
+
+.ach-status {
+  flex-shrink: 0;
+  min-width: 34px;
+  text-align: right;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+
+.ach-row.done .ach-status {
+  color: var(--green);
+  font-size: 1.2rem;
+}
+
+/* --- Toasts (Erfolge) ------------------------------------------------------ */
+.toast-host {
+  position: fixed;
+  top: calc(64px + env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+  width: max-content;
+  max-width: 92vw;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ink);
+  color: var(--card);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 800;
+  font-size: 0.86rem;
+  box-shadow: var(--shadow-soft);
+  animation: toast-in 0.25s ease;
+}
+
+.toast.out {
+  animation: toast-out 0.4s ease forwards;
+}
+
+.toast-icon {
+  font-size: 1.3rem;
+}
+
+@keyframes toast-in {
+  from {
+    transform: translateY(-16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-out {
+  to {
+    transform: translateY(-16px);
+    opacity: 0;
+  }
 }
 
 /* Bewegungsreduktion respektieren */

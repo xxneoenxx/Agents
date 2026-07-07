@@ -89,8 +89,9 @@ describe('Speichern/Laden', () => {
 describe('Investor-Deals', () => {
   it('Cash-Deal erhoeht Muenzen und Lebenszeit-Umsatz', () => {
     const gc = new GameController(createInitialState());
+    const before = gc.getState().coins;
     gc.acceptDeal({ kind: 'cash', amount: 500, label: '' }, 0);
-    expect(gc.getState().coins).toBe(500);
+    expect(gc.getState().coins).toBe(before + 500);
     expect(gc.getState().totalEarned).toBe(500);
   });
 

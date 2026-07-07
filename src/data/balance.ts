@@ -12,14 +12,16 @@ export const BALANCE = {
   // Meilenstein-Schwellen fuer zusaetzlichen x2-Tempo-Bonus.
   speedMilestones: [200, 300],
 
-  // Deckel fuer Offline-Einnahmen in Sekunden (hier: 4 Stunden). Spaeter tunebar.
-  offlineCapSeconds: 4 * 60 * 60,
+  // Deckel fuer Offline-Einnahmen in Sekunden (8 Stunden -- grosszuegiger
+  // Einstieg, im vom Brief genannten Rahmen 2-8 Std.).
+  offlineCapSeconds: 8 * 60 * 60,
 
   // Ziel-Framerate (nur Referenzwert fuer spaetere Performance-Checks).
   targetFps: 60,
 
-  // Startkapital der Spielerin.
-  startingCoins: 0,
+  // Startkapital der Spielerin (kleiner Puffer, damit sofort die zweite
+  // Einheit gekauft werden kann -- angenehmerer Einstieg).
+  startingCoins: 10,
 
   // Anzahl Einheiten der ersten Station zu Spielbeginn (damit sofort getippt
   // und Umsatz erzielt werden kann).

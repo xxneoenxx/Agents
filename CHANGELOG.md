@@ -2,6 +2,22 @@
 
 Alle nennenswerten Änderungen pro Phase.
 
+## Phase 5 – Kunst-Pass, Achievements, Balance, Release
+
+- **Achievements/Ziele** (`src/data/achievements.ts`, `core`): 11 Ziele mit Fortschritt und
+  Belohnung; Kennzahlen (Tipps/Auszahlungen) im State, Prüfung im Controller, Freischaltungs-Event.
+- **Ziele-UI**: neuer Tab „Ziele" mit Fortschrittsbalken + Status; **Erfolgs-Toast** bei
+  Freischaltung. Tab-Leiste horizontal scrollbar (5 Tabs).
+- **Optik-Pass** (programmatisch, weiterhin eigene Assets): Kunden mit Haaren/Armen und Haut-/
+  Haarvarianten, Stände mit **gestreifter Markise**, Boden-Fliesen, Deko-Pflanzen und Wandfenster.
+- **PWA/Release-QA**: echte **PNG-Icons** (192/512, erzeugt via `scripts/generate-icons.mjs` mit
+  Chromium), Manifest darauf umgestellt; **Code-Splitting** (Phaser in eigenem Chunk → App-Chunk
+  ~48 kB). Installierbarkeit erfüllt (Manifest + Icons + Service-Worker-Precache).
+- **Balancing**: Startkapital 10 (sofort zweite Einheit kaufbar), Offline-Deckel auf 8 Std.
+- **Tests**: `tests/achievements.test.ts` (6) → gesamt **68 grün**.
+
+**Fertig, wenn:** installierbar, rund, mit Achievements und feinerer Optik. ✓
+
 ## Phase 4 – Investoren, Events, Offline, Speichern, Sound
 
 - **Großinvestor-NPCs** (`game/entities/Investor.ts`): erscheinen gelegentlich, laufen (mit
