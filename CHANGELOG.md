@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen pro Phase.
 
 ## Ergänzungen (nach Release)
 
+- **Onboarding-Hinweis** beim ersten Start (persistiert via `settings.onboarded`; bestehende
+  Spielstände gelten als erledigt): freundliche, dismissbare Blase, schließt auch beim ersten
+  Servieren automatisch.
+- **Zahlen-Shortcuts 1–8**: kaufen die jeweilige Station des aktuellen Lokals im aktiven Kauf-Modus.
+- **Promi als sichtbare Figur**: beim Promi-Besuch läuft ein „VIP"-Kunde (Stern, Glitzern) sichtbar
+  durch die Szene.
 - **Balance-Feintuning** (datengestützt): Manager-Kosten in Bistro/Gourmet auf ~10× der ersten
   Einheit gesenkt (sanftere Automatisierung); Freischalt-Kosten an die erste Station des Lokals
   angeglichen (Bistro 150K, Gourmet 8B) – Restaurants sind dadurch erreichbare Meilensteine statt

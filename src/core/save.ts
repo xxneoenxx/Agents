@@ -50,7 +50,9 @@ export function loadGame(): LoadResult | null {
       return null;
     }
     // Fehlende Felder mit Standard auffuellen (Vorwaertskompatibilitaet).
-    if (!env.state.settings) env.state.settings = { sound: true };
+    // Bestehende Spielstaende gelten als "onboarded" (kein nachtraeglicher Hinweis).
+    if (!env.state.settings) env.state.settings = { sound: true, onboarded: true };
+    if (env.state.settings.onboarded === undefined) env.state.settings.onboarded = true;
     if (!env.state.stats) env.state.stats = { taps: 0, payouts: 0 };
     if (!env.state.achievements) env.state.achievements = {};
     return { state: env.state, savedAt: env.savedAt };

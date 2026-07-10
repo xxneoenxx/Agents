@@ -25,6 +25,8 @@ export interface RestaurantState {
 export interface GameSettings {
   /** Sound/SFX aktiviert. */
   sound: boolean;
+  /** Onboarding-Hinweis bereits gesehen? */
+  onboarded: boolean;
 }
 
 export interface GameStats {
@@ -87,7 +89,7 @@ export function createInitialState(): GameState {
     boostUntilMs: 0,
     boostCooldownUntilMs: 0,
     boostFactor: BALANCE.marketing.factor,
-    settings: { sound: true },
+    settings: { sound: true, onboarded: false },
     stats: { taps: 0, payouts: 0 },
     achievements: {},
   };

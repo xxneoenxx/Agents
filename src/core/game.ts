@@ -404,6 +404,14 @@ export class GameController {
     return this.state.settings.sound;
   }
 
+  isOnboarded(): boolean {
+    return this.state.settings.onboarded;
+  }
+
+  setOnboarded(): void {
+    this.state.settings.onboarded = true;
+  }
+
   setSound(on: boolean): void {
     this.state.settings.sound = on;
     this.bus.emit('soundChanged', on);

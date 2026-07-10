@@ -371,9 +371,52 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
   }
   game.bus.on('celebrate', () => burstConfetti());
 
+  // Onboarding-Hinweis beim allerersten Start.
+  if (!game.isOnboarded()) {
+    const bubble = document.createElement('div');
+    bubble.className = 'onboard-bubble';
+    bubble.setAttribute('role', 'dialog');
+    bubble.setAttribute('aria-label', 'Erste Schritte');
+    const text = document.createElement('div');
+    text.className = 'onboard-text';
+    text.innerHTML =
+      "👋 <b>Willkommen bei Bella's Food Empire!</b><br>" +
+      'Tippe unten auf einen Laden, um zu <b>servieren</b> und Münzen zu verdienen. ' +
+      'Kaufe <b>Einheiten</b> und stelle <b>Manager</b> ein, damit alles von allein läuft.';
+    const okBtn = document.createElement('button');
+    okBtn.type = 'button';
+    okBtn.className = 'btn-primary';
+    okBtn.textContent = "Los geht's!";
+    bubble.append(text, okBtn);
+    root.appendChild(bubble);
+
+    let offTap = (): void => {};
+    const dismiss = (): void => {
+      game.setOnboarded();
+      offTap();
+      bubble.remove();
+    };
+    okBtn.addEventListener('click', dismiss);
+    // Beim ersten Servieren automatisch schliessen.
+    offTap = game.bus.on('stationStarted', dismiss);
+    okBtn.focus();
+  }
+
   // Beim Restaurantwechsel die Stationskarten neu aufbauen.
   game.bus.on('restaurantChanged', () => {
     (panes.stations as ReturnType<typeof buildStationsPane>).rebuild();
+  });
+
+  // Tastatur-Shortcuts 1..8: kaufen die jeweilige Station im aktiven Kauf-Modus.
+  window.addEventListener('keydown', (e) => {
+    if (e.repeat) return;
+    const n = Number(e.key);
+    if (!Number.isInteger(n) || n < 1 || n > 8) return;
+    const defs = game.currentStationDefs();
+    const idx = n - 1;
+    if (idx < defs.length && game.isUnlocked(idx)) {
+      game.buyUnits(defs[idx].id, buyMode);
+    }
   });
 
   // --- Gesamt-Update --------------------------------------------------------

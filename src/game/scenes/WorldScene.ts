@@ -278,8 +278,58 @@ export class WorldScene extends Phaser.Scene {
       BALANCE.celebrity.everyMaxMs,
     );
     this.time.delayedCall(delay, () => {
+      this.spawnCelebrityFigure();
       this.controller.startCelebrity(performance.now());
       this.scheduleCelebrity();
+    });
+  }
+
+  // Sichtbare Promi-Figur (VIP-Kunde mit Stern), die durch die Szene laeuft.
+  private spawnCelebrityFigure(): void {
+    const cam = this.cameras.main;
+    const y = this.laneY + 14;
+    const left = cam.scrollX - 40;
+    const right = cam.scrollX + cam.width / cam.zoom + 40;
+    const fromRight = Math.random() < 0.5;
+    const from = fromRight ? right : left;
+    const to = fromRight ? left : right;
+
+    const c = this.add.container(from, y).setDepth(9);
+    const img = this.add
+      .image(0, 0, 'customer1')
+      .setOrigin(0.5, 1)
+      .setDisplaySize(44, 60)
+      .setTint(0xffe08a)
+      .setFlipX(to < from);
+    const star = this.add.text(0, -70, '⭐', { fontSize: '22px' }).setOrigin(0.5);
+    const label = this.add
+      .text(0, -84, 'VIP', {
+        fontFamily: 'Nunito, Arial, sans-serif',
+        fontSize: '12px',
+        fontStyle: '900',
+        color: '#7C5CFF',
+      })
+      .setOrigin(0.5);
+    c.add([img, star, label]);
+
+    if (!this.reducedMotion) {
+      this.tweens.add({
+        targets: star,
+        scale: 1.3,
+        duration: 400,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut',
+      });
+    }
+
+    const dist = Math.abs(to - from);
+    this.tweens.add({
+      targets: c,
+      x: to,
+      duration: Math.max(5000, dist / 0.06),
+      ease: 'Linear',
+      onComplete: () => c.destroy(),
     });
   }
 
