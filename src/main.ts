@@ -11,11 +11,21 @@ import { AudioManager } from '@game/systems/AudioManager';
 // Einstiegspunkt: Spielstand laden (inkl. Offline-Einnahmen), Controller + Phaser
 // starten, DOM-HUD aufbauen, Sound verdrahten, Loop treiben, autospeichern, PWA.
 
-const gameRoot = document.getElementById('game-root');
-const uiOverlay = document.getElementById('ui-overlay');
-if (!gameRoot || !uiOverlay) {
-  throw new Error('DOM-Container (#game-root / #ui-overlay) nicht gefunden.');
+// Erst starten, wenn das DOM bereit ist. Als ES-Modul laeuft der Code ohnehin
+// "deferred"; als klassisches Script (Einzeldatei/Safari) verhindert das den
+// Zugriff auf noch nicht existierende Container.
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
 }
+
+function boot(): void {
+  const gameRoot = document.getElementById('game-root');
+  const uiOverlay = document.getElementById('ui-overlay');
+  if (!gameRoot || !uiOverlay) {
+    throw new Error('DOM-Container (#game-root / #ui-overlay) nicht gefunden.');
+  }
 
 // Gespeicherten Zustand laden (falls vorhanden).
 const loaded = loadGame();
@@ -92,5 +102,6 @@ document.addEventListener('visibilitychange', () => {
 });
 window.addEventListener('pagehide', () => saveGame(controller.getState()));
 
-// PWA-ServiceWorker registrieren (Auto-Update).
-registerSW({ immediate: true });
+  // PWA-ServiceWorker registrieren (Auto-Update).
+  registerSW({ immediate: true });
+}
