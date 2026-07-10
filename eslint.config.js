@@ -24,6 +24,7 @@ export default [
         localStorage: 'readonly',
         Storage: 'readonly',
         performance: 'readonly',
+        btoa: 'readonly',
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
         setInterval: 'readonly',

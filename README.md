@@ -31,15 +31,23 @@ Im Browser öffnen – du siehst die Platzhalter-Welt mit HUD-Overlay.
 
 ## Skripte
 
-| Befehl               | Zweck                                       |
-| -------------------- | ------------------------------------------- |
-| `npm run dev`        | Startet den Dev-Server mit Hot-Reload       |
-| `npm run build`      | Typprüfung + Produktions-Build nach `dist/` |
-| `npm run preview`    | Vorschau des Produktions-Builds             |
-| `npm test`           | Führt die Vitest-Tests einmalig aus         |
-| `npm run test:watch` | Tests im Watch-Modus                        |
-| `npm run lint`       | ESLint über `src/`                          |
-| `npm run format`     | Prettier formatiert Quellcode               |
+| Befehl                  | Zweck                                                     |
+| ----------------------- | -------------------------------------------------------- |
+| `npm run dev`           | Startet den Dev-Server mit Hot-Reload                    |
+| `npm run build`         | Typprüfung + Produktions-Build nach `dist/`              |
+| `npm run build:standalone` | **Eine einzelne, offline spielbare HTML-Datei** nach `dist-standalone/index.html` |
+| `npm run preview`       | Vorschau des Produktions-Builds                          |
+| `npm test`              | Führt die Vitest-Tests einmalig aus                      |
+| `npm run test:watch`    | Tests im Watch-Modus                                     |
+| `npm run lint`          | ESLint über `src/`                                       |
+| `npm run format`        | Prettier formatiert Quellcode                            |
+
+## Ohne Installation spielen (eine Datei)
+
+`BellasFoodEmpire.html` im Projektstamm ist eine **komplett eigenständige** Version: JavaScript,
+CSS und alle Grafiken sind eingebettet. Einfach auf **Laptop** (Doppelklick → Browser) oder **iPhone**
+(Datei in Safari öffnen, z. B. über iCloud/Dateien) öffnen – funktioniert **offline** und speichert
+den Fortschritt lokal. Neu erzeugen mit `npm run build:standalone` (Ergebnis: `dist-standalone/index.html`).
 
 ## Projektstruktur
 
