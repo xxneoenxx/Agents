@@ -37,26 +37,40 @@ interface ModalAction {
   onClick: () => void;
 }
 
-// Baut ein modales Overlay auf und gibt eine Schliessen-Funktion zurueck.
+// Baut ein barrierefreies modales Overlay auf und gibt eine Schliessen-Funktion
+// zurueck. Setzt Fokus in den Dialog, faengt Tab (Fokusfalle), schliesst mit
+// Escape und gibt den Fokus danach an das ausloesende Element zurueck.
+let modalTitleSeq = 0;
 function showModal(
   host: HTMLElement,
   opts: { title: string; bodyHtml: string; actions: ModalAction[]; dismissable?: boolean },
 ): () => void {
+  const opener = document.activeElement as HTMLElement | null;
   const backdrop = document.createElement('div');
   backdrop.className = 'modal-backdrop';
   const modal = document.createElement('div');
   modal.className = 'modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  const titleId = `modal-title-${++modalTitleSeq}`;
   const title = document.createElement('div');
   title.className = 'modal-title';
+  title.id = titleId;
   title.textContent = opts.title;
+  modal.setAttribute('aria-labelledby', titleId);
   const body = document.createElement('div');
   body.className = 'modal-body';
   body.innerHTML = opts.bodyHtml;
   const actions = document.createElement('div');
   actions.className = 'modal-actions';
 
-  const close = (): void => backdrop.remove();
+  const close = (): void => {
+    document.removeEventListener('keydown', onKey, true);
+    backdrop.remove();
+    opener?.focus?.();
+  };
 
+  const buttons: HTMLButtonElement[] = [];
   for (const a of opts.actions) {
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -64,7 +78,27 @@ function showModal(
     btn.textContent = a.label;
     btn.addEventListener('click', () => a.onClick());
     actions.appendChild(btn);
+    buttons.push(btn);
   }
+
+  // Tastatur: Escape schliesst, Tab bleibt im Dialog (Fokusfalle).
+  const onKey = (e: KeyboardEvent): void => {
+    if (e.key === 'Escape' && opts.dismissable !== false) {
+      e.preventDefault();
+      close();
+    } else if (e.key === 'Tab' && buttons.length > 0) {
+      const first = buttons[0];
+      const last = buttons[buttons.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
+  document.addEventListener('keydown', onKey, true);
 
   modal.append(title, body, actions);
   backdrop.appendChild(modal);
@@ -74,6 +108,7 @@ function showModal(
     });
   }
   host.appendChild(backdrop);
+  buttons[0]?.focus();
   return close;
 }
 
@@ -100,7 +135,9 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
   const incomeValue = document.createElement('div');
   incomeValue.className = 'hud-income';
   const boostBtn = makeButton('btn btn-boost');
+  boostBtn.setAttribute('aria-label', 'Marketing-Boost aktivieren');
   boostBtn.addEventListener('click', () => game.activateMarketing(performance.now()));
+  coinsBox.setAttribute('aria-label', 'Münzen');
   top.append(coinsBox, incomeValue, boostBtn);
 
   // --- Weltsteuerung --------------------------------------------------------
@@ -108,10 +145,12 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
   worldControls.className = 'world-controls';
   const centerBtn = makeButton('btn-round');
   centerBtn.title = 'Ansicht zentrieren';
+  centerBtn.setAttribute('aria-label', 'Ansicht zentrieren');
   centerBtn.textContent = '🎯';
   centerBtn.addEventListener('click', () => game.bus.emit('cameraCenter', null));
   const settingsBtn = makeButton('btn-round');
   settingsBtn.title = 'Einstellungen';
+  settingsBtn.setAttribute('aria-label', 'Einstellungen öffnen');
   settingsBtn.textContent = '⚙️';
   settingsBtn.addEventListener('click', () => openSettings());
   worldControls.append(centerBtn, settingsBtn);
@@ -121,6 +160,8 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
   panel.className = 'panel';
 
   const handle = makeButton('panel-handle');
+  handle.setAttribute('aria-label', 'Menü ein- oder ausklappen');
+  handle.setAttribute('aria-expanded', 'true');
   const handleLabel = document.createElement('span');
   handleLabel.textContent = 'Menü';
   const handleArrow = document.createElement('span');
@@ -130,6 +171,7 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
   handle.addEventListener('click', () => {
     const collapsed = panel.classList.toggle('collapsed');
     handleArrow.textContent = collapsed ? '▴' : '▾';
+    handle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
   });
 
   // Restaurant-Kopf: Name + Renovieren
@@ -144,6 +186,8 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
   // Tab-Leiste
   const tabbar = document.createElement('div');
   tabbar.className = 'tabbar';
+  tabbar.setAttribute('role', 'tablist');
+  tabbar.setAttribute('aria-label', 'Menü-Bereiche');
   const content = document.createElement('div');
   content.className = 'pane-container';
 
@@ -167,15 +211,22 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
   for (const t of tabs) {
     const b = makeButton('tab-btn');
     b.textContent = t.label;
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-selected', t.key === activeTab ? 'true' : 'false');
     b.addEventListener('click', () => {
       activeTab = t.key;
       for (const [key, pane] of Object.entries(panes)) {
         pane.el.style.display = key === activeTab ? '' : 'none';
       }
-      tabButtons.forEach((tb) => tb.el.classList.toggle('active', tb.key === activeTab));
+      tabButtons.forEach((tb) => {
+        const on = tb.key === activeTab;
+        tb.el.classList.toggle('active', on);
+        tb.el.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
       if (panel.classList.contains('collapsed')) {
         panel.classList.remove('collapsed');
         handleArrow.textContent = '▾';
+        handle.setAttribute('aria-expanded', 'true');
       }
     });
     tabButtons.push({ key: t.key, el: b });
@@ -185,6 +236,7 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
 
   for (const [key, pane] of Object.entries(panes)) {
     pane.el.style.display = key === activeTab ? '' : 'none';
+    pane.el.setAttribute('role', 'tabpanel');
     content.appendChild(pane.el);
   }
 
@@ -269,9 +321,11 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
     });
   });
 
-  // Toasts (Erfolge + Event-Benachrichtigungen).
+  // Toasts (Erfolge + Event-Benachrichtigungen). aria-live meldet sie Screenreadern.
   const toastHost = document.createElement('div');
   toastHost.className = 'toast-host';
+  toastHost.setAttribute('role', 'status');
+  toastHost.setAttribute('aria-live', 'polite');
   root.appendChild(toastHost);
   function showToast(icon: string, html: string): void {
     const toast = document.createElement('div');

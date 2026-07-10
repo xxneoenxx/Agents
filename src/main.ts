@@ -59,6 +59,13 @@ controller.bus.on('investorDeal', () => audio.play('deal'));
 // AudioContext erst nach der ersten Nutzergeste starten (Autoplay-Richtlinien).
 window.addEventListener('pointerdown', () => audio.resume(), { once: true });
 
+// Tastatur-Shortcut: "M" loest den Marketing-Boost aus.
+window.addEventListener('keydown', (e) => {
+  if ((e.key === 'm' || e.key === 'M') && !e.repeat) {
+    controller.activateMarketing(performance.now());
+  }
+});
+
 // --- Offline-Einnahmen ----------------------------------------------------
 if (loaded) {
   const elapsed = Date.now() - loaded.savedAt;

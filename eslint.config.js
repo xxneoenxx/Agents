@@ -32,6 +32,7 @@ export default [
         matchMedia: 'readonly',
         AudioContext: 'readonly',
         OscillatorType: 'readonly',
+        KeyboardEvent: 'readonly',
         HTMLElement: 'readonly',
         HTMLDivElement: 'readonly',
         HTMLButtonElement: 'readonly',

@@ -23,6 +23,17 @@ body {
   background: linear-gradient(180deg, var(--sky) 0%, var(--sky2) 100%);
 }
 
+/* Sichtbarer Tastatur-Fokus fuer alle Bedienelemente (nur bei Tastaturnutzung). */
+button:focus-visible {
+  outline: 3px solid var(--violet);
+  outline-offset: 2px;
+}
+
+/* Bei aktivem Zeiger keinen Fokusring (nur Tastatur zeigt ihn). */
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
 #game-root {
   position: fixed;
   inset: 0;
@@ -435,7 +446,7 @@ body {
   white-space: nowrap;
   border-radius: var(--radius-sm);
   padding: 8px 8px;
-  min-height: 40px;
+  min-height: var(--tap-min);
   cursor: pointer;
 }
 

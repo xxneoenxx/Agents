@@ -4,6 +4,10 @@ Alle nennenswerten Änderungen pro Phase.
 
 ## Ergänzungen (nach Release)
 
+- **Barrierefreiheit**: sichtbare Tastatur-Fokus-Ringe (`:focus-visible`), ARIA-Rollen (Dialoge
+  mit `role="dialog"`/`aria-modal`, Tab-Leiste als `tablist`/`tab`, Toasts als `aria-live`),
+  Fokus setzen/zurückgeben + Escape + Fokusfalle in Modals, Aria-Labels für Icon-Buttons,
+  Tap-Ziele ≥ 44px, Tastatur-Shortcut „M" für Marketing-Boost.
 - **Themen-Deko je Restaurant**: Lichterkette (Akzentfarbe) plus stilabhängige Boden-Deko –
   Imbissmeile (Topfpflanzen), Bistro (Sonnenschirm-Tische), Gourmet-Tempel (goldene Kandelaber).
   `RestaurantTheme` um `accent` + `deco` erweitert.
