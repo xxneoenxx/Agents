@@ -84,6 +84,18 @@ export class WorldScene extends Phaser.Scene {
     this.unsubs.push(this.controller.bus.on('cameraCenter', () => this.camControl.center()));
     this.unsubs.push(this.controller.bus.on('restaurantChanged', () => this.scene.restart()));
 
+    // Kunden werden genau dann bedient, wenn die Wirtschaft auszahlt. Leicht
+    // gedrosselt, damit hohe Zyklusraten die Schlange nicht "teleportieren".
+    let lastServeMs = 0;
+    this.unsubs.push(
+      this.controller.bus.on('stationPaid', () => {
+        const now = this.time.now;
+        if (now - lastServeMs < 150) return;
+        lastServeMs = now;
+        this.spawner.serveOne();
+      }),
+    );
+
     this.events.once('shutdown', () => this.cleanup());
     this.events.once('destroy', () => this.cleanup());
     this.scale.on('resize', this.handleResize, this);
@@ -102,28 +114,73 @@ export class WorldScene extends Phaser.Scene {
 
   // --- Zeichnen --------------------------------------------------------------
 
+  // Strand-Kulisse: Himmel mit Sonne/Wolken, Meeresband mit Schaumlinien,
+  // nasser Sandsaum und sandige Promenade. Die Lokale sind derselbe Dorfstrand
+  // zu verschiedenen Tageszeiten (Theme-Farben aus data/restaurants.ts).
   private drawBackdrop(theme: RestaurantTheme): void {
     const { height } = this.scale;
     const w = this.worldWidth;
     const horizon = this.laneY - 30;
+    const seaTop = horizon - 78;
+    const wetH = 16;
 
-    this.add.rectangle(w / 2, horizon / 2, w, horizon, theme.wall).setDepth(0);
+    // Himmel + warmer Horizontdunst.
+    this.add.rectangle(w / 2, seaTop / 2, w, seaTop, theme.wall).setDepth(0);
+    this.add
+      .rectangle(w / 2, seaTop - 20, w, 60, 0xfdebc8)
+      .setAlpha(theme.deco === 'gourmet' ? 0.14 : 0.35)
+      .setDepth(0);
 
-    // Boden mit abwechselnden Fliesen-Streifen.
+    // Sonne (mittags hoch und hell, abends tief und blass wie ein Mond) --
+    // nahe am Standard-Fokus, damit sie beim Start sichtbar ist.
+    const sun =
+      theme.deco === 'street' ? 0xffe08a : theme.deco === 'bistro' ? 0xffc46b : 0xf2e6c8;
+    const sunY = theme.deco === 'street' ? 96 : theme.deco === 'bistro' ? 120 : 104;
+    this.add.circle(LEFT_MARGIN + STALL_SPACING * 2.2, sunY, 34, sun).setAlpha(0.95).setDepth(0);
+
+    // Weiche Wolken, ueber die gesamte Weltbreite verteilt.
+    const cloudAlpha = theme.deco === 'gourmet' ? 0.18 : 0.85;
+    let ci = 0;
+    for (let cx = 120; cx < w; cx += 420) {
+      const cy = 90 + ((ci * 37) % 70);
+      const s = 0.65 + ((ci * 17) % 40) / 100;
+      const c = this.add.container(cx, cy).setDepth(0).setAlpha(cloudAlpha);
+      c.add(this.add.ellipse(0, 0, 74 * s, 24 * s, 0xffffff));
+      c.add(this.add.ellipse(-24 * s, 6 * s, 46 * s, 18 * s, 0xffffff));
+      c.add(this.add.ellipse(24 * s, 6 * s, 50 * s, 18 * s, 0xffffff));
+      ci++;
+    }
+
+    // Meeresband mit Schaumlinien.
+    const seaH = horizon - wetH - seaTop;
+    this.add.rectangle(w / 2, seaTop + seaH / 2, w, seaH, theme.sea).setDepth(0);
+    for (let i = 0; i < 3; i++) {
+      const y = seaTop + 14 + i * (seaH / 3.2);
+      for (let x = (i % 2) * 60; x < w; x += 120) {
+        this.add
+          .rectangle(x + 30, y, 52, 3, 0xbfedf5)
+          .setAlpha(0.75)
+          .setDepth(0);
+      }
+    }
+
+    // Nasser Sandsaum + Promenade.
+    this.add
+      .rectangle(w / 2, horizon - wetH / 2, w, wetH, 0xd9bc85)
+      .setDepth(0);
     this.add
       .rectangle(w / 2, (horizon + height) / 2, w, height - horizon, theme.floor)
       .setDepth(0);
-    const tileW = 64;
-    for (let x = 0; x < w; x += tileW * 2) {
-      this.add
-        .rectangle(x + tileW / 2, (horizon + height) / 2, tileW, height - horizon, 0x000000, 0.05)
-        .setDepth(0);
+    // Dezente Sand-Tupfen statt Fliesen.
+    for (let x = 24; x < w; x += 72) {
+      const y = horizon + 24 + ((x * 7) % 60);
+      this.add.ellipse(x, y, 14, 5, 0x000000, 0.05).setDepth(0);
     }
-    this.add.rectangle(w / 2, horizon, w, 6, 0x000000, 0.12).setDepth(0);
 
+    // Promenaden-Theke aus Holz.
     this.add
       .rectangle(w / 2, this.laneY - 16, w, 26, theme.counter)
-      .setStrokeStyle(3, 0x3a2a1f)
+      .setStrokeStyle(3, 0x6e4a2e)
       .setDepth(1);
 
     this.drawThemeDeco(theme);
@@ -133,7 +190,7 @@ export class WorldScene extends Phaser.Scene {
   private drawThemeDeco(theme: RestaurantTheme): void {
     const w = this.worldWidth;
 
-    // Lichterkette entlang der Wand.
+    // Lichterkette entlang der Promenade.
     const lightY = 26;
     this.add.rectangle(w / 2, lightY - 6, w, 2, 0x000000, 0.25).setDepth(0);
     let bulb = 0;
@@ -145,19 +202,42 @@ export class WorldScene extends Phaser.Scene {
 
     // Boden-Deko je Stil.
     for (let x = 60; x < w; x += 210) {
-      if (theme.deco === 'street') this.drawPlant(x, this.laneY + 40);
+      if (theme.deco === 'street') this.drawPalm(x, this.laneY + 46);
       else if (theme.deco === 'bistro') this.drawParasol(x, this.laneY + 42, theme.accent);
       else this.drawCandelabra(x, this.laneY + 42, theme.accent);
     }
   }
 
-  // Kleine Topfpflanze (Imbissmeile).
-  private drawPlant(x: number, y: number): void {
+  // Strandpalme: gebogener Stamm aus versetzten Segmenten + Wedel-Ellipsen.
+  private drawPalm(x: number, y: number): void {
     const p = this.add.container(x, y).setDepth(2);
-    p.add(this.add.rectangle(0, 6, 20, 16, 0xcc7a45).setStrokeStyle(2, 0x3a2a1f));
-    p.add(this.add.circle(-6, -6, 9, 0x3fae57));
-    p.add(this.add.circle(6, -4, 10, 0x54c46a));
-    p.add(this.add.circle(0, -14, 9, 0x3fae57));
+    p.add(this.add.ellipse(4, 4, 34, 9, 0x000000, 0.12));
+    // Stamm (leicht gebogen, ueberlappende Segmente ohne Luecken).
+    for (let i = 0; i < 4; i++) {
+      p.add(this.add.rectangle(i * 3, -6 - i * 13, 10 - i, 18, 0xa9754b));
+    }
+    p.add(this.add.rectangle(0, 0, 12, 6, 0x8a5a2b)); // Stammfuss
+    // Wedel um die Krone.
+    const crownX = 10;
+    const crownY = -56;
+    const fronds: [number, number, number][] = [
+      [-22, -6, -0.5],
+      [22, -6, 0.5],
+      [-16, -16, -1.0],
+      [16, -16, 1.0],
+      [0, -20, 0],
+    ];
+    for (const [dx, dy, rot] of fronds) {
+      p.add(
+        this.add
+          .ellipse(crownX + dx, crownY + dy, 34, 11, 0x3e9b5f)
+          .setRotation(rot)
+          .setStrokeStyle(1.5, 0x2c7343),
+      );
+    }
+    // Kokosnuesse.
+    p.add(this.add.circle(crownX - 4, crownY + 2, 3.5, 0x6e4a2e));
+    p.add(this.add.circle(crownX + 5, crownY + 4, 3.5, 0x8a5a2b));
   }
 
   // Bistro-Tisch mit Sonnenschirm.
@@ -347,7 +427,6 @@ export class WorldScene extends Phaser.Scene {
     const rushSpawn = rush ? 0.35 : 1;
     return {
       spawnIntervalMs: Phaser.Math.Clamp((1100 / (1 + managers * 0.6)) * rushSpawn, 180, 1100),
-      serveIntervalMs: Phaser.Math.Clamp(1300 / (1 + managers * 0.7), 220, 1300),
       maxQueue: Phaser.Math.Clamp(3 + unlocked + (rush ? 4 : 0), 3, 14),
     };
   }

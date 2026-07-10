@@ -21,7 +21,6 @@ export interface SpawnerLayout {
 
 export interface SpawnerTuning {
   spawnIntervalMs: number;
-  serveIntervalMs: number;
   maxQueue: number;
 }
 
@@ -38,7 +37,6 @@ export class CustomerSpawner {
   private coinPool: Phaser.GameObjects.Image[] = [];
   private queue: QueueEntry[] = [];
   private spawnAcc = 0;
-  private serveAcc = 0;
 
   constructor(
     private scene: Phaser.Scene,
@@ -49,16 +47,14 @@ export class CustomerSpawner {
   update(_time: number, delta: number): void {
     const tuning = this.getTuning();
     this.spawnAcc += delta;
-    this.serveAcc += delta;
 
     if (this.spawnAcc >= tuning.spawnIntervalMs) {
       this.spawnAcc = 0;
       this.trySpawn(tuning.maxQueue);
     }
-    if (this.serveAcc >= tuning.serveIntervalMs) {
-      this.serveAcc = 0;
-      this.tryServe();
-    }
+    // Bedient wird NICHT per Timer: serveOne() wird von aussen aufgerufen, wenn
+    // die Wirtschaft tatsaechlich auszahlt (stationPaid). So entspricht jeder
+    // gehende Kunde einer echten Einnahme.
   }
 
   private slotX(index: number): number {
@@ -97,7 +93,8 @@ export class CustomerSpawner {
     });
   }
 
-  private tryServe(): void {
+  /** Bedient den vordersten angekommenen Kunden (Aufruf bei echter Auszahlung). */
+  serveOne(): void {
     const front = this.queue[0];
     if (!front || !front.arrived) return;
 

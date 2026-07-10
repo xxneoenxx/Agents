@@ -13,9 +13,17 @@ export interface RenovationLevel {
 
 export type DecoStyle = 'street' | 'bistro' | 'gourmet';
 
+// Strand-Kulisse: Die drei Lokale sind derselbe Dorfstrand zu verschiedenen
+// Tageszeiten (Mittag -> Nachmittag -> Abenddaemmerung). wall = Himmel,
+// floor = Sand, sea = Meeresband, counter = Holzton der Promenaden-Theke.
 export interface RestaurantTheme {
+  /** Himmelsfarbe. */
   wall: number;
+  /** Sandfarbe der Promenade. */
   floor: number;
+  /** Meeresband. */
+  sea: number;
+  /** Holzton der Theke. */
   counter: number;
   /** Akzentfarbe (Lichterketten, Deko). */
   accent: number;
@@ -100,7 +108,8 @@ export const RESTAURANTS: RestaurantDef[] = [
     id: 'street',
     name: 'Bellas Imbissmeile',
     emoji: '🛖',
-    theme: { wall: 0xffd27a, floor: 0x8fce6a, counter: 0xfffdf7, accent: 0xff5c5c, deco: 'street' },
+    // Heller Mittag: sky-noon / sand-warm / sea-deep.
+    theme: { wall: 0x8ed8f2, floor: 0xf2d8a0, sea: 0x2e9cc4, counter: 0xe8c99b, accent: 0xff5c5c, deco: 'street' },
     unlockCost: 0,
     stations: streetStations,
     renovations: [
@@ -112,7 +121,8 @@ export const RESTAURANTS: RestaurantDef[] = [
     id: 'bistro',
     name: 'Bellas Bistro',
     emoji: '🍽️',
-    theme: { wall: 0xf6c9a8, floor: 0x9fb8d8, counter: 0xfff4e6, accent: 0x7c5cff, deco: 'bistro' },
+    // Spaeter Nachmittag: pfirsichfarbener Himmel, rosé Sand, tieferes Meer.
+    theme: { wall: 0xfdcba0, floor: 0xefc9a2, sea: 0x3b8fbf, counter: 0xf0d3ab, accent: 0x7c5cff, deco: 'bistro' },
     // ~ erste Station (Basis 200K); Freischalten ist so ein erreichbarer Meilenstein.
     unlockCost: 150_000,
     stations: bistroStations,
@@ -125,7 +135,8 @@ export const RESTAURANTS: RestaurantDef[] = [
     id: 'gourmet',
     name: 'Bellas Gourmet-Tempel',
     emoji: '⭐',
-    theme: { wall: 0x3a2a4f, floor: 0x5c4a6e, counter: 0xffe9a8, accent: 0xffc72c, deco: 'gourmet' },
+    // Abenddaemmerung: violetter Himmel, gedaempfter Sand, dunkles Meer, Gold-Akzente.
+    theme: { wall: 0x4a3b6b, floor: 0xb99c7e, sea: 0x1f5e8a, counter: 0xd9b98a, accent: 0xffc72c, deco: 'gourmet' },
     // < erste Station (Basis 20B); danach die erste Station aufbauen.
     unlockCost: 8_000_000_000,
     stations: gourmetStations,

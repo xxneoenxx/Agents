@@ -4,6 +4,16 @@ Alle nennenswerten Änderungen pro Phase.
 
 ## Ergänzungen (nach Release)
 
+- **Kunden zahlen echtes Geld**: Bedienung ist jetzt an die Wirtschaft gekoppelt – ein Kunde geht
+  genau dann (mit Münzflug), wenn eine Station wirklich auszahlt (`stationPaid` → `serveOne()`,
+  gedrosselt). Ohne Manager/Tippen wartet die Schlange. Der reine Bedien-Timer ist entfernt.
+- **Strand-Umbau** (nach frontend-design-Skill, Signature: palmstrohgedeckte Strandhütte):
+  Kulisse als ländlicher Dorfstrand – Himmel mit Sonne/Wolken, Meeresband mit Schaumlinien,
+  nasser Sandsaum, sandige Promenade mit Holz-Theke. Die drei Lokale sind derselbe Strand zu
+  **verschiedenen Tageszeiten** (Mittag → Nachmittag → Abenddämmerung, `theme.sea`/Farb-Tokens in
+  `restaurants.ts`). Deko: Palmen (street), Schirm-Tische (bistro), Kandelaber (gourmet).
+  `stall.svg` neu als Strandhütte (Treibholz-Pfosten, Planken-Theke, Palmstroh-Dach).
+
 - **Onboarding-Hinweis** beim ersten Start (persistiert via `settings.onboarded`; bestehende
   Spielstände gelten als erledigt): freundliche, dismissbare Blase, schließt auch beim ersten
   Servieren automatisch.
