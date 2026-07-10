@@ -170,7 +170,7 @@ describe('Renovieren', () => {
 
 describe('Restaurants freischalten & reisen', () => {
   it('eroeffnet ein Restaurant und reist dorthin', () => {
-    const gc = fresh(500_000);
+    const gc = fresh(150_000); // = bistro.unlockCost
     expect(gc.unlockRestaurant('bistro')).toBe(true);
     expect(gc.getState().coins).toBeCloseTo(0);
     expect(gc.getState().currentRestaurantId).toBe('bistro');

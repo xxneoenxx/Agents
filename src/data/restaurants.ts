@@ -48,13 +48,14 @@ const streetStations: StationDef[] = [
 ];
 
 // Numerische Vorlage fuer die weiteren (6-Stationen-)Lokale; wird skaliert.
+// Manager kosten ~10x der ersten Einheit (etwas sanftere Automatisierung als frueher).
 const TEMPLATE6 = [
-  { cost: 4, rev: 1, cycle: 1200, mgr: 80 },
-  { cost: 60, rev: 18, cycle: 2500, mgr: 800 },
-  { cost: 700, rev: 210, cycle: 4500, mgr: 8_000 },
-  { cost: 8_000, rev: 2_400, cycle: 9_000, mgr: 90_000 },
-  { cost: 90_000, rev: 27_000, cycle: 13_000, mgr: 1_000_000 },
-  { cost: 1_000_000, rev: 300_000, cycle: 18_000, mgr: 12_000_000 },
+  { cost: 4, rev: 1, cycle: 1200, mgr: 40 },
+  { cost: 60, rev: 18, cycle: 2500, mgr: 600 },
+  { cost: 700, rev: 210, cycle: 4500, mgr: 7_000 },
+  { cost: 8_000, rev: 2_400, cycle: 9_000, mgr: 80_000 },
+  { cost: 90_000, rev: 27_000, cycle: 13_000, mgr: 900_000 },
+  { cost: 1_000_000, rev: 300_000, cycle: 18_000, mgr: 10_000_000 },
 ];
 
 function buildStations(
@@ -112,7 +113,8 @@ export const RESTAURANTS: RestaurantDef[] = [
     name: 'Bellas Bistro',
     emoji: '🍽️',
     theme: { wall: 0xf6c9a8, floor: 0x9fb8d8, counter: 0xfff4e6, accent: 0x7c5cff, deco: 'bistro' },
-    unlockCost: 500_000,
+    // ~ erste Station (Basis 200K); Freischalten ist so ein erreichbarer Meilenstein.
+    unlockCost: 150_000,
     stations: bistroStations,
     renovations: [
       { name: 'Bellas Brasserie', cost: 50_000_000 },
@@ -124,7 +126,8 @@ export const RESTAURANTS: RestaurantDef[] = [
     name: 'Bellas Gourmet-Tempel',
     emoji: '⭐',
     theme: { wall: 0x3a2a4f, floor: 0x5c4a6e, counter: 0xffe9a8, accent: 0xffc72c, deco: 'gourmet' },
-    unlockCost: 50_000_000_000,
+    // < erste Station (Basis 20B); danach die erste Station aufbauen.
+    unlockCost: 8_000_000_000,
     stations: gourmetStations,
     renovations: [
       { name: 'Bellas Sterne-Restaurant', cost: 5_000_000_000_000 },

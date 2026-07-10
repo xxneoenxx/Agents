@@ -4,6 +4,10 @@ Alle nennenswerten Änderungen pro Phase.
 
 ## Ergänzungen (nach Release)
 
+- **Balance-Feintuning** (datengestützt): Manager-Kosten in Bistro/Gourmet auf ~10× der ersten
+  Einheit gesenkt (sanftere Automatisierung); Freischalt-Kosten an die erste Station des Lokals
+  angeglichen (Bistro 150K, Gourmet 8B) – Restaurants sind dadurch erreichbare Meilensteine statt
+  Kosten-Klippen. Die Kurve innerhalb eines Lokals (≈5–8× Umsatz je Station) bleibt unverändert.
 - **Feier-Animation**: Konfetti-Burst (DOM, Web-Animations) bei Renovierung, Restaurant-
   Freischaltung, Prestige und Achievement-Freischaltung (`celebrate`-Event); respektiert
   `prefers-reduced-motion`.
