@@ -338,8 +338,38 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
   game.bus.on('achievementUnlocked', (def) => {
     const reward = def.reward > 0 ? ` · +${formatNumber(def.reward)} 🪙` : '';
     showToast(def.icon, `<b>Ziel erreicht:</b> ${def.name}${reward}`);
+    burstConfetti();
   });
   game.bus.on('notify', (n) => showToast(n.icon, `<b>${n.title}</b>`));
+
+  // Konfetti-Feier (Renovierung/Freischaltung/Prestige/Erfolg).
+  const confettiHost = document.createElement('div');
+  confettiHost.className = 'confetti-host';
+  confettiHost.setAttribute('aria-hidden', 'true');
+  root.appendChild(confettiHost);
+  const confettiColors = ['#ff5c5c', '#ffc72c', '#22b573', '#7c5cff', '#3aa0ff', '#ff8a3d'];
+  function burstConfetti(): void {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    for (let i = 0; i < 28; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti';
+      piece.style.background = confettiColors[i % confettiColors.length];
+      confettiHost.appendChild(piece);
+      const dx = (Math.random() * 2 - 1) * 180;
+      const dy = 240 + Math.random() * 200;
+      const rot = (Math.random() * 2 - 1) * 720;
+      piece
+        .animate(
+          [
+            { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+            { transform: `translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity: 0 },
+          ],
+          { duration: 1200 + Math.random() * 700, easing: 'cubic-bezier(.2,.6,.4,1)' },
+        )
+        .addEventListener('finish', () => piece.remove());
+    }
+  }
+  game.bus.on('celebrate', () => burstConfetti());
 
   // Beim Restaurantwechsel die Stationskarten neu aufbauen.
   game.bus.on('restaurantChanged', () => {

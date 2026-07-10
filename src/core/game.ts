@@ -223,6 +223,7 @@ export class GameController {
     this.setCoins(this.state.coins - cost);
     r.level += 1;
     this.bus.emit('restaurantChanged', restaurantId);
+    this.bus.emit('celebrate', null);
     return true;
   }
 
@@ -238,6 +239,7 @@ export class GameController {
     r.stations[0].owned = Math.max(r.stations[0].owned, 1);
     this.state.currentRestaurantId = id;
     this.bus.emit('restaurantChanged', id);
+    this.bus.emit('celebrate', null);
     return true;
   }
 
@@ -359,6 +361,7 @@ export class GameController {
     this.bus.emit('coinsChanged', fresh.coins);
     this.bus.emit('restaurantChanged', fresh.currentRestaurantId);
     this.bus.emit('prestiged', keepInvestors);
+    this.bus.emit('celebrate', null);
     return true;
   }
 

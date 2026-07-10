@@ -86,6 +86,8 @@ export interface GameEvents extends Record<string, unknown> {
   achievementUnlocked: AchievementDef;
   /** Allgemeine Kurzbenachrichtigung (Toast), z. B. fuer Events. */
   notify: { icon: string; title: string };
+  /** Feier-Moment (Renovierung/Freischaltung/Prestige) -> Konfetti. */
+  celebrate: null;
 }
 
 // Gemeinsamer Bus fuer die gesamte App.

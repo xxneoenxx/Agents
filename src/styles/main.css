@@ -584,6 +584,25 @@ button:focus:not(:focus-visible) {
   text-align: center;
 }
 
+/* --- Konfetti -------------------------------------------------------------- */
+.confetti-host {
+  position: fixed;
+  left: 50%;
+  top: 28%;
+  width: 0;
+  height: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.confetti {
+  position: absolute;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  will-change: transform, opacity;
+}
+
 /* --- Modals ---------------------------------------------------------------- */
 .modal-backdrop {
   position: fixed;

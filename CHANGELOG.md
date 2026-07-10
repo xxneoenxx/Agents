@@ -4,6 +4,9 @@ Alle nennenswerten Änderungen pro Phase.
 
 ## Ergänzungen (nach Release)
 
+- **Feier-Animation**: Konfetti-Burst (DOM, Web-Animations) bei Renovierung, Restaurant-
+  Freischaltung, Prestige und Achievement-Freischaltung (`celebrate`-Event); respektiert
+  `prefers-reduced-motion`.
 - **Barrierefreiheit**: sichtbare Tastatur-Fokus-Ringe (`:focus-visible`), ARIA-Rollen (Dialoge
   mit `role="dialog"`/`aria-modal`, Tab-Leiste als `tablist`/`tab`, Toasts als `aria-live`),
   Fokus setzen/zurückgeben + Escape + Fokusfalle in Modals, Aria-Labels für Icon-Buttons,
