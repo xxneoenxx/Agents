@@ -30,7 +30,11 @@ export class WorldScene extends Phaser.Scene {
   private layoutSignature = '';
   private unsubs: (() => void)[] = [];
   private investor?: Investor;
-  private vendors = new Map<string, { vendor: Vendor; x: number; y: number }>();
+  private vendors = new Map<
+    string,
+    { vendor: Vendor; x: number; y: number; hint: Phaser.GameObjects.Text }
+  >();
+  private tapZones: Phaser.GameObjects.Zone[] = [];
   private steamPool: Phaser.GameObjects.Ellipse[] = [];
 
   constructor() {
@@ -75,7 +79,8 @@ export class WorldScene extends Phaser.Scene {
       minZoom: 0.5,
       maxZoom: 1.8,
       defaultZoom: 1,
-      focusX: serviceX + STALL_SPACING, // erste Staende + Schlange im Blick
+      // Erster Stand VOLL im Bild (dort beginnt das Spiel) + Anfang der Schlange.
+      focusX: LEFT_MARGIN + 130,
       focusY: this.laneY,
     });
     this.camControl.setBounds(0, 0, this.worldWidth, height);
@@ -119,10 +124,14 @@ export class WorldScene extends Phaser.Scene {
     if (sig !== this.layoutSignature) this.rebuildRestaurant();
     this.spawner.update(time, delta);
 
-    // Verkaeufer arbeiten sichtbar, solange ihre Station produziert.
+    // Verkaeufer arbeiten sichtbar, solange ihre Station produziert; der
+    // Tipp-Hinweis erscheint an idlen Staenden ohne Manager.
     const stations = this.controller.currentRestaurant().stations;
     for (const st of stations) {
-      this.vendors.get(st.id)?.vendor.setWorking(st.active);
+      const entry = this.vendors.get(st.id);
+      if (!entry) continue;
+      entry.vendor.setWorking(st.active);
+      entry.hint.setVisible(st.owned > 0 && !st.manager && !st.active);
     }
   }
 
@@ -281,6 +290,8 @@ export class WorldScene extends Phaser.Scene {
 
   private rebuildRestaurant(): void {
     this.vendors.clear(); // Kinder werden mit removeAll(true) zerstoert
+    this.tapZones.forEach((z) => z.destroy());
+    this.tapZones = [];
     this.restaurantLayer.removeAll(true);
     const stations = this.controller.currentRestaurant().stations;
 
@@ -294,7 +305,8 @@ export class WorldScene extends Phaser.Scene {
   }
 
   // Stand in Ebenen: Rueckwand (Regal/Dach/Schild) -> Verkaeufer -> Theke ->
-  // Emoji/Name. So steht der Verkaeufer sichtbar HINTER der Theke.
+  // Emoji/Name. So steht der Verkaeufer sichtbar HINTER der Theke. Die ganze
+  // Huette ist ANTIPPBAR und startet einen Produktionszyklus (Servieren).
   private drawStall(
     x: number,
     stationId: string,
@@ -307,11 +319,44 @@ export class WorldScene extends Phaser.Scene {
 
     stall.add(this.add.image(0, 4, 'stall-back').setOrigin(0.5, 1).setDisplaySize(120, 104));
 
-    // Verkaeufer hinter der Theke (nur bei eroeffnetem Stand).
+    // Verkaeufer hinter der Theke + Tipp-Hinweis (nur bei eroeffnetem Stand).
     if (owned) {
       const vendor = new Vendor(this, 18, 0, this.reducedMotion);
       stall.add(vendor);
-      this.vendors.set(stationId, { vendor, x: x + 18, y: baseY });
+
+      // Huepfender Hinweis, solange die Station idle ist (kein Manager, kein Zyklus).
+      const hint = this.add
+        .text(x, baseY - 116, '👆 Tippen!', {
+          fontFamily: 'Nunito, Arial, sans-serif',
+          fontSize: '15px',
+          fontStyle: '900',
+          color: '#3A2A1F',
+          backgroundColor: '#FFFDF7',
+          padding: { x: 8, y: 4 },
+        })
+        .setOrigin(0.5)
+        .setDepth(9)
+        .setVisible(false);
+      if (!this.reducedMotion) {
+        this.tweens.add({
+          targets: hint,
+          y: baseY - 124,
+          duration: 420,
+          yoyo: true,
+          repeat: -1,
+          ease: 'Sine.easeInOut',
+        });
+      }
+      this.vendors.set(stationId, { vendor, x: x + 18, y: baseY, hint });
+
+      // Antippen der Huette = servieren. WICHTIG: als Zone direkt auf Szenen-
+      // Ebene, denn interaktive Container IN Containern empfangen in Phaser
+      // keine Input-Events (bekannte Einschraenkung).
+      const zone = this.add.zone(x, baseY - 48, 124, 108).setOrigin(0.5).setInteractive();
+      zone.on('pointerdown', () => {
+        this.controller.tapStation(stationId);
+      });
+      this.tapZones.push(zone);
     }
 
     stall.add(this.add.image(0, 4, 'stall-counter').setOrigin(0.5, 1).setDisplaySize(120, 104));
@@ -331,6 +376,9 @@ export class WorldScene extends Phaser.Scene {
     );
     if (!owned) stall.setAlpha(0.55);
     this.restaurantLayer.add(stall);
+    // Hinweis zuletzt anfuegen, damit er ueber der Huette liegt.
+    const entry = this.vendors.get(stationId);
+    if (entry) this.restaurantLayer.add(entry.hint);
   }
 
   // --- Dampf-Puffs (gepoolt) --------------------------------------------------

@@ -381,8 +381,8 @@ export function createHud(root: HTMLElement, game: GameController): Hud {
     text.className = 'onboard-text';
     text.innerHTML =
       "👋 <b>Willkommen bei Bella's Food Empire!</b><br>" +
-      'Tippe unten auf einen Laden, um zu <b>servieren</b> und Münzen zu verdienen. ' +
-      'Kaufe <b>Einheiten</b> und stelle <b>Manager</b> ein, damit alles von allein läuft.';
+      'Tippe auf die <b>Strandhütte</b> (👆), um zu servieren – jeder Kunde zahlt Münzen. ' +
+      'Kaufe im Menü <b>Einheiten</b> und stelle <b>Manager</b> ein, damit alles von allein läuft.';
     const okBtn = document.createElement('button');
     okBtn.type = 'button';
     okBtn.className = 'btn-primary';

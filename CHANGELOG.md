@@ -4,6 +4,11 @@ Alle nennenswerten Änderungen pro Phase.
 
 ## Ergänzungen (nach Release)
 
+- **Stände in der Welt antippbar**: Ein Tipp auf die Strandhütte startet jetzt direkt einen
+  Serviervorgang (Tap-Zonen auf Szenen-Ebene – interaktive Container in Containern erhalten in
+  Phaser keine Events). Ein hüpfender „👆 Tippen!"-Hinweis markiert idle Stände ohne Manager,
+  die Kamera startet auf dem ersten Stand, Onboarding-Text entsprechend angepasst.
+
 - **Animierte Verkäufer & echte Geh-Animation**: Jeder eröffnete Stand hat jetzt einen Verkäufer
   **hinter der Theke** (`Vendor.ts`; ersetzt `ManagerFigure`) – er rührt/hackt sichtbar mit
   Kochlöffel (2-Frame-Animation), solange die Station produziert, macht bei jeder Auszahlung eine
