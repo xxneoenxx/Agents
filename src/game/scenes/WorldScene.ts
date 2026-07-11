@@ -3,7 +3,7 @@ import { BALANCE } from '@data/balance';
 import type { StationDef } from '@data/stations';
 import type { RestaurantTheme } from '@data/restaurants';
 import type { GameController } from '@core/game';
-import { ManagerFigure } from '@game/entities/ManagerFigure';
+import { Vendor } from '@game/entities/Vendor';
 import { Investor } from '@game/entities/Investor';
 import { CustomerSpawner, type SpawnerTuning } from '@game/systems/CustomerSpawner';
 import { CameraController } from '@game/systems/CameraController';
@@ -30,6 +30,8 @@ export class WorldScene extends Phaser.Scene {
   private layoutSignature = '';
   private unsubs: (() => void)[] = [];
   private investor?: Investor;
+  private vendors = new Map<string, { vendor: Vendor; x: number; y: number }>();
+  private steamPool: Phaser.GameObjects.Ellipse[] = [];
 
   constructor() {
     super({ key: 'WorldScene' });
@@ -86,9 +88,15 @@ export class WorldScene extends Phaser.Scene {
 
     // Kunden werden genau dann bedient, wenn die Wirtschaft auszahlt. Leicht
     // gedrosselt, damit hohe Zyklusraten die Schlange nicht "teleportieren".
+    // Der Verkaeufer der auszahlenden Station macht eine Serve-Geste + Dampf.
     let lastServeMs = 0;
     this.unsubs.push(
-      this.controller.bus.on('stationPaid', () => {
+      this.controller.bus.on('stationPaid', ({ id }) => {
+        const entry = this.vendors.get(id);
+        if (entry) {
+          entry.vendor.serveGesture();
+          this.puffSteam(entry.x + 12, entry.y - 46);
+        }
         const now = this.time.now;
         if (now - lastServeMs < 150) return;
         lastServeMs = now;
@@ -110,6 +118,12 @@ export class WorldScene extends Phaser.Scene {
     const sig = this.currentSignature();
     if (sig !== this.layoutSignature) this.rebuildRestaurant();
     this.spawner.update(time, delta);
+
+    // Verkaeufer arbeiten sichtbar, solange ihre Station produziert.
+    const stations = this.controller.currentRestaurant().stations;
+    for (const st of stations) {
+      this.vendors.get(st.id)?.vendor.setWorking(st.active);
+    }
   }
 
   // --- Zeichnen --------------------------------------------------------------
@@ -266,30 +280,44 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private rebuildRestaurant(): void {
+    this.vendors.clear(); // Kinder werden mit removeAll(true) zerstoert
     this.restaurantLayer.removeAll(true);
     const stations = this.controller.currentRestaurant().stations;
 
     this.defs.forEach((def, i) => {
       if (!this.controller.isUnlocked(i)) return;
       const st = stations[i];
-      this.drawStall(this.stallX(i), def.emoji, def.name, st.owned > 0);
-      if (st.manager) {
-        this.restaurantLayer.add(
-          new ManagerFigure(this, this.stallX(i) + 34, this.laneY + 2, this.reducedMotion),
-        );
-      }
+      this.drawStall(this.stallX(i), def.id, def.emoji, def.name, st.owned > 0);
     });
 
     this.layoutSignature = this.currentSignature();
   }
 
-  private drawStall(x: number, emoji: string, name: string, owned: boolean): void {
+  // Stand in Ebenen: Rueckwand (Regal/Dach/Schild) -> Verkaeufer -> Theke ->
+  // Emoji/Name. So steht der Verkaeufer sichtbar HINTER der Theke.
+  private drawStall(
+    x: number,
+    stationId: string,
+    emoji: string,
+    name: string,
+    owned: boolean,
+  ): void {
     const baseY = this.laneY - 6;
     const stall = this.add.container(x, baseY);
-    // Stand-Sprite (Bude + Markise), Boden bei y=0.
-    stall.add(this.add.image(0, 4, 'stall').setOrigin(0.5, 1).setDisplaySize(120, 104));
-    // Gericht-Emoji auf dem Schild.
-    stall.add(this.add.text(0, -56, emoji, { fontSize: '30px' }).setOrigin(0.5));
+
+    stall.add(this.add.image(0, 4, 'stall-back').setOrigin(0.5, 1).setDisplaySize(120, 104));
+
+    // Verkaeufer hinter der Theke (nur bei eroeffnetem Stand).
+    if (owned) {
+      const vendor = new Vendor(this, 18, 0, this.reducedMotion);
+      stall.add(vendor);
+      this.vendors.set(stationId, { vendor, x: x + 18, y: baseY });
+    }
+
+    stall.add(this.add.image(0, 4, 'stall-counter').setOrigin(0.5, 1).setDisplaySize(120, 104));
+
+    // Gericht-Emoji auf dem Haengeschild.
+    stall.add(this.add.text(0, -56, emoji, { fontSize: '26px' }).setOrigin(0.5));
     // Name auf der Theke.
     stall.add(
       this.add
@@ -303,6 +331,28 @@ export class WorldScene extends Phaser.Scene {
     );
     if (!owned) stall.setAlpha(0.55);
     this.restaurantLayer.add(stall);
+  }
+
+  // --- Dampf-Puffs (gepoolt) --------------------------------------------------
+
+  private puffSteam(x: number, y: number): void {
+    if (this.reducedMotion) return;
+    let puff = this.steamPool.find((p) => !p.visible);
+    if (!puff && this.steamPool.length < 12) {
+      puff = this.add.ellipse(0, 0, 12, 10, 0xffffff, 0.85).setDepth(6);
+      this.steamPool.push(puff);
+    }
+    if (!puff) return;
+    puff.setPosition(x, y).setVisible(true).setAlpha(0.85).setScale(0.7);
+    this.tweens.add({
+      targets: puff,
+      y: y - 26,
+      alpha: 0,
+      scale: 1.4,
+      duration: 700,
+      ease: 'Cubic.easeOut',
+      onComplete: () => puff.setVisible(false),
+    });
   }
 
   // --- Ereignisse: Investor & Rush Hour -------------------------------------

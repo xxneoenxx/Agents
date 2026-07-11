@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen pro Phase.
 
 ## Ergänzungen (nach Release)
 
+- **Animierte Verkäufer & echte Geh-Animation**: Jeder eröffnete Stand hat jetzt einen Verkäufer
+  **hinter der Theke** (`Vendor.ts`; ersetzt `ManagerFigure`) – er rührt/hackt sichtbar mit
+  Kochlöffel (2-Frame-Animation), solange die Station produziert, macht bei jeder Auszahlung eine
+  Serve-Geste mit **Dampf-Puff** und atmet im Leerlauf. Kunden laufen mit **2-Frame-Gehbewegung**
+  (Beine/Arme schwingen, je 3 Varianten × 2 Lauf-Frames). Stände sind realistischer: zwei Ebenen
+  (Rückwand mit Regal & Waren, Hängeschild fürs Gericht / separate Planken-Theke mit Kisten &
+  Obstschale), Innenraum mit Dachschatten. `prefers-reduced-motion` respektiert.
 - **Kunden zahlen echtes Geld**: Bedienung ist jetzt an die Wirtschaft gekoppelt – ein Kunde geht
   genau dann (mit Münzflug), wenn eine Station wirklich auszahlt (`stationPaid` → `serveOne()`,
   gedrosselt). Ohne Manager/Tippen wartet die Schlange. Der reine Bedien-Timer ist entfernt.
