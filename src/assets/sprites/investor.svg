@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 68" width="56" height="68">
+  <!-- Grossinvestor (eigene Grafik) -->
+  <rect x="19" y="48" width="8" height="16" rx="4" fill="#1c1330"/>
+  <rect x="29" y="48" width="8" height="16" rx="4" fill="#1c1330"/>
+  <!-- Aktenkoffer -->
+  <rect x="38" y="38" width="14" height="11" rx="2" fill="#8a5a2b" stroke="#3a2a1f" stroke-width="2"/>
+  <rect x="43" y="36" width="4" height="3" rx="1" fill="#3a2a1f"/>
+  <!-- Arme + Koerper (Anzug) -->
+  <rect x="10" y="30" width="8" height="18" rx="4" fill="#3a2a4f" stroke="#1c1330" stroke-width="2"/>
+  <rect x="38" y="30" width="8" height="18" rx="4" fill="#3a2a4f" stroke="#1c1330" stroke-width="2"/>
+  <rect x="16" y="26" width="24" height="28" rx="9" fill="#3a2a4f" stroke="#1c1330" stroke-width="2"/>
+  <!-- Hemd + Krawatte -->
+  <path d="M28 27 l4 3 -4 14 -4 -14z" fill="#fffdf7"/>
+  <path d="M28 30 l3 2 -3 11 -3 -11z" fill="#ffc72c"/>
+  <!-- Kopf -->
+  <circle cx="28" cy="17" r="10" fill="#ffd9a0" stroke="#3a2a1f" stroke-width="2"/>
+  <circle cx="24.5" cy="17" r="1.5" fill="#3a2a1f"/>
+  <circle cx="31.5" cy="17" r="1.5" fill="#3a2a1f"/>
+  <path d="M24 12 q4 -2 8 0" stroke="#3a2a1f" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+  <!-- Zylinder -->
+  <rect x="16" y="7" width="24" height="4" rx="2" fill="#1c1330"/>
+  <rect x="20" y="-2" width="16" height="10" rx="1" fill="#1c1330"/>
+  <rect x="20" y="3" width="16" height="2.5" fill="#ff5c5c"/>
+</svg>

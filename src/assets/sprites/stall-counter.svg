@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 104" width="120" height="104">
+  <!-- Strandhuette THEKE (eigene Grafik): Planken mit Maserung + Waren.
+       Wird UEBER dem Verkaeufer gezeichnet, damit er dahinter steht. -->
+  <!-- Warenkiste links (Fruechte) -->
+  <rect x="12" y="70" width="24" height="16" rx="2" fill="#a9754b" stroke="#6e4a2e" stroke-width="2"/>
+  <line x1="12" y1="76" x2="36" y2="76" stroke="#6e4a2e" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="18" cy="69" r="4" fill="#ff5c5c" stroke="#6e4a2e" stroke-width="1.2"/>
+  <circle cx="26" cy="68" r="4" fill="#ffc72c" stroke="#6e4a2e" stroke-width="1.2"/>
+  <circle cx="32" cy="70" r="3.5" fill="#ff8a3d" stroke="#6e4a2e" stroke-width="1.2"/>
+  <!-- Schale rechts -->
+  <ellipse cx="98" cy="78" rx="12" ry="5" fill="#fff6e3" stroke="#6e4a2e" stroke-width="2"/>
+  <circle cx="94" cy="74" r="3.5" fill="#22b573" stroke="#6e4a2e" stroke-width="1.2"/>
+  <circle cx="101" cy="73" r="3.5" fill="#ff5c5c" stroke="#6e4a2e" stroke-width="1.2"/>
+  <!-- Planken-Theke -->
+  <rect x="4" y="82" width="112" height="18" rx="4" fill="#c89b6a" stroke="#6e4a2e" stroke-width="3"/>
+  <rect x="4" y="82" width="112" height="5" fill="#e0b57f"/>
+  <line x1="32" y1="83" x2="32" y2="99" stroke="#a97b4d" stroke-width="2"/>
+  <line x1="60" y1="83" x2="60" y2="99" stroke="#a97b4d" stroke-width="2"/>
+  <line x1="88" y1="83" x2="88" y2="99" stroke="#a97b4d" stroke-width="2"/>
+  <!-- Holzmaserung -->
+  <path d="M12 92 q6 2 12 0 M40 94 q6 -2 12 0 M68 92 q6 2 12 0 M96 94 q6 -2 12 0"
+        stroke="#b08454" stroke-width="1.5" fill="none" opacity="0.8"/>
+</svg>

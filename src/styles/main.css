@@ -1,0 +1,875 @@
+/* Grund-Layout + HUD/Panel. Hochformat zuerst, mit Maximalbreite auf grossen
+   Screens. Canvas unten, HTML-UI-Overlay darueber. */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+body {
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--sky) 0%, var(--sky2) 100%);
+}
+
+/* Sichtbarer Tastatur-Fokus fuer alle Bedienelemente (nur bei Tastaturnutzung). */
+button:focus-visible {
+  outline: 3px solid var(--violet);
+  outline-offset: 2px;
+}
+
+/* Bei aktivem Zeiger keinen Fokusring (nur Tastatur zeigt ihn). */
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+#game-root {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+#game-root canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* HTML-Overlay: leitet Klicks durch, einzelne Bedienelemente fangen sie ab. */
+#ui-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+}
+
+#ui-overlay > * {
+  pointer-events: auto;
+}
+
+/* --- Obere Leiste --------------------------------------------------------- */
+.hud-top {
+  align-self: center;
+  width: min(96vw, 560px);
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 8px 14px;
+  box-shadow: var(--shadow-soft);
+}
+
+.hud-coins {
+  font-weight: 900;
+  font-size: 1.25rem;
+  white-space: nowrap;
+}
+
+.hud-coin {
+  color: var(--coin);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 0 rgba(58, 42, 31, 0.22);
+}
+
+.hud-income {
+  flex: 1;
+  color: var(--green);
+  font-weight: 800;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Buttons (allgemein) -------------------------------------------------- */
+.btn {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 800;
+  color: var(--card);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  min-height: var(--tap-min);
+  box-shadow: var(--shadow-btn);
+  transition:
+    transform 0.06s ease,
+    filter 0.12s ease;
+  line-height: 1.1;
+}
+
+.btn small {
+  font-weight: 700;
+  opacity: 0.92;
+  font-size: 0.72rem;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(58, 42, 31, 0.22);
+}
+
+.btn:disabled {
+  cursor: default;
+  filter: grayscale(0.5) brightness(0.9);
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.btn-boost {
+  background: var(--violet);
+  font-size: 0.82rem;
+  white-space: nowrap;
+  padding: 8px 12px;
+}
+
+.btn-boost.is-active {
+  background: var(--green);
+  opacity: 1;
+  filter: none;
+}
+
+/* --- Weltsteuerung --------------------------------------------------------- */
+.world-controls {
+  position: fixed;
+  right: max(12px, env(safe-area-inset-right));
+  top: 42%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-round {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+  font-size: 1.3rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.btn-round:active {
+  transform: translateY(2px);
+}
+
+/* --- Panel (Bottom-Sheet) ------------------------------------------------- */
+.panel {
+  margin-top: auto;
+  align-self: center;
+  width: min(96vw, 560px);
+  max-height: 44vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: 0 -8px 24px rgba(58, 42, 31, 0.18);
+  padding: 4px 10px 0;
+  margin-bottom: 0;
+  transition: max-height 0.2s ease;
+}
+
+.panel.collapsed {
+  max-height: 48px;
+}
+
+.panel.collapsed .resto-header,
+.panel.collapsed .tabbar,
+.panel.collapsed .pane-container {
+  display: none;
+}
+
+.panel-handle {
+  position: relative;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-weight: 900;
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 12px 16px 6px;
+}
+
+.panel-handle::before {
+  content: '';
+  position: absolute;
+  margin-top: -6px;
+  width: 40px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(58, 42, 31, 0.18);
+  transform: translateX(-50%);
+  left: 50%;
+}
+
+.panel-arrow {
+  font-size: 0.9rem;
+}
+
+.buymode {
+  display: flex;
+  gap: 6px;
+  padding: 2px 2px 8px;
+  justify-content: center;
+}
+
+.buymode-btn {
+  flex: 1;
+  max-width: 120px;
+  border: 2px solid rgba(58, 42, 31, 0.15);
+  background: #fff;
+  color: var(--ink-soft);
+  font-family: inherit;
+  font-weight: 900;
+  border-radius: 999px;
+  padding: 8px 4px;
+  min-height: var(--tap-min);
+  cursor: pointer;
+}
+
+.buymode-btn.active {
+  background: var(--ink);
+  color: var(--card);
+  border-color: var(--ink);
+}
+
+.stations {
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 2px calc(10px + env(safe-area-inset-bottom));
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --- Stationskarte -------------------------------------------------------- */
+.card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: stretch;
+  background: #fff;
+  border: 2px solid rgba(58, 42, 31, 0.08);
+  border-radius: var(--radius-md);
+  padding: 8px;
+}
+
+.card.locked {
+  opacity: 0.85;
+}
+
+.card-tap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: default;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.card-tap.tappable {
+  cursor: pointer;
+  background: linear-gradient(180deg, #fff, #fff7e8);
+}
+
+.card-tap.tappable:active {
+  transform: scale(0.98);
+}
+
+.card-emoji {
+  font-size: 2rem;
+  width: 48px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-name {
+  font-weight: 900;
+  color: var(--ink);
+  font-size: 0.98rem;
+}
+
+.card-owned {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.card-owned .tag {
+  background: var(--coin);
+  color: var(--ink);
+  font-weight: 900;
+  border-radius: 999px;
+  padding: 0 6px;
+  font-size: 0.72rem;
+}
+
+.card-progress {
+  grid-column: 1 / -1;
+  height: 8px;
+  background: rgba(58, 42, 31, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.card-progress-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--green), #4fd39a);
+  border-radius: 999px;
+}
+
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+  min-width: 128px;
+}
+
+.btn-buy {
+  background: var(--accent);
+  font-size: 0.82rem;
+  padding: 8px 10px;
+}
+
+.btn-manager {
+  background: var(--green);
+  font-size: 0.78rem;
+  padding: 8px 10px;
+}
+
+.btn-manager.hired {
+  opacity: 1;
+  filter: none;
+  background: #1c9e63;
+}
+
+.card-lock {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 253, 247, 0.86);
+  border-radius: var(--radius-md);
+  color: var(--ink-soft);
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 8px;
+}
+
+/* --- Restaurant-Kopf ------------------------------------------------------ */
+.resto-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 4px 8px;
+}
+
+.resto-name {
+  flex: 1;
+  font-weight: 900;
+  font-size: 1.02rem;
+  color: var(--ink);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-renovate {
+  background: var(--violet);
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  min-height: 40px;
+  text-align: center;
+}
+
+/* --- Tabs ------------------------------------------------------------------ */
+.tabbar {
+  display: flex;
+  gap: 4px;
+  padding: 0 2px 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabbar::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  flex: 1 0 auto;
+  border: none;
+  background: #f3ece0;
+  color: var(--ink-soft);
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 0.76rem;
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  padding: 8px 8px;
+  min-height: var(--tap-min);
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background: var(--ink);
+  color: var(--card);
+}
+
+.pane-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom));
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* --- Karte (Restaurants) --------------------------------------------------- */
+.map-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid rgba(58, 42, 31, 0.08);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+}
+
+.map-row.current {
+  border-color: var(--green);
+  background: #f2fbf6;
+}
+
+.map-emoji {
+  font-size: 1.8rem;
+  width: 42px;
+  text-align: center;
+}
+
+.map-name {
+  flex: 1;
+  font-weight: 900;
+  color: var(--ink);
+  min-width: 0;
+}
+
+.btn-travel {
+  background: var(--accent);
+  min-width: 118px;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* --- Upgrades -------------------------------------------------------------- */
+.upgrade-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid rgba(58, 42, 31, 0.08);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+}
+
+.upgrade-emoji {
+  font-size: 1.8rem;
+  width: 42px;
+  text-align: center;
+}
+
+.upgrade-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.upgrade-name {
+  font-weight: 900;
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+
+.upgrade-name .tag {
+  background: var(--coin);
+  color: var(--ink);
+  font-weight: 900;
+  border-radius: 999px;
+  padding: 0 6px;
+  font-size: 0.68rem;
+}
+
+.upgrade-desc {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+/* --- Investoren (Prestige) ------------------------------------------------- */
+.investors-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  border: 2px solid rgba(124, 92, 255, 0.25);
+}
+
+.inv-line {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.inv-line span {
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.investors-hint {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  padding: 0 4px;
+}
+
+.btn-prestige {
+  background: var(--violet);
+  font-size: 0.9rem;
+  padding: 12px;
+  text-align: center;
+}
+
+/* --- Onboarding-Hinweis ---------------------------------------------------- */
+.onboard-bubble {
+  position: fixed;
+  left: 50%;
+  bottom: calc(46vh + 10px);
+  transform: translateX(-50%);
+  width: min(92vw, 360px);
+  z-index: 45;
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 16px;
+  text-align: center;
+  border: 3px solid var(--green);
+}
+
+.onboard-text {
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.4;
+  font-size: 0.92rem;
+  margin-bottom: 12px;
+}
+
+.onboard-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -11px;
+  transform: translateX(-50%);
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 11px solid var(--green);
+}
+
+/* --- Konfetti -------------------------------------------------------------- */
+.confetti-host {
+  position: fixed;
+  left: 50%;
+  top: 28%;
+  width: 0;
+  height: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.confetti {
+  position: absolute;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  will-change: transform, opacity;
+}
+
+/* --- Modals ---------------------------------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(58, 42, 31, 0.5);
+  padding: 20px;
+}
+
+.modal {
+  width: min(92vw, 380px);
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 18px;
+  text-align: center;
+  animation: modal-pop 0.18s ease;
+}
+
+@keyframes modal-pop {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-title {
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.modal-text {
+  color: var(--ink-soft);
+  font-weight: 600;
+  line-height: 1.4;
+  font-size: 0.94rem;
+}
+
+.modal-body .coin-amount {
+  color: #d69a00;
+}
+
+.deal-offer {
+  margin-top: 10px;
+  font-weight: 900;
+  color: var(--violet);
+  font-size: 1.05rem;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 800;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  min-height: var(--tap-min);
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background: var(--green);
+  color: #fff;
+  box-shadow: var(--shadow-btn);
+}
+
+.btn-secondary {
+  background: #efe7d9;
+  color: var(--ink);
+}
+
+.btn-danger {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:active,
+.btn-danger:active {
+  transform: translateY(2px);
+}
+
+/* --- Ziele (Achievements) -------------------------------------------------- */
+.ach-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid rgba(58, 42, 31, 0.08);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+}
+
+.ach-row.done {
+  border-color: var(--green);
+  background: #f2fbf6;
+}
+
+.ach-emoji {
+  font-size: 1.7rem;
+  width: 40px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.ach-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.ach-name {
+  font-weight: 900;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.ach-reward {
+  font-weight: 700;
+  color: var(--ink-soft);
+  font-size: 0.74rem;
+}
+
+.ach-desc {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  margin-bottom: 4px;
+}
+
+.ach-bar {
+  height: 6px;
+  background: rgba(58, 42, 31, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.ach-bar-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--coin), #ffd95a);
+  border-radius: 999px;
+}
+
+.ach-status {
+  flex-shrink: 0;
+  min-width: 34px;
+  text-align: right;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+
+.ach-row.done .ach-status {
+  color: var(--green);
+  font-size: 1.2rem;
+}
+
+/* --- Toasts (Erfolge) ------------------------------------------------------ */
+.toast-host {
+  position: fixed;
+  top: calc(64px + env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+  width: max-content;
+  max-width: 92vw;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ink);
+  color: var(--card);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 800;
+  font-size: 0.86rem;
+  box-shadow: var(--shadow-soft);
+  animation: toast-in 0.25s ease;
+}
+
+.toast.out {
+  animation: toast-out 0.4s ease forwards;
+}
+
+.toast-icon {
+  font-size: 1.3rem;
+}
+
+@keyframes toast-in {
+  from {
+    transform: translateY(-16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-out {
+  to {
+    transform: translateY(-16px);
+    opacity: 0;
+  }
+}
+
+/* Bewegungsreduktion respektieren */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

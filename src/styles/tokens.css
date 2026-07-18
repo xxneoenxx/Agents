@@ -1,0 +1,34 @@
+/* Design-Tokens: Farbpalette, Schrift, Radien, Schatten.
+   Zentrale Quelle fuer die Optik von HUD/Menue (bunt, knuffig, rund). */
+:root {
+  /* Hintergrund-Verlauf (warm) */
+  --sky: #ffc24b;
+  --sky2: #ff8a3d;
+
+  /* Flaechen / Panels */
+  --card: #fffdf7;
+
+  /* Text */
+  --ink: #3a2a1f;
+  --ink-soft: #7a6353;
+
+  /* Aktionsfarben */
+  --accent: #ff5c5c; /* Tomate: Haupt-Buttons / Kaufen */
+  --green: #22b573; /* Manager / Bestaetigen */
+  --coin: #ffc72c; /* Gold */
+  --violet: #7c5cff; /* Boosts / Marketing */
+
+  /* Radien & Schatten (runde, weiche Optik) */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-soft: 0 6px 16px rgba(58, 42, 31, 0.18);
+  --shadow-btn: 0 4px 0 rgba(58, 42, 31, 0.22);
+
+  /* Mindestgroesse fuer Touch-Ziele */
+  --tap-min: 44px;
+
+  /* Schrift: runde, freundliche Fallback-Kette (Nunito folgt als Web-Font in spaeterer Phase) */
+  --font-ui:
+    'Nunito', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}

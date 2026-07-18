@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 104" width="120" height="104">
+  <!-- Strandhuette RUECKSEITE (eigene Grafik): Pfosten, Innenraum mit Regal,
+       Palmstroh-Dach, Haengeschild. Verkaeufer + Theke werden darueber gelegt. -->
+  <!-- Treibholz-Pfosten -->
+  <path d="M13 34 q-2 32 1 64 l8 0 q3 -32 1 -64 z" fill="#a9754b" stroke="#6e4a2e" stroke-width="2"/>
+  <path d="M98 34 q3 32 -1 64 l8 0 q2 -32 -1 -64 z" fill="#a9754b" stroke="#6e4a2e" stroke-width="2"/>
+  <!-- Innenraum (leicht abgedunkelt fuer Tiefe) -->
+  <rect x="18" y="42" width="84" height="48" rx="5" fill="#f2ddb6" stroke="#6e4a2e" stroke-width="3"/>
+  <rect x="20" y="44" width="80" height="10" fill="#000000" opacity="0.10"/>
+  <!-- Regal mit Flaschen/Glaesern -->
+  <rect x="26" y="70" width="68" height="4" rx="2" fill="#a9754b" stroke="#6e4a2e" stroke-width="1.5"/>
+  <rect x="32" y="58" width="7" height="12" rx="2" fill="#ff8a3d" stroke="#6e4a2e" stroke-width="1.5"/>
+  <rect x="44" y="60" width="8" height="10" rx="2" fill="#22b573" stroke="#6e4a2e" stroke-width="1.5"/>
+  <rect x="72" y="59" width="8" height="11" rx="2" fill="#ffc72c" stroke="#6e4a2e" stroke-width="1.5"/>
+  <rect x="84" y="61" width="7" height="9" rx="2" fill="#3aa0ff" stroke="#6e4a2e" stroke-width="1.5"/>
+  <!-- Palmstroh-Dach -->
+  <path d="M10 36 L22 12 q38 -8 76 0 L110 36 z" fill="#d9a85c" stroke="#6e4a2e" stroke-width="3"/>
+  <path d="M30 15 L24 34 M45 11 L41 34 M60 10 L60 34 M75 11 L79 34 M90 15 L96 34"
+        stroke="#b8894a" stroke-width="2" fill="none" opacity="0.8"/>
+  <path d="M24 13 q36 -7 72 0" stroke="#e8be74" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Dachschatten auf dem Innenraum -->
+  <rect x="18" y="42" width="84" height="7" fill="#000000" opacity="0.12"/>
+  <!-- Stroh-Unterkante -->
+  <path d="M10 36 q7 9 14 0 q7 9 14 0 q7 9 14 0 q7 9 14 0 q7 9 14 0 q7 9 14 0 q7 9 14 0"
+        fill="#c08f45"/>
+  <path d="M14 40 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0"
+        fill="#a9773a" opacity="0.7"/>
+  <!-- Haengendes Holzschild (das Gericht-Emoji wird im Spiel darauf gesetzt) -->
+  <line x1="52" y1="38" x2="52" y2="33" stroke="#6e4a2e" stroke-width="2"/>
+  <line x1="68" y1="38" x2="68" y2="33" stroke="#6e4a2e" stroke-width="2"/>
+  <rect x="44" y="33" width="32" height="26" rx="4" fill="#fff6e3" stroke="#6e4a2e" stroke-width="2.5"/>
+</svg>
