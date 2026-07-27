@@ -1,0 +1,7 @@
+{
+  "name": "la-bonta-pruefung",
+  "private": true,
+  "description": "Automatische Prüfungen der Website. Nicht Teil der Seite selbst.",
+  "scripts": { "test": "node test.js" },
+  "devDependencies": { "playwright-core": "^1.56.0" }
+}
