@@ -12,20 +12,27 @@
   window.__reduce = reduce;
 
   /* --- Navigation für schmale Fenster ------------------------------------ */
-  var schalter = document.querySelector('[data-nav-schalter]');
-  var mobilNav = document.querySelector('[data-nav-mobil]');
-  if (schalter && mobilNav) {
-    schalter.addEventListener('click', function () {
-      var offen = mobilNav.getAttribute('data-offen') === 'true';
-      mobilNav.setAttribute('data-offen', offen ? 'false' : 'true');
-      schalter.setAttribute('aria-expanded', offen ? 'false' : 'true');
-    });
-    mobilNav.addEventListener('click', function (e) {
-      if (e.target.closest('a')) {
-        mobilNav.setAttribute('data-offen', 'false');
-        schalter.setAttribute('aria-expanded', 'false');
-      }
-    });
+  /* Über alle Kopfbereiche im Dokument, nicht nur den ersten: die
+     Vorschau-Datei hält alle Seiten gleichzeitig vor. */
+  var schalterAlle = document.querySelectorAll('[data-nav-schalter]');
+  for (var s = 0; s < schalterAlle.length; s++) {
+    (function (schalter) {
+      var kopf = schalter.closest('header') || document;
+      var mobilNav = kopf.querySelector('[data-nav-mobil]');
+      if (!mobilNav) return;
+
+      schalter.addEventListener('click', function () {
+        var offen = mobilNav.getAttribute('data-offen') === 'true';
+        mobilNav.setAttribute('data-offen', offen ? 'false' : 'true');
+        schalter.setAttribute('aria-expanded', offen ? 'false' : 'true');
+      });
+      mobilNav.addEventListener('click', function (e) {
+        if (e.target.closest('a')) {
+          mobilNav.setAttribute('data-offen', 'false');
+          schalter.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })(schalterAlle[s]);
   }
 
   /* --- Saison-Band schließen --------------------------------------------- */

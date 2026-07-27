@@ -18,6 +18,31 @@ python3 -m http.server 8080
 Die Seite **nicht per Doppelklick** öffnen — über `file://` funktionieren die Skripte nicht
 zuverlässig.
 
+## Vorschau auf dem Handy
+
+`LA-BONTA-Vorschau.html` ist die **komplette Seite in einer einzigen Datei** — Schriften,
+Bibliotheken und alle fünf Seiten sind eingebettet. Sie läuft ohne Server und ohne
+Internetverbindung, auch auf dem iPhone.
+
+**So kommt sie aufs Handy:** Datei per AirDrop, Mail oder iCloud übertragen, in
+*Dateien* antippen. Falls iOS sie nur als Text anzeigt: oben rechts auf **Teilen →
+In Safari öffnen**.
+
+Im Bedienfeld unten rechts (⚙) lässt sich der Öffnungsstatus zu einer anderen Zeit
+ansehen — so wird auch der Dienstag-Ruhetag sichtbar, ohne bis Dienstag zu warten.
+
+**Das Buch erscheint erst quer.** Unter 760 Pixel Breite zeigt die Karte bewusst die
+Liste; hochkant auf dem Handy ist Blättern unbrauchbar. Gerät drehen, dann geht es auf.
+
+Neu bauen nach Änderungen:
+
+```bash
+python3 bauen/vorschau-bauen.py
+```
+
+Die Vorschau ist ein Prüfstück, **nicht die Fassung für den Server** — dafür gelten die
+einzelnen HTML-Dateien.
+
 ## Aufbau
 
 ```

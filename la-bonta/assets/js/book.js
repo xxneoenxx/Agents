@@ -293,14 +293,28 @@
     var sektionen = document.querySelectorAll('[data-buch]');
     for (var i = 0; i < sektionen.length; i++) einrichten(sektionen[i]);
 
+    function alleNeu() {
+      for (var b = 0; b < buecher.length; b++) {
+        buecher[b].ansichtSetzen(buecher[b].zustand.buchAktiv && istBuchTauglich());
+      }
+    }
+
+    /* Neu aufbauen, wenn die Karte erst nachträglich sichtbar wird — ein
+       ausgeblendeter Bereich hat die Breite 0 und ergäbe unbrauchbare
+       Seitenmaße. Wird von der Vorschau-Datei beim Seitenwechsel gerufen. */
+    window.__buecherNeu = function () {
+      for (var b = 0; b < buecher.length; b++) {
+        buecher[b].ansichtSetzen(istBuchTauglich());
+      }
+    };
+
     var timer;
     window.addEventListener('resize', function () {
       clearTimeout(timer);
-      timer = setTimeout(function () {
-        for (var b = 0; b < buecher.length; b++) {
-          buecher[b].ansichtSetzen(buecher[b].zustand.buchAktiv && istBuchTauglich());
-        }
-      }, 250);
+      timer = setTimeout(alleNeu, 250);
+    });
+    window.addEventListener('orientationchange', function () {
+      setTimeout(alleNeu, 350);
     });
   }
 

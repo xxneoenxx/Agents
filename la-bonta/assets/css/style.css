@@ -110,6 +110,10 @@ a:hover { color: var(--zitrone); }
 
 ::selection { background: var(--amarena); color: var(--creme); }
 
+/* Die Kopfzeile klebt oben. Ohne diesen Abstand landet jedes Sprungziel
+   — „#eis", „#mittagskarte", der Sprunglink — teilweise darunter. */
+[id], .buch-buehne { scroll-margin-top: 5.5rem; }
+
 /* Körnung über allem. Nimmt der großen Petrol-Fläche das Digitale und
    erinnert an bedrucktes Papier — passend zum traditionsreichen Haus. */
 body::after {

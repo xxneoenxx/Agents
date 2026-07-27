@@ -151,7 +151,11 @@
     var knoten = document.querySelectorAll('[data-status]');
     if (!knoten.length) return;
 
-    var jetzt = berlinJetzt();
+    /* __zeitBasis erlaubt es, einen anderen Zeitpunkt vorzugeben, um die
+       Anzeige zu prüfen — etwa den Dienstag-Ruhetag, ohne bis Dienstag zu
+       warten. Im Normalbetrieb ist die Variable nicht gesetzt und es gilt
+       die echte Uhrzeit. */
+    var jetzt = berlinJetzt(window.__zeitBasis ? new Date(window.__zeitBasis) : null);
     var s = ermittleZustand(jetzt);
 
     for (var i = 0; i < knoten.length; i++) {
@@ -171,6 +175,7 @@
   window.__oeffnungsstatus = function (referenz) {
     return ermittleZustand(berlinJetzt(referenz));
   };
+  window.__statusNeu = aktualisieren;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', aktualisieren);
