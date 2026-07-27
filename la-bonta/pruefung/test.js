@@ -154,6 +154,68 @@ function pruef(ok, name, detail) {
     await ctx.close();
   }
 
+
+  // ---------- Buch übersteht Größenänderung ----------
+  // Regressionsschutz: StPageFlip ersetzt beim Initialisieren sein Zielelement.
+  // Ohne frisches Ziel je Aufbau verschwand das Buch beim zweiten Mal.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await ctx.newPage();
+    await page.goto(BASE + '/speisekarte.html', { waitUntil: 'networkidle' });
+    await page.waitForTimeout(1000);
+    const vor = await page.evaluate(() => document.querySelectorAll('[data-buch="speisen"] .seite').length);
+
+    for (const [w, h] of [[1000, 800], [1280, 900], [900, 700]]) {
+      await page.setViewportSize({ width: w, height: h });
+      await page.waitForTimeout(700);
+    }
+    const nach = await page.evaluate(() => ({
+      aktiv: document.querySelector('[data-buch-huelle]').getAttribute('data-aktiv'),
+      seiten: document.querySelectorAll('[data-buch="speisen"] .seite').length
+    }));
+    pruef(nach.aktiv === 'true' && nach.seiten > 4,
+      'Buch übersteht mehrfache Größenänderung', `${vor} → ${nach.seiten} Seiten, aktiv=${nach.aktiv}`);
+
+    // Ein Klick darf nach den Neuaufbauten genau einen Schritt gehen
+    const s1 = await page.evaluate(() => document.querySelector('[data-buch="speisen"] [data-buch-stand]').textContent);
+    await page.click('[data-buch="speisen"] [data-buch-vor]');
+    await page.waitForTimeout(1200);
+    const s2 = await page.evaluate(() => document.querySelector('[data-buch="speisen"] [data-buch-stand]').textContent);
+    const nr = t => parseInt(t.match(/\d+/)[0], 10);
+    pruef(nr(s2) - nr(s1) === 2, 'Ein Klick = eine Doppelseite (keine Mehrfach-Handler)', `${s1} → ${s2}`);
+    await ctx.close();
+  }
+
+
+  // ---------- Seitenumbruch des Buchs ----------
+  // Zwei frühere Fehler: die Messprobe lag außerhalb von .buch und bekam
+  // deshalb keinen Innenabstand (rund 50 px zu viel Platz), und Rubrik-
+  // Überschriften konnten allein am Seitenfuß landen.
+  {
+    for (const [w, h] of [[1440, 900], [900, 800]]) {
+      const ctx = await browser.newContext({ viewport: { width: w, height: h } });
+      const page = await ctx.newPage();
+      await page.goto(BASE + '/speisekarte.html', { waitUntil: 'networkidle' });
+      await page.waitForTimeout(1300);
+      const r = await page.evaluate(() => {
+        const seiten = [...document.querySelectorAll('[data-buch="speisen"] .seite')];
+        const waisen = [], ueber = [];
+        seiten.forEach((s, i) => {
+          const kinder = [...s.children].filter(c => !c.classList.contains('seite__nr'));
+          const letzte = kinder[kinder.length - 1];
+          if (letzte && letzte.classList.contains('rubrik__titel')) waisen.push(i + 1);
+          if (s.scrollHeight > s.clientHeight + 2) ueber.push(i + 1);
+        });
+        return { n: seiten.length, waisen, ueber };
+      });
+      pruef(r.ueber.length === 0, `Keine überlaufende Buchseite @${w}px`,
+        r.ueber.length ? 'Seiten ' + r.ueber.join(',') : `${r.n} Seiten sauber`);
+      pruef(r.waisen.length === 0, `Keine Rubrik-Überschrift am Seitenfuß @${w}px`,
+        r.waisen.length ? 'Seiten ' + r.waisen.join(',') : 'geprüft');
+      await ctx.close();
+    }
+  }
+
   await browser.close();
   console.log('\n' + (fehler.length ? `${fehler.length} Fehler` : 'Alle Prüfungen bestanden'));
   process.exit(fehler.length ? 1 : 0);

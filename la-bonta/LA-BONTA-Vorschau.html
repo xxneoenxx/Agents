@@ -843,43 +843,86 @@ body { padding-bottom: 4.1rem; }
 .vseite[hidden] { display: none; }
 
 #vor-knopf {
-  position: fixed; right: 14px; z-index: 9999;
+  position: fixed; right: 12px; z-index: 9999;
   bottom: calc(4.9rem + env(safe-area-inset-bottom));
-  width: 46px; height: 46px; border-radius: 50%;
-  background: #14383C; color: #F4EDE0;
-  border: 1px solid rgba(244,237,224,.45);
-  font-size: 19px; line-height: 1; cursor: pointer;
-  box-shadow: 0 6px 20px rgba(0,0,0,.45);
+  min-width: 46px; height: 46px; padding: 0 14px; border-radius: 23px;
+  background: #A8C66C; color: #0B1A10;
+  border: none; cursor: pointer;
+  font: 600 13px/1 'Instrument Sans', system-ui, sans-serif;
+  letter-spacing: .04em;
+  box-shadow: 0 6px 20px rgba(0,0,0,.5);
 }
 @media (min-width: 48rem) { #vor-knopf { bottom: 18px; } }
 
 #vor-panel {
-  position: fixed; left: 12px; right: 12px; z-index: 9999;
-  bottom: calc(8.4rem + env(safe-area-inset-bottom));
-  max-width: 30rem; margin-inline: auto;
-  background: #0F2B2E; color: #F4EDE0;
-  border: 1px solid rgba(244,237,224,.28);
-  border-radius: 12px; padding: 16px;
-  box-shadow: 0 14px 44px rgba(0,0,0,.55);
-  font: 400 14px/1.55 'Instrument Sans', system-ui, sans-serif;
+  position: fixed; inset: auto 8px calc(0.6rem + env(safe-area-inset-bottom)) 8px;
+  z-index: 10000; max-width: 30rem; margin-inline: auto;
+  max-height: 82vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  background: #0B2225; color: #F4EDE0;
+  border: 1px solid rgba(244,237,224,.3);
+  border-radius: 14px; padding: 16px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.6);
+  font: 400 14px/1.5 'Instrument Sans', system-ui, sans-serif;
 }
-@media (min-width: 48rem) { #vor-panel { bottom: 78px; } }
 #vor-panel[hidden] { display: none; }
 #vor-panel h4 {
-  font: 600 11px/1 'Instrument Sans', sans-serif;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: #A8C66C; margin: 0 0 10px;
+  font: 600 10px/1 'Instrument Sans', sans-serif;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: #A8C66C; margin: 18px 0 9px;
 }
-#vor-panel select {
-  width: 100%; margin-top: 6px; padding: 9px 10px;
+#vor-panel h4:first-of-type { margin-top: 4px; }
+#vor-panel select, #vor-panel .vor-reihe {
+  width: 100%; padding: 9px 10px; border-radius: 7px;
   background: #14383C; color: #F4EDE0;
-  border: 1px solid rgba(244,237,224,.3); border-radius: 6px;
+  border: 1px solid rgba(244,237,224,.28);
 }
-#vor-panel p { margin: 12px 0 0; color: #C5BCA9; font-size: 13px; }
+#vor-panel label.vor-schalter {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; margin-bottom: 6px; border-radius: 7px;
+  background: #14383C; border: 1px solid rgba(244,237,224,.22);
+  cursor: pointer;
+}
+#vor-panel label.vor-schalter input { width: 18px; height: 18px; accent-color: #A8C66C; flex: none; }
+#vor-panel .vor-hint { display: block; font-size: 12px; color: #C5BCA9; margin-top: 2px; }
+
+#vor-sorten { display: flex; flex-wrap: wrap; gap: 6px; }
+#vor-sorten button {
+  flex: 1 1 auto; padding: 7px 10px; border-radius: 100px; cursor: pointer;
+  background: #14383C; color: #F4EDE0; font-size: 12px;
+  border: 1px solid rgba(244,237,224,.28);
+}
+
+#vor-liste { list-style: none; margin: 0; padding: 0; counter-reset: fn; }
+#vor-liste li {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 9px 0; border-bottom: 1px solid rgba(244,237,224,.13);
+}
+#vor-liste li:last-child { border-bottom: 0; }
+#vor-liste .vor-txt { flex: 1; min-width: 0; }
+#vor-liste b { display: block; font-weight: 600; font-size: 13.5px; }
+#vor-liste span { display: block; font-size: 12px; color: #C5BCA9; line-height: 1.4; }
+#vor-liste button {
+  flex: none; align-self: center;
+  padding: 7px 13px; border-radius: 100px; cursor: pointer;
+  background: #A8C66C; color: #0B1A10; border: none;
+  font: 600 12px/1 'Instrument Sans', sans-serif;
+}
 #vor-panel .vor-zu {
-  margin-top: 14px; width: 100%; padding: 9px;
-  background: none; color: #F4EDE0; cursor: pointer;
-  border: 1px solid rgba(244,237,224,.3); border-radius: 100px;
+  position: sticky; bottom: -16px; margin: 16px -16px -16px; padding: 13px;
+  width: calc(100% + 32px);
+  background: #0B2225; color: #F4EDE0; cursor: pointer;
+  border: 0; border-top: 1px solid rgba(244,237,224,.22);
+  font: 600 14px/1 'Instrument Sans', sans-serif;
+}
+
+/* Kurzes Aufblinken, damit man sieht, worum es gerade geht */
+@keyframes vorBlitz {
+  0%, 100% { outline-color: transparent; }
+  25%, 75% { outline-color: #E8C547; }
+}
+.vor-blitz {
+  outline: 3px solid transparent; outline-offset: 5px; border-radius: 4px;
+  animation: vorBlitz 1.5s ease-in-out 2;
 }
 
 </style>
@@ -1300,7 +1343,41 @@ body { padding-bottom: 4.1rem; }
 <!-- Strukturierte Daten. Öffnungszeiten und Bewertung hier synchron halten
      mit dem sichtbaren Text weiter oben. Dienstag ist bewusst nicht
      aufgeführt — ein fehlender Tag bedeutet für Suchmaschinen geschlossen. -->
-
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "@id": "https://www.la-bonta.de/#restaurant",
+  "name": "Restaurant La Bontà",
+  "description": "Familiengeführtes italienisches Restaurant und Eiscafé in Rochlitz mit hausgemachter Pasta, Pizza und eigenem Eis.",
+  "url": "https://www.la-bonta.de/",
+  "telephone": "+49 3737 1440929",
+  "email": "info@la-bonta.de",
+  "servesCuisine": ["Italienisch", "Pizza", "Pasta", "Eis"],
+  "priceRange": "€€",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Kirchgasse 1/3",
+    "postalCode": "09306",
+    "addressLocality": "Rochlitz",
+    "addressRegion": "Sachsen",
+    "addressCountry": "DE"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "11:00", "closes": "21:00" }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "289",
+    "bestRating": "5"
+  },
+  "hasMenu": "https://www.la-bonta.de/speisekarte.html",
+  "founder": { "@type": "Person", "name": "Emirjon Ndrepepaj" }
+}
+</script>
 
 
 
@@ -2357,7 +2434,1418 @@ body { padding-bottom: 4.1rem; }
   <a class="karte-an" href="#start">Startseite</a>
 </div>
 
-
+<script type="application/ld+json">
+[
+ {
+  "@context": "https://schema.org",
+  "@type": "Menu",
+  "name": "Abendkarte",
+  "url": "https://www.la-bonta.de/speisekarte.html#abendkarte",
+  "inLanguage": "de-DE",
+  "hasMenuSection": [
+   {
+    "@type": "MenuSection",
+    "name": "Aperitivs",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Prosecco",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Martini bianco",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Martini Rosso",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Campari Orange",
+      "offers": {
+       "@type": "Offer",
+       "price": "6.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Aperol Spritz",
+      "offers": {
+       "@type": "Offer",
+       "price": "7.50",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Suppen",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Tagessuppe",
+      "description": "Bitte fragen Sie unser Personal nach unserem Tagesangebot",
+      "offers": {
+       "@type": "Offer",
+       "price": "6.90",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Antipasti — Vorspeisen",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Antipasto Mista",
+      "description": "Gemischter Vorspeisenteller",
+      "offers": {
+       "@type": "Offer",
+       "price": "15.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Mozzarella Caprese",
+      "description": "Buffalo-Mozzarella mit Tomaten und Basilikum",
+      "offers": {
+       "@type": "Offer",
+       "price": "12.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Mozzarella alla Griglia",
+      "description": "gegrillter Mozzarella mit Parmaschinken, Tomaten und Rucola",
+      "offers": {
+       "@type": "Offer",
+       "price": "13.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Vitello Tonnato",
+      "description": "hauchdünner Kalbsrücken in würziger Thunfischsauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "11.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Prosciutto e Melone",
+      "description": "Parmaschinken mit Melone",
+      "offers": {
+       "@type": "Offer",
+       "price": "10.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Insalata Mista",
+      "description": "gemischter Salat",
+      "offers": {
+       "@type": "Offer",
+       "price": "7.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Insalata Rustica",
+      "description": "gemischter Salat mit Hähnchenbruststreifen, Champignons und Zwiebeln",
+      "offers": {
+       "@type": "Offer",
+       "price": "12.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Insalata Rucola",
+      "description": "Rucola, Tomaten und Parmesan",
+      "offers": {
+       "@type": "Offer",
+       "price": "8.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Insalata Capriccioso",
+      "description": "Gemischter Salat mit Vorderschinken, Käse, Thunfisch und Ei",
+      "offers": {
+       "@type": "Offer",
+       "price": "13.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Insalata La Bonta",
+      "description": "Gemischter Salat mit Rinderfiletspitzen und Parmesan",
+      "offers": {
+       "@type": "Offer",
+       "price": "15.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Bruschetta Classico",
+      "description": "mit frischen Tomaten, Knoblauch und Basilikum",
+      "offers": {
+       "@type": "Offer",
+       "price": "6.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Bruschetta Caprese",
+      "description": "mit frischen Tomaten, Mozzarella und Basilikum",
+      "offers": {
+       "@type": "Offer",
+       "price": "7.30",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Bruschetta Tonno",
+      "description": "mit frischen Tomaten, Thunfisch, Kapern und Zwiebeln",
+      "offers": {
+       "@type": "Offer",
+       "price": "7.70",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Bruschetta Salmone",
+      "description": "mit frischen Tomaten, Räucherlachs und Rucola",
+      "offers": {
+       "@type": "Offer",
+       "price": "8.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Bruschetta Mix",
+      "description": "ein Mix aus Bruschetta Caprese, Tonno und Salmone",
+      "offers": {
+       "@type": "Offer",
+       "price": "9.50",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Pasta — Nudeln",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Spaghetti Napoli",
+      "description": "mit Tomaten und Basilikum",
+      "offers": {
+       "@type": "Offer",
+       "price": "9.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Spaghetti Bolognese",
+      "description": "mit Hackfleischsauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "10.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Spaghetti Aglio e Olio",
+      "description": "mit Olivenöl, Knoblauch und scharfer Peperoni",
+      "offers": {
+       "@type": "Offer",
+       "price": "9.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Spaghetti Frutti di Mare",
+      "description": "mit Meeresfrüchten und Knoblauch in Tomatensauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "15.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Spaghetti Carbonara",
+      "description": "mit Speck, Ei, Parmesan und Sahnesauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "13.40",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Spaghetti con Tartufo",
+      "description": "mit Rinderfiletspitzen und Trüffelcreme-Sahnesauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "16.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Linguine Scampi e Rucola",
+      "description": "Schrimps in Tomatensauce und frischem Rucola",
+      "offers": {
+       "@type": "Offer",
+       "price": "16.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Linguine Fileto",
+      "description": "mit Rinderfiletspitzen und Steinpilzen in Bratensahnesauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "17.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Tagliatelle Amore",
+      "description": "mit Schinken und Champignons in Gorgonzolasahnesauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "14.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Tagliatelle Salmone",
+      "description": "mit Lachs und Knoblauch in Tomatensauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "16.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Ravioli",
+      "description": "in Trüffelcreme-Sahnesauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "15.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Gnocchi Spinacci al Gorgonzola",
+      "description": "Kartoffelklößchen in edlem Gorgonzola-Käserahm mit Spinat",
+      "offers": {
+       "@type": "Offer",
+       "price": "15.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Gnocchi Sorentina",
+      "description": "Kartoffelklößchen mit frischem Mozzarella in Tomatensauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "13.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Penne Arrabiata",
+      "description": "mit Knoblauch in pikanter Tomatensauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "10.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Penne Quattro Formaggi",
+      "description": "mit vier verschiedenen Käsesorten in Sahnesauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "14.20",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Penne Spinacci Gorgonzola",
+      "description": "mit Spinat und Gorgonzolasahnesauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "12.20",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Gratinati — Überbackenes",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Lasagne",
+      "description": "Nudeln mit Schinken, Hackfleischsauce und Käse überbacken",
+      "offers": {
+       "@type": "Offer",
+       "price": "14.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Penne Funghi Porcini",
+      "description": "mit Speck, Steinpilzen, Sahnesauce und Käse überbacken",
+      "offers": {
+       "@type": "Offer",
+       "price": "14.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Tortellini alla Rapellina",
+      "description": "mit Brokkoli, Schinken in Sahnesauce und Käse überbacken",
+      "offers": {
+       "@type": "Offer",
+       "price": "14.50",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Risotto — Reisgerichte",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Risotto Frutti di Mare",
+      "description": "mit Meeresfrüchten",
+      "offers": {
+       "@type": "Offer",
+       "price": "15.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Risotto Porcini Fileto",
+      "description": "mit Rinderfiletspitzen und Steinpilzen in Sahnesauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "16.90",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Le Pizze — Pizza",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Pizzabrot",
+      "description": "mit Olivenöl und Kräutern oder Knoblauch",
+      "offers": {
+       "@type": "Offer",
+       "price": "5.10",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Margherita",
+      "description": "mit Tomatensauce, Mozzarella und Basilikum",
+      "offers": {
+       "@type": "Offer",
+       "price": "9.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Caprese Buffalo",
+      "description": "mit frischen Tomaten, Büffel-Mozzarella und Basilikum",
+      "offers": {
+       "@type": "Offer",
+       "price": "12.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Salami",
+      "description": "mit Tomatensauce, Mozzarella und Salami",
+      "offers": {
+       "@type": "Offer",
+       "price": "11.10",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Schinken",
+      "description": "mit Tomatensauce, Mozzarella und gekochtem Schinken",
+      "offers": {
+       "@type": "Offer",
+       "price": "11.60",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Speziale",
+      "description": "mit Tomatensauce, Mozzarella, Salami, Schinken, Champignons und Zwiebeln",
+      "offers": {
+       "@type": "Offer",
+       "price": "14.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza La Bonta",
+      "description": "mit Tomatensauce, Mozzarella, Salami, Schinken, Oliven und Artischocken",
+      "offers": {
+       "@type": "Offer",
+       "price": "14.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Frutti di Mare",
+      "description": "mit Tomatensauce, Mozzarella und Meeresfrüchten",
+      "offers": {
+       "@type": "Offer",
+       "price": "15.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Hawaii",
+      "description": "mit Tomatensauce, Mozzarella, Schinken und Ananas",
+      "offers": {
+       "@type": "Offer",
+       "price": "12.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Calzone",
+      "description": "Pizzatasche mit Tomatensauce, Mozzarella, Salami, Schinken und Champignons",
+      "offers": {
+       "@type": "Offer",
+       "price": "13.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Vegetariana",
+      "description": "mit Tomatensauce, Mozzarella, Auberginen, Artischocken, Oliven, Champignons und Zucchini",
+      "offers": {
+       "@type": "Offer",
+       "price": "13.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Tonno",
+      "description": "mit Tomatensauce, Mozzarella, Thunfisch und Zwiebeln",
+      "offers": {
+       "@type": "Offer",
+       "price": "12.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Quattro Formaggi",
+      "description": "mit Tomatensauce und vier verschiedenen Käsesorten",
+      "offers": {
+       "@type": "Offer",
+       "price": "14.20",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Parma e Rucola",
+      "description": "mit Tomatensauce, Mozzarella, Parmesan, Parmaschinken und Rucola",
+      "offers": {
+       "@type": "Offer",
+       "price": "15.20",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Piccante",
+      "description": "mit Tomatensauce, Mozzarella und scharfer Salami",
+      "offers": {
+       "@type": "Offer",
+       "price": "13.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Amore",
+      "description": "mit Tomatensauce, Mozzarella, Zucchini, Auberginen, Champignons, Zwiebeln und Parmesanstreifen",
+      "offers": {
+       "@type": "Offer",
+       "price": "14.90",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Extra Beilagen",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Zwiebeln",
+      "offers": {
+       "@type": "Offer",
+       "price": "1.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Artischocken, frische Champignons, Oliven, Peperoni",
+      "offers": {
+       "@type": "Offer",
+       "price": "2.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Rucola, Salami, Vorderschinken",
+      "offers": {
+       "@type": "Offer",
+       "price": "2.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Extra Mozzarella, frische Tomaten, Thunfisch",
+      "offers": {
+       "@type": "Offer",
+       "price": "2.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Parmesan",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.50",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Carne — Fleischgerichte",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Bistecca alla Griglia",
+      "description": "Rumpsteak gegrillt (ca. 270 Gramm), Rosmarinkartoffeln und Gemüse",
+      "offers": {
+       "@type": "Offer",
+       "price": "28.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Filetto alla Griglia",
+      "description": "Rinderfilet gegrillt (ca. 270 Gramm), mit Spaghetti und Gemüse",
+      "offers": {
+       "@type": "Offer",
+       "price": "30.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Filetto Gorgonzola",
+      "description": "Rinderfilet gegrillt (ca. 270 Gramm), in Gorgonzolasauce, mit Gemüse und Kartoffeln",
+      "offers": {
+       "@type": "Offer",
+       "price": "32.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Filetto al Pollo",
+      "description": "Hähnchenbrustfilet gegrillt, mit Kräuterbutter",
+      "offers": {
+       "@type": "Offer",
+       "price": "18.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Scaloppina ai Funghi",
+      "description": "Schweinefilet mit Champignonsauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "20.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Salmone alla Griglia",
+      "description": "frischer Lachs gegrillt (ca. 250 Gramm)",
+      "offers": {
+       "@type": "Offer",
+       "price": "24.90",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Bambini — Kinder",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Elsa",
+      "description": "mit Tomatensauce und Käse",
+      "offers": {
+       "@type": "Offer",
+       "price": "7.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Frosch",
+      "description": "mit Tomatensauce, Salami und Käse",
+      "offers": {
+       "@type": "Offer",
+       "price": "7.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Pizza Maus",
+      "description": "mit Tomatensauce, Schinken und Käse",
+      "offers": {
+       "@type": "Offer",
+       "price": "7.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Penne Pomodoro",
+      "description": "in leckerer Tomatensauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "6.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Penne Burro",
+      "description": "in leckerer Buttersauce",
+      "offers": {
+       "@type": "Offer",
+       "price": "6.90",
+       "priceCurrency": "EUR"
+      }
+     }
+    ],
+    "description": "bis 12 Jahre"
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Deserto — Dessert",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Schokoladensoufflé mit Vanilleeis",
+      "offers": {
+       "@type": "Offer",
+       "price": "6.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Tiramisu",
+      "offers": {
+       "@type": "Offer",
+       "price": "6.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Panna Cotta mit Erdbeersoße",
+      "offers": {
+       "@type": "Offer",
+       "price": "5.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Crème Brûlée",
+      "offers": {
+       "@type": "Offer",
+       "price": "6.90",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "Menu",
+  "name": "Getränkekarte",
+  "url": "https://www.la-bonta.de/speisekarte.html#getraenke",
+  "inLanguage": "de-DE",
+  "hasMenuSection": [
+   {
+    "@type": "MenuSection",
+    "name": "Bevande Calde — Warme Getränke",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Espresso",
+      "offers": {
+       "@type": "Offer",
+       "price": "2.70",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Doppio Espresso",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Milchkaffee",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Tasse Kaffee",
+      "offers": {
+       "@type": "Offer",
+       "price": "2.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Cappuccino",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.20",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Latte Macchiato",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.70",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Heiße Schokolade",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Tee",
+      "description": "verschiedene Sorten",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Heiße Zitrone",
+      "offers": {
+       "@type": "Offer",
+       "price": "2.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Glühwein",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.20",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Bevande Analcoliche — Alkoholfreie Getränke",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "S. Pellegrino",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.30",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Acqua Panna",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.30",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Coca Cola",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Coca Cola light",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Fanta",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Sprite",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Spezi",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Apfelschorle",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Tonic Water",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Ginger Ale",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Bitter Lemon",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Eistee",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.80",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Succhi e Nettari — Säfte von Vaihinger",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Apfelsaft",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Orangensaft",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Ananassaft",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Kirschnektar",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Bananennektar",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "KIBA",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.90",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "La Nostra Birreria — Bier",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "König Pilsener vom Fass",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Benediktiner Weizen vom Fass",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Benediktiner Weizen dunkel",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Köstritzer Kellerbier",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Benediktiner Weizen alkoholfrei",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Bitburger alkoholfrei",
+      "offers": {
+       "@type": "Offer",
+       "price": "3.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Radler",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Diesel",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Cola-Weizen",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Bananen-Weizen",
+      "offers": {
+       "@type": "Offer",
+       "price": "5.10",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Radler alkoholfrei",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Vino della Casa — Offene Weine",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Bianco della Casa",
+      "description": "trockener Weißwein",
+      "offers": {
+       "@type": "Offer",
+       "price": "5.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Rosso della Casa",
+      "description": "trockener Rotwein",
+      "offers": {
+       "@type": "Offer",
+       "price": "5.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Rosé Wein",
+      "description": "trocken",
+      "offers": {
+       "@type": "Offer",
+       "price": "5.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Lambrusco",
+      "description": "lieblicher Rotwein",
+      "offers": {
+       "@type": "Offer",
+       "price": "5.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Frizzantino",
+      "description": "lieblicher Weißwein",
+      "offers": {
+       "@type": "Offer",
+       "price": "5.80",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Weißweinschorle",
+      "offers": {
+       "@type": "Offer",
+       "price": "5.80",
+       "priceCurrency": "EUR"
+      }
+     }
+    ]
+   },
+   {
+    "@type": "MenuSection",
+    "name": "Spiriti — Spirituosen",
+    "hasMenuItem": [
+     {
+      "@type": "MenuItem",
+      "name": "Fernet Branca",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Sambuca",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Vodka",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Jägermeister",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Vecchia Romagna",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Amaro Avenra",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Ramazzotti",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Limoncello",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Grappa Normale",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Grappa Speciale",
+      "description": "verschiedene Sorten",
+      "offers": {
+       "@type": "Offer",
+       "price": "7.50",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Amaretto",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     },
+     {
+      "@type": "MenuItem",
+      "name": "Baileys",
+      "offers": {
+       "@type": "Offer",
+       "price": "4.90",
+       "priceCurrency": "EUR"
+      }
+     }
+    ],
+    "description": "jeweils 4 cl"
+   }
+  ]
+ }
+]
+</script>
 
 
 
@@ -2863,13 +4351,31 @@ body { padding-bottom: 4.1rem; }
 </div>
 
 
-<button id="vor-knopf" aria-label="Vorschau-Einstellungen" title="Vorschau-Einstellungen">⚙</button>
-<div id="vor-panel" hidden>
-  <h4>Vorschau</h4>
+<button id="vor-knopf" aria-label="Funktionen anzeigen">Funktionen</button>
 
-  <label for="vor-zeit">Öffnungsstatus zu einer anderen Zeit ansehen</label>
-  <select id="vor-zeit">
-    <option value="">Jetzt (echte Uhrzeit)</option>
+<div id="vor-panel" hidden role="dialog" aria-label="Vorschau-Bedienfeld">
+
+  <h4>Sichtbar machen</h4>
+  <label class="vor-schalter">
+    <input type="checkbox" id="vor-buch">
+    <span>Buch auch hochkant zeigen
+      <span class="vor-hint">Läuft dann als Einzelseite. Auf der echten Seite
+      erscheint das Buch erst ab 760 Pixel Breite.</span></span>
+  </label>
+  <label class="vor-schalter">
+    <input type="checkbox" id="vor-saison">
+    <span>Saison-Band einblenden
+      <span class="vor-hint">Steht auf der echten Seite standardmäßig aus.</span></span>
+  </label>
+  <p id="vor-bewegung" class="vor-hint" hidden style="margin:8px 2px 0">
+    Ihr Gerät hat „Bewegung reduzieren“ eingeschaltet. Die Vorschau zeigt die
+    Animationen trotzdem, damit Sie alles sehen — die echte Seite würde sie
+    respektieren und ruhig bleiben.
+  </p>
+
+  <h4>Öffnungsstatus</h4>
+  <select id="vor-zeit" aria-label="Zeitpunkt für den Öffnungsstatus">
+    <option value="">Jetzt — echte Uhrzeit</option>
     <option value="2,14,0">Dienstag 14:00 — Ruhetag</option>
     <option value="0,10,30">Sonntag 10:30 — öffnet in 30 Minuten</option>
     <option value="0,12,0">Sonntag 12:00 — geöffnet</option>
@@ -2877,17 +4383,21 @@ body { padding-bottom: 4.1rem; }
     <option value="1,21,30">Montag 21:30 — zu, öffnet Mittwoch</option>
   </select>
 
-  <p><strong>Das Buch:</strong> Drehen Sie das Gerät quer. Unter 760 Pixel
-  Breite zeigt die Karte bewusst die Liste — hochkant auf dem Handy ist
-  Blättern unbrauchbar.</p>
+  <h4>Eissorte von Hand</h4>
+  <div id="vor-sorten"></div>
 
-  <p><strong>Anrufen und E-Mail</strong> funktionieren aus dieser Datei heraus
-  wie auf der echten Seite.</p>
+  <h4>Alle Funktionen der Reihe nach</h4>
+  <ul id="vor-liste"></ul>
 
   <button class="vor-zu">Schließen</button>
 </div>
 
 
+<script>
+/* Die Vorschau soll alles zeigen — auch auf einem Gerät, das
+   „Bewegung reduzieren" gesetzt hat. Muss vor app.js stehen. */
+window.__bewegungErzwingen = true;
+</script>
 <script>
 /*!
  * GSAP 3.15.0
@@ -2932,7 +4442,13 @@ body { padding-bottom: 4.1rem; }
 (function () {
   'use strict';
 
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* __bewegungErzwingen wird nur von der Vorschau-Datei gesetzt, damit sich
+     die Animationen auch auf einem Gerät ansehen lassen, auf dem „Bewegung
+     reduzieren" eingeschaltet ist. Im Normalbetrieb ist die Variable nicht
+     gesetzt und die Einstellung des Geräts gilt uneingeschränkt. */
+  var reduce = window.__bewegungErzwingen
+    ? false
+    : matchMedia('(prefers-reduced-motion: reduce)').matches;
   window.__reduce = reduce;
 
   /* --- Navigation für schmale Fenster ------------------------------------ */
@@ -3259,6 +4775,11 @@ body { padding-bottom: 4.1rem; }
 
   setzen(0);
 
+  /* Für die Vorschau: erlaubt es, die Sorten von Hand durchzuschalten,
+     ohne durch die Sektion zu scrollen. */
+  window.__eisSorten = SORTEN.map(function (s) { return s.name; });
+  window.__eisSetzen = function (i) { setzen(i); setzen.letzte = i; };
+
   if (window.__reduce || typeof gsap === 'undefined') return;
 
   /* Ein Auslöser über die gesamte Sektionshöhe. Der Fortschritt wird in
@@ -3268,6 +4789,9 @@ body { padding-bottom: 4.1rem; }
     start: 'top 62%',
     end: 'bottom 38%',
     onUpdate: function (self) {
+      /* Wurde eine Sorte von Hand gewählt (nur in der Vorschau möglich),
+         darf das Scrollen sie nicht sofort wieder überschreiben. */
+      if (window.__eisManuell) return;
       var i = Math.min(
         SORTEN.length - 1,
         Math.floor(self.progress * SORTEN.length)
@@ -3320,10 +4844,14 @@ body { padding-bottom: 4.1rem; }
   var buecher = [];
 
   function istBuchTauglich() {
-    return window.innerWidth >= MIN_BREITE &&
-           !window.__reduce &&
-           typeof St !== 'undefined' && St.PageFlip;
+    if (typeof St === 'undefined' || !St.PageFlip) return false;
+    /* Nur die Vorschau-Datei setzt __buchErzwingen, um das Buch auch auf
+       schmalen Geräten vorführen zu können. Es läuft dann als Einzelseite. */
+    if (window.__buchErzwingen) return true;
+    return window.innerWidth >= MIN_BREITE && !window.__reduce;
   }
+
+  function istSchmal() { return window.innerWidth < MIN_BREITE; }
 
   /* ---- Seitenumbruch nach echter Messung -------------------------------
      Es wird nicht nach fester Stückzahl umgebrochen, sondern gemessen:
@@ -3331,18 +4859,33 @@ body { padding-bottom: 4.1rem; }
      entstehen halbleere oder überfüllte Seiten, je nach Länge der
      Beschreibungstexte. */
   function seitenBauen(quelle, breite, hoehe) {
+    /* Die Seitenmaße stehen in der Regel „.buch .seite". Läge die Probe
+       außerhalb eines .buch-Elements, bekäme sie keinen Innenabstand und
+       meldete rund 50 Pixel zu viel Platz — die fertigen Seiten liefen
+       dann über. Deshalb wird der echte Aufbau nachgebildet. */
+    var probeHuelle = document.createElement('div');
+    probeHuelle.className = 'buch';
+    probeHuelle.setAttribute('aria-hidden', 'true');
+    probeHuelle.style.cssText = 'position:absolute;left:-10000px;top:0;visibility:hidden;';
+
     var probe = document.createElement('div');
     probe.className = 'seite';
-    probe.setAttribute('aria-hidden', 'true');
-    probe.style.cssText = 'position:absolute;left:-10000px;top:0;visibility:hidden;' +
-                          'width:' + breite + 'px;height:' + hoehe + 'px;';
+    probe.style.cssText = 'width:' + breite + 'px;height:' + hoehe + 'px;';
+    probeHuelle.appendChild(probe);
     var innen = document.createElement('div');
+    /* flow-root erzeugt einen eigenen Formatierungskontext. Ohne ihn
+       schlagen die Ränder des ersten und letzten Kindes durch den
+       Messbehälter hindurch und die gemessene Höhe fällt zu klein aus —
+       die fertige Seite lief dadurch um rund 20 Pixel über. */
+    innen.style.display = 'flow-root';
     probe.appendChild(innen);
-    document.body.appendChild(probe);
+    document.body.appendChild(probeHuelle);
 
     var stil = getComputedStyle(probe);
+    /* 34 px bleiben für die Seitenzahl am Fuß frei, sonst schiebt sich der
+       letzte Eintrag darüber. */
     var verfuegbar = probe.clientHeight -
-                     parseFloat(stil.paddingTop) - parseFloat(stil.paddingBottom) - 22;
+                     parseFloat(stil.paddingTop) - parseFloat(stil.paddingBottom) - 34;
 
     var seiten = [];
     var aktuell = document.createElement('div');
@@ -3361,39 +4904,59 @@ body { padding-bottom: 4.1rem; }
       return passt();
     }
 
+    /* Nimmt Angefügtes wieder zurück — aus beiden Bäumen, sonst misst die
+       nächste Prüfung zu viel. */
+    function zurueckAuf(anzahl) {
+      while (aktuell.childNodes.length > anzahl) {
+        aktuell.removeChild(aktuell.lastChild);
+        if (innen.lastChild) innen.removeChild(innen.lastChild);
+      }
+    }
+
     var rubriken = quelle.querySelectorAll('[data-rubrik]');
 
     for (var r = 0; r < rubriken.length; r++) {
       var rubrik = rubriken[r];
       var titelText = rubrik.querySelector('[data-rubrik-titel]');
+      var notiz = rubrik.querySelector('[data-rubrik-notiz]');
       var eintraege = rubrik.querySelectorAll('[data-eintrag]');
 
-      function titelKlon(fortsetzung) {
-        var h = titelText.cloneNode(true);
-        if (fortsetzung) {
-          var s = document.createElement('span');
-          s.className = 'rubrik__fort';
-          s.textContent = ' (Fortsetzung)';
-          h.appendChild(s);
-        }
-        return h;
-      }
+      var titelKlon = (function (quelleTitel) {
+        return function (fortsetzung) {
+          var h = quelleTitel.cloneNode(true);
+          if (fortsetzung) {
+            var s = document.createElement('span');
+            s.className = 'rubrik__fort';
+            s.textContent = ' (Fortsetzung)';
+            h.appendChild(s);
+          }
+          return h;
+        };
+      })(titelText);
 
-      /* Rubrik-Überschrift setzen; passt sie nicht mehr, neue Seite */
-      if (titelText && !anfuegen(titelKlon(false))) {
-        aktuell.removeChild(aktuell.lastChild);
+      /* Überschrift, Notiz und der erste Eintrag müssen GEMEINSAM auf die
+         Seite passen. Sonst bliebe eine Rubrik-Überschrift allein am
+         Seitenfuß stehen — typografisch ein Schusterjunge. */
+      var marke = aktuell.childNodes.length;
+      var gruppeOk = true;
+
+      if (titelText) gruppeOk = anfuegen(titelKlon(false));
+      if (gruppeOk && notiz) gruppeOk = anfuegen(notiz.cloneNode(true));
+      if (gruppeOk && eintraege.length) gruppeOk = anfuegen(eintraege[0].cloneNode(true));
+
+      if (!gruppeOk) {
+        zurueckAuf(marke);
         seiteAbschliessen();
-        anfuegen(titelKlon(false));
+        if (titelText) anfuegen(titelKlon(false));
+        if (notiz) anfuegen(notiz.cloneNode(true));
+        if (eintraege.length) anfuegen(eintraege[0].cloneNode(true));
       }
 
-      var notiz = rubrik.querySelector('[data-rubrik-notiz]');
-      if (notiz) anfuegen(notiz.cloneNode(true));
-
-      for (var e = 0; e < eintraege.length; e++) {
+      for (var e = 1; e < eintraege.length; e++) {
         if (!anfuegen(eintraege[e].cloneNode(true))) {
           /* Läuft über: letzten Eintrag zurücknehmen, Seite schließen,
              auf der neuen Seite mit Fortsetzungs-Überschrift weiter. */
-          aktuell.removeChild(aktuell.lastChild);
+          zurueckAuf(aktuell.childNodes.length - 1);
           seiteAbschliessen();
           if (titelText) anfuegen(titelKlon(true));
           anfuegen(eintraege[e].cloneNode(true));
@@ -3402,7 +4965,7 @@ body { padding-bottom: 4.1rem; }
     }
     seiteAbschliessen();
 
-    document.body.removeChild(probe);
+    document.body.removeChild(probeHuelle);
 
     /* Gerade Seitenzahl, damit die Doppelseite immer aufgeht */
     if (seiten.length % 2 !== 0) seiten.push(document.createElement('div'));
@@ -3412,17 +4975,37 @@ body { padding-bottom: 4.1rem; }
   /* ---- Ein Buch aufbauen ------------------------------------------------ */
   function buchBauen(sektion) {
     var huelle = sektion.querySelector('[data-buch-huelle]');
-    var ziel = sektion.querySelector('[data-buch-ziel]');
     var buehne = sektion.querySelector('.buch-buehne');
     var liste = sektion.querySelector('.karte-liste:not([hidden])');
-    if (!huelle || !ziel || !liste) return null;
+    if (!huelle || !buehne || !liste) return null;
+
+    /* StPageFlip ersetzt beim Initialisieren das Element, das es bekommt.
+       Ein zweiter Aufbau fände das alte Ziel deshalb nicht mehr — das Buch
+       verschwände beim Ändern der Fenstergröße oder beim Drehen des Geräts.
+       Darum bekommt jeder Aufbau ein frisches Ziel innerhalb der Bühne,
+       die als einziges Element stabil bleibt. */
+    buehne.innerHTML = '';
+    var ziel = document.createElement('div');
+    ziel.className = 'buch';
+    ziel.setAttribute('data-buch-ziel', '');
+    buehne.appendChild(ziel);
 
     /* An der tatsächlich verfügbaren Innenbreite messen, nicht an der
        Sektionsbreite — sonst ragt die Doppelseite über den Satzspiegel
        hinaus und erzeugt waagerechtes Scrollen. */
     var verfuegbareBreite = Math.min(buehne.clientWidth || sektion.clientWidth, 1040);
-    var seitenBreite = Math.floor(Math.min(430, (verfuegbareBreite - 8) / 2));
-    var seitenHoehe = Math.round(seitenBreite * 1.4);
+    var schmal = istSchmal();
+    var seitenBreite, seitenHoehe;
+
+    if (schmal) {
+      /* Einzelseite: die volle Breite für eine Seite statt zwei nebeneinander.
+         Bei 172 Pixeln pro Seite wäre eine Doppelseite unlesbar. */
+      seitenBreite = Math.floor(Math.min(430, verfuegbareBreite - 4));
+      seitenHoehe = Math.round(Math.min(seitenBreite * 1.45, window.innerHeight * 0.74));
+    } else {
+      seitenBreite = Math.floor(Math.min(430, (verfuegbareBreite - 8) / 2));
+      seitenHoehe = Math.round(seitenBreite * 1.4);
+    }
 
     var seiten = seitenBauen(liste, seitenBreite, seitenHoehe);
 
@@ -3444,7 +5027,7 @@ body { padding-bottom: 4.1rem; }
       height: seitenHoehe,
       size: 'fixed',
       showCover: false,
-      usePortrait: false,
+      usePortrait: schmal,
       mobileScrollSupport: false,
       drawShadow: true,
       flippingTime: 700,
@@ -3458,10 +5041,15 @@ body { padding-bottom: 4.1rem; }
        Tastatur hineinkommt und die Pfeiltasten greifen. */
     buehne.setAttribute('aria-hidden', 'true');
 
-    return { flip: flip, seiten: seiten.length };
+    return { flip: flip, seiten: seiten.length, schmal: schmal };
   }
 
-  /* ---- Steuerung -------------------------------------------------------- */
+  /* ---- Steuerung --------------------------------------------------------
+     Wird GENAU EINMAL je Sektion aufgerufen. Früher lief das bei jedem
+     Neuaufbau des Buchs mit und hängte dabei jedes Mal neue Klick-Handler
+     an dieselben Knöpfe — nach zwei Drehungen des Geräts blätterte ein
+     Tippen drei Seiten weiter. Die Handler greifen deshalb über zustand.flip
+     immer auf das aktuelle Buch zu, statt eines festzuhalten. */
   function steuerungVerdrahten(sektion, zustand) {
     var zurueck = sektion.querySelector('[data-buch-zurueck]');
     var vor = sektion.querySelector('[data-buch-vor]');
@@ -3471,17 +5059,22 @@ body { padding-bottom: 4.1rem; }
       if (!zustand.flip) return;
       var i = zustand.flip.getCurrentPageIndex();
       var n = zustand.flip.getPageCount();
-      if (stand) stand.textContent = 'Seite ' + (i + 1) + '–' + Math.min(i + 2, n) + ' von ' + n;
+      var proAnsicht = zustand.schmal ? 1 : 2;
+      if (stand) {
+        stand.textContent = proAnsicht === 1
+          ? 'Seite ' + (i + 1) + ' von ' + n
+          : 'Seite ' + (i + 1) + '–' + Math.min(i + 2, n) + ' von ' + n;
+      }
       if (zurueck) zurueck.disabled = i <= 0;
-      if (vor) vor.disabled = i + 2 >= n;
+      if (vor) vor.disabled = i + proAnsicht >= n;
     }
 
-    if (zurueck) zurueck.addEventListener('click', function () { zustand.flip.flipPrev(); });
-    if (vor) vor.addEventListener('click', function () { zustand.flip.flipNext(); });
-    if (zustand.flip) {
-      zustand.flip.on('flip', standAktualisieren);
-      standAktualisieren();
-    }
+    if (zurueck) zurueck.addEventListener('click', function () {
+      if (zustand.flip) zustand.flip.flipPrev();
+    });
+    if (vor) vor.addEventListener('click', function () {
+      if (zustand.flip) zustand.flip.flipNext();
+    });
 
     /* Pflichtregel 3 — Tastaturbedienung */
     sektion.addEventListener('keydown', function (ev) {
@@ -3498,6 +5091,14 @@ body { padding-bottom: 4.1rem; }
     });
 
     zustand.standAktualisieren = standAktualisieren;
+  }
+
+  /* Nach jedem Neuaufbau: das frische Buch an die bereits verdrahtete
+     Anzeige hängen. */
+  function flipVerbinden(zustand) {
+    if (!zustand.flip || !zustand.standAktualisieren) return;
+    zustand.flip.on('flip', zustand.standAktualisieren);
+    zustand.standAktualisieren();
   }
 
   /* ---- Sektion einrichten ----------------------------------------------- */
@@ -3526,7 +5127,8 @@ body { padding-bottom: 4.1rem; }
         if (!neu) { zustand.buchAktiv = false; }
         else {
           zustand.flip = neu.flip;
-          steuerungVerdrahten(sektion, zustand);
+          zustand.schmal = neu.schmal;
+          flipVerbinden(zustand);
         }
       } else {
         abbauen();
@@ -3570,6 +5172,9 @@ body { padding-bottom: 4.1rem; }
     if (schalter) {
       schalter.addEventListener('click', function () { ansichtSetzen(!zustand.buchAktiv); });
     }
+
+    /* Einmalig, vor dem ersten Aufbau */
+    steuerungVerdrahten(sektion, zustand);
 
     /* Auf breiten Fenstern startet die Karte als Buch — das ist das
        Schaustück. Auf schmalen bleibt es bei der Liste. */
@@ -3617,11 +5222,73 @@ body { padding-bottom: 4.1rem; }
 
 </script>
 <script>
+/* Aus den Einzelseiten herausgelöste Skripte, einmal zentral ausgeführt
+   (z. B. die Logik der Tischanfrage). */
+/* Tischanfrage per mailto. Bewusst ohne Server und ohne externen
+   Formulardienst: So verlassen die Angaben den Rechner des Gastes erst,
+   wenn er die Mail in seinem eigenen Programm selbst absendet. */
+(function () {
+  var form = document.getElementById('tisch-form');
+  if (!form) return;
+  var fehler = document.getElementById('f-fehler');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    fehler.textContent = '';
+
+    var pflicht = ['f-name', 'f-datum', 'f-zeit', 'f-personen'];
+    for (var i = 0; i < pflicht.length; i++) {
+      var el = document.getElementById(pflicht[i]);
+      if (!el.value.trim()) {
+        fehler.textContent = 'Bitte füllen Sie Name, Tag, Uhrzeit und Personenzahl aus.';
+        el.focus();
+        return;
+      }
+    }
+
+    var w = function (id) { return document.getElementById(id).value.trim(); };
+    var datum = w('f-datum');
+    var lesbar = datum;
+    try {
+      var d = new Date(datum + 'T00:00:00');
+      lesbar = d.toLocaleDateString('de-DE',
+        { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+      /* Dienstag ist Ruhetag — freundlich darauf hinweisen, statt die
+         Anfrage kommentarlos entgegenzunehmen. */
+      if (d.getDay() === 2) {
+        fehler.textContent = 'Hinweis: Dienstag ist unser Ruhetag. Bitte wählen Sie einen anderen Tag.';
+        document.getElementById('f-datum').focus();
+        return;
+      }
+    } catch (err) { /* Datum bleibt wie eingegeben */ }
+
+    var betreff = 'Tischanfrage ' + lesbar + ', ' + w('f-zeit') + ' Uhr';
+    var zeilen = [
+      'Guten Tag,',
+      '',
+      'ich möchte gerne einen Tisch anfragen:',
+      '',
+      'Name:      ' + w('f-name'),
+      'Tag:       ' + lesbar,
+      'Uhrzeit:   ' + w('f-zeit') + ' Uhr',
+      'Personen:  ' + w('f-personen')
+    ];
+    if (w('f-tel')) zeilen.push('Telefon:   ' + w('f-tel'));
+    if (w('f-text')) { zeilen.push('', 'Anmerkungen:', w('f-text')); }
+    zeilen.push('', 'Vielen Dank und freundliche Grüße');
+
+    window.location.href = 'mailto:info@la-bonta.de'
+      + '?subject=' + encodeURIComponent(betreff)
+      + '&body=' + encodeURIComponent(zeilen.join('\n'));
+  });
+})();
+</script>
+<script>
 
 /* ---- Nur für die Vorschau, nicht Teil der Website ------------------------
    Ersetzt die Dateiwechsel durch einen Umschalter innerhalb eines Dokuments
-   und bietet eine Zeitvorgabe, damit sich auch der Dienstag-Ruhetag prüfen
-   lässt, ohne bis Dienstag zu warten.
+   und macht jede Funktion vorführbar — auch die, die auf einem Handy sonst
+   gar nicht erscheinen.
    ----------------------------------------------------------------------- */
 (function () {
   var seiten = document.querySelectorAll('.vseite');
@@ -3631,8 +5298,6 @@ body { padding-bottom: 4.1rem; }
       seiten[i].hidden = seiten[i].getAttribute('data-seite') !== name;
     }
     if (window.ScrollTrigger) ScrollTrigger.refresh();
-    /* Das Buch braucht echte Maße — die gibt es erst, wenn die Karte
-       tatsächlich sichtbar ist. */
     if (name === 'karte' && window.__buecherNeu) window.__buecherNeu();
 
     if (ziel && ziel.scrollIntoView) {
@@ -3647,7 +5312,6 @@ body { padding-bottom: 4.1rem; }
     var h = (location.hash || '').replace(/^#/, '') || 'start';
     var alsSeite = document.querySelector('.vseite[data-seite="' + h + '"]');
     if (alsSeite) return seiteZeigen(h, null);
-
     var el = document.getElementById(h);
     if (el) {
       var s = el.closest('.vseite');
@@ -3655,21 +5319,59 @@ body { padding-bottom: 4.1rem; }
     }
     seiteZeigen('start', null);
   }
-
   window.addEventListener('hashchange', route);
   route();
 
-  /* Jahreszahl in allen Fußzeilen */
   var j = document.querySelectorAll('[data-jahr]');
   for (var k = 0; k < j.length; k++) j[k].textContent = new Date().getFullYear();
 
-  /* ---- Bedienfeld ---- */
+  /* ------------------------------------------------------------------ */
   var knopf = document.getElementById('vor-knopf');
   var panel = document.getElementById('vor-panel');
   knopf.addEventListener('click', function () { panel.hidden = !panel.hidden; });
   panel.querySelector('.vor-zu').addEventListener('click', function () { panel.hidden = true; });
 
-  /* Nächsten Wochentag ab heute finden (0 = Sonntag) */
+  function seiteA(name) {
+    var akt = document.querySelector('.vseite[data-seite="' + name + '"]');
+    if (akt && akt.hidden) { seiteZeigen(name, null); return true; }
+    return false;
+  }
+  function inSeite(name, wahl) {
+    return document.querySelector('.vseite[data-seite="' + name + '"] ' + wahl);
+  }
+  function hin(el, blitz) {
+    if (!el) return;
+    el.scrollIntoView({ block: 'center' });
+    if (blitz !== false) {
+      el.classList.remove('vor-blitz');
+      void el.offsetWidth;
+      el.classList.add('vor-blitz');
+    }
+  }
+
+  /* ---- Schalter ---- */
+  var chBuch = document.getElementById('vor-buch');
+  chBuch.addEventListener('change', function () {
+    window.__buchErzwingen = chBuch.checked;
+    /* Zumachen, sonst verdeckt das Bedienfeld genau das, was man
+       gerade eingeschaltet hat. */
+    panel.hidden = true;
+    seiteA('karte');
+    setTimeout(function () {
+      if (window.__buecherNeu) window.__buecherNeu();
+      setTimeout(function () { hin(inSeite('karte', '.buch-buehne')); }, 250);
+    }, 120);
+  });
+
+  var chSaison = document.getElementById('vor-saison');
+  chSaison.addEventListener('change', function () {
+    var b = inSeite('start', '[data-saison]');
+    if (!b) return;
+    b.hidden = !chSaison.checked;
+    if (chSaison.checked) { panel.hidden = true; seiteA('start'); hin(b); }
+  });
+
+  /* ---- Öffnungsstatus zu anderer Zeit ---- */
   function naechster(wochentag, stunde, minute) {
     var d = new Date();
     d.setHours(stunde, minute, 0, 0);
@@ -3679,16 +5381,138 @@ body { padding-bottom: 4.1rem; }
     }
     return d.toISOString();
   }
-
   document.getElementById('vor-zeit').addEventListener('change', function (e) {
     var v = e.target.value;
-    if (!v) { window.__zeitBasis = null; }
-    else {
-      var t = v.split(',');
-      window.__zeitBasis = naechster(+t[0], +t[1], +t[2]);
-    }
+    window.__zeitBasis = v ? naechster(+v.split(',')[0], +v.split(',')[1], +v.split(',')[2]) : null;
     if (window.__statusNeu) window.__statusNeu();
+    var s = document.querySelector('.vseite:not([hidden]) [data-status]');
+    if (s) hin(s);
   });
+
+  /* ---- Eissorten von Hand durchschalten ---- */
+  var sortenBox = document.getElementById('vor-sorten');
+
+  function sorteWaehlen(i, manuell) {
+    panel.hidden = true;
+    window.__eisManuell = manuell;
+    seiteA('start');
+    setTimeout(function () {
+      if (manuell && window.__eisSetzen) window.__eisSetzen(i);
+      hin(inSeite('start', '[data-eis]'), false);
+    }, 120);
+  }
+
+  var auto = document.createElement('button');
+  auto.type = 'button'; auto.textContent = 'Automatisch';
+  auto.title = 'Farbe folgt wieder dem Scrollen';
+  auto.addEventListener('click', function () { sorteWaehlen(0, false); });
+  sortenBox.appendChild(auto);
+
+  (window.__eisSorten || []).forEach(function (name, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = name;
+    b.addEventListener('click', function () { sorteWaehlen(i, true); });
+    sortenBox.appendChild(b);
+  });
+
+  /* ---- Geführte Liste aller Funktionen ---- */
+  var AKTIONEN = {
+    status: function () { hin(inSeite('start', '[data-status]')); },
+    abschnitt: null,
+
+    buch: function () {
+      chBuch.checked = true;
+      window.__buchErzwingen = true;
+      if (window.__buecherNeu) window.__buecherNeu();
+      setTimeout(function () { hin(inSeite('karte', '.buch-buehne'), false); }, 320);
+    },
+    reiter: function (ziel) {
+      var t = inSeite('karte', '[role="tab"][data-ziel="' + ziel + '"]');
+      if (t) { t.click(); setTimeout(function () { hin(t); }, 200); }
+    },
+    getraenke: function () {
+      var s = document.getElementById('getraenke');
+      if (s) hin(s, false);
+    },
+    legende: function () {
+      var d = inSeite('karte', '.legende');
+      if (d) { d.open = true; hin(d); }
+    },
+    kennz: function () {
+      var b = inSeite('karte', '.kennz');
+      if (b) { hin(b); }
+    },
+    strasse: function () { hin(inSeite('start', '.strasse')); },
+    ruf: function () { hin(document.querySelector('.vseite:not([hidden]) .ruf-leiste'), true); },
+
+    dienstag: function () {
+      var d = document.getElementById('f-datum');
+      if (!d) return;
+      var x = new Date();
+      while (x.getDay() !== 2) x.setDate(x.getDate() + 1);
+      d.value = x.toISOString().slice(0, 10);
+      var n = document.getElementById('f-name'); if (n && !n.value) n.value = 'Max Mustermann';
+      var z = document.getElementById('f-zeit'); if (z && !z.value) z.value = '18:30';
+      document.getElementById('tisch-form')
+        .dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      setTimeout(function () { hin(document.getElementById('f-fehler')); }, 120);
+    }
+  };
+
+  var FUNKTIONEN = [
+    ['Live-Öffnungsstatus', 'Zeigt ohne Scrollen, ob gerade offen ist. Mit der Zeitauswahl oben lassen sich alle fünf Zustände ansehen.', 'start', 'status'],
+    ['Willkommen — die Familie', 'Der emotionale Kern: Gäste als Freunde der Familie.', 'willkommen', null],
+    ['Die Küche', 'Vier Bereiche: Antipasti, Pasta, Pizza, Fleisch und Fisch.', 'kueche', null],
+    ['Das Eis — Farbwechsel', 'Der helle Bruch. Beim Scrollen wechselt die Fläche durch die Sortenfarben und färbt Navigation und Anruf-Knopf mit.', 'eis', null],
+    ['Straßenverkauf', 'Eigener Block für Eis zum Mitnehmen — das Alleinstellungsmerkmal.', 'eis', 'strasse'],
+    ['Mittagskarte', 'Kurzer Block für Mittagsgäste.', 'mittag', null],
+    ['Anlässe', 'Feiern, Dinner for Two, Catering.', 'anlaesse', null],
+    ['Bewertung und Öffnungszeiten', '4,8 aus 289 Bewertungen, dazu die Wochentabelle — der heutige Tag wird hervorgehoben.', 'zeiten', null],
+    ['Schwester-Restaurants', 'Akropolis in Rochlitz und Paros in Penig.', 'familie', null],
+    ['Speisekarte als Buch', 'Das Schaustück. Wird hier auch hochkant erzwungen und läuft dann als Einzelseite — wischen oder Knöpfe benutzen.', 'karte', 'buch'],
+    ['Reiter: Mittagskarte', 'Umschalten auf die zweite Karte (noch Platzhalter).', 'karte', 'reiter:mittag'],
+    ['Reiter: Eis-Karte', 'Umschalten auf die dritte Karte (noch Platzhalter).', 'karte', 'reiter:eis'],
+    ['Zweites Buch: Getränke', 'Eigenes Buch, damit man für die Weinkarte nicht durch 60 Speisen blättert.', 'getraenke', 'getraenke'],
+    ['Allergen-Kennzeichen', 'Die Hochzahlen am Gericht — antippen zeigt den Klartext.', 'karte', 'kennz'],
+    ['Allergen-Legende', 'Vollständige Legende, aufklappbar.', 'karte', 'legende'],
+    ['Tischanfrage', 'Formular, das eine fertige E-Mail öffnet. Kein Server, keine Datenübertragung.', 'tisch', null],
+    ['Dienstag wird abgefangen', 'Trägt einen Dienstag ein und sendet ab — das Formular weist auf den Ruhetag hin.', 'tisch', 'dienstag'],
+    ['Anfahrt ohne Google Maps', 'Bewusst keine eingebettete Karte; der Link lädt erst auf Klick.', 'kontakt', null],
+    ['Anruf-Leiste', 'Dauerhaft in Daumenreichweite. Nimmt die Eissorten-Farbe mit.', 'start', 'ruf'],
+    ['Impressum', 'Gerüst mit Prüfhinweis.', 'impressum', null],
+    ['Datenschutz', 'Gerüst; beschreibt die tatsächlich eingesetzte Technik.', 'datenschutz', null]
+  ];
+
+  var liste = document.getElementById('vor-liste');
+  FUNKTIONEN.forEach(function (f) {
+    var li = document.createElement('li');
+    var txt = document.createElement('div');
+    txt.className = 'vor-txt';
+    txt.innerHTML = '<b></b><span></span>';
+    txt.querySelector('b').textContent = f[0];
+    txt.querySelector('span').textContent = f[1];
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = 'Zeigen';
+    b.addEventListener('click', function () {
+      panel.hidden = true;
+      location.hash = '#' + f[2];
+      route();
+      setTimeout(function () {
+        if (!f[3]) return;
+        var teile = String(f[3]).split(':');
+        var fn = AKTIONEN[teile[0]];
+        if (fn) fn(teile[1]);
+      }, 420);
+    });
+    li.appendChild(txt); li.appendChild(b);
+    liste.appendChild(li);
+  });
+
+  /* Hinweis, falls das Gerät „Bewegung reduzieren" gesetzt hat — die
+     Vorschau schaltet die Animationen bewusst trotzdem ein. */
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.getElementById('vor-bewegung').hidden = false;
+  }
 })();
 
 </script>

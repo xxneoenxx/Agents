@@ -30,10 +30,14 @@
   var buecher = [];
 
   function istBuchTauglich() {
-    return window.innerWidth >= MIN_BREITE &&
-           !window.__reduce &&
-           typeof St !== 'undefined' && St.PageFlip;
+    if (typeof St === 'undefined' || !St.PageFlip) return false;
+    /* Nur die Vorschau-Datei setzt __buchErzwingen, um das Buch auch auf
+       schmalen Geräten vorführen zu können. Es läuft dann als Einzelseite. */
+    if (window.__buchErzwingen) return true;
+    return window.innerWidth >= MIN_BREITE && !window.__reduce;
   }
+
+  function istSchmal() { return window.innerWidth < MIN_BREITE; }
 
   /* ---- Seitenumbruch nach echter Messung -------------------------------
      Es wird nicht nach fester Stückzahl umgebrochen, sondern gemessen:
@@ -41,18 +45,33 @@
      entstehen halbleere oder überfüllte Seiten, je nach Länge der
      Beschreibungstexte. */
   function seitenBauen(quelle, breite, hoehe) {
+    /* Die Seitenmaße stehen in der Regel „.buch .seite". Läge die Probe
+       außerhalb eines .buch-Elements, bekäme sie keinen Innenabstand und
+       meldete rund 50 Pixel zu viel Platz — die fertigen Seiten liefen
+       dann über. Deshalb wird der echte Aufbau nachgebildet. */
+    var probeHuelle = document.createElement('div');
+    probeHuelle.className = 'buch';
+    probeHuelle.setAttribute('aria-hidden', 'true');
+    probeHuelle.style.cssText = 'position:absolute;left:-10000px;top:0;visibility:hidden;';
+
     var probe = document.createElement('div');
     probe.className = 'seite';
-    probe.setAttribute('aria-hidden', 'true');
-    probe.style.cssText = 'position:absolute;left:-10000px;top:0;visibility:hidden;' +
-                          'width:' + breite + 'px;height:' + hoehe + 'px;';
+    probe.style.cssText = 'width:' + breite + 'px;height:' + hoehe + 'px;';
+    probeHuelle.appendChild(probe);
     var innen = document.createElement('div');
+    /* flow-root erzeugt einen eigenen Formatierungskontext. Ohne ihn
+       schlagen die Ränder des ersten und letzten Kindes durch den
+       Messbehälter hindurch und die gemessene Höhe fällt zu klein aus —
+       die fertige Seite lief dadurch um rund 20 Pixel über. */
+    innen.style.display = 'flow-root';
     probe.appendChild(innen);
-    document.body.appendChild(probe);
+    document.body.appendChild(probeHuelle);
 
     var stil = getComputedStyle(probe);
+    /* 34 px bleiben für die Seitenzahl am Fuß frei, sonst schiebt sich der
+       letzte Eintrag darüber. */
     var verfuegbar = probe.clientHeight -
-                     parseFloat(stil.paddingTop) - parseFloat(stil.paddingBottom) - 22;
+                     parseFloat(stil.paddingTop) - parseFloat(stil.paddingBottom) - 34;
 
     var seiten = [];
     var aktuell = document.createElement('div');
@@ -71,39 +90,59 @@
       return passt();
     }
 
+    /* Nimmt Angefügtes wieder zurück — aus beiden Bäumen, sonst misst die
+       nächste Prüfung zu viel. */
+    function zurueckAuf(anzahl) {
+      while (aktuell.childNodes.length > anzahl) {
+        aktuell.removeChild(aktuell.lastChild);
+        if (innen.lastChild) innen.removeChild(innen.lastChild);
+      }
+    }
+
     var rubriken = quelle.querySelectorAll('[data-rubrik]');
 
     for (var r = 0; r < rubriken.length; r++) {
       var rubrik = rubriken[r];
       var titelText = rubrik.querySelector('[data-rubrik-titel]');
+      var notiz = rubrik.querySelector('[data-rubrik-notiz]');
       var eintraege = rubrik.querySelectorAll('[data-eintrag]');
 
-      function titelKlon(fortsetzung) {
-        var h = titelText.cloneNode(true);
-        if (fortsetzung) {
-          var s = document.createElement('span');
-          s.className = 'rubrik__fort';
-          s.textContent = ' (Fortsetzung)';
-          h.appendChild(s);
-        }
-        return h;
-      }
+      var titelKlon = (function (quelleTitel) {
+        return function (fortsetzung) {
+          var h = quelleTitel.cloneNode(true);
+          if (fortsetzung) {
+            var s = document.createElement('span');
+            s.className = 'rubrik__fort';
+            s.textContent = ' (Fortsetzung)';
+            h.appendChild(s);
+          }
+          return h;
+        };
+      })(titelText);
 
-      /* Rubrik-Überschrift setzen; passt sie nicht mehr, neue Seite */
-      if (titelText && !anfuegen(titelKlon(false))) {
-        aktuell.removeChild(aktuell.lastChild);
+      /* Überschrift, Notiz und der erste Eintrag müssen GEMEINSAM auf die
+         Seite passen. Sonst bliebe eine Rubrik-Überschrift allein am
+         Seitenfuß stehen — typografisch ein Schusterjunge. */
+      var marke = aktuell.childNodes.length;
+      var gruppeOk = true;
+
+      if (titelText) gruppeOk = anfuegen(titelKlon(false));
+      if (gruppeOk && notiz) gruppeOk = anfuegen(notiz.cloneNode(true));
+      if (gruppeOk && eintraege.length) gruppeOk = anfuegen(eintraege[0].cloneNode(true));
+
+      if (!gruppeOk) {
+        zurueckAuf(marke);
         seiteAbschliessen();
-        anfuegen(titelKlon(false));
+        if (titelText) anfuegen(titelKlon(false));
+        if (notiz) anfuegen(notiz.cloneNode(true));
+        if (eintraege.length) anfuegen(eintraege[0].cloneNode(true));
       }
 
-      var notiz = rubrik.querySelector('[data-rubrik-notiz]');
-      if (notiz) anfuegen(notiz.cloneNode(true));
-
-      for (var e = 0; e < eintraege.length; e++) {
+      for (var e = 1; e < eintraege.length; e++) {
         if (!anfuegen(eintraege[e].cloneNode(true))) {
           /* Läuft über: letzten Eintrag zurücknehmen, Seite schließen,
              auf der neuen Seite mit Fortsetzungs-Überschrift weiter. */
-          aktuell.removeChild(aktuell.lastChild);
+          zurueckAuf(aktuell.childNodes.length - 1);
           seiteAbschliessen();
           if (titelText) anfuegen(titelKlon(true));
           anfuegen(eintraege[e].cloneNode(true));
@@ -112,7 +151,7 @@
     }
     seiteAbschliessen();
 
-    document.body.removeChild(probe);
+    document.body.removeChild(probeHuelle);
 
     /* Gerade Seitenzahl, damit die Doppelseite immer aufgeht */
     if (seiten.length % 2 !== 0) seiten.push(document.createElement('div'));
@@ -122,17 +161,37 @@
   /* ---- Ein Buch aufbauen ------------------------------------------------ */
   function buchBauen(sektion) {
     var huelle = sektion.querySelector('[data-buch-huelle]');
-    var ziel = sektion.querySelector('[data-buch-ziel]');
     var buehne = sektion.querySelector('.buch-buehne');
     var liste = sektion.querySelector('.karte-liste:not([hidden])');
-    if (!huelle || !ziel || !liste) return null;
+    if (!huelle || !buehne || !liste) return null;
+
+    /* StPageFlip ersetzt beim Initialisieren das Element, das es bekommt.
+       Ein zweiter Aufbau fände das alte Ziel deshalb nicht mehr — das Buch
+       verschwände beim Ändern der Fenstergröße oder beim Drehen des Geräts.
+       Darum bekommt jeder Aufbau ein frisches Ziel innerhalb der Bühne,
+       die als einziges Element stabil bleibt. */
+    buehne.innerHTML = '';
+    var ziel = document.createElement('div');
+    ziel.className = 'buch';
+    ziel.setAttribute('data-buch-ziel', '');
+    buehne.appendChild(ziel);
 
     /* An der tatsächlich verfügbaren Innenbreite messen, nicht an der
        Sektionsbreite — sonst ragt die Doppelseite über den Satzspiegel
        hinaus und erzeugt waagerechtes Scrollen. */
     var verfuegbareBreite = Math.min(buehne.clientWidth || sektion.clientWidth, 1040);
-    var seitenBreite = Math.floor(Math.min(430, (verfuegbareBreite - 8) / 2));
-    var seitenHoehe = Math.round(seitenBreite * 1.4);
+    var schmal = istSchmal();
+    var seitenBreite, seitenHoehe;
+
+    if (schmal) {
+      /* Einzelseite: die volle Breite für eine Seite statt zwei nebeneinander.
+         Bei 172 Pixeln pro Seite wäre eine Doppelseite unlesbar. */
+      seitenBreite = Math.floor(Math.min(430, verfuegbareBreite - 4));
+      seitenHoehe = Math.round(Math.min(seitenBreite * 1.45, window.innerHeight * 0.74));
+    } else {
+      seitenBreite = Math.floor(Math.min(430, (verfuegbareBreite - 8) / 2));
+      seitenHoehe = Math.round(seitenBreite * 1.4);
+    }
 
     var seiten = seitenBauen(liste, seitenBreite, seitenHoehe);
 
@@ -154,7 +213,7 @@
       height: seitenHoehe,
       size: 'fixed',
       showCover: false,
-      usePortrait: false,
+      usePortrait: schmal,
       mobileScrollSupport: false,
       drawShadow: true,
       flippingTime: 700,
@@ -168,10 +227,15 @@
        Tastatur hineinkommt und die Pfeiltasten greifen. */
     buehne.setAttribute('aria-hidden', 'true');
 
-    return { flip: flip, seiten: seiten.length };
+    return { flip: flip, seiten: seiten.length, schmal: schmal };
   }
 
-  /* ---- Steuerung -------------------------------------------------------- */
+  /* ---- Steuerung --------------------------------------------------------
+     Wird GENAU EINMAL je Sektion aufgerufen. Früher lief das bei jedem
+     Neuaufbau des Buchs mit und hängte dabei jedes Mal neue Klick-Handler
+     an dieselben Knöpfe — nach zwei Drehungen des Geräts blätterte ein
+     Tippen drei Seiten weiter. Die Handler greifen deshalb über zustand.flip
+     immer auf das aktuelle Buch zu, statt eines festzuhalten. */
   function steuerungVerdrahten(sektion, zustand) {
     var zurueck = sektion.querySelector('[data-buch-zurueck]');
     var vor = sektion.querySelector('[data-buch-vor]');
@@ -181,17 +245,22 @@
       if (!zustand.flip) return;
       var i = zustand.flip.getCurrentPageIndex();
       var n = zustand.flip.getPageCount();
-      if (stand) stand.textContent = 'Seite ' + (i + 1) + '–' + Math.min(i + 2, n) + ' von ' + n;
+      var proAnsicht = zustand.schmal ? 1 : 2;
+      if (stand) {
+        stand.textContent = proAnsicht === 1
+          ? 'Seite ' + (i + 1) + ' von ' + n
+          : 'Seite ' + (i + 1) + '–' + Math.min(i + 2, n) + ' von ' + n;
+      }
       if (zurueck) zurueck.disabled = i <= 0;
-      if (vor) vor.disabled = i + 2 >= n;
+      if (vor) vor.disabled = i + proAnsicht >= n;
     }
 
-    if (zurueck) zurueck.addEventListener('click', function () { zustand.flip.flipPrev(); });
-    if (vor) vor.addEventListener('click', function () { zustand.flip.flipNext(); });
-    if (zustand.flip) {
-      zustand.flip.on('flip', standAktualisieren);
-      standAktualisieren();
-    }
+    if (zurueck) zurueck.addEventListener('click', function () {
+      if (zustand.flip) zustand.flip.flipPrev();
+    });
+    if (vor) vor.addEventListener('click', function () {
+      if (zustand.flip) zustand.flip.flipNext();
+    });
 
     /* Pflichtregel 3 — Tastaturbedienung */
     sektion.addEventListener('keydown', function (ev) {
@@ -208,6 +277,14 @@
     });
 
     zustand.standAktualisieren = standAktualisieren;
+  }
+
+  /* Nach jedem Neuaufbau: das frische Buch an die bereits verdrahtete
+     Anzeige hängen. */
+  function flipVerbinden(zustand) {
+    if (!zustand.flip || !zustand.standAktualisieren) return;
+    zustand.flip.on('flip', zustand.standAktualisieren);
+    zustand.standAktualisieren();
   }
 
   /* ---- Sektion einrichten ----------------------------------------------- */
@@ -236,7 +313,8 @@
         if (!neu) { zustand.buchAktiv = false; }
         else {
           zustand.flip = neu.flip;
-          steuerungVerdrahten(sektion, zustand);
+          zustand.schmal = neu.schmal;
+          flipVerbinden(zustand);
         }
       } else {
         abbauen();
@@ -280,6 +358,9 @@
     if (schalter) {
       schalter.addEventListener('click', function () { ansichtSetzen(!zustand.buchAktiv); });
     }
+
+    /* Einmalig, vor dem ersten Aufbau */
+    steuerungVerdrahten(sektion, zustand);
 
     /* Auf breiten Fenstern startet die Karte als Buch — das ist das
        Schaustück. Auf schmalen bleibt es bei der Liste. */

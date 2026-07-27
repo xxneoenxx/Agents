@@ -28,16 +28,33 @@ Internetverbindung, auch auf dem iPhone.
 *Dateien* antippen. Falls iOS sie nur als Text anzeigt: oben rechts auf **Teilen →
 In Safari öffnen**.
 
-Im Bedienfeld unten rechts (⚙) lässt sich der Öffnungsstatus zu einer anderen Zeit
-ansehen — so wird auch der Dienstag-Ruhetag sichtbar, ohne bis Dienstag zu warten.
+Der grüne Knopf **„Funktionen"** unten rechts öffnet ein Bedienfeld, mit dem sich
+**jede** Funktion vorführen lässt — auch die, die auf einem Handy sonst gar nicht
+erscheinen:
 
-**Das Buch erscheint erst quer.** Unter 760 Pixel Breite zeigt die Karte bewusst die
-Liste; hochkant auf dem Handy ist Blättern unbrauchbar. Gerät drehen, dann geht es auf.
+- **Buch auch hochkant zeigen** — läuft dann als Einzelseite. Auf der echten Seite
+  erscheint das Buch erst ab 760 Pixel Breite; quer geht es ohnehin auf.
+- **Saison-Band einblenden** — steht auf der echten Seite standardmäßig aus.
+- **Öffnungsstatus** zu einer anderen Zeit ansehen, etwa Dienstag Ruhetag, ohne bis
+  Dienstag zu warten.
+- **Eissorte von Hand** durchschalten statt durch die Sektion zu scrollen.
+- **Eine Liste aller 21 Funktionen**, jede mit einem Knopf, der direkt hinführt und
+  sie auslöst.
+
+Die Vorschau schaltet die Animationen bewusst auch dann ein, wenn das Gerät
+„Bewegung reduzieren" gesetzt hat — sonst bliebe die halbe Seite unsichtbar. Die
+echte Seite respektiert die Einstellung.
 
 Neu bauen nach Änderungen:
 
 ```bash
 python3 bauen/vorschau-bauen.py
+```
+
+Prüfen:
+
+```bash
+node pruefung/vorschau.js
 ```
 
 Die Vorschau ist ein Prüfstück, **nicht die Fassung für den Server** — dafür gelten die

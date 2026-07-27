@@ -51,6 +51,11 @@
 
   setzen(0);
 
+  /* Für die Vorschau: erlaubt es, die Sorten von Hand durchzuschalten,
+     ohne durch die Sektion zu scrollen. */
+  window.__eisSorten = SORTEN.map(function (s) { return s.name; });
+  window.__eisSetzen = function (i) { setzen(i); setzen.letzte = i; };
+
   if (window.__reduce || typeof gsap === 'undefined') return;
 
   /* Ein Auslöser über die gesamte Sektionshöhe. Der Fortschritt wird in
@@ -60,6 +65,9 @@
     start: 'top 62%',
     end: 'bottom 38%',
     onUpdate: function (self) {
+      /* Wurde eine Sorte von Hand gewählt (nur in der Vorschau möglich),
+         darf das Scrollen sie nicht sofort wieder überschreiben. */
+      if (window.__eisManuell) return;
       var i = Math.min(
         SORTEN.length - 1,
         Math.floor(self.progress * SORTEN.length)

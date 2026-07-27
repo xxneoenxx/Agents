@@ -8,6 +8,10 @@ Alles wandert hinein: beide Schriften als Base64, GSAP, Lenis, StPageFlip,
 sämtliches CSS und alle fünf Seiten. Statt echter Dateiwechsel gibt es einen
 kleinen Umschalter, der immer nur eine Seite zeigt.
 
+Dazu ein Bedienfeld, mit dem sich JEDE Funktion vorführen lässt — auch die,
+die auf einem Handy sonst gar nicht erscheinen (Buch, Saison-Band) oder die
+eine bestimmte Uhrzeit brauchen (Ruhetag).
+
 Aufruf:
     python3 bauen/vorschau-bauen.py
 
@@ -43,54 +47,57 @@ def lies(pfad):
 
 
 def schrift_einbetten(css):
-    """Ersetzt die Schrift-Verweise durch eingebettete Base64-Daten."""
     def ersetze(m):
-        name = m.group(1)
-        roh = (WURZEL / "assets" / "fonts" / name).read_bytes()
-        b64 = base64.b64encode(roh).decode("ascii")
-        return "url('data:font/woff2;base64,%s')" % b64
+        roh = (WURZEL / "assets" / "fonts" / m.group(1)).read_bytes()
+        return "url('data:font/woff2;base64,%s')" % base64.b64encode(roh).decode("ascii")
     return re.sub(r"url\('\.\./fonts/([^']+)'\)", ersetze, css)
 
 
 def koerper(html):
-    """Holt den Inhalt zwischen <body> und </body>."""
-    m = re.search(r"<body[^>]*>(.*)</body>", html, re.S)
-    return m.group(1)
+    return re.search(r"<body[^>]*>(.*)</body>", html, re.S).group(1)
+
+
+EINGESAMMELT = []
 
 
 def aufraeumen(inhalt, route):
-    """Bereitet den Seiteninhalt für das gemeinsame Dokument auf."""
+    """Bereitet den Seiteninhalt für das gemeinsame Dokument auf.
 
-    # Inline-Skripte entfernen — sie werden zentral neu gesetzt, damit sie
-    # nicht fünfmal gegen dieselben Bezeichner laufen.
-    inhalt = re.sub(r"<script(?![^>]*\bsrc=)[^>]*>.*?</script>", "", inhalt, flags=re.S)
-    # Skripte mit src ebenfalls raus, die kommen einmal zentral.
+    Inline-Skripte werden NICHT einfach verworfen — sonst wäre etwa die
+    Logik der Tischanfrage in der Vorschau tot. Sie werden herausgelöst,
+    von der seitenweisen Jahreszahl befreit und später einmal zentral
+    ausgeführt.
+    """
+    def einsammeln(m):
+        code = m.group(1)
+        # Die Jahreszahl läuft zentral über [data-jahr]
+        code = re.sub(r"^.*getElementById\('jahr'\).*$", "", code, flags=re.M)
+        if code.strip():
+            EINGESAMMELT.append(code.strip())
+        return ""
+
+    # Nur Skripte OHNE type-Attribut sind JavaScript. Die JSON-LD-Blöcke
+    # (type="application/ld+json") bleiben unangetastet in der Seite stehen —
+    # als JavaScript ausgeführt ergäben sie einen Syntaxfehler.
+    inhalt = re.sub(r"<script(?![^>]*\bsrc=)(?![^>]*\btype=)[^>]*>(.*?)</script>",
+                    einsammeln, inhalt, flags=re.S)
     inhalt = re.sub(r"<script[^>]*\bsrc=[^>]*>\s*</script>", "", inhalt)
 
-    # Bezeichner, die auf mehreren Seiten vorkommen, pro Seite eindeutig machen.
     for kennung in ("inhalt", "nav-mobil"):
         inhalt = inhalt.replace('id="%s"' % kennung, 'id="%s-%s"' % (route, kennung))
         inhalt = inhalt.replace('href="#%s"' % kennung, 'href="#%s-%s"' % (route, kennung))
         inhalt = inhalt.replace('aria-controls="%s"' % kennung,
                                 'aria-controls="%s-%s"' % (route, kennung))
 
-    # Jahreszahl: aus der Bezeichner-Logik in ein Datenattribut überführen,
-    # damit ein einziges Skript alle fünf Fußzeilen bedienen kann.
     inhalt = inhalt.replace('<span id="jahr">', '<span data-jahr>')
 
-    # Dateiverweise in Routen umschreiben. Längere Formen zuerst, damit
-    # "index.html#eis" nicht vorzeitig von "index.html" getroffen wird.
     inhalt = re.sub(r'href="(index|speisekarte|kontakt|impressum|datenschutz)\.html#([^"]+)"',
                     r'href="#\2"', inhalt)
     for datei, ziel in DATEI_ZU_ROUTE.items():
         inhalt = inhalt.replace('href="%s"' % datei, 'href="%s"' % ziel)
-
     return inhalt
 
 
-# --------------------------------------------------------------------------
-# Bausteine einsammeln
-# --------------------------------------------------------------------------
 css = schrift_einbetten(lies("assets/css/fonts.css")) + "\n" + lies("assets/css/style.css")
 
 vendor = "\n;\n".join(lies("assets/vendor/" + n) for n in
@@ -99,63 +106,107 @@ vendor = "\n;\n".join(lies("assets/vendor/" + n) for n in
 eigen = "\n;\n".join(lies("assets/js/" + n) for n in
                     ["app.js", "hours.js", "gelato.js", "book.js"])
 
-abschnitte = []
-for route, datei, _titel in SEITEN:
-    abschnitte.append(
-        '<div class="vseite" data-seite="%s"%s>\n%s\n</div>'
-        % (route, "" if route == "start" else " hidden", aufraeumen(koerper(lies(datei)), route))
-    )
+abschnitte = [
+    '<div class="vseite" data-seite="%s"%s>\n%s\n</div>'
+    % (route, "" if route == "start" else " hidden", aufraeumen(koerper(lies(datei)), route))
+    for route, datei, _t in SEITEN
+]
 
+# --------------------------------------------------------------------------
 VORSCHAU_CSS = """
 /* ---- Nur für die Vorschau, nicht Teil der Website ---- */
 .vseite[hidden] { display: none; }
 
 #vor-knopf {
-  position: fixed; right: 14px; z-index: 9999;
+  position: fixed; right: 12px; z-index: 9999;
   bottom: calc(4.9rem + env(safe-area-inset-bottom));
-  width: 46px; height: 46px; border-radius: 50%;
-  background: #14383C; color: #F4EDE0;
-  border: 1px solid rgba(244,237,224,.45);
-  font-size: 19px; line-height: 1; cursor: pointer;
-  box-shadow: 0 6px 20px rgba(0,0,0,.45);
+  min-width: 46px; height: 46px; padding: 0 14px; border-radius: 23px;
+  background: #A8C66C; color: #0B1A10;
+  border: none; cursor: pointer;
+  font: 600 13px/1 'Instrument Sans', system-ui, sans-serif;
+  letter-spacing: .04em;
+  box-shadow: 0 6px 20px rgba(0,0,0,.5);
 }
 @media (min-width: 48rem) { #vor-knopf { bottom: 18px; } }
 
 #vor-panel {
-  position: fixed; left: 12px; right: 12px; z-index: 9999;
-  bottom: calc(8.4rem + env(safe-area-inset-bottom));
-  max-width: 30rem; margin-inline: auto;
-  background: #0F2B2E; color: #F4EDE0;
-  border: 1px solid rgba(244,237,224,.28);
-  border-radius: 12px; padding: 16px;
-  box-shadow: 0 14px 44px rgba(0,0,0,.55);
-  font: 400 14px/1.55 'Instrument Sans', system-ui, sans-serif;
+  position: fixed; inset: auto 8px calc(0.6rem + env(safe-area-inset-bottom)) 8px;
+  z-index: 10000; max-width: 30rem; margin-inline: auto;
+  max-height: 82vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  background: #0B2225; color: #F4EDE0;
+  border: 1px solid rgba(244,237,224,.3);
+  border-radius: 14px; padding: 16px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.6);
+  font: 400 14px/1.5 'Instrument Sans', system-ui, sans-serif;
 }
-@media (min-width: 48rem) { #vor-panel { bottom: 78px; } }
 #vor-panel[hidden] { display: none; }
 #vor-panel h4 {
-  font: 600 11px/1 'Instrument Sans', sans-serif;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: #A8C66C; margin: 0 0 10px;
+  font: 600 10px/1 'Instrument Sans', sans-serif;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: #A8C66C; margin: 18px 0 9px;
 }
-#vor-panel select {
-  width: 100%; margin-top: 6px; padding: 9px 10px;
+#vor-panel h4:first-of-type { margin-top: 4px; }
+#vor-panel select, #vor-panel .vor-reihe {
+  width: 100%; padding: 9px 10px; border-radius: 7px;
   background: #14383C; color: #F4EDE0;
-  border: 1px solid rgba(244,237,224,.3); border-radius: 6px;
+  border: 1px solid rgba(244,237,224,.28);
 }
-#vor-panel p { margin: 12px 0 0; color: #C5BCA9; font-size: 13px; }
+#vor-panel label.vor-schalter {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; margin-bottom: 6px; border-radius: 7px;
+  background: #14383C; border: 1px solid rgba(244,237,224,.22);
+  cursor: pointer;
+}
+#vor-panel label.vor-schalter input { width: 18px; height: 18px; accent-color: #A8C66C; flex: none; }
+#vor-panel .vor-hint { display: block; font-size: 12px; color: #C5BCA9; margin-top: 2px; }
+
+#vor-sorten { display: flex; flex-wrap: wrap; gap: 6px; }
+#vor-sorten button {
+  flex: 1 1 auto; padding: 7px 10px; border-radius: 100px; cursor: pointer;
+  background: #14383C; color: #F4EDE0; font-size: 12px;
+  border: 1px solid rgba(244,237,224,.28);
+}
+
+#vor-liste { list-style: none; margin: 0; padding: 0; counter-reset: fn; }
+#vor-liste li {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 9px 0; border-bottom: 1px solid rgba(244,237,224,.13);
+}
+#vor-liste li:last-child { border-bottom: 0; }
+#vor-liste .vor-txt { flex: 1; min-width: 0; }
+#vor-liste b { display: block; font-weight: 600; font-size: 13.5px; }
+#vor-liste span { display: block; font-size: 12px; color: #C5BCA9; line-height: 1.4; }
+#vor-liste button {
+  flex: none; align-self: center;
+  padding: 7px 13px; border-radius: 100px; cursor: pointer;
+  background: #A8C66C; color: #0B1A10; border: none;
+  font: 600 12px/1 'Instrument Sans', sans-serif;
+}
 #vor-panel .vor-zu {
-  margin-top: 14px; width: 100%; padding: 9px;
-  background: none; color: #F4EDE0; cursor: pointer;
-  border: 1px solid rgba(244,237,224,.3); border-radius: 100px;
+  position: sticky; bottom: -16px; margin: 16px -16px -16px; padding: 13px;
+  width: calc(100% + 32px);
+  background: #0B2225; color: #F4EDE0; cursor: pointer;
+  border: 0; border-top: 1px solid rgba(244,237,224,.22);
+  font: 600 14px/1 'Instrument Sans', sans-serif;
+}
+
+/* Kurzes Aufblinken, damit man sieht, worum es gerade geht */
+@keyframes vorBlitz {
+  0%, 100% { outline-color: transparent; }
+  25%, 75% { outline-color: #E8C547; }
+}
+.vor-blitz {
+  outline: 3px solid transparent; outline-offset: 5px; border-radius: 4px;
+  animation: vorBlitz 1.5s ease-in-out 2;
 }
 """
 
-VORSCHAU_JS = """
+# --------------------------------------------------------------------------
+VORSCHAU_JS = r"""
 /* ---- Nur für die Vorschau, nicht Teil der Website ------------------------
    Ersetzt die Dateiwechsel durch einen Umschalter innerhalb eines Dokuments
-   und bietet eine Zeitvorgabe, damit sich auch der Dienstag-Ruhetag prüfen
-   lässt, ohne bis Dienstag zu warten.
+   und macht jede Funktion vorführbar — auch die, die auf einem Handy sonst
+   gar nicht erscheinen.
    ----------------------------------------------------------------------- */
 (function () {
   var seiten = document.querySelectorAll('.vseite');
@@ -165,8 +216,6 @@ VORSCHAU_JS = """
       seiten[i].hidden = seiten[i].getAttribute('data-seite') !== name;
     }
     if (window.ScrollTrigger) ScrollTrigger.refresh();
-    /* Das Buch braucht echte Maße — die gibt es erst, wenn die Karte
-       tatsächlich sichtbar ist. */
     if (name === 'karte' && window.__buecherNeu) window.__buecherNeu();
 
     if (ziel && ziel.scrollIntoView) {
@@ -181,7 +230,6 @@ VORSCHAU_JS = """
     var h = (location.hash || '').replace(/^#/, '') || 'start';
     var alsSeite = document.querySelector('.vseite[data-seite="' + h + '"]');
     if (alsSeite) return seiteZeigen(h, null);
-
     var el = document.getElementById(h);
     if (el) {
       var s = el.closest('.vseite');
@@ -189,21 +237,59 @@ VORSCHAU_JS = """
     }
     seiteZeigen('start', null);
   }
-
   window.addEventListener('hashchange', route);
   route();
 
-  /* Jahreszahl in allen Fußzeilen */
   var j = document.querySelectorAll('[data-jahr]');
   for (var k = 0; k < j.length; k++) j[k].textContent = new Date().getFullYear();
 
-  /* ---- Bedienfeld ---- */
+  /* ------------------------------------------------------------------ */
   var knopf = document.getElementById('vor-knopf');
   var panel = document.getElementById('vor-panel');
   knopf.addEventListener('click', function () { panel.hidden = !panel.hidden; });
   panel.querySelector('.vor-zu').addEventListener('click', function () { panel.hidden = true; });
 
-  /* Nächsten Wochentag ab heute finden (0 = Sonntag) */
+  function seiteA(name) {
+    var akt = document.querySelector('.vseite[data-seite="' + name + '"]');
+    if (akt && akt.hidden) { seiteZeigen(name, null); return true; }
+    return false;
+  }
+  function inSeite(name, wahl) {
+    return document.querySelector('.vseite[data-seite="' + name + '"] ' + wahl);
+  }
+  function hin(el, blitz) {
+    if (!el) return;
+    el.scrollIntoView({ block: 'center' });
+    if (blitz !== false) {
+      el.classList.remove('vor-blitz');
+      void el.offsetWidth;
+      el.classList.add('vor-blitz');
+    }
+  }
+
+  /* ---- Schalter ---- */
+  var chBuch = document.getElementById('vor-buch');
+  chBuch.addEventListener('change', function () {
+    window.__buchErzwingen = chBuch.checked;
+    /* Zumachen, sonst verdeckt das Bedienfeld genau das, was man
+       gerade eingeschaltet hat. */
+    panel.hidden = true;
+    seiteA('karte');
+    setTimeout(function () {
+      if (window.__buecherNeu) window.__buecherNeu();
+      setTimeout(function () { hin(inSeite('karte', '.buch-buehne')); }, 250);
+    }, 120);
+  });
+
+  var chSaison = document.getElementById('vor-saison');
+  chSaison.addEventListener('change', function () {
+    var b = inSeite('start', '[data-saison]');
+    if (!b) return;
+    b.hidden = !chSaison.checked;
+    if (chSaison.checked) { panel.hidden = true; seiteA('start'); hin(b); }
+  });
+
+  /* ---- Öffnungsstatus zu anderer Zeit ---- */
   function naechster(wochentag, stunde, minute) {
     var d = new Date();
     d.setHours(stunde, minute, 0, 0);
@@ -213,27 +299,168 @@ VORSCHAU_JS = """
     }
     return d.toISOString();
   }
-
   document.getElementById('vor-zeit').addEventListener('change', function (e) {
     var v = e.target.value;
-    if (!v) { window.__zeitBasis = null; }
-    else {
-      var t = v.split(',');
-      window.__zeitBasis = naechster(+t[0], +t[1], +t[2]);
-    }
+    window.__zeitBasis = v ? naechster(+v.split(',')[0], +v.split(',')[1], +v.split(',')[2]) : null;
     if (window.__statusNeu) window.__statusNeu();
+    var s = document.querySelector('.vseite:not([hidden]) [data-status]');
+    if (s) hin(s);
   });
+
+  /* ---- Eissorten von Hand durchschalten ---- */
+  var sortenBox = document.getElementById('vor-sorten');
+
+  function sorteWaehlen(i, manuell) {
+    panel.hidden = true;
+    window.__eisManuell = manuell;
+    seiteA('start');
+    setTimeout(function () {
+      if (manuell && window.__eisSetzen) window.__eisSetzen(i);
+      hin(inSeite('start', '[data-eis]'), false);
+    }, 120);
+  }
+
+  var auto = document.createElement('button');
+  auto.type = 'button'; auto.textContent = 'Automatisch';
+  auto.title = 'Farbe folgt wieder dem Scrollen';
+  auto.addEventListener('click', function () { sorteWaehlen(0, false); });
+  sortenBox.appendChild(auto);
+
+  (window.__eisSorten || []).forEach(function (name, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = name;
+    b.addEventListener('click', function () { sorteWaehlen(i, true); });
+    sortenBox.appendChild(b);
+  });
+
+  /* ---- Geführte Liste aller Funktionen ---- */
+  var AKTIONEN = {
+    status: function () { hin(inSeite('start', '[data-status]')); },
+    abschnitt: null,
+
+    buch: function () {
+      chBuch.checked = true;
+      window.__buchErzwingen = true;
+      if (window.__buecherNeu) window.__buecherNeu();
+      setTimeout(function () { hin(inSeite('karte', '.buch-buehne'), false); }, 320);
+    },
+    reiter: function (ziel) {
+      var t = inSeite('karte', '[role="tab"][data-ziel="' + ziel + '"]');
+      if (t) { t.click(); setTimeout(function () { hin(t); }, 200); }
+    },
+    getraenke: function () {
+      var s = document.getElementById('getraenke');
+      if (s) hin(s, false);
+    },
+    legende: function () {
+      var d = inSeite('karte', '.legende');
+      if (d) { d.open = true; hin(d); }
+    },
+    kennz: function () {
+      var b = inSeite('karte', '.kennz');
+      if (b) { hin(b); }
+    },
+    strasse: function () { hin(inSeite('start', '.strasse')); },
+    ruf: function () { hin(document.querySelector('.vseite:not([hidden]) .ruf-leiste'), true); },
+
+    dienstag: function () {
+      var d = document.getElementById('f-datum');
+      if (!d) return;
+      var x = new Date();
+      while (x.getDay() !== 2) x.setDate(x.getDate() + 1);
+      d.value = x.toISOString().slice(0, 10);
+      var n = document.getElementById('f-name'); if (n && !n.value) n.value = 'Max Mustermann';
+      var z = document.getElementById('f-zeit'); if (z && !z.value) z.value = '18:30';
+      document.getElementById('tisch-form')
+        .dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      setTimeout(function () { hin(document.getElementById('f-fehler')); }, 120);
+    }
+  };
+
+  var FUNKTIONEN = [
+    ['Live-Öffnungsstatus', 'Zeigt ohne Scrollen, ob gerade offen ist. Mit der Zeitauswahl oben lassen sich alle fünf Zustände ansehen.', 'start', 'status'],
+    ['Willkommen — die Familie', 'Der emotionale Kern: Gäste als Freunde der Familie.', 'willkommen', null],
+    ['Die Küche', 'Vier Bereiche: Antipasti, Pasta, Pizza, Fleisch und Fisch.', 'kueche', null],
+    ['Das Eis — Farbwechsel', 'Der helle Bruch. Beim Scrollen wechselt die Fläche durch die Sortenfarben und färbt Navigation und Anruf-Knopf mit.', 'eis', null],
+    ['Straßenverkauf', 'Eigener Block für Eis zum Mitnehmen — das Alleinstellungsmerkmal.', 'eis', 'strasse'],
+    ['Mittagskarte', 'Kurzer Block für Mittagsgäste.', 'mittag', null],
+    ['Anlässe', 'Feiern, Dinner for Two, Catering.', 'anlaesse', null],
+    ['Bewertung und Öffnungszeiten', '4,8 aus 289 Bewertungen, dazu die Wochentabelle — der heutige Tag wird hervorgehoben.', 'zeiten', null],
+    ['Schwester-Restaurants', 'Akropolis in Rochlitz und Paros in Penig.', 'familie', null],
+    ['Speisekarte als Buch', 'Das Schaustück. Wird hier auch hochkant erzwungen und läuft dann als Einzelseite — wischen oder Knöpfe benutzen.', 'karte', 'buch'],
+    ['Reiter: Mittagskarte', 'Umschalten auf die zweite Karte (noch Platzhalter).', 'karte', 'reiter:mittag'],
+    ['Reiter: Eis-Karte', 'Umschalten auf die dritte Karte (noch Platzhalter).', 'karte', 'reiter:eis'],
+    ['Zweites Buch: Getränke', 'Eigenes Buch, damit man für die Weinkarte nicht durch 60 Speisen blättert.', 'getraenke', 'getraenke'],
+    ['Allergen-Kennzeichen', 'Die Hochzahlen am Gericht — antippen zeigt den Klartext.', 'karte', 'kennz'],
+    ['Allergen-Legende', 'Vollständige Legende, aufklappbar.', 'karte', 'legende'],
+    ['Tischanfrage', 'Formular, das eine fertige E-Mail öffnet. Kein Server, keine Datenübertragung.', 'tisch', null],
+    ['Dienstag wird abgefangen', 'Trägt einen Dienstag ein und sendet ab — das Formular weist auf den Ruhetag hin.', 'tisch', 'dienstag'],
+    ['Anfahrt ohne Google Maps', 'Bewusst keine eingebettete Karte; der Link lädt erst auf Klick.', 'kontakt', null],
+    ['Anruf-Leiste', 'Dauerhaft in Daumenreichweite. Nimmt die Eissorten-Farbe mit.', 'start', 'ruf'],
+    ['Impressum', 'Gerüst mit Prüfhinweis.', 'impressum', null],
+    ['Datenschutz', 'Gerüst; beschreibt die tatsächlich eingesetzte Technik.', 'datenschutz', null]
+  ];
+
+  var liste = document.getElementById('vor-liste');
+  FUNKTIONEN.forEach(function (f) {
+    var li = document.createElement('li');
+    var txt = document.createElement('div');
+    txt.className = 'vor-txt';
+    txt.innerHTML = '<b></b><span></span>';
+    txt.querySelector('b').textContent = f[0];
+    txt.querySelector('span').textContent = f[1];
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = 'Zeigen';
+    b.addEventListener('click', function () {
+      panel.hidden = true;
+      location.hash = '#' + f[2];
+      route();
+      setTimeout(function () {
+        if (!f[3]) return;
+        var teile = String(f[3]).split(':');
+        var fn = AKTIONEN[teile[0]];
+        if (fn) fn(teile[1]);
+      }, 420);
+    });
+    li.appendChild(txt); li.appendChild(b);
+    liste.appendChild(li);
+  });
+
+  /* Hinweis, falls das Gerät „Bewegung reduzieren" gesetzt hat — die
+     Vorschau schaltet die Animationen bewusst trotzdem ein. */
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.getElementById('vor-bewegung').hidden = false;
+  }
 })();
 """
 
+# --------------------------------------------------------------------------
 PANEL = """
-<button id="vor-knopf" aria-label="Vorschau-Einstellungen" title="Vorschau-Einstellungen">⚙</button>
-<div id="vor-panel" hidden>
-  <h4>Vorschau</h4>
+<button id="vor-knopf" aria-label="Funktionen anzeigen">Funktionen</button>
 
-  <label for="vor-zeit">Öffnungsstatus zu einer anderen Zeit ansehen</label>
-  <select id="vor-zeit">
-    <option value="">Jetzt (echte Uhrzeit)</option>
+<div id="vor-panel" hidden role="dialog" aria-label="Vorschau-Bedienfeld">
+
+  <h4>Sichtbar machen</h4>
+  <label class="vor-schalter">
+    <input type="checkbox" id="vor-buch">
+    <span>Buch auch hochkant zeigen
+      <span class="vor-hint">Läuft dann als Einzelseite. Auf der echten Seite
+      erscheint das Buch erst ab 760 Pixel Breite.</span></span>
+  </label>
+  <label class="vor-schalter">
+    <input type="checkbox" id="vor-saison">
+    <span>Saison-Band einblenden
+      <span class="vor-hint">Steht auf der echten Seite standardmäßig aus.</span></span>
+  </label>
+  <p id="vor-bewegung" class="vor-hint" hidden style="margin:8px 2px 0">
+    Ihr Gerät hat „Bewegung reduzieren“ eingeschaltet. Die Vorschau zeigt die
+    Animationen trotzdem, damit Sie alles sehen — die echte Seite würde sie
+    respektieren und ruhig bleiben.
+  </p>
+
+  <h4>Öffnungsstatus</h4>
+  <select id="vor-zeit" aria-label="Zeitpunkt für den Öffnungsstatus">
+    <option value="">Jetzt — echte Uhrzeit</option>
     <option value="2,14,0">Dienstag 14:00 — Ruhetag</option>
     <option value="0,10,30">Sonntag 10:30 — öffnet in 30 Minuten</option>
     <option value="0,12,0">Sonntag 12:00 — geöffnet</option>
@@ -241,12 +468,11 @@ PANEL = """
     <option value="1,21,30">Montag 21:30 — zu, öffnet Mittwoch</option>
   </select>
 
-  <p><strong>Das Buch:</strong> Drehen Sie das Gerät quer. Unter 760 Pixel
-  Breite zeigt die Karte bewusst die Liste — hochkant auf dem Handy ist
-  Blättern unbrauchbar.</p>
+  <h4>Eissorte von Hand</h4>
+  <div id="vor-sorten"></div>
 
-  <p><strong>Anrufen und E-Mail</strong> funktionieren aus dieser Datei heraus
-  wie auf der echten Seite.</p>
+  <h4>Alle Funktionen der Reihe nach</h4>
+  <ul id="vor-liste"></ul>
 
   <button class="vor-zu">Schließen</button>
 </div>
@@ -274,10 +500,20 @@ DOKUMENT = """<!DOCTYPE html>
 %(panel)s
 
 <script>
+/* Die Vorschau soll alles zeigen — auch auf einem Gerät, das
+   „Bewegung reduzieren" gesetzt hat. Muss vor app.js stehen. */
+window.__bewegungErzwingen = true;
+</script>
+<script>
 %(vendor)s
 </script>
 <script>
 %(eigen)s
+</script>
+<script>
+/* Aus den Einzelseiten herausgelöste Skripte, einmal zentral ausgeführt
+   (z. B. die Logik der Tischanfrage). */
+%(seitenskripte)s
 </script>
 <script>
 %(vorschau_js)s
@@ -294,6 +530,7 @@ ausgabe = DOKUMENT % {
     "vendor": vendor,
     "eigen": eigen,
     "vorschau_js": VORSCHAU_JS,
+    "seitenskripte": "\n;\n".join(EINGESAMMELT),
 }
 
 ziel = WURZEL / "LA-BONTA-Vorschau.html"

@@ -8,7 +8,13 @@
 (function () {
   'use strict';
 
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* __bewegungErzwingen wird nur von der Vorschau-Datei gesetzt, damit sich
+     die Animationen auch auf einem Gerät ansehen lassen, auf dem „Bewegung
+     reduzieren" eingeschaltet ist. Im Normalbetrieb ist die Variable nicht
+     gesetzt und die Einstellung des Geräts gilt uneingeschränkt. */
+  var reduce = window.__bewegungErzwingen
+    ? false
+    : matchMedia('(prefers-reduced-motion: reduce)').matches;
   window.__reduce = reduce;
 
   /* --- Navigation für schmale Fenster ------------------------------------ */
