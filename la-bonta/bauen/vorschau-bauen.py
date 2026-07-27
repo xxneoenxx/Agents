@@ -536,3 +536,52 @@ ausgabe = DOKUMENT % {
 ziel = WURZEL / "LA-BONTA-Vorschau.html"
 ziel.write_text(ausgabe, encoding="utf-8")
 print("geschrieben: %s  (%.1f KB)" % (ziel.name, len(ausgabe.encode("utf-8")) / 1024))
+
+# --------------------------------------------------------------------------
+# Zweite Fassung: als Artefakt-Seite zum Veröffentlichen.
+# Beim Veröffentlichen werden <!doctype>, <html>, <head> und <body> ergänzt —
+# deshalb darf diese Fassung kein eigenes Grundgerüst mitbringen.
+# Gedacht für iOS: Die Datei-Vorschau in „Dateien" führt kein JavaScript aus,
+# eine echte Adresse in Safari dagegen schon.
+# --------------------------------------------------------------------------
+ARTEFAKT = """<title>La Bontà Rochlitz — Vorschau</title>
+<style>
+%(css)s
+%(vorschau_css)s
+</style>
+
+%(abschnitte)s
+
+%(panel)s
+
+<script>
+window.__bewegungErzwingen = true;
+</script>
+<script>
+%(vendor)s
+</script>
+<script>
+%(eigen)s
+</script>
+<script>
+%(seitenskripte)s
+</script>
+<script>
+%(vorschau_js)s
+</script>
+"""
+
+werte = {
+    "css": css,
+    "vorschau_css": VORSCHAU_CSS,
+    "abschnitte": "\n\n".join(abschnitte),
+    "panel": PANEL,
+    "vendor": vendor,
+    "eigen": eigen,
+    "vorschau_js": VORSCHAU_JS,
+    "seitenskripte": "\n;\n".join(EINGESAMMELT),
+}
+
+ziel2 = WURZEL / "bauen" / "vorschau-artefakt.html"
+ziel2.write_text(ARTEFAKT % werte, encoding="utf-8")
+print("geschrieben: %s  (%.1f KB)" % (ziel2.name, len((ARTEFAKT % werte).encode("utf-8")) / 1024))
