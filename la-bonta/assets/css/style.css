@@ -14,8 +14,10 @@
     11  Fußbereich und Anruf-Leiste
     12  Bewegungsreduktion
 
-   Farblogik: Die Seite ist durchgehend dunkles Petrol. Nur die Eis-Sektion
-   bricht ins Helle — dieser Bruch trägt den Doppelcharakter Restaurant/Eiscafé.
+   Farblogik: Die Seite ist konsequent schwarz-weiß. Die EINZIGE Farbe der
+   ganzen Seite steckt in der Eis-Sektion — dieser Bruch trägt den
+   Doppelcharakter Restaurant/Eiscafé und wirkt vor Schwarz-Weiß ungleich
+   stärker als vor einem farbigen Grund.
    Alle hier gesetzten Farbpaare sind rechnerisch gegen WCAG 4.5:1 geprüft.
    ========================================================================== */
 
@@ -31,30 +33,30 @@ ul[class] { list-style: none; padding: 0; }
 
 /* --- 2 Tokens ------------------------------------------------------------ */
 :root {
-  /* Grundfläche */
-  --petrol-900: #0F2B2E;
-  --petrol-800: #14383C;
-  --petrol-700: #1C4A4E;
+  /* Grundfläche — schwarz-weiß, bewusst mit einem Hauch Wärme statt
+     klinischem Reinweiß und Reinschwarz. */
+  --schwarz-900: #0B0B0B;
+  --schwarz-800: #161615;
 
   /* Schrift */
-  --creme:      #F4EDE0;
-  --creme-dim:  #C5BCA9;
+  --weiss:     #F7F6F3;
+  --weiss-dim: #A6A4A0;
+  --linie:     rgba(247, 246, 243, 0.15);
 
-  /* Akzente */
-  --amarena:      #8E1F3D;
-  --amarena-hell: #E8899F;
-  --pistazie:     #A8C66C;
-  --pistazie-hell:#C8E09A;
-  --zitrone:      #E8C547;
+  /* Die Eissorten-Farbe. Sie ist die EINZIGE Farbe der Seite und blutet
+     beim Scrollen durch die Eis-Sektion in Navigation und Anruf-Knopf
+     durch. Außerhalb der Sektion steht sie auf Weiß — dadurch wirkt der
+     Farbeinbruch umso stärker. */
+  --gelato:     #F7F6F3;
+  --gelato-ink: #0B0B0B;
 
-  /* Eissorten-Farbe. Wird von gelato.js beim Scrollen umgeschaltet und
-     blutet bewusst in Navigation und Anruf-Knopf durch — die Signatur. */
-  --gelato:     #A8C66C;
-  --gelato-ink: #0B1A10;
+  /* Fläche der Eis-Sektion selbst: immer eine Sortenfarbe. */
+  --eis-flaeche: #A8C66C;
+  --eis-ink:     #0B1A10;
 
   /* Fokusfarbe. Wird in hellen Sektionen überschrieben, damit der Rahmen
      dort nicht in der Fläche verschwindet. */
-  --focus: var(--zitrone);
+  --focus: var(--weiss);
 
   /* Typo-Skala, fluide */
   --step--1: clamp(0.84rem, 0.80rem + 0.18vw, 0.94rem);
@@ -77,8 +79,8 @@ ul[class] { list-style: none; padding: 0; }
 
 /* --- 3 Basis-Typografie -------------------------------------------------- */
 body {
-  background: var(--petrol-900);
-  color: var(--creme);
+  background: var(--schwarz-900);
+  color: var(--weiss);
   font-family: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-size: var(--step-0);
   line-height: 1.65;
@@ -99,8 +101,10 @@ h1 { font-size: var(--step-4); }
 h2 { font-size: var(--step-3); }
 h3 { font-size: var(--step-1); font-variation-settings: 'opsz' 30, 'SOFT' 45, 'WONK' 1, 'wght' 600; }
 
-a { color: var(--pistazie-hell); text-decoration-thickness: 1px; text-underline-offset: 3px; }
-a:hover { color: var(--zitrone); }
+/* Links haben in einer schwarz-weißen Seite keine eigene Farbe mehr —
+   die Unterstreichung übernimmt die Kennzeichnung vollständig. */
+a { color: var(--weiss); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
 
 :focus-visible {
   outline: 3px solid var(--focus);
@@ -108,13 +112,13 @@ a:hover { color: var(--zitrone); }
   border-radius: 2px;
 }
 
-::selection { background: var(--amarena); color: var(--creme); }
+::selection { background: var(--weiss); color: var(--schwarz-900); }
 
 /* Die Kopfzeile klebt oben. Ohne diesen Abstand landet jedes Sprungziel
    — „#eis", „#mittagskarte", der Sprunglink — teilweise darunter. */
 [id], .buch-buehne { scroll-margin-top: 5.5rem; }
 
-/* Körnung über allem. Nimmt der großen Petrol-Fläche das Digitale und
+/* Körnung über allem. Nimmt der großen schwarzen Fläche das Digitale und
    erinnert an bedrucktes Papier — passend zum traditionsreichen Haus. */
 body::after {
   content: '';
@@ -137,16 +141,16 @@ body::after {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   font-variation-settings: 'wght' 600;
-  color: var(--pistazie);
+  color: var(--weiss-dim);
   margin-bottom: var(--sp-3);
 }
 
-.lead { font-size: var(--step-1); line-height: 1.5; color: var(--creme); max-width: 42ch; }
-.muted { color: var(--creme-dim); }
+.lead { font-size: var(--step-1); line-height: 1.5; color: var(--weiss); max-width: 42ch; }
+.muted { color: var(--weiss-dim); }
 
 .skip-link {
   position: absolute; left: -9999px;
-  background: var(--zitrone); color: var(--petrol-900);
+  background: var(--weiss); color: var(--schwarz-900);
   padding: var(--sp-2) var(--sp-3); z-index: 10000;
   font-variation-settings: 'wght' 600;
 }
@@ -157,11 +161,11 @@ body::after {
 .bildplatz {
   position: relative;
   aspect-ratio: var(--ar, 4 / 3);
-  border: 1px solid rgba(244, 237, 224, 0.16);
+  border: 1px solid rgba(247, 246, 243, 0.16);
   border-radius: var(--radius);
   background:
-    linear-gradient(135deg, rgba(168,198,108,0.09), rgba(142,31,61,0.13)),
-    var(--petrol-800);
+    linear-gradient(135deg, rgba(247,246,243,0.07), transparent 60%),
+    var(--schwarz-800);
   display: grid;
   place-content: center;
   text-align: center;
@@ -172,14 +176,14 @@ body::after {
   content: '';
   position: absolute; inset: 0;
   background-image:
-    repeating-linear-gradient(135deg, transparent 0 11px, rgba(244,237,224,0.045) 11px 12px);
+    repeating-linear-gradient(135deg, transparent 0 11px, rgba(247, 246, 243, 0.045) 11px 12px);
   pointer-events: none;
 }
 .bildplatz span {
   font-size: var(--step--1);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--creme-dim);
+  color: var(--weiss-dim);
   position: relative;
   max-width: 26ch;
 }
@@ -192,8 +196,8 @@ body::after {
 /* Saison-Band — an- und ausschaltbar über eine Zeile in index.html.
    Gedacht für Spargelzeit, Feiertagsmenüs oder Betriebsurlaub. */
 .saison {
-  background: var(--zitrone);
-  color: #2E2606;
+  background: var(--weiss);
+  color: var(--schwarz-900);
   text-align: center;
   padding: var(--sp-2) var(--sp-3);
   font-size: var(--step--1);
@@ -205,9 +209,9 @@ body::after {
 
 .kopf {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(15, 43, 46, 0.92);
+  background: rgba(11, 11, 11, 0.92);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(244, 237, 224, 0.12);
+  border-bottom: 1px solid rgba(247, 246, 243, 0.12);
 }
 .kopf__innen {
   display: flex; align-items: center; justify-content: space-between;
@@ -217,7 +221,7 @@ body::after {
 
 /* Typografische Wortmarke. Ersetzt das Signet, solange die echte Logodatei
    fehlt — siehe content/bild-inventar.md für den Austausch. */
-.marke { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; color: var(--creme); }
+.marke { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; color: var(--weiss); }
 .marke__zeichen {
   width: 2.4rem; height: 2.4rem; flex: none;
   border: 2px solid var(--gelato);
@@ -234,17 +238,17 @@ body::after {
 }
 .marke__sub {
   font-size: 0.6rem; letter-spacing: 0.19em; text-transform: uppercase;
-  color: var(--creme-dim); margin-top: 3px;
+  color: var(--weiss-dim); margin-top: 3px;
 }
 
 .nav { display: none; gap: var(--sp-4); align-items: center; }
 /* :not(.knopf) ist hier wichtig, nicht kosmetisch: ohne die Ausnahme
    gewinnt .nav a (0,1,1) gegen .knopf--ruf (0,1,0) und überschreibt die
    Schriftfarbe des Anruf-Knopfes. Der trägt aber die wechselnde
-   Eissorten-Farbe — mit cremefarbener Schrift darauf sinkt der Kontrast
-   auf bis zu 1,06:1, der Knopf wird praktisch unsichtbar. */
+   Eissorten-Farbe — mit weißer Schrift darauf sinkt der Kontrast auf bis
+   zu 1,06:1, der Knopf wird praktisch unsichtbar. */
 .nav a:not(.knopf) {
-  color: var(--creme); text-decoration: none; font-size: var(--step--1);
+  color: var(--weiss); text-decoration: none; font-size: var(--step--1);
   letter-spacing: 0.05em; position: relative; padding-block: 4px;
 }
 .nav a:not(.knopf)::after {
@@ -264,7 +268,7 @@ body::after {
   /* Muss gesetzt sein: sonst schlägt bei <button> der graue
      Browser-Standardhintergrund durch, während <a> korrekt aussieht. */
   background: none;
-  color: var(--creme);
+  color: var(--weiss);
   font-size: var(--step--1);
   font-variation-settings: 'wght' 600;
   letter-spacing: 0.03em;
@@ -280,13 +284,13 @@ body::after {
    demselben geprüften Paar, deshalb bleibt der Kontrast immer ausreichend. */
 .knopf--ruf { background: var(--gelato); color: var(--gelato-ink); }
 .knopf--ruf:hover { color: var(--gelato-ink); }
-.knopf--linie { border-color: rgba(244,237,224,0.35); color: var(--creme); }
-.knopf--linie:hover { border-color: var(--creme); color: var(--creme); }
+.knopf--linie { border-color: rgba(247, 246, 243, 0.35); color: var(--weiss); }
+.knopf--linie:hover { border-color: var(--weiss); color: var(--weiss); }
 
 .nav-schalter {
   display: inline-flex; align-items: center; justify-content: center;
   width: 2.75rem; height: 2.75rem;
-  background: none; border: 1px solid rgba(244,237,224,0.3);
+  background: none; border: 1px solid rgba(247, 246, 243, 0.3);
   border-radius: 50%; cursor: pointer;
 }
 .nav-schalter svg { width: 1.25rem; height: 1.25rem; }
@@ -299,14 +303,14 @@ body::after {
 /* Ausklappmenü für schmale Fenster */
 .nav-mobil {
   display: none;
-  border-top: 1px solid rgba(244,237,224,0.12);
+  border-top: 1px solid rgba(247, 246, 243, 0.12);
   padding-block: var(--sp-3);
 }
 .nav-mobil[data-offen='true'] { display: block; }
 .nav-mobil ul { display: flex; flex-direction: column; gap: var(--sp-1); }
 .nav-mobil a {
   display: block; padding: var(--sp-2) 0;
-  color: var(--creme); text-decoration: none;
+  color: var(--weiss); text-decoration: none;
 }
 @media (min-width: 62rem) { .nav-mobil { display: none !important; } }
 
@@ -325,8 +329,8 @@ body::after {
   top: -18%; left: 50%; transform: translateX(-50%);
   width: min(130%, 74rem); aspect-ratio: 1;
   background: radial-gradient(circle at 50% 42%,
-              rgba(168,198,108,0.17) 0%,
-              rgba(142,31,61,0.15) 38%,
+              rgba(247,246,243,0.13) 0%,
+              rgba(247,246,243,0.05) 38%,
               transparent 66%);
   pointer-events: none;
 }
@@ -343,18 +347,18 @@ body::after {
 .hero__titel em {
   display: block;
   font-style: normal;
-  color: var(--pistazie);
+  color: var(--weiss-dim);
 }
 
 .hero__slogan {
   font-size: var(--step-1);
-  color: var(--creme);
+  color: var(--weiss);
   max-width: 34ch;
   margin-bottom: var(--sp-4);
 }
 .hero__slogan strong {
   font-variation-settings: 'wght' 600;
-  color: var(--zitrone);
+  color: var(--weiss);
 }
 
 .hero__aktionen { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-5); }
@@ -363,30 +367,42 @@ body::after {
 .status {
   display: inline-flex; align-items: center; gap: 0.7rem;
   padding: 0.6rem 1.15rem 0.6rem 0.95rem;
-  border: 1px solid rgba(244,237,224,0.24);
+  border: 1px solid rgba(247, 246, 243, 0.24);
   border-radius: 100px;
-  background: rgba(20, 56, 60, 0.75);
+  background: rgba(22, 22, 21, 0.75);
   font-size: var(--step--1);
   letter-spacing: 0.01em;
 }
 .status__punkt {
   width: 0.62rem; height: 0.62rem; border-radius: 50%;
-  background: var(--creme-dim); flex: none;
+  background: var(--weiss-dim); flex: none;
   position: relative;
 }
-.status[data-zustand='offen'] .status__punkt { background: var(--pistazie); }
+/* In einer schwarz-weißen Seite kann Farbe den Zustand nicht mehr
+   tragen. Deshalb übernimmt die FORM: gefüllter Punkt heißt geöffnet,
+   hohler Ring heißt geschlossen. Das ist zusätzlich für farbenblinde
+   Gäste eindeutig, was eine Grün-Rot-Ampel nie war. */
+.status[data-zustand='offen'] .status__punkt {
+  background: var(--weiss);
+}
 .status[data-zustand='offen'] .status__punkt::after {
   content: ''; position: absolute; inset: -4px;
-  border-radius: 50%; border: 1px solid var(--pistazie);
+  border-radius: 50%; border: 1px solid var(--weiss);
   opacity: 0.6;
   animation: puls 2.4s ease-out infinite;
 }
-.status[data-zustand='bald'] .status__punkt { background: var(--zitrone); }
+.status[data-zustand='bald'] .status__punkt {
+  background: var(--weiss);
+  box-shadow: 0 0 0 3px rgba(247, 246, 243, 0.28);
+}
 .status[data-zustand='ruhetag'] .status__punkt,
-.status[data-zustand='zu'] .status__punkt { background: var(--amarena-hell); }
+.status[data-zustand='zu'] .status__punkt {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--weiss-dim);
+}
 
 .status__text strong { font-variation-settings: 'wght' 600; }
-.status__zusatz { color: var(--creme-dim); }
+.status__zusatz { color: var(--weiss-dim); }
 
 @keyframes puls {
   0%   { transform: scale(1);   opacity: 0.6; }
@@ -410,18 +426,18 @@ body::after {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
 }
 .karte {
-  border: 1px solid rgba(244,237,224,0.14);
+  border: 1px solid rgba(247, 246, 243, 0.14);
   border-radius: var(--radius);
   padding: var(--sp-4);
-  background: linear-gradient(180deg, rgba(244,237,224,0.045), transparent);
+  background: linear-gradient(180deg, rgba(247, 246, 243, 0.045), transparent);
 }
-.karte h3 { margin-bottom: var(--sp-1); color: var(--pistazie-hell); }
-.karte p { color: var(--creme-dim); font-size: var(--step--1); }
+.karte h3 { margin-bottom: var(--sp-1); color: var(--weiss); }
+.karte p { color: var(--weiss-dim); font-size: var(--step--1); }
 
 /* Trennlinie mit Zeichen — ruhiger Rhythmus zwischen den Sektionen */
 .trenner {
   display: flex; align-items: center; gap: var(--sp-3);
-  color: var(--pistazie); opacity: 0.55;
+  color: var(--weiss-dim); opacity: 0.55;
 }
 .trenner::before, .trenner::after {
   content: ''; height: 1px; background: currentColor; flex: 1;
@@ -433,51 +449,51 @@ body::after {
   font-family: 'Fraunces', serif;
   font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 1, 'wght' 700;
   font-size: var(--step-4);
-  color: var(--zitrone);
+  color: var(--weiss);
   line-height: 1;
 }
-.bewertung__sterne { color: var(--zitrone); letter-spacing: 0.1em; }
+.bewertung__sterne { color: var(--weiss); letter-spacing: 0.1em; }
 
 /* Öffnungszeiten-Tabelle */
 .zeiten { width: 100%; border-collapse: collapse; margin-top: var(--sp-3); }
 .zeiten th, .zeiten td {
   text-align: left; padding: 0.62rem 0;
-  border-bottom: 1px solid rgba(244,237,224,0.12);
+  border-bottom: 1px solid rgba(247, 246, 243, 0.12);
   font-size: var(--step--1);
 }
-.zeiten th { font-variation-settings: 'wght' 500; color: var(--creme); }
-.zeiten td { text-align: right; color: var(--creme-dim); }
+.zeiten th { font-variation-settings: 'wght' 500; color: var(--weiss); }
+.zeiten td { text-align: right; color: var(--weiss-dim); }
 .zeiten tr[data-heute='true'] th,
-.zeiten tr[data-heute='true'] td { color: var(--zitrone); font-variation-settings: 'wght' 600; }
-.zeiten tr[data-ruhetag='true'] td { color: var(--amarena-hell); }
+.zeiten tr[data-heute='true'] td { color: var(--weiss); font-variation-settings: 'wght' 600; }
+.zeiten tr[data-ruhetag='true'] td { color: var(--weiss-dim); }
 
 /* Schwester-Restaurants */
 .schwester {
   display: flex; flex-direction: column; gap: var(--sp-2);
-  border: 1px solid rgba(244,237,224,0.14);
+  border: 1px solid rgba(247, 246, 243, 0.14);
   border-radius: var(--radius);
   padding: var(--sp-4);
-  text-decoration: none; color: var(--creme);
+  text-decoration: none; color: var(--weiss);
   transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
 }
-.schwester:hover { border-color: var(--pistazie); transform: translateY(-3px); color: var(--creme); }
-.schwester__ort { font-size: var(--step--1); color: var(--creme-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+.schwester:hover { border-color: var(--weiss-dim); transform: translateY(-3px); color: var(--weiss); }
+.schwester__ort { font-size: var(--step--1); color: var(--weiss-dim); letter-spacing: 0.1em; text-transform: uppercase; }
 
 /* Hinweis-Kasten für offene Punkte und Prüfvermerke */
 .hinweis {
-  border-left: 3px solid var(--zitrone);
-  background: rgba(232,197,71,0.08);
+  border-left: 3px solid var(--weiss);
+  background: rgba(247,246,243,0.06);
   padding: var(--sp-3) var(--sp-4);
   border-radius: 0 var(--radius) var(--radius) 0;
   font-size: var(--step--1);
 }
-.hinweis strong { color: var(--zitrone); }
+.hinweis strong { color: var(--weiss); }
 
 /* --- 8 Eis-Sektion: heller Bruch mit Farbwechsel ------------------------- */
 .eis {
-  background: var(--gelato);
-  color: var(--gelato-ink);
-  --focus: var(--gelato-ink);
+  background: var(--eis-flaeche);
+  color: var(--eis-ink);
+  --focus: var(--eis-ink);
   transition: background-color 0.75s var(--ease), color 0.75s var(--ease);
   position: relative;
   overflow: hidden;
@@ -492,7 +508,7 @@ body::after {
 .eis::before {
   content: '';
   position: absolute; top: -1px; left: 0; right: 0; height: clamp(2rem, 5vw, 4.5rem);
-  background: var(--petrol-900);
+  background: var(--schwarz-900);
   border-radius: 0 0 50% 50% / 0 0 100% 100%;
 }
 
@@ -509,7 +525,7 @@ body::after {
 .eis__sorte i {
   width: 0.72rem; height: 0.72rem; border-radius: 50%;
   background: var(--punkt, currentColor);
-  border: 1px solid rgba(0,0,0,0.22);
+  box-shadow: 0 0 0 1px rgba(11,11,11,0.25);
   flex: none;
 }
 
@@ -537,18 +553,18 @@ body::after {
 .reiter button {
   padding: 0.6rem 1.15rem;
   background: none;
-  border: 1px solid rgba(244,237,224,0.28);
+  border: 1px solid rgba(247, 246, 243, 0.28);
   border-radius: 100px;
-  color: var(--creme-dim);
+  color: var(--weiss-dim);
   font-size: var(--step--1);
   letter-spacing: 0.04em;
   cursor: pointer;
   transition: all 0.25s var(--ease);
 }
-.reiter button:hover { color: var(--creme); border-color: var(--creme); }
+.reiter button:hover { color: var(--weiss); border-color: var(--weiss); }
 .reiter button[aria-selected='true'] {
-  background: var(--pistazie); border-color: var(--pistazie);
-  color: var(--petrol-900);
+  background: var(--weiss); border-color: var(--weiss);
+  color: var(--schwarz-900);
   font-variation-settings: 'wght' 600;
 }
 
@@ -562,42 +578,42 @@ body::after {
   font-family: 'Fraunces', serif;
   font-variation-settings: 'opsz' 60, 'SOFT' 45, 'WONK' 1, 'wght' 600;
   font-size: var(--step-2);
-  color: var(--zitrone);
+  color: var(--weiss);
   padding-bottom: var(--sp-2);
-  border-bottom: 2px solid var(--amarena);
+  border-bottom: 2px solid var(--weiss);
   margin-bottom: var(--sp-3);
 }
-.rubrik__notiz { font-size: var(--step--1); color: var(--creme-dim); margin-bottom: var(--sp-3); }
+.rubrik__notiz { font-size: var(--step--1); color: var(--weiss-dim); margin-bottom: var(--sp-3); }
 
 .gericht {
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 0.3rem var(--sp-2);
   padding: 0.7rem 0;
-  border-bottom: 1px solid rgba(244,237,224,0.1);
+  border-bottom: 1px solid rgba(247, 246, 243, 0.1);
   align-items: baseline;
 }
 .gericht__nr {
-  color: var(--creme-dim); font-size: var(--step--1);
+  color: var(--weiss-dim); font-size: var(--step--1);
   font-variant-numeric: tabular-nums; min-width: 2.1rem;
 }
 .gericht__name { font-variation-settings: 'wght' 600; }
 .gericht__preis {
   font-variant-numeric: tabular-nums;
   font-variation-settings: 'wght' 600;
-  color: var(--pistazie-hell);
+  color: var(--weiss);
   white-space: nowrap;
 }
 .gericht__text {
   grid-column: 2 / -1;
   font-size: var(--step--1);
-  color: var(--creme-dim);
+  color: var(--weiss-dim);
   line-height: 1.45;
 }
 .gericht__menge {
   grid-column: 2 / -1;
   font-size: var(--step--1);
-  color: var(--creme-dim);
+  color: var(--weiss-dim);
 }
 
 /* Allergen- und Zusatzstoff-Kennzeichen. Bleiben wie gedruckt am Gericht,
@@ -608,24 +624,24 @@ body::after {
   background: none;
   border: none;
   padding: 0 0.1em;
-  color: var(--amarena-hell);
+  color: var(--weiss-dim);
   cursor: help;
   font-variation-settings: 'wght' 600;
   text-decoration: underline dotted;
   text-underline-offset: 2px;
 }
-.kennz:hover { color: var(--zitrone); }
+.kennz:hover { color: var(--weiss); }
 
 .legende {
   margin-top: var(--sp-4);
-  border: 1px solid rgba(244,237,224,0.16);
+  border: 1px solid rgba(247, 246, 243, 0.16);
   border-radius: var(--radius);
   padding: var(--sp-3) var(--sp-4);
 }
 .legende summary {
   cursor: pointer;
   font-variation-settings: 'wght' 600;
-  color: var(--zitrone);
+  color: var(--weiss);
   font-size: var(--step--1);
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -635,9 +651,9 @@ body::after {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
   margin-top: var(--sp-3);
   font-size: var(--step--1);
-  color: var(--creme-dim);
+  color: var(--weiss-dim);
 }
-.legende__gitter b { color: var(--creme); }
+.legende__gitter b { color: var(--weiss); }
 
 /* Buch (Muster G) — nur ab 760 px und nur bei erlaubter Bewegung */
 .buch-huelle { display: none; }
@@ -646,11 +662,11 @@ body::after {
 .buch { touch-action: pan-y; }
 
 .buch .seite {
-  background: #FBF6EA;
-  color: #23201A;
+  background: #FAFAF8;
+  color: #0B0B0B;
   padding: 2.4rem 2.1rem 2.9rem;
   overflow: hidden;
-  box-shadow: inset 0 0 60px rgba(35,32,26,0.07);
+  box-shadow: inset 0 0 60px rgba(11,11,11,0.06);
 }
 
 /* Einzelseite auf schmalen Geräten: engerer Rand, damit vom Gericht mehr
@@ -666,17 +682,17 @@ body::after {
 .buch .seite--links  { box-shadow: inset -14px 0 26px -14px rgba(0,0,0,0.32); }
 .buch .seite--rechts { box-shadow: inset  14px 0 26px -14px rgba(0,0,0,0.32); }
 
-.buch .seite .rubrik__titel { color: var(--amarena); border-bottom-color: var(--amarena); }
-.buch .seite .gericht { border-bottom-color: rgba(35,32,26,0.13); }
+.buch .seite .rubrik__titel { color: #0B0B0B; border-bottom-color: #0B0B0B; }
+.buch .seite .gericht { border-bottom-color: rgba(11,11,11,0.14); }
 .buch .seite .gericht__nr,
 .buch .seite .gericht__text,
-.buch .seite .gericht__menge { color: #6A6154; }
-.buch .seite .gericht__preis { color: var(--amarena); }
-.buch .seite .kennz { color: var(--amarena); }
+.buch .seite .gericht__menge { color: #6B6A67; }
+.buch .seite .gericht__preis { color: #0B0B0B; }
+.buch .seite .kennz { color: #6B6A67; }
 
 .buch .seite__nr {
   position: absolute; bottom: 1.15rem; left: 0; right: 0;
-  text-align: center; font-size: 0.78rem; color: #8A8172;
+  text-align: center; font-size: 0.78rem; color: #8C8B87;
   font-variant-numeric: tabular-nums;
 }
 
@@ -687,15 +703,15 @@ body::after {
 .buch-steuer button {
   width: 2.9rem; height: 2.9rem;
   border-radius: 50%;
-  border: 1px solid rgba(244,237,224,0.3);
-  background: none; color: var(--creme);
+  border: 1px solid rgba(247, 246, 243, 0.3);
+  background: none; color: var(--weiss);
   cursor: pointer; display: grid; place-content: center;
   transition: all 0.25s var(--ease);
 }
-.buch-steuer button:hover:not(:disabled) { border-color: var(--pistazie); color: var(--pistazie); }
+.buch-steuer button:hover:not(:disabled) { border-color: var(--weiss-dim); color: var(--weiss-dim); }
 .buch-steuer button:disabled { opacity: 0.32; cursor: not-allowed; }
 .buch-steuer svg { width: 1.15rem; height: 1.15rem; }
-.buch-stand { font-size: var(--step--1); color: var(--creme-dim); font-variant-numeric: tabular-nums; min-width: 8rem; text-align: center; }
+.buch-stand { font-size: var(--step--1); color: var(--weiss-dim); font-variant-numeric: tabular-nums; min-width: 8rem; text-align: center; }
 
 .ansicht-schalter { display: flex; justify-content: flex-end; margin-bottom: var(--sp-3); }
 
@@ -721,20 +737,20 @@ body::after {
 .feld { display: grid; gap: 0.4rem; margin-bottom: var(--sp-3); }
 .feld label { font-size: var(--step--1); font-variation-settings: 'wght' 600; letter-spacing: 0.03em; }
 .feld input, .feld textarea, .feld select {
-  background: var(--petrol-800);
-  border: 1px solid rgba(244,237,224,0.26);
+  background: var(--schwarz-800);
+  border: 1px solid rgba(247, 246, 243, 0.26);
   border-radius: var(--radius);
   padding: 0.75rem 0.95rem;
-  color: var(--creme);
+  color: var(--weiss);
   width: 100%;
 }
-.feld input:hover, .feld textarea:hover, .feld select:hover { border-color: rgba(244,237,224,0.5); }
+.feld input:hover, .feld textarea:hover, .feld select:hover { border-color: rgba(247, 246, 243, 0.5); }
 .feld textarea { min-height: 7.5rem; resize: vertical; }
-.feld--pflicht label::after { content: ' *'; color: var(--amarena-hell); }
+.feld--pflicht label::after { content: ' *'; color: var(--weiss-dim); }
 
 /* --- 11 Fußbereich und Anruf-Leiste -------------------------------------- */
 .fuss {
-  border-top: 1px solid rgba(244,237,224,0.14);
+  border-top: 1px solid rgba(247, 246, 243, 0.14);
   padding-block: var(--sp-6) var(--sp-5);
   font-size: var(--step--1);
 }
@@ -745,18 +761,18 @@ body::after {
 }
 .fuss h3 {
   font-size: var(--step--1); letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--pistazie); margin-bottom: var(--sp-2);
+  color: var(--weiss-dim); margin-bottom: var(--sp-2);
   font-family: 'Instrument Sans', sans-serif; font-variation-settings: 'wght' 600;
 }
 .fuss ul { display: grid; gap: 0.45rem; }
-.fuss a { color: var(--creme-dim); text-decoration: none; }
-.fuss a:hover { color: var(--creme); text-decoration: underline; }
+.fuss a { color: var(--weiss-dim); text-decoration: none; }
+.fuss a:hover { color: var(--weiss); text-decoration: underline; }
 .fuss__schluss {
-  border-top: 1px solid rgba(244,237,224,0.12);
+  border-top: 1px solid rgba(247, 246, 243, 0.12);
   padding-top: var(--sp-3);
   display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-4);
   justify-content: space-between;
-  color: var(--creme-dim);
+  color: var(--weiss-dim);
 }
 
 /* Anruf-Leiste. Die meisten Gäste kommen mit dem Handy und wollen genau
@@ -765,8 +781,8 @@ body::after {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 200;
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 1px;
-  background: rgba(244,237,224,0.16);
-  border-top: 1px solid rgba(244,237,224,0.16);
+  background: rgba(247, 246, 243, 0.16);
+  border-top: 1px solid rgba(247, 246, 243, 0.16);
   padding-bottom: env(safe-area-inset-bottom);
 }
 .ruf-leiste a {
@@ -782,7 +798,7 @@ body::after {
   background: var(--gelato); color: var(--gelato-ink);
   transition: background-color 0.6s var(--ease), color 0.6s var(--ease);
 }
-.ruf-leiste .karte-an { background: var(--petrol-800); color: var(--creme); }
+.ruf-leiste .karte-an { background: var(--schwarz-800); color: var(--weiss); }
 
 body { padding-bottom: 4.1rem; }
 

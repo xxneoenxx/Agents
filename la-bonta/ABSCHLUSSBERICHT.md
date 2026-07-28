@@ -43,6 +43,8 @@ schaltbares Saison-Band.
 - **Keine überlaufende Buchseite und keine Rubrik-Überschrift am Seitenfuß**, geprüft
   von 320 bis 1440 px.
 - **Der Anruf-Knopf ist bei jeder Eissorten-Farbe lesbar** (schlechtester Wert 6,06:1).
+- **Jedes Textelement aller fünf Seiten** im laufenden Browser gegen WCAG gemessen —
+  396 Stück, alle über der Anforderung.
 - **Tastaturbedienung** blättert in beiden Büchern.
 - **Anrufen ist bei 320 px ohne Scrollen erreichbar.**
 

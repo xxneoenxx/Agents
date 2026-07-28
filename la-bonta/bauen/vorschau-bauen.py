@@ -121,7 +121,7 @@ VORSCHAU_CSS = """
   position: fixed; right: 12px; z-index: 9999;
   bottom: calc(4.9rem + env(safe-area-inset-bottom));
   min-width: 46px; height: 46px; padding: 0 14px; border-radius: 23px;
-  background: #A8C66C; color: #0B1A10;
+  background: #F7F6F3; color: #0B0B0B;
   border: none; cursor: pointer;
   font: 600 13px/1 'Instrument Sans', system-ui, sans-serif;
   letter-spacing: .04em;
@@ -133,8 +133,8 @@ VORSCHAU_CSS = """
   position: fixed; inset: auto 8px calc(0.6rem + env(safe-area-inset-bottom)) 8px;
   z-index: 10000; max-width: 30rem; margin-inline: auto;
   max-height: 82vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
-  background: #0B2225; color: #F4EDE0;
-  border: 1px solid rgba(244,237,224,.3);
+  background: #111110; color: #F7F6F3;
+  border: 1px solid rgba(247,246,243,.3);
   border-radius: 14px; padding: 16px;
   box-shadow: 0 18px 50px rgba(0,0,0,.6);
   font: 400 14px/1.5 'Instrument Sans', system-ui, sans-serif;
@@ -143,57 +143,57 @@ VORSCHAU_CSS = """
 #vor-panel h4 {
   font: 600 10px/1 'Instrument Sans', sans-serif;
   letter-spacing: .2em; text-transform: uppercase;
-  color: #A8C66C; margin: 18px 0 9px;
+  color: #F7F6F3; margin: 18px 0 9px;
 }
 #vor-panel h4:first-of-type { margin-top: 4px; }
 #vor-panel select, #vor-panel .vor-reihe {
   width: 100%; padding: 9px 10px; border-radius: 7px;
-  background: #14383C; color: #F4EDE0;
-  border: 1px solid rgba(244,237,224,.28);
+  background: #1E1E1D; color: #F7F6F3;
+  border: 1px solid rgba(247,246,243,.28);
 }
 #vor-panel label.vor-schalter {
   display: flex; align-items: center; gap: 10px;
   padding: 9px 10px; margin-bottom: 6px; border-radius: 7px;
-  background: #14383C; border: 1px solid rgba(244,237,224,.22);
+  background: #1E1E1D; border: 1px solid rgba(247,246,243,.22);
   cursor: pointer;
 }
-#vor-panel label.vor-schalter input { width: 18px; height: 18px; accent-color: #A8C66C; flex: none; }
-#vor-panel .vor-hint { display: block; font-size: 12px; color: #C5BCA9; margin-top: 2px; }
+#vor-panel label.vor-schalter input { width: 18px; height: 18px; accent-color: #F7F6F3; flex: none; }
+#vor-panel .vor-hint { display: block; font-size: 12px; color: #A6A4A0; margin-top: 2px; }
 
 #vor-sorten { display: flex; flex-wrap: wrap; gap: 6px; }
 #vor-sorten button {
   flex: 1 1 auto; padding: 7px 10px; border-radius: 100px; cursor: pointer;
-  background: #14383C; color: #F4EDE0; font-size: 12px;
-  border: 1px solid rgba(244,237,224,.28);
+  background: #1E1E1D; color: #F7F6F3; font-size: 12px;
+  border: 1px solid rgba(247,246,243,.28);
 }
 
 #vor-liste { list-style: none; margin: 0; padding: 0; counter-reset: fn; }
 #vor-liste li {
   display: flex; gap: 10px; align-items: flex-start;
-  padding: 9px 0; border-bottom: 1px solid rgba(244,237,224,.13);
+  padding: 9px 0; border-bottom: 1px solid rgba(247,246,243,.13);
 }
 #vor-liste li:last-child { border-bottom: 0; }
 #vor-liste .vor-txt { flex: 1; min-width: 0; }
 #vor-liste b { display: block; font-weight: 600; font-size: 13.5px; }
-#vor-liste span { display: block; font-size: 12px; color: #C5BCA9; line-height: 1.4; }
+#vor-liste span { display: block; font-size: 12px; color: #A6A4A0; line-height: 1.4; }
 #vor-liste button {
   flex: none; align-self: center;
   padding: 7px 13px; border-radius: 100px; cursor: pointer;
-  background: #A8C66C; color: #0B1A10; border: none;
+  background: #F7F6F3; color: #0B0B0B; border: none;
   font: 600 12px/1 'Instrument Sans', sans-serif;
 }
 #vor-panel .vor-zu {
   position: sticky; bottom: -16px; margin: 16px -16px -16px; padding: 13px;
   width: calc(100% + 32px);
-  background: #0B2225; color: #F4EDE0; cursor: pointer;
-  border: 0; border-top: 1px solid rgba(244,237,224,.22);
+  background: #111110; color: #F7F6F3; cursor: pointer;
+  border: 0; border-top: 1px solid rgba(247,246,243,.22);
   font: 600 14px/1 'Instrument Sans', sans-serif;
 }
 
 /* Kurzes Aufblinken, damit man sieht, worum es gerade geht */
 @keyframes vorBlitz {
   0%, 100% { outline-color: transparent; }
-  25%, 75% { outline-color: #E8C547; }
+  25%, 75% { outline-color: #F7F6F3; }
 }
 .vor-blitz {
   outline: 3px solid transparent; outline-offset: 5px; border-radius: 4px;
@@ -462,10 +462,10 @@ DOKUMENT = """<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>La Bontà — Vorschau</title>
-<meta name="theme-color" content="#0F2B2E">
+<meta name="theme-color" content="#0B0B0B">
 <meta name="apple-mobile-web-app-title" content="La Bontà">
 <meta name="robots" content="noindex, nofollow">
-<link rel="icon" href="data:image/svg+xml,%%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%%3E%%3Crect width='32' height='32' rx='6' fill='%%230F2B2E'/%%3E%%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%%23A8C66C' text-anchor='middle'%%3EB%%3C/text%%3E%%3C/svg%%3E">
+<link rel="icon" href="data:image/svg+xml,%%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%%3E%%3Crect width='32' height='32' rx='6' fill='%%230B0B0B'/%%3E%%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%%23F7F6F3' text-anchor='middle'%%3EB%%3C/text%%3E%%3C/svg%%3E">
 <style>
 %(css)s
 %(vorschau_css)s

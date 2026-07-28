@@ -19,35 +19,37 @@ Drei Dinge machen das Haus aus, und die Gestaltung folgt genau diesen dreien:
 
 ## Palette
 
-Abgeleitet **aus der Eisvitrine**, nicht aus der Landesflagge. Das ist eigen, hat einen Grund
-in der Sache und verbindet beide Seiten des Betriebs.
+**Konsequent schwarz-weiß.** Die einzige Farbe der ganzen Seite steckt in der Eis-Sektion.
 
 | Token | Hex | Rolle |
 |---|---|---|
-| `--petrol-900` | `#0F2B2E` | Grundfläche der ganzen Seite |
-| `--petrol-800` | `#14383C` | abgesetzte Flächen, Eingabefelder |
-| `--creme` | `#F4EDE0` | Schrift auf dunkel |
-| `--creme-dim` | `#C5BCA9` | Nebentexte |
-| `--amarena` | `#8E1F3D` | Akzentflächen, Rubrikenlinien im Buch |
-| `--amarena-hell` | `#E8899F` | Warnhinweise, Ruhetag, Kennzeichen |
-| `--pistazie` | `#A8C66C` | Akzentschrift, Augenbrauen-Zeilen |
-| `--pistazie-hell` | `#C8E09A` | Links im Fließtext |
-| `--zitrone` | `#E8C547` | Hervorhebung, Bewertung, Fokusrahmen |
+| `--schwarz-900` | `#0B0B0B` | Grundfläche der ganzen Seite |
+| `--schwarz-800` | `#161615` | abgesetzte Flächen, Eingabefelder |
+| `--weiss` | `#F7F6F3` | Schrift, Knopfflächen, Akzent |
+| `--weiss-dim` | `#A6A4A0` | Nebentexte, Zweitrangiges |
+| `--linie` | `rgba(247,246,243,.15)` | Trennlinien und Rahmen |
 
-**Warum dunkles Petrol als Basis?** Weil es die Abendkarte trägt und weil erst eine
-durchgehend dunkle Seite den hellen Bruch der Eis-Sektion wirken lässt. Auf einem hellen
-Grundton wäre das Eis nur eine weitere Sektion — so ist es ein Ereignis.
+**Warum kein Reinschwarz und kein Reinweiß?** `#000` auf `#FFF` wirkt hart und klinisch.
+Beide Werte sind minimal ins Warme gerückt — gerade so viel, dass die Fläche ruhig wirkt
+und zu den Eissorten passt, wenn sie auftauchen. Ein Neutral, das gewählt ist, nicht geerbt.
 
-**Warum Creme nie als Fläche?** Creme-Hintergrund plus Serif plus Terrakotta-Akzent ist der
-generische Vorgabe-Look, den der Skill ausdrücklich verbietet. Creme bleibt deshalb
-konsequent Schriftfarbe.
+**Warum die Eis-Sektion Farbe behält.** Wäre auch sie grau, verlöre Effekt 3 seinen Sinn und
+der Doppelcharakter Restaurant/Eiscafé seinen sichtbaren Träger. Vor Schwarz-Weiß wirkt der
+Farbeinbruch ungleich stärker als vorher vor Petrol: Man scrollt durch eine strenge,
+monochrome Seite — und fällt mitten hinein in die Eisvitrine.
 
-**Warum bleibt das Logo grün-weiß-rot?** Es ist die eingeführte Marke, Gäste erkennen sie
-wieder. Das Klischee-Verbot zielt auf das *Farbschema der Seite*, nicht auf das Signet.
-Die Flaggenfarben bleiben deshalb aufs Logo begrenzt und färben nichts anderes ein.
+**Farbe kann keinen Zustand mehr tragen.** Der Öffnungsstatus zeigt „geöffnet" deshalb als
+gefüllten Punkt und „geschlossen" als hohlen Ring. Das ist für farbenblinde Gäste eindeutig,
+was eine Grün-Rot-Ampel nie war. Dasselbe Prinzip in der Wochentabelle: Der heutige Tag
+steht in Weiß und halbfett, alles andere gedämpft — Gewicht statt Farbe.
 
-Alle Farbpaare sind rechnerisch gegen WCAG geprüft, nicht geschätzt — der niedrigste Wert
-liegt bei 6,06:1, gefordert sind 4,5:1.
+**Links haben keine eigene Farbe mehr.** Die Unterstreichung übernimmt die Kennzeichnung
+vollständig; beim Überfahren wird sie dicker statt bunt.
+
+Alle Paare sind rechnerisch geprüft, nicht geschätzt: Weiß auf Schwarz erreicht 18,2:1,
+gedämpftes Weiß 7,9:1, die schwächste Eissorten-Kombination 6,06:1. Eine Prüfung misst
+zusätzlich **jedes** Textelement aller fünf Seiten im laufenden Browser — 396 Stück,
+alle über der Anforderung.
 
 ---
 
@@ -105,12 +107,13 @@ Buch führt aber über keinen Knopf.
 
 ### 3 · Farbwechsel in der Eis-Sektion (Muster I) + Durchfärbung als Signatur
 
-Die Eis-Sektion ist der helle Bruch in einer dunklen Seite. Beim Durchscrollen wechselt
-ihre Fläche durch die Farben der Eisvitrine.
+Die Eis-Sektion ist der **einzige farbige Bereich einer sonst schwarz-weißen Seite**. Beim
+Durchscrollen wechselt ihre Fläche durch die Farben der Eisvitrine.
 
 **Die Signatur:** Dieselbe Farbe blutet über `--gelato` und `--gelato-ink` in Navigation,
-Markenzeichen und Anruf-Knopf durch. Beim Scrollen fühlt es sich an, als führe man durch
-die Vitrine. Das macht aus Effekt 3 das Erinnerungsstück, statt einen vierten Effekt zu
+Markenzeichen und Anruf-Knopf durch — außerhalb der Sektion stehen diese auf Weiß, die
+Farbe taucht also nur auf, solange man in der Vitrine ist. Beim Scrollen fühlt es sich an,
+als führe man hindurch. Das macht aus Effekt 3 das Erinnerungsstück, statt einen vierten Effekt zu
 erfinden.
 
 Fläche und Schrift kommen immer als **geprüftes Paar** — deshalb kann der Anruf-Knopf die

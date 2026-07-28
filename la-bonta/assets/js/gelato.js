@@ -30,16 +30,38 @@
     { name: 'Haselnuss',      flaeche: '#C08A5E', schrift: '#231206' }
   ];
 
+  /* Außerhalb der Eis-Sektion ist die Seite konsequent schwarz-weiß.
+     Erst beim Eintauchen übernimmt die Sortenfarbe Navigation, Markenzeichen
+     und Anruf-Knopf — und verschwindet beim Verlassen wieder. */
+  var NEUTRAL = { flaeche: '#F7F6F3', schrift: '#0B0B0B' };
+
   var wurzel = document.documentElement;
   var sektion = document.querySelector('[data-eis]');
   if (!sektion) return;
 
-  function setzen(i) {
+  /* Färbt die Sektion selbst — sie trägt immer eine Sortenfarbe. */
+  function sektionSetzen(i) {
     var s = SORTEN[i];
-    wurzel.style.setProperty('--gelato', s.flaeche);
-    wurzel.style.setProperty('--gelato-ink', s.schrift);
+    wurzel.style.setProperty('--eis-flaeche', s.flaeche);
+    wurzel.style.setProperty('--eis-ink', s.schrift);
     var anzeige = sektion.querySelector('[data-eis-name]');
     if (anzeige) anzeige.textContent = s.name;
+  }
+
+  /* Färbt die durchblutenden Bedienelemente. */
+  function blutenSetzen(farbe) {
+    wurzel.style.setProperty('--gelato', farbe.flaeche);
+    wurzel.style.setProperty('--gelato-ink', farbe.schrift);
+  }
+
+  function setzen(i) {
+    sektionSetzen(i);
+    blutenSetzen(SORTEN[i]);
+  }
+
+  function neutral() {
+    blutenSetzen(NEUTRAL);
+    setzen.letzte = -1;
   }
 
   /* Farbpunkte in der Sortenliste einfärben */
@@ -49,7 +71,8 @@
     if (SORTEN[idx]) punkte[p].style.setProperty('--punkt', SORTEN[idx].flaeche);
   }
 
-  setzen(0);
+  sektionSetzen(0);
+  neutral();
 
   /* Für die Vorschau: erlaubt es, die Sorten von Hand durchzuschalten,
      ohne durch die Sektion zu scrollen. */
@@ -82,7 +105,7 @@
     trigger: sektion,
     start: 'top bottom',
     end: 'bottom top',
-    onLeave: function () { setzen(0); setzen.letzte = 0; },
-    onLeaveBack: function () { setzen(0); setzen.letzte = 0; }
+    onLeave: neutral,
+    onLeaveBack: neutral
   });
 })();
