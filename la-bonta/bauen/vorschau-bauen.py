@@ -268,19 +268,6 @@ VORSCHAU_JS = r"""
   }
 
   /* ---- Schalter ---- */
-  var chBuch = document.getElementById('vor-buch');
-  chBuch.addEventListener('change', function () {
-    window.__buchErzwingen = chBuch.checked;
-    /* Zumachen, sonst verdeckt das Bedienfeld genau das, was man
-       gerade eingeschaltet hat. */
-    panel.hidden = true;
-    seiteA('karte');
-    setTimeout(function () {
-      if (window.__buecherNeu) window.__buecherNeu();
-      setTimeout(function () { hin(inSeite('karte', '.buch-buehne')); }, 250);
-    }, 120);
-  });
-
   var chSaison = document.getElementById('vor-saison');
   chSaison.addEventListener('change', function () {
     var b = inSeite('start', '[data-saison]');
@@ -339,10 +326,7 @@ VORSCHAU_JS = r"""
     abschnitt: null,
 
     buch: function () {
-      chBuch.checked = true;
-      window.__buchErzwingen = true;
-      if (window.__buecherNeu) window.__buecherNeu();
-      setTimeout(function () { hin(inSeite('karte', '.buch-buehne'), false); }, 320);
+      hin(inSeite('karte', '.buch-buehne'), false);
     },
     reiter: function (ziel) {
       var t = inSeite('karte', '[role="tab"][data-ziel="' + ziel + '"]');
@@ -387,7 +371,7 @@ VORSCHAU_JS = r"""
     ['Anlässe', 'Feiern, Dinner for Two, Catering.', 'anlaesse', null],
     ['Bewertung und Öffnungszeiten', '4,8 aus 289 Bewertungen, dazu die Wochentabelle — der heutige Tag wird hervorgehoben.', 'zeiten', null],
     ['Schwester-Restaurants', 'Akropolis in Rochlitz und Paros in Penig.', 'familie', null],
-    ['Speisekarte als Buch', 'Das Schaustück. Wird hier auch hochkant erzwungen und läuft dann als Einzelseite — wischen oder Knöpfe benutzen.', 'karte', 'buch'],
+    ['Speisekarte als Buch', 'Das Schaustück — sofort da, ohne Knopfdruck. Hochkant als Einzelseite, quer als Doppelseite. Wischen oder die Pfeilknöpfe benutzen.', 'karte', 'buch'],
     ['Reiter: Mittagskarte', 'Umschalten auf die zweite Karte (noch Platzhalter).', 'karte', 'reiter:mittag'],
     ['Reiter: Eis-Karte', 'Umschalten auf die dritte Karte (noch Platzhalter).', 'karte', 'reiter:eis'],
     ['Zweites Buch: Getränke', 'Eigenes Buch, damit man für die Weinkarte nicht durch 60 Speisen blättert.', 'getraenke', 'getraenke'],
@@ -441,12 +425,6 @@ PANEL = """
 <div id="vor-panel" hidden role="dialog" aria-label="Vorschau-Bedienfeld">
 
   <h4>Sichtbar machen</h4>
-  <label class="vor-schalter">
-    <input type="checkbox" id="vor-buch">
-    <span>Buch auch hochkant zeigen
-      <span class="vor-hint">Läuft dann als Einzelseite. Auf der echten Seite
-      erscheint das Buch erst ab 760 Pixel Breite.</span></span>
-  </label>
   <label class="vor-schalter">
     <input type="checkbox" id="vor-saison">
     <span>Saison-Band einblenden

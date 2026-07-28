@@ -652,6 +652,17 @@ body::after {
   overflow: hidden;
   box-shadow: inset 0 0 60px rgba(35,32,26,0.07);
 }
+
+/* Einzelseite auf schmalen Geräten: engerer Rand, damit vom Gericht mehr
+   übrig bleibt. Bei 320 px Gerätebreite blieben mit dem normalen Rand nur
+   rund 200 Pixel Textbreite — zu wenig für „Gnocchi Spinacci al Gorgonzola"
+   samt Preis. Der Umbruch misst denselben Rand mit, deshalb ändert sich die
+   Seitenzahl automatisch mit. */
+.buch--einzel .seite { padding: 1.5rem 1.25rem 2.3rem; }
+.buch--einzel .rubrik__titel { font-size: var(--step-1); margin-bottom: var(--sp-2); }
+.buch--einzel .gericht { padding: 0.55rem 0; gap: 0.25rem 0.7rem; }
+.buch--einzel .gericht__nr { min-width: 1.6rem; }
+.buch--einzel .seite__nr { bottom: 0.85rem; }
 .buch .seite--links  { box-shadow: inset -14px 0 26px -14px rgba(0,0,0,0.32); }
 .buch .seite--rechts { box-shadow: inset  14px 0 26px -14px rgba(0,0,0,0.32); }
 

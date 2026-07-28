@@ -21,7 +21,8 @@ alle Allergen- und Zusatzstoffangaben — übernommen von den Fotos der gedruckt
 
 Alle drei beauftragten Effekte sind umgesetzt, keiner mehr:
 1. Live-Öffnungsstatus im Hero (rechnet in `Europe/Berlin`, Dienstag korrekt als Ruhetag)
-2. Speisekarte als frei blätterbares Buch, per Maus, Wischgeste und Tastatur
+2. Speisekarte als frei blätterbares Buch — auf jedem Gerät sofort, ohne Knopfdruck;
+   unter 760 px als Einzelseite, darüber als Doppelseite
 3. Farbwechsel der Eis-Sektion, der in Navigation und Anruf-Knopf durchblutet
 
 Zusätzlich: Straßenverkauf als eigener Block, Schwester-Restaurants als Abschnitt,
@@ -37,7 +38,10 @@ schaltbares Saison-Band.
   Nachgewiesen über einen vollständigen Netzwerkmitschnitt aller fünf Seiten.
 - **Kein waagerechtes Scrollen** bei 320, 768 und 1440 px.
 - **Ohne JavaScript** sind alle Gerichte, Preise und die Allergenlegende lesbar.
-- **Bei reduzierter Bewegung** bleiben alle Inhalte sichtbar, das Buch entfällt.
+- **Bei reduzierter Bewegung** bleiben alle Inhalte sichtbar; das Buch bleibt, blättert
+  aber ohne Animation.
+- **Keine überlaufende Buchseite und keine Rubrik-Überschrift am Seitenfuß**, geprüft
+  von 320 bis 1440 px.
 - **Der Anruf-Knopf ist bei jeder Eissorten-Farbe lesbar** (schlechtester Wert 6,06:1).
 - **Tastaturbedienung** blättert in beiden Büchern.
 - **Anrufen ist bei 320 px ohne Scrollen erreichbar.**

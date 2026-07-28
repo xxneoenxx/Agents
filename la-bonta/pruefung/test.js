@@ -50,10 +50,15 @@ function pruef(ok, name, detail) {
     await page.waitForTimeout(900);
     const buchAktiv = await page.evaluate(() =>
       document.querySelector('[data-buch-huelle]').getAttribute('data-aktiv'));
-    const erwartet = w >= 760 ? 'true' : 'false';
-    pruef(buchAktiv === erwartet, `Buch @${name}px ${erwartet === 'true' ? 'aktiv' : 'aus'}`, `ist ${buchAktiv}`);
+    // Das Buch ist jetzt auf JEDER Breite sofort da, ohne Knopfdruck.
+    pruef(buchAktiv === 'true', `Buch @${name}px sofort aktiv`, `ist ${buchAktiv}`);
 
-    if (w >= 760) {
+    const einzel = await page.evaluate(() =>
+      !!document.querySelector('[data-buch-ziel].buch--einzel'));
+    pruef(einzel === (w < 760), `Buch @${name}px ${w < 760 ? 'als Einzelseite' : 'als Doppelseite'}`,
+      `einzel=${einzel}`);
+
+    {
       const seiten = await page.evaluate(() => document.querySelectorAll('[data-buch-ziel] .seite').length);
       pruef(seiten >= 4, `Buch @${name}px hat Seiten`, `${seiten} Seiten`);
       await page.screenshot({ path: `${OUT}/buch-${name}.png` });
@@ -100,9 +105,13 @@ function pruef(ok, name, detail) {
 
     await page.goto(BASE + '/speisekarte.html', { waitUntil: 'networkidle' });
     await page.waitForTimeout(700);
-    const buch = await page.evaluate(() =>
-      document.querySelector('[data-buch-huelle]').getAttribute('data-aktiv'));
-    pruef(buch === 'false', 'Reduzierte Bewegung: kein Buch', `ist ${buch}`);
+    // Bei reduzierter Bewegung bleibt das Buch, blättert aber ohne Animation.
+    const buch = await page.evaluate(() => ({
+      aktiv: document.querySelector('[data-buch-huelle]').getAttribute('data-aktiv'),
+      seiten: document.querySelectorAll('[data-buch="speisen"] .seite').length
+    }));
+    pruef(buch.aktiv === 'true' && buch.seiten > 4,
+      'Reduzierte Bewegung: Buch bleibt, ruhig', `aktiv=${buch.aktiv}, ${buch.seiten} Seiten`);
     await ctx.close();
   }
 
@@ -214,6 +223,40 @@ function pruef(ok, name, detail) {
         r.waisen.length ? 'Seiten ' + r.waisen.join(',') : 'geprüft');
       await ctx.close();
     }
+  }
+
+
+  // ---------- Buch in ausgeblendetem Bereich ----------
+  // Regressionsschutz: Ist der Bereich noch ausgeblendet, ist seine Breite 0.
+  // StPageFlip warf dann "Invalid width or height" und riss den ganzen
+  // Skriptlauf mit. Der Aufbau muss stattdessen verschoben werden.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const page = await ctx.newPage();
+    const errs = [];
+    page.on('pageerror', e => errs.push(String(e).split('\n')[0]));
+    await page.goto(BASE + '/speisekarte.html', { waitUntil: 'networkidle' });
+    // Bereich ausblenden und Neuaufbau erzwingen
+    await page.evaluate(() => {
+      document.querySelectorAll('[data-buch]').forEach(s => { s.style.display = 'none'; });
+      if (window.__buecherNeu) window.__buecherNeu();
+    });
+    await page.waitForTimeout(600);
+    pruef(errs.length === 0, 'Kein Fehler bei ausgeblendetem Buchbereich', errs.slice(0, 1).join(''));
+
+    // Wieder einblenden: das Buch muss zurückkommen
+    await page.evaluate(() => {
+      document.querySelectorAll('[data-buch]').forEach(s => { s.style.display = ''; });
+      if (window.__buecherNeu) window.__buecherNeu();
+    });
+    await page.waitForTimeout(1200);
+    const zurueck = await page.evaluate(() => ({
+      aktiv: document.querySelector('[data-buch-huelle]').getAttribute('data-aktiv'),
+      seiten: document.querySelectorAll('[data-buch="speisen"] .seite').length
+    }));
+    pruef(zurueck.aktiv === 'true' && zurueck.seiten > 4,
+      'Buch kommt nach dem Einblenden zurück', `aktiv=${zurueck.aktiv}, ${zurueck.seiten} Seiten`);
+    await ctx.close();
   }
 
   await browser.close();

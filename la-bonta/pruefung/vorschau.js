@@ -31,12 +31,12 @@ const f=[]; const P=(ok,n,d)=>{console.log(`${ok?'OK  ':'FAIL'}  ${n}${d?'  → 
  await p.screenshot({path:OUT+'/panel-neu.png'});
 
  // Buch hochkant erzwingen
- await p.check('#vor-buch'); await p.waitForTimeout(2000);
+ await p.evaluate(()=>{location.hash='#karte';}); await p.waitForTimeout(2200);
  const b=await p.evaluate(()=>({aktiv:document.querySelector('[data-buch-huelle]').getAttribute('data-aktiv'),
    n:document.querySelectorAll('[data-buch="speisen"] .seite').length,
    stand:document.querySelector('[data-buch="speisen"] [data-buch-stand]').textContent,
    breite:Math.round(document.querySelector('[data-buch="speisen"] .seite').getBoundingClientRect().width)}));
- P(b.aktiv==='true','Buch hochkant erzwungen',b.aktiv);
+ P(b.aktiv==='true','Buch hochkant sofort da (ohne Knopf)',b.aktiv);
  P(/^Seite \d+ von/.test(b.stand),'Einzelseiten-Modus',b.stand);
  P(b.breite>300,'Seite breit genug lesbar',`${b.breite}px`);
  await p.waitForTimeout(300);

@@ -32,8 +32,6 @@ Der grüne Knopf **„Funktionen"** unten rechts öffnet ein Bedienfeld, mit dem
 **jede** Funktion vorführen lässt — auch die, die auf einem Handy sonst gar nicht
 erscheinen:
 
-- **Buch auch hochkant zeigen** — läuft dann als Einzelseite. Auf der echten Seite
-  erscheint das Buch erst ab 760 Pixel Breite; quer geht es ohnehin auf.
 - **Saison-Band einblenden** — steht auf der echten Seite standardmäßig aus.
 - **Öffnungsstatus** zu einer anderen Zeit ansehen, etwa Dienstag Ruhetag, ohne bis
   Dienstag zu warten.
@@ -96,6 +94,9 @@ ABSCHLUSSBERICHT.md   Offene Punkte und was noch zu liefern ist
   `ABSCHLUSSBERICHT.md`.
 - **Die Listenansicht der Speisekarte ist die Datenquelle.** Das Buch wird daraus erzeugt.
   Wer Gerichte ändert, ändert die Liste — das Buch folgt automatisch.
+- **Die Karte erscheint immer als Buch**, auf jedem Gerät und ohne Knopfdruck. Unter
+  760 px als Einzelseite, darüber als Doppelseite. Der Umschalter führt zur Liste,
+  nicht zum Buch.
 
 ## Prüfen
 

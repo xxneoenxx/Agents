@@ -89,13 +89,19 @@ Das Schaustück. Man blättert in einer Karte, statt eine Webseite herunterzuscr
 passt zum traditionsreichen Haus. Umgesetzt mit StPageFlip, frei blätterbar per Maus,
 Wischgeste und Tastatur.
 
+**Die Karte ist ein Buch, kein Knopf, der eines öffnet.** Sie erscheint auf jedem Gerät
+sofort als Buch. Unter 760 px blättert sie als **Einzelseite** statt als Doppelseite —
+zwei Seiten nebeneinander wären auf einem Handy nur rund 170 px breit und damit
+unlesbar. Bei „Bewegung reduzieren" bleibt das Buch und blättert ohne Animation.
+
 **Zwei getrennte Bücher:** eines für Speisen (Abend / Mittag / Eis umschaltbar), eines für
 Getränke. Wer die Weinkarte sucht, soll nicht durch 60 Speisen blättern müssen.
 
 Die Listenansicht im HTML ist die **einzige Datenquelle**; die Buchseiten werden daraus
 geklont und durch echte Messung umbrochen, nicht nach fester Stückzahl. Dadurch können
 Liste und Buch nie auseinanderlaufen, und ohne JavaScript bleibt die Karte vollständig
-lesbar. Unter 760 px wird das Buch gar nicht erst gebaut.
+lesbar. Wer lieber scrollt, schaltet über einen Umschalter auf die Liste — der Weg *zum*
+Buch führt aber über keinen Knopf.
 
 ### 3 · Farbwechsel in der Eis-Sektion (Muster I) + Durchfärbung als Signatur
 

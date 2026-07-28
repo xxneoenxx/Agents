@@ -4,6 +4,9 @@
    Das Schaustück der Seite. Passt zum traditionsreichen Haus: man blättert
    in einer Karte, statt eine Webseite herunterzuscrollen.
 
+   Die Karte IST ein Buch — auf jedem Gerät und ohne dass man erst einen
+   Knopf drücken müsste.
+
    Drei Pflichtregeln, die hier nicht verhandelbar sind:
 
    1. Die Listenansicht steht IMMER im HTML und ist die einzige Datenquelle.
@@ -11,8 +14,11 @@
       auseinanderlaufen, und ohne JavaScript bleibt die Karte vollständig
       lesbar — für Gäste wie für Google.
 
-   2. Unter 760 px wird das Buch gar nicht erst gebaut. Auf einem Handy ist
-      Blättern in einer zweiseitigen Karte unbrauchbar.
+   2. Unter 760 px blättert das Buch als EINZELSEITE statt als Doppelseite.
+      Zwei Seiten nebeneinander wären auf einem Handy nur rund 170 Pixel
+      breit und damit unlesbar. Wer lieber scrollt, schaltet über einen
+      Umschalter auf die Liste — der Weg zum Buch führt aber über keinen
+      Knopf.
 
    3. Tastaturbedienung: Pfeiltasten blättern, Pos1 und Ende springen an
       Anfang und Ende.
@@ -29,12 +35,13 @@
   var MIN_BREITE = 760;
   var buecher = [];
 
+  /* Die Karte IST ein Buch — auf jedem Gerät, ohne dass man erst einen
+     Knopf drücken müsste. Auf schmalen Geräten läuft es als Einzelseite
+     statt als Doppelseite; bei „Bewegung reduzieren" blättert es ohne
+     Animation weiter. Die ruhige Listenansicht bleibt über einen Umschalter
+     erreichbar und ist für Screenreader ohnehin immer die gelesene Fassung. */
   function istBuchTauglich() {
-    if (typeof St === 'undefined' || !St.PageFlip) return false;
-    /* Nur die Vorschau-Datei setzt __buchErzwingen, um das Buch auch auf
-       schmalen Geräten vorführen zu können. Es läuft dann als Einzelseite. */
-    if (window.__buchErzwingen) return true;
-    return window.innerWidth >= MIN_BREITE && !window.__reduce;
+    return typeof St !== 'undefined' && !!St.PageFlip;
   }
 
   function istSchmal() { return window.innerWidth < MIN_BREITE; }
@@ -44,13 +51,14 @@
      Einträge wandern so lange auf die Seite, bis sie überläuft. Sonst
      entstehen halbleere oder überfüllte Seiten, je nach Länge der
      Beschreibungstexte. */
-  function seitenBauen(quelle, breite, hoehe) {
+  function seitenBauen(quelle, breite, hoehe, schmal) {
     /* Die Seitenmaße stehen in der Regel „.buch .seite". Läge die Probe
        außerhalb eines .buch-Elements, bekäme sie keinen Innenabstand und
        meldete rund 50 Pixel zu viel Platz — die fertigen Seiten liefen
-       dann über. Deshalb wird der echte Aufbau nachgebildet. */
+       dann über. Deshalb wird der echte Aufbau nachgebildet, einschließlich
+       der Klasse für Einzelseiten, die einen engeren Innenabstand hat. */
     var probeHuelle = document.createElement('div');
-    probeHuelle.className = 'buch';
+    probeHuelle.className = 'buch' + (schmal ? ' buch--einzel' : '');
     probeHuelle.setAttribute('aria-hidden', 'true');
     probeHuelle.style.cssText = 'position:absolute;left:-10000px;top:0;visibility:hidden;';
 
@@ -172,7 +180,7 @@
        die als einziges Element stabil bleibt. */
     buehne.innerHTML = '';
     var ziel = document.createElement('div');
-    ziel.className = 'buch';
+    ziel.className = 'buch' + (istSchmal() ? ' buch--einzel' : '');
     ziel.setAttribute('data-buch-ziel', '');
     buehne.appendChild(ziel);
 
@@ -180,7 +188,16 @@
        Sektionsbreite — sonst ragt die Doppelseite über den Satzspiegel
        hinaus und erzeugt waagerechtes Scrollen. */
     var verfuegbareBreite = Math.min(buehne.clientWidth || sektion.clientWidth, 1040);
+
+    /* Ist die Karte noch ausgeblendet — etwa weil eine andere Seite sichtbar
+       ist — hat sie die Breite 0. StPageFlip wirft dann „Invalid width or
+       height" und riss zuvor den ganzen Skriptlauf mit. Hier wird der Aufbau
+       einfach verschoben; sobald der Bereich sichtbar wird, ruft der
+       Aufrufer erneut. */
+    if (verfuegbareBreite < 240) return null;
+
     var schmal = istSchmal();
+    var ruhig = !!window.__reduce;
     var seitenBreite, seitenHoehe;
 
     if (schmal) {
@@ -193,7 +210,7 @@
       seitenHoehe = Math.round(seitenBreite * 1.4);
     }
 
-    var seiten = seitenBauen(liste, seitenBreite, seitenHoehe);
+    var seiten = seitenBauen(liste, seitenBreite, seitenHoehe, schmal);
 
     ziel.innerHTML = '';
     seiten.forEach(function (inhalt, i) {
@@ -215,9 +232,12 @@
       showCover: false,
       usePortrait: schmal,
       mobileScrollSupport: false,
-      drawShadow: true,
-      flippingTime: 700,
-      maxShadowOpacity: 0.4
+      /* Bei „Bewegung reduzieren" bleibt das Buch erhalten, blättert aber
+         ohne sichtbare Animation und ohne Schattenwurf — die ruhige
+         Variante, die der Auftrag verlangt. */
+      drawShadow: !ruhig,
+      flippingTime: ruhig ? 1 : 700,
+      maxShadowOpacity: ruhig ? 0 : 0.4
     });
     flip.loadFromHTML(ziel.querySelectorAll('.seite'));
 
@@ -371,9 +391,6 @@
 
   /* ---- Start ------------------------------------------------------------ */
   function start() {
-    var sektionen = document.querySelectorAll('[data-buch]');
-    for (var i = 0; i < sektionen.length; i++) einrichten(sektionen[i]);
-
     function alleNeu() {
       for (var b = 0; b < buecher.length; b++) {
         buecher[b].ansichtSetzen(buecher[b].zustand.buchAktiv && istBuchTauglich());
@@ -397,6 +414,18 @@
     window.addEventListener('orientationchange', function () {
       setTimeout(alleNeu, 350);
     });
+
+    /* Erst nach dem Bereitstellen der Haken einrichten, und jede Sektion
+       für sich: scheitert eine, dürfen die anderen und der Haken
+       __buecherNeu davon nicht mitgerissen werden. */
+    var sektionen = document.querySelectorAll('[data-buch]');
+    for (var i = 0; i < sektionen.length; i++) {
+      try {
+        einrichten(sektionen[i]);
+      } catch (e) {
+        if (window.console) console.warn('Buch konnte nicht eingerichtet werden:', e);
+      }
+    }
   }
 
   if (document.readyState === 'loading') {

@@ -688,6 +688,17 @@ body::after {
   overflow: hidden;
   box-shadow: inset 0 0 60px rgba(35,32,26,0.07);
 }
+
+/* Einzelseite auf schmalen Geräten: engerer Rand, damit vom Gericht mehr
+   übrig bleibt. Bei 320 px Gerätebreite blieben mit dem normalen Rand nur
+   rund 200 Pixel Textbreite — zu wenig für „Gnocchi Spinacci al Gorgonzola"
+   samt Preis. Der Umbruch misst denselben Rand mit, deshalb ändert sich die
+   Seitenzahl automatisch mit. */
+.buch--einzel .seite { padding: 1.5rem 1.25rem 2.3rem; }
+.buch--einzel .rubrik__titel { font-size: var(--step-1); margin-bottom: var(--sp-2); }
+.buch--einzel .gericht { padding: 0.55rem 0; gap: 0.25rem 0.7rem; }
+.buch--einzel .gericht__nr { min-width: 1.6rem; }
+.buch--einzel .seite__nr { bottom: 0.85rem; }
 .buch .seite--links  { box-shadow: inset -14px 0 26px -14px rgba(0,0,0,0.32); }
 .buch .seite--rechts { box-shadow: inset  14px 0 26px -14px rgba(0,0,0,0.32); }
 
@@ -4346,12 +4357,6 @@ body { padding-bottom: 4.1rem; }
 
   <h4>Sichtbar machen</h4>
   <label class="vor-schalter">
-    <input type="checkbox" id="vor-buch">
-    <span>Buch auch hochkant zeigen
-      <span class="vor-hint">Läuft dann als Einzelseite. Auf der echten Seite
-      erscheint das Buch erst ab 760 Pixel Breite.</span></span>
-  </label>
-  <label class="vor-schalter">
     <input type="checkbox" id="vor-saison">
     <span>Saison-Band einblenden
       <span class="vor-hint">Steht auf der echten Seite standardmäßig aus.</span></span>
@@ -4805,6 +4810,9 @@ window.__bewegungErzwingen = true;
    Das Schaustück der Seite. Passt zum traditionsreichen Haus: man blättert
    in einer Karte, statt eine Webseite herunterzuscrollen.
 
+   Die Karte IST ein Buch — auf jedem Gerät und ohne dass man erst einen
+   Knopf drücken müsste.
+
    Drei Pflichtregeln, die hier nicht verhandelbar sind:
 
    1. Die Listenansicht steht IMMER im HTML und ist die einzige Datenquelle.
@@ -4812,8 +4820,11 @@ window.__bewegungErzwingen = true;
       auseinanderlaufen, und ohne JavaScript bleibt die Karte vollständig
       lesbar — für Gäste wie für Google.
 
-   2. Unter 760 px wird das Buch gar nicht erst gebaut. Auf einem Handy ist
-      Blättern in einer zweiseitigen Karte unbrauchbar.
+   2. Unter 760 px blättert das Buch als EINZELSEITE statt als Doppelseite.
+      Zwei Seiten nebeneinander wären auf einem Handy nur rund 170 Pixel
+      breit und damit unlesbar. Wer lieber scrollt, schaltet über einen
+      Umschalter auf die Liste — der Weg zum Buch führt aber über keinen
+      Knopf.
 
    3. Tastaturbedienung: Pfeiltasten blättern, Pos1 und Ende springen an
       Anfang und Ende.
@@ -4830,12 +4841,13 @@ window.__bewegungErzwingen = true;
   var MIN_BREITE = 760;
   var buecher = [];
 
+  /* Die Karte IST ein Buch — auf jedem Gerät, ohne dass man erst einen
+     Knopf drücken müsste. Auf schmalen Geräten läuft es als Einzelseite
+     statt als Doppelseite; bei „Bewegung reduzieren" blättert es ohne
+     Animation weiter. Die ruhige Listenansicht bleibt über einen Umschalter
+     erreichbar und ist für Screenreader ohnehin immer die gelesene Fassung. */
   function istBuchTauglich() {
-    if (typeof St === 'undefined' || !St.PageFlip) return false;
-    /* Nur die Vorschau-Datei setzt __buchErzwingen, um das Buch auch auf
-       schmalen Geräten vorführen zu können. Es läuft dann als Einzelseite. */
-    if (window.__buchErzwingen) return true;
-    return window.innerWidth >= MIN_BREITE && !window.__reduce;
+    return typeof St !== 'undefined' && !!St.PageFlip;
   }
 
   function istSchmal() { return window.innerWidth < MIN_BREITE; }
@@ -4845,13 +4857,14 @@ window.__bewegungErzwingen = true;
      Einträge wandern so lange auf die Seite, bis sie überläuft. Sonst
      entstehen halbleere oder überfüllte Seiten, je nach Länge der
      Beschreibungstexte. */
-  function seitenBauen(quelle, breite, hoehe) {
+  function seitenBauen(quelle, breite, hoehe, schmal) {
     /* Die Seitenmaße stehen in der Regel „.buch .seite". Läge die Probe
        außerhalb eines .buch-Elements, bekäme sie keinen Innenabstand und
        meldete rund 50 Pixel zu viel Platz — die fertigen Seiten liefen
-       dann über. Deshalb wird der echte Aufbau nachgebildet. */
+       dann über. Deshalb wird der echte Aufbau nachgebildet, einschließlich
+       der Klasse für Einzelseiten, die einen engeren Innenabstand hat. */
     var probeHuelle = document.createElement('div');
-    probeHuelle.className = 'buch';
+    probeHuelle.className = 'buch' + (schmal ? ' buch--einzel' : '');
     probeHuelle.setAttribute('aria-hidden', 'true');
     probeHuelle.style.cssText = 'position:absolute;left:-10000px;top:0;visibility:hidden;';
 
@@ -4973,7 +4986,7 @@ window.__bewegungErzwingen = true;
        die als einziges Element stabil bleibt. */
     buehne.innerHTML = '';
     var ziel = document.createElement('div');
-    ziel.className = 'buch';
+    ziel.className = 'buch' + (istSchmal() ? ' buch--einzel' : '');
     ziel.setAttribute('data-buch-ziel', '');
     buehne.appendChild(ziel);
 
@@ -4981,7 +4994,16 @@ window.__bewegungErzwingen = true;
        Sektionsbreite — sonst ragt die Doppelseite über den Satzspiegel
        hinaus und erzeugt waagerechtes Scrollen. */
     var verfuegbareBreite = Math.min(buehne.clientWidth || sektion.clientWidth, 1040);
+
+    /* Ist die Karte noch ausgeblendet — etwa weil eine andere Seite sichtbar
+       ist — hat sie die Breite 0. StPageFlip wirft dann „Invalid width or
+       height" und riss zuvor den ganzen Skriptlauf mit. Hier wird der Aufbau
+       einfach verschoben; sobald der Bereich sichtbar wird, ruft der
+       Aufrufer erneut. */
+    if (verfuegbareBreite < 240) return null;
+
     var schmal = istSchmal();
+    var ruhig = !!window.__reduce;
     var seitenBreite, seitenHoehe;
 
     if (schmal) {
@@ -4994,7 +5016,7 @@ window.__bewegungErzwingen = true;
       seitenHoehe = Math.round(seitenBreite * 1.4);
     }
 
-    var seiten = seitenBauen(liste, seitenBreite, seitenHoehe);
+    var seiten = seitenBauen(liste, seitenBreite, seitenHoehe, schmal);
 
     ziel.innerHTML = '';
     seiten.forEach(function (inhalt, i) {
@@ -5016,9 +5038,12 @@ window.__bewegungErzwingen = true;
       showCover: false,
       usePortrait: schmal,
       mobileScrollSupport: false,
-      drawShadow: true,
-      flippingTime: 700,
-      maxShadowOpacity: 0.4
+      /* Bei „Bewegung reduzieren" bleibt das Buch erhalten, blättert aber
+         ohne sichtbare Animation und ohne Schattenwurf — die ruhige
+         Variante, die der Auftrag verlangt. */
+      drawShadow: !ruhig,
+      flippingTime: ruhig ? 1 : 700,
+      maxShadowOpacity: ruhig ? 0 : 0.4
     });
     flip.loadFromHTML(ziel.querySelectorAll('.seite'));
 
@@ -5172,9 +5197,6 @@ window.__bewegungErzwingen = true;
 
   /* ---- Start ------------------------------------------------------------ */
   function start() {
-    var sektionen = document.querySelectorAll('[data-buch]');
-    for (var i = 0; i < sektionen.length; i++) einrichten(sektionen[i]);
-
     function alleNeu() {
       for (var b = 0; b < buecher.length; b++) {
         buecher[b].ansichtSetzen(buecher[b].zustand.buchAktiv && istBuchTauglich());
@@ -5198,6 +5220,18 @@ window.__bewegungErzwingen = true;
     window.addEventListener('orientationchange', function () {
       setTimeout(alleNeu, 350);
     });
+
+    /* Erst nach dem Bereitstellen der Haken einrichten, und jede Sektion
+       für sich: scheitert eine, dürfen die anderen und der Haken
+       __buecherNeu davon nicht mitgerissen werden. */
+    var sektionen = document.querySelectorAll('[data-buch]');
+    for (var i = 0; i < sektionen.length; i++) {
+      try {
+        einrichten(sektionen[i]);
+      } catch (e) {
+        if (window.console) console.warn('Buch konnte nicht eingerichtet werden:', e);
+      }
+    }
   }
 
   if (document.readyState === 'loading') {
@@ -5335,19 +5369,6 @@ window.__bewegungErzwingen = true;
   }
 
   /* ---- Schalter ---- */
-  var chBuch = document.getElementById('vor-buch');
-  chBuch.addEventListener('change', function () {
-    window.__buchErzwingen = chBuch.checked;
-    /* Zumachen, sonst verdeckt das Bedienfeld genau das, was man
-       gerade eingeschaltet hat. */
-    panel.hidden = true;
-    seiteA('karte');
-    setTimeout(function () {
-      if (window.__buecherNeu) window.__buecherNeu();
-      setTimeout(function () { hin(inSeite('karte', '.buch-buehne')); }, 250);
-    }, 120);
-  });
-
   var chSaison = document.getElementById('vor-saison');
   chSaison.addEventListener('change', function () {
     var b = inSeite('start', '[data-saison]');
@@ -5406,10 +5427,7 @@ window.__bewegungErzwingen = true;
     abschnitt: null,
 
     buch: function () {
-      chBuch.checked = true;
-      window.__buchErzwingen = true;
-      if (window.__buecherNeu) window.__buecherNeu();
-      setTimeout(function () { hin(inSeite('karte', '.buch-buehne'), false); }, 320);
+      hin(inSeite('karte', '.buch-buehne'), false);
     },
     reiter: function (ziel) {
       var t = inSeite('karte', '[role="tab"][data-ziel="' + ziel + '"]');
@@ -5454,7 +5472,7 @@ window.__bewegungErzwingen = true;
     ['Anlässe', 'Feiern, Dinner for Two, Catering.', 'anlaesse', null],
     ['Bewertung und Öffnungszeiten', '4,8 aus 289 Bewertungen, dazu die Wochentabelle — der heutige Tag wird hervorgehoben.', 'zeiten', null],
     ['Schwester-Restaurants', 'Akropolis in Rochlitz und Paros in Penig.', 'familie', null],
-    ['Speisekarte als Buch', 'Das Schaustück. Wird hier auch hochkant erzwungen und läuft dann als Einzelseite — wischen oder Knöpfe benutzen.', 'karte', 'buch'],
+    ['Speisekarte als Buch', 'Das Schaustück — sofort da, ohne Knopfdruck. Hochkant als Einzelseite, quer als Doppelseite. Wischen oder die Pfeilknöpfe benutzen.', 'karte', 'buch'],
     ['Reiter: Mittagskarte', 'Umschalten auf die zweite Karte (noch Platzhalter).', 'karte', 'reiter:mittag'],
     ['Reiter: Eis-Karte', 'Umschalten auf die dritte Karte (noch Platzhalter).', 'karte', 'reiter:eis'],
     ['Zweites Buch: Getränke', 'Eigenes Buch, damit man für die Weinkarte nicht durch 60 Speisen blättert.', 'getraenke', 'getraenke'],
