@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="de" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mc Döner Limbach-Oberfrohna — frisch vom Spieß am Kellerberg</title>
+<meta name="description" content="Mc Döner, Kellerberg 12 in Limbach-Oberfrohna. Täglich frischer Spieß, Montag bis Samstag 11–21 Uhr. 4,9 Sterne bei über 550 Google-Bewertungen. Telefon 03722 7645391.">
+<meta name="theme-color" content="#F0B429">
+<link rel="canonical" href="https://mcdoener-limbach.de/">
+
+<meta property="og:type" content="restaurant">
+<meta property="og:title" content="Mc Döner — Kellerberg 12, Limbach-Oberfrohna">
+<meta property="og:description" content="Täglich frischer Spieß. Mo–Sa 11–21 Uhr. 4,9 ★ bei über 550 Google-Bewertungen.">
+<meta property="og:locale" content="de_DE">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F0B429'/%3E%3Cpath d='M11 5h4l-1.6 22h-4zM17 5h4l-1.6 22h-4z' fill='%2317110B'/%3E%3C/svg%3E">
+
+<link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/instrument-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+
+<script>document.documentElement.classList.remove('no-js');</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Mc Döner",
+  "servesCuisine": "Turkish",
+  "priceRange": "€",
+  "telephone": "+4937227645391",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Kellerberg 12",
+    "postalCode": "09212",
+    "addressLocality": "Limbach-Oberfrohna",
+    "addressRegion": "Sachsen",
+    "addressCountry": "DE"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 50.8605903, "longitude": 12.7610344 },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    "opens": "11:00", "closes": "21:00"
+  }],
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "553" },
+  "sameAs": ["https://www.instagram.com/mcdonerlimbach/"]
+}
+</script>
+</head>
+
+<body>
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+<header class="top" id="top">
+  <a class="marke" href="#inhalt">Mc<i>.</i>Döner</a>
+  <div class="top-rechts">
+    <a class="top-tel" href="tel:+4937227645391">03722 7645391</a>
+    <p class="status" id="status" role="status" aria-live="polite">
+      <span class="punkt" aria-hidden="true"></span>
+      <span class="status-text">Öffnungszeiten werden geprüft…</span>
+    </p>
+  </div>
+</header>
+
+<main id="inhalt">
+
+<!-- ══ HERO ══════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <h1 class="display d-xl">
+        <span class="zeile"><span>Döner,</span></span>
+        <span class="zeile"><span>wie er</span></span>
+        <span class="zeile"><span class="glut">sein soll.</span></span>
+      </h1>
+
+      <p class="hero-meta">
+        <span>Kellerberg 12 · Limbach-Oberfrohna</span>
+        <span><b>4,9 ★</b> bei über 550 Google-Bewertungen</span>
+      </p>
+
+      <!-- Das Wichtigste zuerst: Habt ihr gerade offen? -->
+      <p class="jetzt" id="jetzt">
+        <span class="jetzt-zeile" id="jetztZeile">Mo–Sa 11–21 Uhr</span>
+        <span class="jetzt-sub" id="jetztSub">Sonntag geschlossen</span>
+      </p>
+
+      <div class="cta-reihe">
+        <a class="btn btn--voll" href="tel:+4937227645391">
+          03722 7645391 anrufen <span class="pfeil" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--leer" href="#finden">Anfahrt &amp; Zeiten</a>
+      </div>
+    </div>
+
+    <!-- SIGNATUR: der Drehspieß, komplett in CSS gebaut -->
+    <div class="spiess" aria-hidden="true">
+      <span class="spiess__label">Dreht sich seit heute früh</span>
+      <div class="spiess__schein"></div>
+      <div class="spiess__brenner"></div>
+      <div class="spiess__stange"></div>
+      <div class="spiess__koerper">
+        <div class="spiess__haut" id="spiessHaut"></div>
+      </div>
+      <div class="spiess__kappe spiess__kappe--oben"></div>
+      <div class="spiess__kappe spiess__kappe--unten"></div>
+    </div>
+  </div>
+
+  <p class="scroll-hinweis" aria-hidden="true"><i></i> Scrollen</p>
+</section>
+
+<!-- ══ LAUFBAND ══════════════════════════════════════════════════════════ -->
+<div class="laufband" aria-hidden="true">
+  <div class="laufband__spur" id="laufband">
+    <span>Döner</span><span>Dürüm</span><span>Yufka</span><span>Lahmacun</span><span>Falafel</span><span>Halloumi</span>
+    <span>Döner</span><span>Dürüm</span><span>Yufka</span><span>Lahmacun</span><span>Falafel</span><span>Halloumi</span>
+    <span>Döner</span><span>Dürüm</span><span>Yufka</span><span>Lahmacun</span><span>Falafel</span><span>Halloumi</span>
+    <span>Döner</span><span>Dürüm</span><span>Yufka</span><span>Lahmacun</span><span>Falafel</span><span>Halloumi</span>
+  </div>
+</div>
+
+<!-- ══ ZAHLEN ════════════════════════════════════════════════════════════ -->
+<section class="slab slab--glut" style="padding-block:clamp(2.2rem,4.5vw,3.4rem)" aria-label="Mc Döner in Zahlen">
+  <div class="shell">
+    <div class="zahlen-grid">
+      <p class="zahl"><b data-zaehl="4.9" data-nk="1">0,0</b><small>Sterne bei Google</small></p>
+      <p class="zahl"><b data-zaehl="553">0</b><small>Bewertungen</small></p>
+      <p class="zahl"><b data-zaehl="10">0</b><small>Stunden täglich offen</small></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HANDWERK ══════════════════════════════════════════════════════════ -->
+<section class="slab slab--kalk handwerk">
+  <div class="shell">
+    <div class="handwerk-grid">
+      <div>
+        <p class="kicker" data-animate>Am Kellerberg</p>
+        <h2 class="display d-lg" data-animate>Frisch.<br>Ehrlich.<br>Vom Spieß.</h2>
+        <p class="lede" data-animate>
+          Bei uns kommt nichts aus der Mikrowelle. Der Spieß dreht sich den ganzen Tag,
+          das Brot wird frisch aufgebacken, das Gemüse jeden Morgen geschnitten.
+        </p>
+        <p class="lede" data-animate>
+          Kein Schnickschnack, keine vierzig Soßen zur Auswahl — dafür jedes Mal
+          derselbe Döner, wegen dem ihr wiederkommt.
+        </p>
+      </div>
+
+      <!-- Sobald ein echtes Foto vorliegt: style="--foto:url('assets/img/spiess.jpg')" -->
+      <figure class="platte platte--hoch" data-animate>
+        <div class="platte__flaeche" data-parallax="-0.07">
+          <svg viewBox="0 0 300 400" role="img" aria-label="Zeichnung eines Dönerspießes mit Messer">
+            <!-- Stange -->
+            <path d="M150 26v54M150 316v58"/>
+            <!-- Fleischkörper -->
+            <path class="fuell" d="M104 104c-9 58-9 142 5 202 8 34 74 34 82 0 14-60 14-144 5-202-8-30-84-30-92 0Z"/>
+            <path d="M104 104c-9 58-9 142 5 202 8 34 74 34 82 0 14-60 14-144 5-202"/>
+            <ellipse cx="150" cy="100" rx="46" ry="13"/>
+            <!-- Fleischlagen -->
+            <path d="M100 146c30 9 70 9 100 0M97 190c31 9 75 9 106 0M97 234c31 9 75 9 106 0M101 276c29 9 69 9 98 0"/>
+            <!-- Messer: lange Klinge, dann Griff -->
+            <path d="M226 132 276 176a10 10 0 0 1-13 8l-40-38Z"/>
+            <path d="M272 182 292 200"/>
+            <!-- Hitze vom Brenner -->
+            <path d="M54 176c-8-8-8-16 0-24-2 10 8 10 6 22M54 232c-8-8-8-16 0-24-2 10 8 10 6 22M54 288c-8-8-8-16 0-24-2 10 8 10 6 22"/>
+          </svg>
+        </div>
+        <figcaption class="platte__bu">Frisch vom Spieß</figcaption>
+      </figure>
+    </div>
+
+    <div class="fakten">
+      <div class="fakt" data-animate>
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M8 6a4 4 0 0 1 8 0v6a4 4 0 0 1-8 0Z"/></svg>
+        <h3 class="d-sm">Täglich frischer Spieß</h3>
+        <p>Jeden Morgen neu aufgesteckt und den ganzen Tag über langsam gegart.</p>
+      </div>
+      <div class="fakt" data-animate>
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M6 8h12M7 16h10M3 20h18"/></svg>
+        <h3 class="d-sm">Brot frisch aufgebacken</h3>
+        <p>Kein Brot aus der Tüte. Erst wenn bestellt wird, geht es in den Ofen.</p>
+      </div>
+      <div class="fakt" data-animate>
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <h3 class="d-sm">Schnell abgeholt</h3>
+        <p>Kurz anrufen, vorbeikommen, mitnehmen. Sitzplätze und Außenbereich gibt es auch.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AUSWAHL ═══════════════════════════════════════════════════════════
+     HINWEIS AN DEN BETREIBER: Hier stehen bewusst KEINE Preise, weil sie
+     mir nicht vorlagen. Preise einfach in die <span class="karte-preis">
+     eintragen — oder die Zeile löschen, wenn keine Preise online sollen.
+     ═════════════════════════════════════════════════════════════════════ -->
+<section class="slab slab--russ" id="auswahl">
+  <div class="shell">
+    <div class="karte-kopf">
+      <div>
+        <p class="kicker" data-animate>Auswahl</p>
+        <h2 class="display d-lg" data-animate style="margin-top:.7rem">Das gibt&#39;s<br>bei uns.</h2>
+      </div>
+      <p class="lede" data-animate style="max-width:34ch">
+        Alles frisch gemacht, wenn ihr davorsteht. Zum Mitnehmen oder hier essen.
+      </p>
+    </div>
+
+    <ul class="karte-liste" data-animate>
+      <li>
+        <span class="karte-nr">01</span>
+        <span class="karte-name">Döner<em>Im frischen Fladenbrot, mit Salat und Soße</em></span>
+        <span class="karte-preis">Preis im Laden</span>
+      </li>
+      <li>
+        <span class="karte-nr">02</span>
+        <span class="karte-name">Dürüm<em>Gerollt im dünnen Yufka-Teigfladen</em></span>
+        <span class="karte-preis">Preis im Laden</span>
+      </li>
+      <li>
+        <span class="karte-nr">03</span>
+        <span class="karte-name">Yufka<em>Der große Bruder vom Dürüm</em></span>
+        <span class="karte-preis">Preis im Laden</span>
+      </li>
+      <li>
+        <span class="karte-nr">04</span>
+        <span class="karte-name">Lahmacun<em>Dünn ausgerollt, frisch aus dem Ofen</em></span>
+        <span class="karte-preis">Preis im Laden</span>
+      </li>
+      <li>
+        <span class="karte-nr">05</span>
+        <span class="karte-name">Falafel<em>Die vegetarische Variante, frittiert bei Bestellung</em></span>
+        <span class="karte-preis">Preis im Laden</span>
+      </li>
+      <li>
+        <span class="karte-nr">06</span>
+        <span class="karte-name">Halloumi<em>Gegrillter Käse statt Fleisch</em></span>
+        <span class="karte-preis">Preis im Laden</span>
+      </li>
+      <li>
+        <span class="karte-nr">07</span>
+        <span class="karte-name">Döner-Teller<em>Mit Pommes, Salat und Soße auf dem Teller</em></span>
+        <span class="karte-preis">Preis im Laden</span>
+      </li>
+    </ul>
+
+    <p class="karte-hinweis" data-animate>
+      Sonderwünsche, große Bestellungen oder Fragen zu Zutaten?
+      <a href="tel:+4937227645391">Ruft einfach an: 03722 7645391</a>
+    </p>
+  </div>
+</section>
+
+<!-- ══ GALERIE ═══════════════════════════════════════════════════════════
+     Die Flächen sind CSS-Grafiken, damit die Seite ohne fremde Stockfotos
+     vollständig funktioniert. Eigenes Foto einsetzen: style="--foto:url('…')"
+     ═════════════════════════════════════════════════════════════════════ -->
+<section class="slab galerie" id="galerie">
+  <div class="galerie-kopf">
+    <p class="kicker" data-animate>Bei uns im Laden</p>
+    <h2 class="display d-lg" data-animate style="margin-top:.7rem">Sieht so aus,<br>wie es schmeckt.</h2>
+  </div>
+
+  <div class="gal-fenster">
+    <div class="gal-spur" id="galSpur">
+
+      <figure class="gal-stueck gal-stueck--a t-senf">
+        <div class="gal-flaeche">
+          <p class="tafel__kopf"><span>01</span><span>Der Spieß</span></p>
+          <div>
+            <p class="tafel__wort">Dreht<br>seit 10 Uhr</p>
+            <p class="tafel__zeile">Morgens frisch aufgesteckt, den ganzen Tag langsam gegart.</p>
+          </div>
+          <svg class="tafel__grafik" viewBox="0 0 120 160" aria-hidden="true">
+            <path d="M60 8v18M60 132v20"/>
+            <path d="M38 40c-5 26-5 62 2 88 4 15 36 15 40 0 7-26 7-62 2-88-4-14-40-14-44 0Z"/>
+            <ellipse cx="60" cy="38" rx="22" ry="6"/>
+            <path d="M37 62c14 4 32 4 46 0M36 84c15 4 33 4 48 0M37 106c14 4 32 4 46 0"/>
+          </svg>
+        </div>
+        <figcaption>Der Spieß</figcaption>
+      </figure>
+
+      <figure class="gal-stueck gal-stueck--b t-dunkel">
+        <div class="gal-flaeche">
+          <p class="tafel__kopf"><span>02</span><span>Brot</span></p>
+          <div>
+            <p class="tafel__wort">Erst bestellt,<br>dann gebacken</p>
+            <p class="tafel__zeile">Kein Brot aus der Tüte. Es geht in den Ofen, wenn ihr davorsteht.</p>
+          </div>
+          <svg class="tafel__grafik" viewBox="0 0 160 120" aria-hidden="true">
+            <path d="M20 74c0-24 18-42 44-42h32c26 0 44 18 44 42 0 8-6 14-14 14H34c-8 0-14-6-14-14Z"/>
+            <path d="M46 40c6 8 6 16 0 24M78 36c6 8 6 16 0 24M110 40c6 8 6 16 0 24"/>
+          </svg>
+        </div>
+        <figcaption>Brot aus dem Ofen</figcaption>
+      </figure>
+
+      <figure class="gal-stueck gal-stueck--c t-salat">
+        <div class="gal-flaeche">
+          <p class="tafel__kopf"><span>03</span><span>Gemüse</span></p>
+          <div>
+            <p class="tafel__wort">Jeden<br>Morgen</p>
+            <p class="tafel__zeile">Von Hand geschnitten, nicht vorgefertigt.</p>
+          </div>
+          <svg class="tafel__grafik" viewBox="0 0 120 120" aria-hidden="true">
+            <path d="M60 104c0-30 14-52 44-58-4 30-18 50-44 58Z"/>
+            <path d="M60 104c0-30-14-52-44-58 4 30 18 50 44 58Z"/>
+            <path d="M60 104V60"/>
+          </svg>
+        </div>
+        <figcaption>Jeden Morgen geschnitten</figcaption>
+      </figure>
+
+      <figure class="gal-stueck gal-stueck--b t-glut">
+        <div class="gal-flaeche">
+          <p class="tafel__kopf"><span>04</span><span>Küche</span></p>
+          <div>
+            <p class="tafel__wort">Ihr seht,<br>was passiert</p>
+            <p class="tafel__zeile">Offene Küche. Geschnitten wird vor euren Augen, von Hand.</p>
+          </div>
+          <svg class="tafel__grafik" viewBox="0 0 160 120" aria-hidden="true">
+            <path d="M24 84c26-34 86-34 112 0"/>
+            <path d="M80 30v-14M40 44 30 32M120 44l10-12"/>
+            <path d="M18 96h124"/>
+          </svg>
+        </div>
+        <figcaption>Offene Küche</figcaption>
+      </figure>
+
+      <figure class="gal-stueck gal-stueck--c t-kalk">
+        <div class="gal-flaeche">
+          <p class="tafel__kopf"><span>05</span><span>Teller</span></p>
+          <div>
+            <p class="tafel__wort">Mit<br>Pommes</p>
+            <p class="tafel__zeile">Wenn der Hunger größer ist als das Brot.</p>
+          </div>
+          <svg class="tafel__grafik" viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="42"/><circle cx="60" cy="60" r="30"/>
+            <path d="M44 52l6 24M56 48l2 28M68 50l-2 26"/>
+          </svg>
+        </div>
+        <figcaption>Teller mit Pommes</figcaption>
+      </figure>
+
+      <figure class="gal-stueck gal-stueck--a t-dunkel">
+        <div class="gal-flaeche">
+          <p class="tafel__kopf"><span>06</span><span>Mitnehmen</span></p>
+          <div>
+            <p class="tafel__wort">Anrufen,<br>abholen</p>
+            <p class="tafel__zeile">Vorbestellen spart die Wartezeit: 03722 7645391.</p>
+          </div>
+          <svg class="tafel__grafik" viewBox="0 0 120 140" aria-hidden="true">
+            <path d="M28 50h64l-8 74H36Z"/>
+            <path d="M46 50V36a14 14 0 0 1 28 0v14"/>
+          </svg>
+        </div>
+        <figcaption>Zum Mitnehmen</figcaption>
+      </figure>
+
+      <figure class="gal-stueck gal-stueck--b t-senf">
+        <div class="gal-flaeche">
+          <p class="tafel__kopf"><span>07</span><span>Abends</span></p>
+          <div>
+            <p class="tafel__wort">Offen<br>bis 21 Uhr</p>
+            <p class="tafel__zeile">Montag bis Samstag, durchgehend von 11 bis 21 Uhr.</p>
+          </div>
+          <svg class="tafel__grafik" viewBox="0 0 160 120" aria-hidden="true">
+            <circle cx="80" cy="60" r="34"/><path d="M80 38v22l16 10"/>
+            <path d="M80 8v10M80 102v10M18 60h10M132 60h10"/>
+          </svg>
+        </div>
+        <figcaption>Abends offen bis 21 Uhr</figcaption>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ STIMMEN ═══════════════════════════════════════════════════════════ -->
+<section class="slab slab--senf">
+  <div class="shell">
+    <p class="kicker" data-animate>Was Gäste sagen</p>
+    <h2 class="display d-lg" data-animate style="margin-top:.7rem">4,9 von 5.</h2>
+
+    <div class="stimmen-grid">
+      <blockquote class="stimme" data-animate data-neigung="-2">
+        <p class="sterne" aria-label="5 von 5 Sternen">★★★★★</p>
+        <q>Really great Doner, would recommend to everybody!</q>
+        <cite>Google-Bewertung</cite>
+      </blockquote>
+      <blockquote class="stimme" data-animate data-neigung="1.5">
+        <p class="sterne" aria-label="5 von 5 Sternen">★★★★★</p>
+        <q>One of the best Döner in my life :)</q>
+        <cite>Google-Bewertung</cite>
+      </blockquote>
+      <blockquote class="stimme" data-animate data-neigung="-1">
+        <p class="sterne" aria-label="5 von 5 Sternen">★★★★★</p>
+        <q>Hammer.</q>
+        <cite>Google-Bewertung</cite>
+      </blockquote>
+    </div>
+
+    <p class="stimmen-fuss" data-animate>
+      4,9 von 5 Sternen bei über 550 Bewertungen ·
+      <a href="https://www.instagram.com/mcdonerlimbach/" target="_blank" rel="noopener">Instagram ansehen</a>
+    </p>
+  </div>
+</section>
+
+<!-- ══ FINDEN ════════════════════════════════════════════════════════════ -->
+<section class="slab slab--kalk" id="finden">
+  <div class="shell">
+    <div class="finden-grid">
+      <div>
+        <p class="kicker" data-animate>Öffnungszeiten</p>
+        <h2 class="display d-lg" data-animate style="margin-top:.7rem">Mo–Sa<br>11–21 Uhr.</h2>
+
+        <ul class="zeiten" id="zeiten" data-animate>
+          <li data-tag="1"><span>Montag</span><span>11:00 – 21:00</span></li>
+          <li data-tag="2"><span>Dienstag</span><span>11:00 – 21:00</span></li>
+          <li data-tag="3"><span>Mittwoch</span><span>11:00 – 21:00</span></li>
+          <li data-tag="4"><span>Donnerstag</span><span>11:00 – 21:00</span></li>
+          <li data-tag="5"><span>Freitag</span><span>11:00 – 21:00</span></li>
+          <li data-tag="6"><span>Samstag</span><span>11:00 – 21:00</span></li>
+          <li data-tag="0" class="ist-zu"><span>Sonntag</span><span>geschlossen</span></li>
+        </ul>
+
+        <div class="adresse" data-animate>
+          <p class="adr-zeile">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Kellerberg 12, 09212 Limbach-Oberfrohna
+              <small>Kostenlose Straßenparkplätze · Parkplatz Esche-Museum ca. 260 m</small>
+            </span>
+          </p>
+          <p class="adr-zeile">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+            <span><a href="tel:+4937227645391">03722 7645391</a>
+              <small>Vorbestellen spart Wartezeit</small>
+            </span>
+          </p>
+          <p class="adr-zeile">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
+            <span><a href="https://www.instagram.com/mcdonerlimbach/" target="_blank" rel="noopener">@mcdonerlimbach</a>
+              <small>Aktuelles direkt aus dem Laden</small>
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div class="karte-box" data-animate>
+        <iframe
+          title="Karte: Mc Döner, Kellerberg 12, Limbach-Oberfrohna"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=12.7545%2C50.8572%2C12.7676%2C50.8640&amp;layer=mapnik&amp;marker=50.8605903%2C12.7610344"></iframe>
+        <a class="karte-cta" href="https://www.google.com/maps/dir/?api=1&amp;destination=Mc+D%C3%B6ner%2C+Kellerberg+12%2C+09212+Limbach-Oberfrohna" target="_blank" rel="noopener">Route öffnen →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="fuss">
+  <div class="fuss-oben">
+    <span>Kellerberg 12 · 09212 Limbach-Oberfrohna · <a href="tel:+4937227645391">03722 7645391</a></span>
+    <nav class="fuss-links" aria-label="Fußzeile">
+      <a href="#finden">Öffnungszeiten</a>
+      <a href="#auswahl">Auswahl</a>
+      <a href="https://www.instagram.com/mcdonerlimbach/" target="_blank" rel="noopener">Instagram</a>
+      <span id="jahr"></span>
+    </nav>
+  </div>
+  <!-- Als SVG gesetzt: `textLength` zwingt das Wort auf exakt die volle
+       Breite, egal wie schmal oder breit das Fenster ist. -->
+  <svg class="fuss-wort" id="fussWort" viewBox="0 0 1000 150" aria-hidden="true" focusable="false">
+    <text x="500" y="126" text-anchor="middle" textLength="972" lengthAdjust="spacingAndGlyphs">MC DÖNER</text>
+  </svg>
+</footer>
+
+<a class="rufleiste" id="rufleiste" href="tel:+4937227645391">Jetzt anrufen &amp; vorbestellen →</a>
+
+<script src="assets/vendor/gsap.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="assets/vendor/lenis.min.js" defer></script>
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>

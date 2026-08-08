@@ -1,0 +1,793 @@
+/* ==========================================================================
+   Mc Döner — Limbach-Oberfrohna
+   Konzept "LEUCHTKASTEN": der beleuchtete Schaukasten eines Imbisses am Abend.
+   Grundton Bernstein-Gelb, Tinte warmes Schwarzbraun, Akzent Glut-Rot.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1 · SCHRIFTEN (lokal, keine externen Requests)
+   -------------------------------------------------------------------------- */
+@font-face{
+  font-family:'Archivo Var';
+  font-style:normal; font-display:swap;
+  font-weight:100 900; font-stretch:62% 125%;
+  src:url('../fonts/archivo-latin-wdth-normal.woff2') format('woff2-variations');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face{
+  font-family:'Archivo Var';
+  font-style:normal; font-display:swap;
+  font-weight:100 900; font-stretch:62% 125%;
+  src:url('../fonts/archivo-latin-ext-wdth-normal.woff2') format('woff2-variations');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face{
+  font-family:'Instrument Var';
+  font-style:normal; font-display:swap; font-weight:400 700;
+  src:url('../fonts/instrument-sans-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face{
+  font-family:'Instrument Var';
+  font-style:normal; font-display:swap; font-weight:400 700;
+  src:url('../fonts/instrument-sans-latin-ext-wght-normal.woff2') format('woff2-variations');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* --------------------------------------------------------------------------
+   2 · TOKENS
+   -------------------------------------------------------------------------- */
+:root{
+  /* Farbwelt */
+  --russ:#17110B;          /* warmes Schwarzbraun — Tinte & dunkle Bänder     */
+  --russ-2:#241A11;        /* eine Stufe heller, für Karten auf Dunkel        */
+  --russ-3:#332518;        /* Linien auf Dunkel                               */
+  --senf:#F0B429;          /* Leuchtkasten-Bernstein — der Grundton           */
+  --senf-hell:#FFCF5C;
+  --senf-tief:#D89A15;
+  --glut:#C6320D;          /* Glut-Rot — Akzentfläche                         */
+  --glut-hell:#FF7A18;     /* Brenner-Orange — Glühen                         */
+  --kalk:#FBF6EA;          /* Fliesenweiß                                     */
+  --salat:#1F5D46;         /* tiefes Grün, sehr sparsam                       */
+
+  /* Linien */
+  --linie-dunkel:rgba(23,17,11,.16);
+  --linie-hell:rgba(251,246,234,.18);
+
+  /* Schrift */
+  --f-display:'Archivo Var','Arial Black','Helvetica Neue',system-ui,sans-serif;
+  --f-body:'Instrument Var',system-ui,-apple-system,'Segoe UI',sans-serif;
+
+  /* Abstände */
+  --s1:clamp(.5rem,1vw,.75rem);
+  --s2:clamp(1rem,2vw,1.5rem);
+  --s3:clamp(2rem,4vw,3.25rem);
+  --s4:clamp(3.5rem,8vw,7rem);
+  --shell:min(1240px,90vw);
+
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+/* --------------------------------------------------------------------------
+   3 · RESET
+   -------------------------------------------------------------------------- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body,h1,h2,h3,h4,p,figure,ul,ol,li,dl,dd,blockquote{margin:0;padding:0}
+ul,ol{list-style:none}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+html,body{overflow-x:clip}
+
+body{
+  font-family:var(--f-body);
+  font-size:clamp(1rem,.97rem + .18vw,1.08rem);
+  line-height:1.62;
+  background:var(--russ);
+  color:var(--kalk);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+:focus-visible{
+  outline:3px solid var(--glut-hell);
+  outline-offset:3px;
+  border-radius:2px;
+}
+/* Auf gelbem Grund braucht der Fokus einen dunklen Ring */
+.slab--senf :focus-visible,.slab--kalk :focus-visible{outline-color:var(--russ)}
+
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:10000;
+  background:var(--russ);color:var(--senf);
+  padding:.8rem 1.3rem;font-weight:600;
+}
+.skip:focus{left:1rem;top:1rem}
+
+/* --------------------------------------------------------------------------
+   4 · TYPO-BAUSTEINE
+   -------------------------------------------------------------------------- */
+.display{
+  font-family:var(--f-display);
+  font-weight:800;
+  font-stretch:122%;              /* Archivo Expanded — plakativ wie ein Schild */
+  text-transform:uppercase;
+  letter-spacing:-.022em;
+  line-height:.9;
+}
+.d-xl{font-size:clamp(2.7rem,10.5vw,8.6rem)}
+.d-lg{font-size:clamp(2rem,5.6vw,4.3rem)}
+.d-md{font-size:clamp(1.35rem,2.6vw,2.05rem);line-height:.98}
+.d-sm{
+  font-family:var(--f-display);font-weight:700;font-stretch:110%;
+  font-size:clamp(1.02rem,1.5vw,1.2rem);letter-spacing:-.01em;
+  text-transform:none;line-height:1.2;
+}
+
+.kicker{
+  font-size:.7rem;font-weight:600;
+  letter-spacing:.26em;text-transform:uppercase;
+  display:flex;align-items:center;gap:.7rem;
+}
+.kicker::before{
+  content:"";width:26px;height:2px;background:currentColor;flex:none;opacity:.55;
+}
+
+.lede{
+  font-size:clamp(1.04rem,1.5vw,1.22rem);
+  line-height:1.55;max-width:54ch;
+}
+
+.shell{width:var(--shell);margin-inline:auto}
+.slab{padding-block:var(--s4);position:relative}
+
+/* Farbflächen — jede Sektion ist ein eigener Block */
+.slab--senf{background:var(--senf);color:var(--russ)}
+.slab--kalk{background:var(--kalk);color:var(--russ)}
+.slab--russ{background:var(--russ);color:var(--kalk)}
+.slab--glut{background:var(--glut);color:var(--kalk)}
+
+.slab--senf .lede,.slab--kalk .lede{color:rgba(23,17,11,.74)}
+.slab--russ .lede{color:rgba(251,246,234,.68)}
+
+/* Reveal-Ausgangszustand */
+[data-animate]{opacity:0;transform:translateY(34px)}
+.no-js [data-animate]{opacity:1;transform:none}
+
+/* Zeilen-Maske für die Hero-Headline */
+.zeile{display:block;overflow:hidden;padding-block:.02em}
+.zeile>span{display:block}
+
+/* --------------------------------------------------------------------------
+   5 · KOPFZEILE
+   -------------------------------------------------------------------------- */
+.top{
+  position:fixed;inset:0 0 auto 0;z-index:120;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.85rem max(4vw,1.1rem);
+  transition:background-color .4s var(--ease),box-shadow .4s var(--ease);
+}
+.top--haftend{
+  background:rgba(23,17,11,.92);
+  box-shadow:0 1px 0 rgba(251,246,234,.12);
+  backdrop-filter:blur(9px);
+}
+.top--haftend .marke,.top--haftend .top-tel{color:var(--kalk)}
+
+.marke{
+  font-family:var(--f-display);font-weight:800;font-stretch:112%;
+  text-transform:uppercase;letter-spacing:-.025em;
+  font-size:1.06rem;line-height:1;color:var(--russ);
+  display:inline-flex;align-items:baseline;gap:.12em;
+  transition:color .4s var(--ease);
+}
+.marke i{
+  font-style:normal;color:var(--glut);
+  transition:color .4s var(--ease);
+}
+.top--haftend .marke i{color:var(--senf)}
+
+.top-rechts{display:flex;align-items:center;gap:1rem}
+.top-tel{
+  font-size:.86rem;font-weight:600;color:var(--russ);
+  transition:color .4s var(--ease);
+}
+.top-tel:hover{color:var(--glut)}
+.top--haftend .top-tel:hover{color:var(--senf)}
+@media(max-width:620px){.top-tel{display:none}}
+
+/* Live-Statuspille */
+.status{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.76rem;font-weight:600;letter-spacing:.01em;
+  padding:.4rem .8rem;border-radius:99px;white-space:nowrap;
+  border:1.5px solid currentColor;color:var(--russ);
+  transition:color .4s var(--ease),background-color .4s var(--ease);
+}
+.top--haftend .status{color:var(--kalk)}
+.status .punkt{
+  width:7px;height:7px;border-radius:50%;flex:none;
+  background:currentColor;opacity:.45;
+}
+.status.ist-offen{background:var(--salat);border-color:var(--salat);color:var(--kalk)}
+.top--haftend .status.ist-offen{color:var(--kalk)}
+.status.ist-offen .punkt{
+  background:#5FE3A6;opacity:1;
+  animation:puls 2.4s ease-out infinite;
+}
+@keyframes puls{
+  0%{box-shadow:0 0 0 0 rgba(95,227,166,.6)}
+  70%{box-shadow:0 0 0 8px rgba(95,227,166,0)}
+  100%{box-shadow:0 0 0 0 rgba(95,227,166,0)}
+}
+
+/* --------------------------------------------------------------------------
+   6 · HERO
+   -------------------------------------------------------------------------- */
+.hero{
+  position:relative;min-height:100svh;
+  display:flex;align-items:flex-end;
+  padding-top:5.5rem;
+  background:var(--senf);color:var(--russ);
+  overflow:hidden;
+}
+/* feiner Papier-/Druckraster über dem Gelb */
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(rgba(23,17,11,.14) 1px,transparent 1px);
+  background-size:5px 5px;
+  opacity:.5;mix-blend-mode:multiply;
+}
+.hero-grid{
+  position:relative;z-index:1;
+  width:var(--shell);margin-inline:auto;
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--s3);
+  align-items:end;
+  padding-bottom:clamp(3.5rem,7vw,5.5rem);
+}
+.hero h1{margin-bottom:var(--s2)}
+.hero h1 .glut{color:var(--glut)}
+
+.hero-meta{
+  display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;
+  font-size:.88rem;color:rgba(23,17,11,.66);
+  margin-bottom:var(--s2);
+}
+.hero-meta b{color:var(--russ);font-weight:700}
+
+/* Große, ehrliche Öffnungsanzeige — das Wichtigste für einen Imbiss */
+.jetzt{
+  display:inline-flex;flex-direction:column;gap:.15rem;
+  border-left:4px solid var(--glut);
+  padding:.1rem 0 .1rem 1rem;
+  margin-bottom:var(--s3);
+}
+.jetzt-zeile{
+  font-family:var(--f-display);font-weight:800;font-stretch:112%;
+  text-transform:uppercase;letter-spacing:-.015em;
+  font-size:clamp(1.15rem,2.4vw,1.7rem);line-height:1.05;
+}
+.jetzt-sub{font-size:.85rem;color:rgba(23,17,11,.62)}
+
+.cta-reihe{display:flex;flex-wrap:wrap;gap:.7rem}
+.btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:1rem 1.55rem;
+  font-weight:600;font-size:.95rem;
+  border:2px solid var(--russ);
+  transition:transform .35s var(--ease),background-color .35s var(--ease),color .35s var(--ease);
+}
+.btn:hover{transform:translateY(-3px)}
+.btn--voll{background:var(--russ);color:var(--senf)}
+.btn--voll:hover{background:var(--glut);border-color:var(--glut);color:var(--kalk)}
+.btn--leer{background:transparent;color:var(--russ)}
+.btn--leer:hover{background:var(--russ);color:var(--senf)}
+.btn .pfeil{transition:transform .35s var(--ease)}
+.btn:hover .pfeil{transform:translateX(5px)}
+
+/* Auf dunklem Grund */
+.slab--russ .btn{border-color:var(--kalk);color:var(--kalk)}
+.slab--russ .btn--voll{background:var(--senf);border-color:var(--senf);color:var(--russ)}
+.slab--russ .btn--voll:hover{background:var(--kalk);border-color:var(--kalk)}
+.slab--russ .btn--leer:hover{background:var(--kalk);color:var(--russ)}
+
+.scroll-hinweis{
+  position:absolute;left:max(4vw,1.1rem);bottom:1.4rem;z-index:1;
+  display:flex;align-items:center;gap:.7rem;
+  font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
+  font-weight:600;color:rgba(23,17,11,.5);
+}
+.scroll-hinweis i{
+  display:block;width:46px;height:2px;
+  background:rgba(23,17,11,.22);position:relative;overflow:hidden;
+}
+.scroll-hinweis i::after{
+  content:"";position:absolute;inset:0;background:var(--glut);
+  animation:wisch 2.6s var(--ease) infinite;
+}
+@keyframes wisch{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+
+/* --------------------------------------------------------------------------
+   7 · SIGNATUR — DER DREHSPIESS (reines CSS, kein Bild nötig)
+   -------------------------------------------------------------------------- */
+.spiess{
+  position:relative;flex:none;
+  width:clamp(150px,19vw,268px);
+  height:clamp(330px,56vh,620px);
+}
+
+/* Gasbrenner links daneben */
+.spiess__brenner{
+  position:absolute;top:6%;bottom:10%;left:-16%;width:15%;
+  border-radius:3px;
+  background:
+    repeating-linear-gradient(180deg,
+      rgba(255,122,24,.85) 0 4px, rgba(198,50,13,.7) 4px 9px);
+  filter:blur(3px);
+  opacity:.85;
+  animation:flackern 3.1s ease-in-out infinite;
+}
+.spiess__schein{
+  position:absolute;left:-52%;top:8%;width:95%;height:84%;
+  background:radial-gradient(closest-side,rgba(255,122,24,.5),transparent 74%);
+  filter:blur(24px);pointer-events:none;
+  animation:flackern 4.3s ease-in-out infinite reverse;
+}
+@keyframes flackern{
+  0%,100%{opacity:.78}
+  40%{opacity:1}
+  62%{opacity:.7}
+}
+
+/* Stahlstange */
+.spiess__stange{
+  position:absolute;left:50%;top:-3rem;bottom:-2.2rem;width:6px;
+  transform:translateX(-50%);border-radius:4px;
+  background:linear-gradient(90deg,#2b2520,#9a9187 38%,#e8e2d8 50%,#9a9187 62%,#2b2520);
+}
+
+/* Fleischkörper */
+.spiess__koerper{
+  position:absolute;inset:0;overflow:hidden;
+  border-radius:46% 46% 42% 42% / 7% 7% 5% 5%;
+  box-shadow:0 34px 70px rgba(23,17,11,.55);
+}
+
+/* Die rotierende Haut: 3 Kacheln breit, wandert um genau eine Kachel */
+.spiess__haut{
+  position:absolute;top:0;bottom:0;left:0;width:300%;
+  background-repeat:repeat-x;
+  background-size:33.3333% 100%;
+  background-image:
+    /* Röstflecken & Krustenkanten — machen die Drehung sichtbar */
+    radial-gradient(ellipse 7% 13% at 21% 26%, rgba(255,196,104,.42), transparent 68%),
+    radial-gradient(ellipse 5% 9%  at 63% 58%, rgba(58,21,6,.55),     transparent 70%),
+    radial-gradient(ellipse 6% 11% at 84% 78%, rgba(255,170,70,.3),   transparent 70%),
+    /* feine senkrechte Faserung */
+    repeating-linear-gradient(90deg,
+      rgba(23,10,4,.30) 0 1.1%,
+      rgba(255,222,170,.09) 1.1% 2.2%,
+      rgba(23,10,4,.14) 2.2% 3.4%,
+      rgba(255,222,170,.03) 3.4% 5%),
+    /* die gestapelten Fleischlagen */
+    repeating-linear-gradient(177deg,
+      #8d3c14 0 1.6%,
+      #a94e1c 1.6% 3%,
+      #6d2c0e 3% 4.2%,
+      #bb5d22 4.2% 6%),
+    /* Grundton des Zylinders */
+    linear-gradient(90deg,#4e1d09,#a94e1c 42%,#c96a20 54%,#4e1d09);
+  will-change:transform;
+  animation:dreht 11s linear infinite;
+}
+@keyframes dreht{from{transform:translateX(0)}to{transform:translateX(-33.3333%)}}
+
+/* Zylinder-Volumen: feste Schattierung über der drehenden Haut */
+.spiess__koerper::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(90deg,
+      rgba(18,9,3,.96) 0%, rgba(18,9,3,.52) 11%,
+      rgba(255,214,150,.17) 33%, rgba(255,255,255,.06) 46%,
+      rgba(18,9,3,.46) 79%, rgba(18,9,3,.97) 100%),
+    linear-gradient(180deg,
+      rgba(18,9,3,.62), transparent 17%, transparent 83%, rgba(18,9,3,.72));
+}
+.spiess__kappe{
+  position:absolute;left:50%;transform:translateX(-50%);
+  width:33%;height:15px;border-radius:50%;
+  background:linear-gradient(180deg,#4a423a,#171310);
+}
+.spiess__kappe--oben{top:-7px}
+.spiess__kappe--unten{bottom:-7px}
+
+/* Bildunterschrift am Spieß */
+.spiess__label{
+  position:absolute;right:calc(100% + 1.1rem);bottom:6%;
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;
+  font-weight:600;color:rgba(23,17,11,.45);white-space:nowrap;
+}
+
+@media(max-width:900px){
+  /* Inhalt mittig statt am Boden — sonst steht oben eine leere Fläche */
+  .hero{align-items:center;padding-top:4.5rem;padding-bottom:3rem}
+  .hero-grid{grid-template-columns:1fr;align-items:start;padding-bottom:0}
+  /* Statt hinter dem Text zu liegen, bekommt der Spieß eine eigene Zeile
+     über der Headline — voll sichtbar und ohne die Knöpfe zu überdecken. */
+  .spiess{
+    position:static;order:-1;
+    width:min(44vw,190px);
+    height:min(29vh,230px);
+    margin:0 0 var(--s2) auto;
+    opacity:1;
+  }
+  .spiess__label{display:none}
+  .spiess__brenner{left:-14%;width:11%}
+  .spiess__schein{left:-46%;width:85%}
+  .hero-grid>div:first-child{position:relative;z-index:1}
+  .cta-reihe .btn{flex:1 1 auto;justify-content:center}
+}
+@media(max-width:520px){
+  .spiess{width:min(50vw,170px);height:min(25vh,200px)}
+}
+
+/* --------------------------------------------------------------------------
+   8 · LAUFBAND
+   -------------------------------------------------------------------------- */
+.laufband{
+  background:var(--russ);color:var(--senf);
+  border-block:2px solid var(--russ);
+  overflow:hidden;padding-block:.9rem;
+}
+.laufband__spur{display:flex;width:max-content;will-change:transform}
+.laufband__spur span{
+  font-family:var(--f-display);font-weight:800;font-stretch:118%;
+  text-transform:uppercase;letter-spacing:-.02em;
+  font-size:clamp(1.3rem,3.2vw,2.4rem);
+  padding-inline:1.2rem;white-space:nowrap;
+}
+.laufband__spur span:nth-child(4n+3){
+  color:transparent;-webkit-text-stroke:1.4px rgba(240,180,41,.55);
+}
+.laufband__spur span[aria-hidden]{color:var(--glut-hell);opacity:.9}
+
+/* --------------------------------------------------------------------------
+   9 · ZAHLEN
+   -------------------------------------------------------------------------- */
+.zahlen-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(1rem,3vw,2rem);
+}
+.zahl{text-align:center;padding-inline:.4rem;position:relative}
+.zahl+.zahl::before{
+  content:"";position:absolute;left:calc(-1 * clamp(.5rem,1.5vw,1rem));top:12%;bottom:12%;
+  width:2px;background:rgba(251,246,234,.28);
+}
+.zahl b{
+  display:block;
+  font-family:var(--f-display);font-weight:800;font-stretch:118%;
+  font-size:clamp(2.2rem,5.6vw,3.9rem);line-height:1;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;
+}
+.zahl small{
+  display:block;margin-top:.55rem;
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;
+  color:rgba(251,246,234,.78);
+}
+@media(max-width:560px){
+  .zahlen-grid{grid-template-columns:1fr;gap:1.6rem}
+  .zahl+.zahl::before{left:22%;right:22%;top:auto;bottom:auto;width:auto;height:2px;top:-.8rem}
+}
+
+/* --------------------------------------------------------------------------
+   10 · HANDWERK
+   -------------------------------------------------------------------------- */
+.handwerk-grid{
+  display:grid;grid-template-columns:1.05fr .95fr;
+  gap:var(--s4);align-items:center;
+}
+@media(max-width:880px){.handwerk-grid{grid-template-columns:1fr;gap:var(--s3)}}
+.handwerk h2{margin:.7rem 0 var(--s2)}
+.handwerk p+p{margin-top:1rem}
+
+/* Bild-/Kunstfläche: zeigt ein echtes Foto, sobald --foto gesetzt ist,
+   sonst die CSS-Grafik darunter. Kein kaputtes Bild-Icon, kein Layoutsprung. */
+/* Grafiktafel statt Stockfoto: eine gezeichnete Illustration, die als
+   bewusste Gestaltung lesbar ist. Echtes Foto später: --foto setzen. */
+.platte{
+  position:relative;overflow:hidden;
+  background-color:var(--glut);
+}
+.platte__flaeche{
+  position:absolute;left:0;right:0;top:-9%;height:118%;
+  display:grid;place-items:center;
+  background-image:var(--foto,none);
+  background-size:cover;background-position:center;
+  will-change:transform;
+}
+.platte__flaeche svg{
+  width:64%;height:auto;
+  stroke:var(--senf);fill:none;
+  stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;
+}
+.platte__flaeche .fuell{fill:rgba(23,17,11,.22);stroke:none}
+.platte--hoch{aspect-ratio:4/5}
+.platte__bu{
+  position:absolute;left:0;bottom:0;
+  background:var(--glut);color:var(--kalk);
+  font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;
+  padding:.55rem .95rem;
+}
+
+/* Trennlinien als Rahmen statt als Container-Hintergrund: sonst steht dort
+   ein grauer Block, solange die Karten noch nicht eingeblendet sind. */
+.fakten{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  margin-top:var(--s4);
+  border-top:2px solid var(--linie-dunkel);
+}
+.fakt{
+  padding:1.7rem 1.4rem;
+  border-left:2px solid var(--linie-dunkel);
+}
+.fakt:first-child{border-left:0}
+.fakt svg{width:26px;height:26px;stroke:var(--glut);fill:none;stroke-width:1.7;margin-bottom:.9rem}
+.fakt h3{margin-bottom:.3rem}
+.fakt p{font-size:.92rem;color:rgba(23,17,11,.66);line-height:1.55}
+@media(max-width:780px){
+  .fakten{grid-template-columns:1fr}
+  .fakt{border-left:0;border-top:2px solid var(--linie-dunkel)}
+  .fakt:first-child{border-top:0}
+}
+
+/* --------------------------------------------------------------------------
+   11 · AUSWAHL / KARTE
+   -------------------------------------------------------------------------- */
+.karte-kopf{
+  display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
+  gap:var(--s2);margin-bottom:var(--s3);
+}
+.karte-liste{border-top:2px solid var(--russ-3)}
+.karte-liste li{
+  display:grid;grid-template-columns:auto 1fr auto;
+  align-items:baseline;gap:1rem;
+  padding:1.15rem .2rem;
+  border-bottom:1px solid var(--russ-3);
+  transition:background-color .4s var(--ease),padding-left .4s var(--ease);
+}
+.karte-liste li:hover{background:rgba(240,180,41,.07);padding-left:.9rem}
+.karte-nr{
+  font-size:.72rem;font-weight:600;letter-spacing:.12em;
+  color:var(--senf);font-variant-numeric:tabular-nums;min-width:2.2ch;
+}
+.karte-name{
+  font-family:var(--f-display);font-weight:700;font-stretch:110%;
+  font-size:clamp(1.1rem,2vw,1.5rem);letter-spacing:-.015em;line-height:1.15;
+}
+.karte-name em{
+  display:block;font-style:normal;
+  font-family:var(--f-body);font-weight:400;font-size:.86rem;
+  letter-spacing:0;color:rgba(251,246,234,.55);margin-top:.15rem;
+}
+.karte-preis{
+  font-size:.82rem;font-weight:600;letter-spacing:.02em;
+  color:rgba(251,246,234,.42);white-space:nowrap;
+}
+.karte-hinweis{
+  margin-top:var(--s2);font-size:.9rem;
+  color:rgba(251,246,234,.6);
+}
+.karte-hinweis a{color:var(--senf);border-bottom:1px solid currentColor}
+.karte-hinweis a:hover{color:var(--glut-hell)}
+
+/* --------------------------------------------------------------------------
+   12 · GALERIE (auf Desktop gepinnt & horizontal)
+   -------------------------------------------------------------------------- */
+.galerie{background:var(--russ);overflow:hidden}
+.galerie-kopf{width:var(--shell);margin-inline:auto;padding-bottom:var(--s3)}
+.gal-fenster{overflow:hidden}
+.gal-spur{
+  display:flex;align-items:center;
+  gap:clamp(.9rem,2.2vw,1.8rem);
+  padding-inline:max(5vw,1.1rem);
+  will-change:transform;
+}
+/* Die Tafeln sind bewusst gestaltete Schilder, keine Foto-Attrappen.
+   Liegt ein echtes Foto vor: style="--foto:url('assets/img/x.jpg')" — es
+   legt sich über die Tafel, Beschriftung und Format bleiben erhalten. */
+.gal-stueck{
+  flex:none;position:relative;overflow:hidden;
+  background-color:var(--russ-2);
+  border:2px solid var(--russ-3);
+}
+.gal-flaeche{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:1.4rem 1.3rem 3.1rem;
+  background-image:var(--foto,none);
+  background-size:cover;background-position:center;
+  transition:transform 1.2s var(--ease);
+}
+.gal-stueck:hover .gal-flaeche{transform:scale(1.03)}
+
+.tafel__kopf{
+  display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+  font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;
+  opacity:.72;
+}
+.tafel__wort{
+  font-family:var(--f-display);font-weight:800;font-stretch:118%;
+  text-transform:uppercase;letter-spacing:-.03em;line-height:.88;
+  font-size:clamp(1.7rem,3.4vw,2.9rem);
+}
+.tafel__zeile{
+  font-size:.88rem;line-height:1.4;margin-top:.5rem;max-width:26ch;opacity:.78;
+}
+.tafel__grafik{
+  position:absolute;right:-12%;bottom:8%;width:62%;
+  stroke:currentColor;fill:none;stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round;
+  opacity:.2;pointer-events:none;
+}
+.gal-stueck figcaption{
+  position:absolute;left:0;bottom:0;z-index:1;
+  background:var(--russ);color:var(--senf);
+  font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;
+  padding:.5rem .85rem;
+}
+.gal-stueck--a{width:min(76vw,430px);aspect-ratio:3/4}
+.gal-stueck--b{width:min(86vw,600px);aspect-ratio:4/3}
+.gal-stueck--c{width:min(68vw,360px);aspect-ratio:1/1}
+
+/* Farbwechsel der Tafeln — der Rhythmus macht die Reihe lebendig */
+.t-senf  .gal-flaeche{background-color:var(--senf); color:var(--russ)}
+.t-glut  .gal-flaeche{background-color:var(--glut); color:var(--kalk)}
+.t-kalk  .gal-flaeche{background-color:var(--kalk); color:var(--russ)}
+.t-salat .gal-flaeche{background-color:var(--salat);color:var(--kalk)}
+/* deutlich heller als der Seitengrund, sonst wirkt die Tafel wie ein Loch */
+.t-dunkel .gal-flaeche{background-color:#3A2A1B;color:var(--senf)}
+.t-dunkel{border-color:#523B26}
+
+@media(max-width:900px){
+  .gal-fenster{
+    overflow-x:auto;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  }
+  .gal-fenster::-webkit-scrollbar{display:none}
+  .gal-spur{transform:none!important}
+  .gal-stueck{scroll-snap-align:center}
+}
+
+/* --------------------------------------------------------------------------
+   13 · STIMMEN
+   -------------------------------------------------------------------------- */
+.stimmen-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:var(--s2);margin-top:var(--s3);
+}
+.stimme{
+  background:var(--kalk);color:var(--russ);
+  padding:1.8rem 1.5rem 1.4rem;
+  border:2px solid var(--russ);
+  box-shadow:8px 8px 0 var(--russ);
+}
+.stimme .sterne{
+  color:var(--glut);letter-spacing:.16em;font-size:.86rem;margin-bottom:.8rem;
+}
+.stimme q{
+  display:block;quotes:none;
+  font-family:var(--f-display);font-weight:700;font-stretch:106%;
+  font-size:clamp(1.06rem,1.7vw,1.28rem);line-height:1.26;letter-spacing:-.02em;
+}
+.stimme cite{
+  display:block;margin-top:1rem;font-style:normal;
+  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
+  color:rgba(23,17,11,.48);
+}
+.stimmen-fuss{margin-top:var(--s3);font-size:.92rem;color:rgba(23,17,11,.68)}
+.stimmen-fuss a{font-weight:600;border-bottom:2px solid var(--glut)}
+.stimmen-fuss a:hover{color:var(--glut)}
+@media(max-width:880px){.stimmen-grid{grid-template-columns:1fr}}
+
+/* --------------------------------------------------------------------------
+   14 · FINDEN
+   -------------------------------------------------------------------------- */
+.finden-grid{
+  display:grid;grid-template-columns:.92fr 1.08fr;
+  gap:var(--s4);align-items:start;
+}
+@media(max-width:900px){.finden-grid{grid-template-columns:1fr;gap:var(--s3)}}
+
+.zeiten{margin-top:var(--s2);border-top:2px solid var(--russ)}
+.zeiten li{
+  display:flex;justify-content:space-between;gap:1rem;
+  padding:.8rem .7rem;
+  border-bottom:1px solid var(--linie-dunkel);
+  font-size:.95rem;font-variant-numeric:tabular-nums;
+}
+.zeiten li span:first-child{color:rgba(23,17,11,.66)}
+.zeiten li.ist-heute{background:var(--russ);margin-inline:-.7rem;padding-inline:1.4rem}
+.zeiten li.ist-heute span{color:var(--senf);font-weight:700}
+.zeiten li.ist-zu span:last-child{color:rgba(23,17,11,.42)}
+
+.adresse{margin-top:var(--s3);display:grid;gap:1.1rem}
+.adr-zeile{display:flex;gap:.9rem;align-items:flex-start;font-size:.95rem}
+.adr-zeile svg{
+  width:20px;height:20px;stroke:var(--glut);fill:none;stroke-width:1.7;
+  flex:none;margin-top:.22rem;
+}
+.adr-zeile a{font-weight:600;border-bottom:1px solid rgba(23,17,11,.25)}
+.adr-zeile a:hover{color:var(--glut);border-color:var(--glut)}
+.adr-zeile small{
+  display:block;font-size:.83rem;color:rgba(23,17,11,.55);margin-top:.12rem;
+  font-weight:400;
+}
+
+.karte-box{
+  position:relative;aspect-ratio:1/1;overflow:hidden;
+  border:2px solid var(--russ);background:var(--russ-2);
+}
+.karte-box iframe{width:100%;height:100%;border:0;filter:saturate(.75) contrast(1.02)}
+.karte-cta{
+  position:absolute;left:1rem;bottom:1rem;
+  background:var(--russ);color:var(--senf);
+  padding:.75rem 1.15rem;font-size:.85rem;font-weight:600;
+  border:2px solid var(--russ);
+  transition:background-color .3s var(--ease),color .3s var(--ease);
+}
+.karte-cta:hover{background:var(--glut);border-color:var(--glut);color:var(--kalk)}
+@media(max-width:900px){.karte-box{aspect-ratio:4/3}}
+
+/* --------------------------------------------------------------------------
+   15 · FUSSZEILE
+   -------------------------------------------------------------------------- */
+.fuss{background:var(--russ);color:var(--kalk);padding-top:var(--s3);overflow:hidden}
+.fuss-oben{
+  width:var(--shell);margin-inline:auto;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.2rem;
+  font-size:.86rem;color:rgba(251,246,234,.6);
+}
+.fuss-oben a:hover{color:var(--senf)}
+.fuss-links{display:flex;gap:1.4rem;flex-wrap:wrap}
+.fuss-wort{
+  display:block;width:100%;height:auto;
+  margin-top:var(--s3);
+  transform:translateY(20%);
+}
+.fuss-wort text{
+  font-family:var(--f-display);font-weight:800;font-stretch:120%;
+  font-size:150px;
+  fill:none;stroke:rgba(240,180,41,.34);stroke-width:1.6;
+}
+
+/* --------------------------------------------------------------------------
+   16 · ANRUF-LEISTE (mobil)
+   -------------------------------------------------------------------------- */
+.rufleiste{
+  position:fixed;inset:auto 0 0 0;z-index:130;
+  display:none;align-items:center;justify-content:center;gap:.6rem;
+  background:var(--glut);color:var(--kalk);
+  padding:.95rem 1.2rem calc(.95rem + env(safe-area-inset-bottom));
+  font-weight:700;font-size:.96rem;
+  transform:translateY(110%);
+  box-shadow:0 -6px 24px rgba(23,17,11,.4);
+}
+@media(max-width:760px){.rufleiste{display:flex}}
+
+/* --------------------------------------------------------------------------
+   17 · REDUZIERTE BEWEGUNG
+   -------------------------------------------------------------------------- */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.001ms!important;
+    scroll-behavior:auto!important;
+  }
+  [data-animate]{opacity:1!important;transform:none!important}
+  .fuss-wort{transform:none}
+  .rufleiste{transform:none}
+  .spiess__haut{animation:none}
+}
