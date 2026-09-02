@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<script>document.documentElement.classList.add('js');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Elmtech Verbundelemente – Vorschau</title>
+<meta name="description" content="Elmtech Verbundelemente GmbH – maßgefertigte Dämm- und Fassadenelemente für Schallschutz, Einbruchschutz, Energieeffizienz und Brandschutz." />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="theme-color" content="#0b0f14" />
+<meta name="format-detection" content="telephone=yes" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --graphite:#0b0f14; --graphite-soft:#11161d; --graphite-card:#161c25;
+    --steel-50:#f1f5f9; --steel-200:#cbd5e1; --steel-400:#94a3b8; --steel-600:#475569;
+    --brand:#2f6df0; --brand-light:#4f93ff; --brand-deep:#1d4ed8;
+    --cyan:#38bdf8; --cyan-soft:#7dd3fc; --amber:#e0a23c;
+    --l-outer:#c7ced6; --l-core:#e0a23c; --l-inner:#9aa5b1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:5rem;-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Inter',-apple-system,system-ui,sans-serif;color:rgba(241,245,249,.9);
+    background:var(--graphite);overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 12% -10%,rgba(47,109,240,.16),transparent 42%),
+      radial-gradient(circle at 88% 0%,rgba(56,189,248,.12),transparent 40%);
+    background-attachment:fixed;-webkit-tap-highlight-color:rgba(47,109,240,.2);
+  }
+  h1,h2,h3,h4{font-family:'Space Grotesk',system-ui,sans-serif;letter-spacing:-.02em;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+  input,select,textarea{font-size:16px;font-family:inherit}
+  ::selection{background:rgba(47,109,240,.3)}
+  .container{max-width:72rem;margin:0 auto;padding:0 1.25rem}
+  @media(min-width:640px){.container{padding:0 2rem}}
+  .section{padding:5rem 0}
+  @media(min-width:640px){.section{padding:7rem 0}}
+  .soft-bg{background:rgba(17,22,29,.6)}
+  .eyebrow{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:.75rem;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.3em;color:var(--cyan)}
+  h2.title{font-size:clamp(1.9rem,5vw,2.6rem)}
+  .muted{color:var(--steel-400)}
+  .lead{color:var(--steel-200)}
+  .text-grad{background:linear-gradient(to right,var(--cyan-soft),var(--cyan),var(--brand-light));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .glass{border-radius:1rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.035);backdrop-filter:blur(16px)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:none;cursor:pointer;border-radius:.75rem;padding:.8rem 1.5rem;font-size:.9rem;font-weight:600;font-family:inherit;transition:all .2s;text-align:center}
+  .btn-primary{background:var(--brand);color:#fff;box-shadow:0 0 60px -14px rgba(47,109,240,.55)}
+  .btn-primary:hover{background:var(--brand-light);transform:translateY(-2px)}
+  .btn-ghost{background:rgba(255,255,255,.05);color:#fff;border:1px solid rgba(255,255,255,.15)}
+  .btn-ghost:hover{border-color:rgba(56,189,248,.6);color:var(--cyan)}
+  .svg{width:1.25rem;height:1.25rem;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+  .banner{background:linear-gradient(90deg,var(--brand-deep),var(--cyan));color:#fff;text-align:center;font-size:.78rem;padding:.5rem 1rem;padding-top:max(.5rem,env(safe-area-inset-top))}
+
+  /* Navbar */
+  header{position:fixed;inset-inline:0;z-index:40;transition:all .3s;top:31px}
+  header.scrolled{background:rgba(11,15,20,.85);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.1);top:0}
+  nav{height:5rem;display:flex;align-items:center;justify-content:space-between}
+  .logo{display:flex;align-items:center;gap:.6rem}
+  .logo .badge{width:2.25rem;height:2.25rem;border-radius:.5rem;background:var(--brand);color:#fff;display:grid;place-items:center}
+  .logo b{font-family:'Space Grotesk';font-size:1.15rem;display:block;line-height:1}
+  .logo span{font-size:.6rem;text-transform:uppercase;letter-spacing:.28em;color:var(--cyan)}
+  .nav-links{display:none;gap:2rem}
+  .nav-links a{font-size:.9rem;font-weight:500;color:var(--steel-200)}
+  .nav-links a:hover{color:var(--cyan)}
+  .nav-cta{display:flex;align-items:center;gap:.75rem}
+  .nav-phone{display:none;align-items:center;gap:.4rem;font-weight:600;font-size:.9rem}
+  .nav-phone:hover{color:var(--cyan)}
+  @media(min-width:1024px){.nav-links{display:flex}}
+  @media(min-width:640px){.nav-phone{display:flex}}
+
+  /* Hero */
+  .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+  .grid-bg{position:absolute;inset:0;z-index:-1;opacity:.5;
+    background-image:linear-gradient(rgba(148,163,184,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.06) 1px,transparent 1px);
+    background-size:46px 46px;-webkit-mask-image:radial-gradient(ellipse at center,#000,transparent 75%);mask-image:radial-gradient(ellipse at center,#000,transparent 75%)}
+  .blob{position:absolute;border-radius:50%;filter:blur(80px);z-index:-1}
+  .blob1{left:-6rem;top:6rem;width:20rem;height:20rem;background:rgba(47,109,240,.25);animation:float1 16s ease-in-out infinite}
+  .blob2{right:-5rem;bottom:3rem;width:24rem;height:24rem;background:rgba(56,189,248,.15);animation:float2 20s ease-in-out infinite}
+  @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,24px)}}
+  @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-26px,-18px)}}
+  .hero-grid{display:grid;gap:3rem;align-items:center;padding:7rem 0 5rem}
+  @media(min-width:1024px){.hero-grid{grid-template-columns:1fr 1fr}}
+  .hero h1{font-size:clamp(2.5rem,7vw,4rem)}
+  .hero .lead{max-width:36rem;margin-top:1.5rem;font-size:1.05rem}
+  .hero-btns{margin-top:2.5rem;display:flex;flex-direction:column;gap:.75rem}
+  @media(min-width:640px){.hero-btns{flex-direction:row}}
+  .hero-meta{margin-top:2rem;display:flex;align-items:center;gap:.5rem;font-size:.875rem;color:var(--steel-400)}
+  /* 3D Panel */
+  .panel-stage{position:relative;display:none;height:420px;align-items:center;justify-content:center;perspective:1200px}
+  @media(min-width:1024px){.panel-stage{display:flex}}
+  .panel{position:relative;height:16rem;width:18rem;transform-style:preserve-3d;transition:transform .1s ease-out;transform:rotateX(8deg) rotateY(-18deg)}
+  .layer{position:absolute;inset:0;border-radius:1rem;border:1px solid rgba(255,255,255,.2);box-shadow:0 24px 70px -28px rgba(0,0,0,.8);backface-visibility:hidden}
+  .layer .lp{display:flex;height:100%;flex-direction:column;justify-content:space-between;padding:1.25rem}
+  .layer .lp small{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.15em;color:rgba(11,15,20,.65)}
+  .layer .lp b{font-family:'Space Grotesk';font-size:1.25rem;color:#0b0f14}
+  .panel-shadow{position:absolute;bottom:1.5rem;height:1.5rem;width:15rem;border-radius:50%;background:rgba(0,0,0,.5);filter:blur(20px)}
+  .scroll-ind{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:var(--steel-400);animation:bob 1.6s infinite}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+  /* Reveal */
+  .js .reveal{opacity:0;transform:translateY(36px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+  .js .reveal.left{transform:translateX(44px)}
+  .js .reveal.visible{opacity:1;transform:none}
+
+  /* Applications */
+  .center{text-align:center;max-width:42rem;margin:0 auto}
+  .app-grid{margin-top:3.5rem;display:grid;gap:1.25rem;grid-template-columns:1fr}
+  @media(min-width:640px){.app-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1024px){.app-grid{grid-template-columns:repeat(3,1fr)}}
+  .app{position:relative;overflow:hidden;padding:1.5rem;text-align:left;cursor:pointer;transition:transform .3s;width:100%;border:none;color:inherit;font:inherit}
+  .app:hover{transform:translateY(-8px)}
+  .app-ico{width:3.5rem;height:3.5rem;border-radius:1rem;background:rgba(47,109,240,.1);color:var(--cyan);display:inline-flex;align-items:center;justify-content:center;margin-bottom:1.25rem;transition:all .3s}
+  .app:hover .app-ico{background:var(--brand);color:#fff}
+  .app h3{font-size:1.25rem}
+  .app p{margin-top:.5rem;font-size:.875rem;color:var(--steel-400)}
+  .app .more{margin-top:1rem;display:inline-block;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--cyan);opacity:0;transition:opacity .3s}
+  .app:hover .more{opacity:1}
+
+  /* Aufbau / Layer explainer */
+  .build-grid{display:grid;gap:3.5rem;align-items:center}
+  @media(min-width:1024px){.build-grid{grid-template-columns:1fr 1fr}}
+  .x-stage{position:relative;margin:0 auto;display:flex;height:360px;width:100%;max-width:28rem;align-items:center;justify-content:center;perspective:1100px}
+  .x-panel{position:relative;height:14rem;width:16rem;transform-style:preserve-3d;transform:rotateX(58deg) rotateZ(-32deg)}
+  .x-layer{position:absolute;inset:0;border-radius:.75rem;border:1px solid rgba(255,255,255,.25);box-shadow:0 24px 70px -28px rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;transition:transform .6s cubic-bezier(.34,1.3,.64,1)}
+  .x-layer b{font-family:'Space Grotesk';font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(11,15,20,.7)}
+  .layer-list{margin-top:2rem;list-style:none;display:flex;flex-direction:column;gap:.75rem}
+  .layer-item{display:flex;gap:1rem;align-items:flex-start;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);border-radius:1rem;padding:1rem;width:100%;text-align:left;cursor:pointer;transition:all .2s}
+  .layer-item:hover{border-color:rgba(56,189,248,.6);background:rgba(255,255,255,.06)}
+  .layer-sw{margin-top:.2rem;width:1.25rem;height:1.25rem;border-radius:.375rem;border:1px solid rgba(255,255,255,.3);flex-shrink:0}
+  .layer-item b{display:block;font-size:.95rem}
+  .layer-item span{display:block;margin-top:.15rem;font-size:.85rem;color:var(--steel-400)}
+
+  /* Produkte */
+  .head-row{display:flex;flex-direction:column;gap:1rem;align-items:flex-start;justify-content:space-between}
+  @media(min-width:640px){.head-row{flex-direction:row;align-items:flex-end}}
+  .prod-grid{margin-top:3rem;display:grid;gap:1.5rem;grid-template-columns:1fr}
+  @media(min-width:640px){.prod-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1024px){.prod-grid{grid-template-columns:repeat(3,1fr)}}
+  .prod-tilt{perspective:1000px}
+  .prod{display:flex;flex-direction:column;height:100%;overflow:hidden;border-radius:1.5rem;border:1px solid rgba(255,255,255,.1);background:var(--graphite-card);box-shadow:0 24px 70px -28px rgba(0,0,0,.8);transition:transform .15s ease-out;transform-style:preserve-3d}
+  .prod-head{position:relative;height:9rem;padding:1.25rem;overflow:hidden}
+  .prod-glow{position:absolute;right:-2rem;top:-2rem;width:8rem;height:8rem;border-radius:50%;opacity:.4;filter:blur(40px);transition:opacity .5s}
+  .prod:hover .prod-glow{opacity:.7}
+  .prod-cat{position:relative;display:inline-block;background:rgba(0,0,0,.3);backdrop-filter:blur(4px);padding:.25rem .6rem;border-radius:.375rem;font-size:.72rem;font-weight:500}
+  .prod-hl{position:absolute;top:1.25rem;right:1.25rem;border-radius:.375rem;padding:.25rem .6rem;font-size:.72rem;font-weight:700;color:#0b0f14}
+  .prod-name{position:absolute;bottom:1rem;left:1.25rem;font-family:'Space Grotesk';font-size:1.7rem;font-weight:700}
+  .prod-body{display:flex;flex-direction:column;flex:1;padding:1.25rem}
+  .prod-body>p{font-size:.875rem;color:var(--steel-400)}
+  .specs{margin-top:1rem;border-top:1px solid rgba(255,255,255,.1);padding-top:1rem;display:flex;flex-direction:column;gap:.5rem;font-size:.875rem}
+  .specs div{display:flex;justify-content:space-between;gap:.75rem}
+  .specs dt{color:var(--steel-400)}
+  .specs dd{font-weight:500;color:var(--steel-50)}
+  .tags{margin-top:1.25rem;display:flex;flex-wrap:wrap;gap:.4rem}
+  .tag{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);border-radius:999px;padding:.1rem .6rem;font-size:.7rem;font-weight:500;color:var(--steel-200)}
+  .prod-cta{margin-top:1.5rem;display:inline-flex;align-items:center;gap:.5rem;border:none;background:none;cursor:pointer;color:var(--cyan);font:inherit;font-size:.875rem;font-weight:600;transition:gap .2s}
+  .prod-cta:hover{gap:.75rem}
+
+  /* CTA */
+  .cta-box{position:relative;overflow:hidden;border-radius:1.5rem;border:1px solid rgba(255,255,255,.1);background:linear-gradient(135deg,rgba(29,78,216,.4),var(--graphite-card),var(--graphite));padding:2rem}
+  @media(min-width:640px){.cta-box{padding:3rem}}
+  .cta-grid{position:relative;display:grid;gap:2rem;align-items:center}
+  @media(min-width:1024px){.cta-grid{grid-template-columns:1.5fr 1fr}}
+  .cta-blob{position:absolute;border-radius:50%;filter:blur(60px)}
+
+  /* Unternehmen */
+  .about-grid{display:grid;gap:3rem}
+  @media(min-width:1024px){.about-grid{grid-template-columns:1fr 1fr}}
+  .timeline{position:relative}
+  .timeline-line{position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--cyan),var(--brand),transparent)}
+  .tl-list{list-style:none;display:flex;flex-direction:column;gap:1.75rem}
+  .tl-item{position:relative;padding-left:2rem}
+  .tl-dot{position:absolute;left:0;top:6px;width:1rem;height:1rem;border-radius:50%;border:2px solid var(--cyan);background:var(--graphite)}
+  .tl-year{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--cyan)}
+  .tl-item h3{margin-top:.25rem;font-size:1.1rem}
+  .tl-item p{margin-top:.25rem;font-size:.875rem;color:var(--steel-400)}
+  .stats{margin-top:3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;border-radius:1.5rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);padding:2rem}
+  @media(min-width:1024px){.stats{grid-template-columns:repeat(4,1fr)}}
+  .stat{text-align:center}
+  .stat .num{font-family:'Space Grotesk';font-size:clamp(2.2rem,5vw,3.2rem);font-weight:700}
+  .stat .lbl{margin-top:.25rem;font-size:.875rem;color:var(--steel-400)}
+
+  /* Kontakt */
+  .contact-grid{display:grid;gap:2rem;grid-template-columns:1fr}
+  @media(min-width:1024px){.contact-grid{grid-template-columns:1fr 1.4fr}}
+  .contact-col{display:flex;flex-direction:column;gap:1rem;height:100%}
+  .cc{display:flex;align-items:flex-start;gap:1rem;padding:1.25rem}
+  a.cc{transition:all .2s}
+  a.cc:hover{transform:translateY(-2px);border-color:rgba(56,189,248,.4)}
+  .cc-ico{width:2.75rem;height:2.75rem;border-radius:.75rem;flex-shrink:0;background:rgba(47,109,240,.1);color:var(--cyan);display:grid;place-items:center}
+  .cc .t{display:block;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--steel-400)}
+  .cc .v{display:block;margin-top:.15rem;font-weight:500}
+  .cc-2{display:grid;gap:1rem;grid-template-columns:1fr 1fr}
+  .map-wrap{position:relative;min-height:360px;height:100%;overflow:hidden;border-radius:1.5rem;border:1px solid rgba(255,255,255,.1)}
+  .map-fallback{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;text-align:center;padding:1.5rem;background:linear-gradient(135deg,var(--brand-deep),var(--graphite))}
+  .map-wrap iframe{position:relative;z-index:3;width:100%;height:100%;min-height:360px;border:0;display:block}
+
+  /* Footer */
+  footer{border-top:1px solid rgba(255,255,255,.1);background:var(--graphite)}
+  .foot-grid{display:grid;gap:2.5rem;padding:4rem 0;grid-template-columns:1fr}
+  @media(min-width:640px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1024px){.foot-grid{grid-template-columns:repeat(4,1fr)}}
+  .foot-grid h4{font-family:'Inter';font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#fff;margin-bottom:1rem}
+  .foot-grid ul{list-style:none;font-size:.9rem;color:var(--steel-200)}
+  .foot-grid li{margin-bottom:.6rem;display:flex;gap:.6rem}
+  .foot-grid a:hover{color:var(--cyan)}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);font-size:.75rem;color:var(--steel-400);padding:1.5rem 0}
+  .foot-bottom .container{display:flex;flex-direction:column;gap:.75rem;justify-content:space-between;align-items:center}
+  @media(min-width:640px){.foot-bottom .container{flex-direction:row}}
+
+  /* Floating */
+  .floating{position:fixed;right:max(1.25rem,env(safe-area-inset-right));bottom:max(1.25rem,calc(env(safe-area-inset-bottom) + .5rem));z-index:30;display:flex;flex-direction:column;align-items:flex-end;gap:.75rem;opacity:0;transform:translateY(30px);pointer-events:none;transition:all .3s}
+  .floating.show{opacity:1;transform:none;pointer-events:auto}
+  .fab{width:3.5rem;height:3.5rem;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);color:#fff;backdrop-filter:blur(8px);box-shadow:0 24px 70px -28px rgba(0,0,0,.8);transition:all .2s}
+  .fab:hover{transform:scale(1.05);background:rgba(255,255,255,.2)}
+  .fab-cb{display:inline-flex;align-items:center;gap:.5rem;border:none;cursor:pointer;font:inherit;border-radius:999px;background:var(--brand);color:#fff;padding:.9rem 1.25rem;font-weight:600;box-shadow:0 0 60px -14px rgba(47,109,240,.55);transition:all .2s}
+  .fab-cb:hover{transform:scale(1.05);background:var(--brand-light)}
+  @media(min-width:640px){.fab{display:none}}
+
+  /* Modal */
+  .modal-root{position:fixed;inset:0;z-index:50;display:none}
+  .modal-root.open{display:block}
+  .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);opacity:0;transition:opacity .3s}
+  .modal-root.open .modal-backdrop{opacity:1}
+  .modal-window{position:absolute;inset:0;margin:0 auto;max-width:42rem;display:flex;flex-direction:column;transform:scale(.92) translateY(30px);opacity:0;transition:transform .35s cubic-bezier(.34,1.3,.64,1),opacity .3s}
+  .modal-root.open .modal-window{transform:none;opacity:1}
+  @media(min-width:640px){.modal-window{inset:2rem 1rem;top:3rem}}
+  .modal-inner{display:flex;flex-direction:column;height:100%;overflow:hidden;background:rgba(22,28,37,.96);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(20px)}
+  @media(min-width:640px){.modal-inner{border-radius:1.5rem}}
+  .modal-head{position:relative;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.1);background:linear-gradient(135deg,rgba(29,78,216,.4),var(--graphite));padding:1.25rem}
+  @media(min-width:640px){.modal-head{padding:1.5rem}}
+  .modal-head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
+  .modal-head .hi{display:flex;align-items:center;gap:.75rem}
+  .modal-head .hi-ico{width:2.75rem;height:2.75rem;border-radius:.75rem;background:rgba(47,109,240,.2);color:var(--cyan);display:grid;place-items:center}
+  .modal-head h2{font-family:'Space Grotesk';font-size:1.5rem;line-height:1}
+  .modal-head p{font-size:.875rem;color:var(--steel-200);margin-top:.2rem}
+  .modal-close{border:none;cursor:pointer;border-radius:999px;background:rgba(0,0,0,.3);color:var(--steel-200);width:2.25rem;height:2.25rem;display:grid;place-items:center;transition:all .2s}
+  .modal-close:hover{background:rgba(0,0,0,.5);color:#fff}
+  .progress{margin-top:1.25rem;display:flex;gap:.5rem}
+  .progress .seg{flex:1;display:flex;flex-direction:column;gap:.4rem}
+  .progress .bar{height:.25rem;border-radius:999px;background:rgba(255,255,255,.15);overflow:hidden}
+  .progress .bar i{display:block;height:100%;width:0;background:var(--cyan);transition:width .4s}
+  .progress .seg.on .bar i{width:100%}
+  .progress .lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--steel-400)}
+  .progress .seg.on .lbl{color:var(--cyan)}
+  .modal-body{position:relative;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.25rem}
+  @media(min-width:640px){.modal-body{padding:1.75rem}}
+  .step{animation:stepin .3s ease both}
+  @keyframes stepin{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+  .opt-grid{display:grid;gap:.625rem;grid-template-columns:1fr}
+  @media(min-width:640px){.opt-grid{grid-template-columns:1fr 1fr}}
+  .opt{display:flex;align-items:center;justify-content:space-between;gap:.5rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);border-radius:.75rem;padding:1rem;cursor:pointer;text-align:left;font:inherit;color:inherit;transition:all .2s}
+  .opt:hover{border-color:rgba(56,189,248,.5);transform:translateY(-2px)}
+  .opt.active{border-color:var(--cyan);background:rgba(56,189,248,.1)}
+  .backbar{display:flex;align-items:center;gap:.5rem;width:100%;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);border-radius:.75rem;padding:.625rem 1rem;cursor:pointer;font:inherit;color:var(--steel-200);font-size:.875rem;margin-bottom:1.25rem;transition:all .2s}
+  .backbar:hover{border-color:rgba(56,189,248,.4)}
+  .date-row{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.5rem;margin-bottom:1.25rem}
+  .date-chip{flex-shrink:0;display:flex;flex-direction:column;align-items:center;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);border-radius:.75rem;padding:.5rem 1rem;cursor:pointer;font:inherit;color:var(--steel-200);transition:all .2s}
+  .date-chip.active{border-color:var(--cyan);background:rgba(56,189,248,.1);color:var(--cyan)}
+  .date-chip .wd{font-size:.7rem;text-transform:uppercase}
+  .date-chip .dn{font-size:.9rem;font-weight:600}
+  .hint{margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--steel-200)}
+  .field{display:block;margin-bottom:1rem}
+  .field label{display:block;margin-bottom:.4rem;font-size:.875rem;font-weight:500;color:var(--steel-200)}
+  .field input,.field textarea{width:100%;border-radius:.75rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);padding:.75rem 1rem;color:#fff;outline:none;transition:all .2s}
+  .field input:focus,.field textarea:focus{border-color:rgba(47,109,240,.6);box-shadow:0 0 0 3px rgba(47,109,240,.2)}
+  .field .err{display:block;margin-top:.3rem;font-size:.75rem;color:#fca5a5}
+  .grid2{display:grid;gap:1rem}
+  @media(min-width:640px){.grid2{grid-template-columns:1fr 1fr}}
+  .phone-note{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;border-radius:.75rem;background:rgba(255,255,255,.05);padding:.75rem;font-size:.8rem;color:var(--steel-200);margin-bottom:1rem}
+  .confirm{display:flex;flex-direction:column;align-items:center;text-align:center;padding:1.5rem 0}
+  .confirm-ico{width:5rem;height:5rem;border-radius:50%;background:rgba(47,109,240,.15);color:var(--cyan);display:grid;place-items:center;box-shadow:0 0 60px -14px rgba(47,109,240,.55);animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes pop{from{transform:scale(0) rotate(-15deg)}to{transform:scale(1) rotate(0)}}
+  .ticket{margin-top:1.5rem;width:100%;max-width:24rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);border-radius:1rem;padding:1.25rem;text-align:left;font-size:.875rem}
+  .ticket .tr{display:flex;justify-content:space-between;gap:1rem;padding:.3rem 0}
+  .ticket .tr span:first-child{color:var(--steel-400)}
+  .ticket .ref{font-family:ui-monospace,monospace;color:var(--cyan)}
+  .hidden{display:none!important}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+    .js .reveal{opacity:1!important;transform:none!important}
+    .blob{animation:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">🏗️ <b>Interaktive Vorschau</b> · alle Animationen aktiv. Der Rückruf ist eine Demo – im Live-System läuft er über Datenbank &amp; E-Mail (npm run dev).</div>
+
+<!-- NAVBAR -->
+<header id="navbar"><div class="container"><nav>
+  <a href="#top" class="logo">
+    <span class="badge"><svg class="svg" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+    <span><b>Elmtech</b><span>Verbundelemente</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#leistungen">Leistungen</a><a href="#aufbau">Aufbau</a><a href="#produkte">Produkte</a><a href="#unternehmen">Unternehmen</a><a href="#kontakt">Kontakt</a>
+  </div>
+  <div class="nav-cta">
+    <a href="tel:+4937206578710" class="nav-phone"><svg class="svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>037206 / 57 87 10</a>
+    <button class="btn btn-primary" style="padding:.6rem 1.25rem" data-callback>Rückruf</button>
+  </div>
+</nav></div></header>
+
+<!-- HERO -->
+<section id="top" class="hero">
+  <div class="grid-bg"></div><div class="blob blob1"></div><div class="blob blob2"></div>
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">Verbundelemente · seit 1993</span>
+      <h1>Dämm- &amp; Fassaden­elemente <span class="text-grad">nach Maß</span></h1>
+      <p class="lead">Seit 1993 fertigen wir maßgefertigte Dämm- und Fassadenelemente – präzise, langlebig und exakt auf Ihre Anforderung abgestimmt. Schallschutz, Einbruchschutz, Energieeffizienz und Brandschutz, gefertigt im Herzen Sachsens.</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" data-callback><svg class="svg" viewBox="0 0 24 24"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Rückruf vereinbaren</button>
+        <a href="tel:+4937206578710" class="btn btn-ghost"><svg class="svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 037206 / 57 87 10</a>
+      </div>
+      <div class="hero-meta"><svg class="svg" style="width:1rem;height:1rem;color:var(--cyan)" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Schönborner Straße 37, 09669 Frankenberg / OT Sachsenburg</div>
+    </div>
+    <div class="panel-stage">
+      <div class="panel" id="panel">
+        <div class="layer" style="background:linear-gradient(135deg,var(--l-outer),#aeb6bf);transform:translateZ(46px)"><div class="lp"><small>Lage 1</small><b>Außenblech</b></div></div>
+        <div class="layer" style="background:linear-gradient(135deg,var(--l-core),#c98a28);transform:translateZ(0)"><div class="lp"><small>Lage 2</small><b>Funktionskern</b></div></div>
+        <div class="layer" style="background:linear-gradient(135deg,var(--l-inner),#7f8a96);transform:translateZ(-46px)"><div class="lp"><small>Lage 3</small><b>Innenblech</b></div></div>
+      </div>
+      <div class="panel-shadow"></div>
+    </div>
+  </div>
+  <a href="#leistungen" class="scroll-ind" aria-label="Weiter"><svg class="svg" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></a>
+</section>
+
+<!-- LEISTUNGEN -->
+<section id="leistungen" class="section">
+  <div class="container">
+    <div class="center">
+      <span class="eyebrow reveal">Was unsere Elemente leisten</span>
+      <h2 class="title reveal">Eine Lösung für jede Anforderung</h2>
+    </div>
+    <div class="app-grid">
+      <button class="glass app reveal" data-callback data-topic="Schallschutz"><span class="app-ico"><svg class="svg" style="width:1.75rem;height:1.75rem" viewBox="0 0 24 24"><path d="M6 9v6h4l5 4V5l-5 4zM18 8a4 4 0 0 1 0 8"/></svg></span><h3>Schallschutz</h3><p>Verbundelemente mit hohem Schalldämmmaß – für ruhige Räume selbst in lauter Umgebung.</p><span class="more">Dazu beraten lassen →</span></button>
+      <button class="glass app reveal" data-callback data-topic="Einbruchschutz"><span class="app-ico"><svg class="svg" style="width:1.75rem;height:1.75rem" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span><h3>Einbruchschutz</h3><p>Widerstandsfähige Konstruktionen, die Sicherheit und Stabilität spürbar erhöhen.</p><span class="more">Dazu beraten lassen →</span></button>
+      <button class="glass app reveal" data-callback data-topic="Energieeffizienz"><span class="app-ico"><svg class="svg" style="width:1.75rem;height:1.75rem" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span><h3>Energieeffizienz</h3><p>Hervorragende Dämmwerte senken Energiekosten und verbessern die Bilanz Ihres Gebäudes.</p><span class="more">Dazu beraten lassen →</span></button>
+      <button class="glass app reveal" data-callback data-topic="Brandschutz"><span class="app-ico"><svg class="svg" style="width:1.75rem;height:1.75rem" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span><h3>Brandschutz</h3><p>Geprüfte Materialaufbauten für anspruchsvolle Brandschutzanforderungen.</p><span class="more">Dazu beraten lassen →</span></button>
+      <button class="glass app reveal" data-callback data-topic="Allgemeine Anfrage"><span class="app-ico"><svg class="svg" style="width:1.75rem;height:1.75rem" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></span><h3>Platzersparnis</h3><p>Schlanke Aufbauten mit maximaler Leistung – mehr nutzbare Fläche bei gleicher Wirkung.</p><span class="more">Dazu beraten lassen →</span></button>
+      <button class="glass app reveal" data-callback data-topic="Allgemeine Anfrage"><span class="app-ico"><svg class="svg" style="width:1.75rem;height:1.75rem" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8L4 10l5.1 1.9L12 18l1.9-6.1L20 10l-6.1-1.2z"/></svg></span><h3>Besondere Oberflächen</h3><p>Von technisch bis edel: Oberflächen und Optiken nach Ihren gestalterischen Wünschen.</p><span class="more">Dazu beraten lassen →</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- AUFBAU -->
+<section id="aufbau" class="section soft-bg">
+  <div class="container build-grid">
+    <div class="reveal">
+      <div class="x-stage" id="x-stage">
+        <div class="x-panel">
+          <div class="x-layer" data-xi="0" style="background:linear-gradient(135deg,var(--l-outer),#aeb6bf)"><b>Außenblech</b></div>
+          <div class="x-layer" data-xi="1" style="background:linear-gradient(135deg,var(--l-core),#c98a28)"><b>Funktionskern</b></div>
+          <div class="x-layer" data-xi="2" style="background:linear-gradient(135deg,var(--l-inner),#7f8a96)"><b>Innenblech</b></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span class="eyebrow reveal"><svg class="svg" style="width:1rem;height:1rem" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> Der Aufbau</span>
+      <h2 class="title reveal">Präzision in jeder Schicht</h2>
+      <p class="lead reveal" style="margin-top:1rem;max-width:32rem">Ein Elmtech-Verbundelement vereint mehrere Funktionsschichten zu einem hochbelastbaren Ganzen. Der mehrlagige Aufbau ist der Schlüssel zu Schall-, Wärme- und Brandschutz auf engstem Raum.</p>
+      <ul class="layer-list">
+        <li class="reveal"><button class="layer-item" data-xi="0"><span class="layer-sw" style="background:var(--l-outer)"></span><span><b>Außenblech</b><span>Robuste Metalldeckschicht – wetterfest, formstabil und in vielen Oberflächen erhältlich.</span></span></button></li>
+        <li class="reveal"><button class="layer-item" data-xi="1"><span class="layer-sw" style="background:var(--l-core)"></span><span><b>Funktionskern</b><span>Hochwirksamer Dämm- und Funktionskern für Schall-, Wärme- und Brandschutz.</span></span></button></li>
+        <li class="reveal"><button class="layer-item" data-xi="2"><span class="layer-sw" style="background:var(--l-inner)"></span><span><b>Innenblech</b><span>Tragende Innenlage – präzise verarbeitet für maximale Verbundwirkung.</span></span></button></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUKTE -->
+<section id="produkte" class="section">
+  <div class="container">
+    <div class="head-row">
+      <div><span class="eyebrow reveal">Unsere Produktreihen</span><h2 class="title reveal">Verbundelemente im Überblick</h2></div>
+      <p class="muted reveal" style="max-width:24rem;font-size:.9rem">Beispielhafte Produktreihen – jede Lösung fertigen wir passgenau für Ihr Projekt.</p>
+    </div>
+    <div class="prod-grid" id="prod-grid"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="rueckruf" class="section">
+  <div class="container">
+    <div class="cta-box reveal">
+      <div class="cta-blob" style="right:-4rem;top:-4rem;width:16rem;height:16rem;background:rgba(47,109,240,.2)"></div>
+      <div class="cta-blob" style="left:33%;bottom:-4rem;width:14rem;height:14rem;background:rgba(56,189,248,.15)"></div>
+      <div class="cta-grid">
+        <div>
+          <span class="eyebrow"><svg class="svg" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Rückruf-Service</span>
+          <h2 class="title">Wir rufen Sie zurück – zu Ihrer Wunschzeit</h2>
+          <p class="lead" style="margin-top:1rem;max-width:34rem">Wählen Sie Ihr Anliegen und ein passendes Zeitfenster. Unsere Technik-Beratung meldet sich verlässlich bei Ihnen – ohne Warteschleife, ohne Verkaufsdruck.</p>
+          <p class="muted" style="margin-top:.75rem;display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem"><svg class="svg" style="width:1rem;height:1rem;color:var(--cyan)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Erreichbar Mo – Fr 07:00 – 16:00 Uhr</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.75rem">
+          <button class="btn btn-primary" style="padding:1rem;font-size:1rem" data-callback><svg class="svg" viewBox="0 0 24 24"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Rückruf vereinbaren</button>
+          <a href="tel:+4937206578710" class="btn btn-ghost" style="padding:1rem;font-size:1rem"><svg class="svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 037206 / 57 87 10</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UNTERNEHMEN -->
+<section id="unternehmen" class="section soft-bg">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <span class="eyebrow reveal">Über Elmtech</span>
+        <h2 class="title reveal">Familienbetrieb mit Ingenieurs­geist</h2>
+        <p class="lead reveal" style="margin-top:1rem">Als familiengeführter Spezialist in zweiter Generation entwickeln und produzieren wir Verbundelemente für Schallschutz, Einbruchschutz, Energieeffizienz und Brandschutz. Komplexe Blechbearbeitung und kundenspezifische Sonderkonstruktionen sind unsere Kernkompetenz.</p>
+        <p class="muted reveal" style="margin-top:1rem">Geschäftsführung: Dipl.-Ing. Rainer Baars, M.Sc. &amp; Dipl.-Ing. Sebastian Baars</p>
+      </div>
+      <div class="timeline reveal left">
+        <div class="timeline-line"></div>
+        <ul class="tl-list">
+          <li class="tl-item"><span class="tl-dot"></span><span class="tl-year">1993</span><h3>Gründung</h3><p>Rainer Baars gründet Elmtech in Seifersbach und spezialisiert sich auf Verbundelemente.</p></li>
+          <li class="tl-item"><span class="tl-dot"></span><span class="tl-year">seither</span><h3>Stetiges Wachstum</h3><p>Elmtech entwickelt sich zu einem führenden Hersteller maßgefertigter Dämm- und Fassadenelemente in Deutschland.</p></li>
+          <li class="tl-item"><span class="tl-dot"></span><span class="tl-year">2011</span><h3>Umzug nach Sachsenburg</h3><p>Für mehr Produktionskapazität bezieht das Unternehmen den heutigen Standort in Frankenberg / OT Sachsenburg.</p></li>
+          <li class="tl-item"><span class="tl-dot"></span><span class="tl-year">heute</span><h3>Zweite Generation</h3><p>Das Familienunternehmen wird in zweiter Generation geführt – mit Erfahrung, Präzision und Innovationsgeist.</p></li>
+        </ul>
+      </div>
+    </div>
+    <div class="stats reveal">
+      <div class="stat"><div class="num text-grad" data-count="33">33</div><div class="lbl">Jahre Erfahrung</div></div>
+      <div class="stat"><div class="num text-grad" data-count="2" data-suffix=".">2.</div><div class="lbl">Generation Familienbetrieb</div></div>
+      <div class="stat"><div class="num text-grad" data-count="6">6</div><div class="lbl">Anwendungsbereiche</div></div>
+      <div class="stat"><div class="num text-grad" data-count="100" data-suffix="%">100%</div><div class="lbl">Fertigung in Sachsen</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt" class="section">
+  <div class="container">
+    <div class="center" style="margin-bottom:3rem">
+      <span class="eyebrow reveal">So erreichen Sie uns</span>
+      <h2 class="title reveal">Standort &amp; Kontakt</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal"><div class="contact-col">
+        <div class="glass cc"><span class="cc-ico"><svg class="svg" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span><span class="t">Werk / Sitz</span><span class="v">Elmtech Verbundelemente GmbH<br>Schönborner Straße 37<br>09669 Frankenberg / OT Sachsenburg</span></span></div>
+        <div class="glass cc"><span class="cc-ico"><svg class="svg" viewBox="0 0 24 24"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7zM5.5 19a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM18.5 19a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/></svg></span><span><span class="t">Lieferadresse</span><span class="v">Am Wald 1<br>09661 Rossau</span></span></div>
+        <div class="cc-2">
+          <a href="tel:+4937206578710" class="glass cc"><span class="cc-ico"><svg class="svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><span><span class="t">Telefon</span><span class="v">037206 / 57 87 10</span></span></a>
+          <div class="glass cc"><span class="cc-ico"><svg class="svg" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span><span><span class="t">Fax</span><span class="v">037206 / 57 87 11</span></span></div>
+        </div>
+        <a href="mailto:info@elmtech.de" class="glass cc"><span class="cc-ico"><svg class="svg" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></span><span><span class="t">E-Mail</span><span class="v">info@elmtech.de</span></span></a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Elmtech%20Verbundelemente%20GmbH%2C%20Sch%C3%B6nborner%20Stra%C3%9Fe%2037%2C%2009669%20Frankenberg" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:auto"><svg class="svg" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg> Route planen</a>
+      </div></div>
+      <div class="reveal left"><div class="map-wrap">
+        <a class="map-fallback" id="map-fallback" href="https://maps.google.com/?q=Elmtech%20Verbundelemente%20GmbH%2C%20Sch%C3%B6nborner%20Stra%C3%9Fe%2037%2C%2009669%20Frankenberg" target="_blank" rel="noopener">
+          <svg class="svg" style="width:2.5rem;height:2.5rem;color:var(--cyan)" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span style="font-weight:600">Elmtech Verbundelemente GmbH</span>
+          <span style="font-size:.85rem;color:var(--steel-200)">Schönborner Straße 37, 09669 Frankenberg<br>Zum Öffnen in Karten tippen</span>
+        </a>
+        <iframe title="Standort Elmtech" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
+          onload="var f=document.getElementById('map-fallback'); if(f) f.style.display='none';"
+          src="https://maps.google.com/maps?q=Elmtech%20Verbundelemente%20GmbH%2C%20Sch%C3%B6nborner%20Stra%C3%9Fe%2037%2C%2009669%20Frankenberg&hl=de&z=15&output=embed"></iframe>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container foot-grid">
+    <div>
+      <div class="logo"><span class="badge"><svg class="svg" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span><b style="font-family:'Space Grotesk';font-size:1.2rem">Elmtech</b></div>
+      <p class="muted" style="margin-top:1rem;font-size:.9rem">Elmtech Verbundelemente GmbH – maßgefertigte Dämm- und Fassadenelemente seit 1993. Familienunternehmen in zweiter Generation.</p>
+    </div>
+    <div>
+      <h4>Kontakt</h4>
+      <ul>
+        <li><svg class="svg" style="width:1rem;height:1rem;color:var(--cyan)" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Schönborner Straße 37, 09669 Frankenberg</li>
+        <li><a href="tel:+4937206578710"><svg class="svg" style="width:1rem;height:1rem;color:var(--cyan)" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 037206 / 57 87 10</a></li>
+        <li><svg class="svg" style="width:1rem;height:1rem;color:var(--cyan)" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> 037206 / 57 87 11</li>
+        <li><a href="mailto:info@elmtech.de"><svg class="svg" style="width:1rem;height:1rem;color:var(--cyan)" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg> info@elmtech.de</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Leistungen</h4>
+      <ul><li>Schallschutz-Elemente</li><li>Einbruchschutz-Elemente</li><li>Energieeffiziente Dämmung</li><li>Brandschutz-Elemente</li><li>Sonderkonstruktionen</li></ul>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <ul><li><a href="#leistungen">Leistungen</a></li><li><a href="#aufbau">Aufbau</a></li><li><a href="#produkte">Produkte</a></li><li><a href="#unternehmen">Unternehmen</a></li><li><a href="#kontakt">Kontakt</a></li></ul>
+    </div>
+  </div>
+  <div class="foot-bottom"><div class="container">
+    <p>© <span id="year"></span> Elmtech Verbundelemente GmbH. Alle Rechte vorbehalten.</p>
+    <p style="display:flex;gap:1rem"><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">AGB</a></p>
+  </div></div>
+</footer>
+
+<!-- FLOATING -->
+<div class="floating" id="floating">
+  <a href="tel:+4937206578710" class="fab" aria-label="Anrufen"><svg class="svg" style="width:1.5rem;height:1.5rem" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+  <button class="fab-cb" data-callback><svg class="svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>Rückruf</span></button>
+</div>
+
+<!-- MODAL -->
+<div class="modal-root" id="modal" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-window" role="dialog" aria-modal="true" aria-label="Rückruf vereinbaren">
+    <div class="modal-inner">
+      <div class="modal-head">
+        <div class="modal-head-row">
+          <div class="hi"><span class="hi-ico"><svg class="svg" viewBox="0 0 24 24"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+            <div><h2>Rückruf vereinbaren</h2><p>Wir melden uns zu Ihrer Wunschzeit.</p></div></div>
+          <button class="modal-close" data-close aria-label="Schließen"><svg class="svg" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        </div>
+        <div class="progress" id="m-progress">
+          <div class="seg" data-seg="0"><div class="bar"><i></i></div><span class="lbl">Anliegen</span></div>
+          <div class="seg" data-seg="1"><div class="bar"><i></i></div><span class="lbl">Zeitfenster</span></div>
+          <div class="seg" data-seg="2"><div class="bar"><i></i></div><span class="lbl">Kontakt</span></div>
+        </div>
+      </div>
+      <div class="modal-body" id="m-body"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+const TOPICS=["Schallschutz","Einbruchschutz","Energieeffizienz","Brandschutz","Sonderkonstruktion","Allgemeine Anfrage"];
+const WINDOWS=[{id:"08-10",label:"08:00 – 10:00 Uhr"},{id:"10-12",label:"10:00 – 12:00 Uhr"},{id:"13-15",label:"13:00 – 15:00 Uhr"},{id:"15-16",label:"15:00 – 16:00 Uhr"}];
+const PRODUCTS=[
+ {name:"ET-PRO 5000",cat:"Schallschutz-Element",hl:"bis 50 dB",desc:"Hochleistungs-Schallschutzelement mit zweischaligem Aufbau für anspruchsvolle Lärmschutzanwendungen im Industrie- und Gewerbebau.",specs:[["Schalldämmung","bis 50 dB"],["Deckschichten","2× 2 mm Alu"],["Einsatz","Industrie & Gewerbe"]],tags:["Schallschutz","Aluminium"],grad:["#1d4ed8","#0b1220"],accent:"#60a5fa",topic:"Schallschutz"},
+ {name:"ET-GLP P6B",cat:"Sicherheits-Element",hl:"geprüft",desc:"Einbruchhemmendes Verbundelement mit zertifiziertem Aufbau – ideal dort, wo Sicherheit und Design zusammenkommen müssen.",specs:[["Schutzklasse","geprüft (P6B)"],["Aufbau","mehrschichtig"],["Einsatz","Türen & Fassaden"]],tags:["Einbruchschutz","Zertifiziert"],grad:["#0f766e","#04140f"],accent:"#2dd4bf",topic:"Einbruchschutz"},
+ {name:"ET-THERM",cat:"Dämm-Element",hl:"Top-Dämmwerte",desc:"Wärmedämmendes Fassadenelement mit ausgezeichneten U-Werten für energieeffizientes Bauen und Sanieren.",specs:[["Funktion","Wärmedämmung"],["Dämmwert","sehr hoch"],["Einsatz","Fassade & Sanierung"]],tags:["Energieeffizienz","Fassade"],grad:["#b45309","#180f04"],accent:"#fbbf24",topic:"Energieeffizienz"},
+ {name:"ET-FIRE",cat:"Brandschutz-Element",hl:"feuerhemmend",desc:"Brandschutzelement mit geprüftem Materialaufbau für Anwendungen mit erhöhten Anforderungen an den vorbeugenden Brandschutz.",specs:[["Funktion","Brandschutz"],["Aufbau","nichtbrennbarer Kern"],["Einsatz","Wand & Decke"]],tags:["Brandschutz","geprüft"],grad:["#b91c1c","#170606"],accent:"#f87171",topic:"Brandschutz"},
+ {name:"ET-DESIGN",cat:"Fassaden-Element",hl:"individuell",desc:"Gestaltungselement mit edlen Oberflächen und freier Formgebung – für Architektur, die sichtbar Eindruck macht.",specs:[["Oberfläche","frei wählbar"],["Formgebung","individuell"],["Einsatz","Sichtfassade"]],tags:["Oberflächen","Architektur"],grad:["#6d28d9","#0d0820"],accent:"#a78bfa",topic:"Allgemeine Anfrage"},
+ {name:"ET-CUSTOM",cat:"Sonderkonstruktion",hl:"nach Maß",desc:"Kundenspezifische Sonderlösung: Wir entwickeln und fertigen das Verbundelement exakt nach Ihren Anforderungen und Maßen.",specs:[["Fertigung","auf Maß"],["Blechbearbeitung","komplex"],["Beratung","inklusive"]],tags:["Sonderbau","Engineering"],grad:["#334155","#070b11"],accent:"#94a3b8",topic:"Sonderkonstruktion"}
+];
+const pad=n=>String(n).padStart(2,"0");
+const dstr=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+function bizDays(count){const start=new Date();start.setHours(0,0,0,0);const out=[];let c=1;
+  while(out.length<count){const d=new Date(start);d.setDate(start.getDate()+c);const wd=d.getDay();if(wd>=1&&wd<=5)out.push(dstr(d));c++;}return out;}
+function longDate(ds){const[y,m,d]=ds.split("-").map(Number);return new Date(y,m-1,d).toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"long"});}
+function winLabel(id){const w=WINDOWS.find(x=>x.id===id);return w?w.label:id;}
+
+// Produktkarten rendern
+const pgrid=document.getElementById("prod-grid");
+pgrid.innerHTML=PRODUCTS.map(p=>`
+ <div class="prod-tilt reveal" data-tilt>
+   <div class="prod">
+     <div class="prod-head" style="background:linear-gradient(150deg,${p.grad[0]},${p.grad[1]})">
+       <div class="prod-glow" style="background:${p.accent}"></div>
+       <span class="prod-cat">${p.cat}</span>
+       <span class="prod-hl" style="background:${p.accent}">${p.hl}</span>
+       <span class="prod-name">${p.name}</span>
+     </div>
+     <div class="prod-body">
+       <p>${p.desc}</p>
+       <dl class="specs">${p.specs.map(s=>`<div><dt>${s[0]}</dt><dd>${s[1]}</dd></div>`).join("")}</dl>
+       <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+       <button class="prod-cta" data-callback data-topic="${p.topic}"><svg class="svg" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Beratung anfordern <svg class="svg" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg></button>
+     </div>
+   </div>
+ </div>`).join("");
+document.getElementById("year").textContent=new Date().getFullYear();
+
+// Effekte
+const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+const nav=document.getElementById("navbar"),floating=document.getElementById("floating"),panel=document.getElementById("panel");
+function onScroll(){const y=scrollY;nav.classList.toggle("scrolled",y>24);floating.classList.toggle("show",y>innerHeight*0.8);}
+addEventListener("scroll",onScroll,{passive:true});onScroll();
+
+// Reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");io.unobserve(e.target);}}),{threshold:0.1,rootMargin:"-40px"});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+// Count-up
+const cio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target,end=+el.dataset.count,suf=el.dataset.suffix||"";
+  const t0=performance.now();function tick(now){const p=Math.min((now-t0)/1700,1),v=Math.round((1-Math.pow(1-p,3))*end);el.textContent=v.toLocaleString("de-DE")+suf;if(p<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);cio.unobserve(el);}),{threshold:0.4});
+document.querySelectorAll("[data-count]").forEach(el=>cio.observe(el));
+
+// Hero-3D-Panel folgt der Maus
+if(!reduce&&panel){const stage=panel.parentElement;
+  stage.addEventListener("mousemove",e=>{const r=stage.getBoundingClientRect();const mx=(e.clientX-r.left)/r.width-0.5,my=(e.clientY-r.top)/r.height-0.5;
+    panel.style.transform="rotateX("+(8-my*14)+"deg) rotateY("+(-18+mx*26)+"deg)";});
+  stage.addEventListener("mouseleave",()=>{panel.style.transform="rotateX(8deg) rotateY(-18deg)";});}
+
+// Aufbau: Schichten auseinanderfahren, sobald sichtbar; Hover hebt Lage
+const xLayers=document.querySelectorAll(".x-layer");
+function setExplode(on){xLayers.forEach((l,i)=>{const gap=reduce?26:52;l.style.transform="translateZ("+((i-1)*(on?gap:6))+"px)";});}
+const xio=new IntersectionObserver(es=>es.forEach(e=>setExplode(e.isIntersecting)),{threshold:0.3});
+const xstage=document.getElementById("x-stage");if(xstage)xio.observe(xstage);
+function liftLayer(i,on){const l=xLayers[i];if(!l)return;const gap=reduce?26:52;l.style.transform="translateZ("+((i-1)*gap+(on?22:0))+"px)";}
+document.querySelectorAll("[data-xi]").forEach(el=>{const i=+el.dataset.xi;
+  el.addEventListener("mouseenter",()=>liftLayer(i,true));el.addEventListener("mouseleave",()=>liftLayer(i,false));});
+
+// 3D-Tilt Produktkarten
+if(!reduce){document.querySelectorAll("[data-tilt]").forEach(wrap=>{const card=wrap.querySelector(".prod");if(!card)return;
+  wrap.addEventListener("mousemove",e=>{const r=card.getBoundingClientRect();const mx=(e.clientX-r.left)/r.width-0.5,my=(e.clientY-r.top)/r.height-0.5;
+    card.style.transform="rotateX("+(-my*9)+"deg) rotateY("+(mx*9)+"deg)";});
+  wrap.addEventListener("mouseleave",()=>{card.style.transform="";});});}
+
+// ================= RÜCKRUF-MODAL (Demo) =================
+const modal=document.getElementById("modal"),mBody=document.getElementById("m-body");
+let st={topic:"",date:"",win:""};
+const DATES=bizDays(14);
+function openModal(topic){st={topic:topic||"",date:DATES[0],win:""};
+  modal.classList.add("open");modal.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+  renderStep(topic?"slot":"topic");}
+function closeModal(){modal.classList.remove("open");modal.setAttribute("aria-hidden","true");document.body.style.overflow="";}
+modal.querySelectorAll("[data-close]").forEach(el=>el.addEventListener("click",closeModal));
+addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+function setProgress(idx){document.querySelectorAll("#m-progress .seg").forEach(s=>s.classList.toggle("on",+s.dataset.seg<=idx));}
+function backbar(label,onclickName){return `<button class="backbar" data-back="${onclickName}"><svg class="svg" style="width:1rem;height:1rem;color:var(--cyan)" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${label}</span></button>`;}
+function renderStep(step){
+  if(step==="topic"){setProgress(0);
+    mBody.innerHTML=`<div class="step"><p class="hint"><svg class="svg" style="width:1rem;height:1rem;color:var(--cyan)" viewBox="0 0 24 24"><path d="M9 11H15M9 15H13M7 3h10a2 2 0 0 1 2 2v14l-3-2-2 2-2-2-2 2-2-2-3 2V5a2 2 0 0 1 2-2z"/></svg> Worum geht es?</p>
+      <div class="opt-grid">${TOPICS.map(t=>`<button class="opt" data-topic-pick="${t}"><span style="font-weight:500">${t}</span><svg class="svg" style="width:1rem;height:1rem;color:var(--cyan)" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>`).join("")}</div></div>`;
+    mBody.querySelectorAll("[data-topic-pick]").forEach(b=>b.addEventListener("click",()=>{st.topic=b.dataset.topicPick;renderStep("slot");}));
+  }
+  else if(step==="slot"){setProgress(1);
+    const today=dstr(new Date());
+    const chips=DATES.map(d=>{const[y,m,da]=d.split("-").map(Number);const dt=new Date(y,m-1,da);
+      const wd=dt.toLocaleDateString("de-DE",{weekday:"short"});const dn=dt.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"});
+      return `<button class="date-chip ${d===st.date?"active":""}" data-date="${d}"><span class="wd">${wd}</span><span class="dn">${dn}</span></button>`;}).join("");
+    mBody.innerHTML=`<div class="step">${backbar(st.topic,"topic")}
+      <p class="hint"><svg class="svg" style="width:1rem;height:1rem;color:var(--cyan)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Wann dürfen wir anrufen?</p>
+      <div class="date-row">${chips}</div>
+      <div class="opt-grid">${WINDOWS.map(w=>`<button class="opt ${st.win===w.id?"active":""}" data-win="${w.id}"><span style="font-weight:500">${w.label}</span><svg class="svg" style="width:1rem;height:1rem;color:var(--cyan)" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>`).join("")}</div></div>`;
+    mBody.querySelectorAll("[data-date]").forEach(b=>b.addEventListener("click",()=>{st.date=b.dataset.date;renderStep("slot");}));
+    mBody.querySelectorAll("[data-win]").forEach(b=>b.addEventListener("click",()=>{st.win=b.dataset.win;renderStep("details");}));
+    bindBack();
+  }
+  else if(step==="details"){setProgress(2);
+    mBody.innerHTML=`<div class="step">${backbar(st.topic+" · "+longDate(st.date)+", "+winLabel(st.win),"slot")}
+      <form id="cbform" novalidate>
+        <div class="grid2">
+          <div class="field"><label>Name</label><input name="name" placeholder="Max Mustermann" autocomplete="name"><span class="err hidden"></span></div>
+          <div class="field"><label>Firma (optional)</label><input name="company" placeholder="Musterbau GmbH" autocomplete="organization"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>Telefon</label><input name="phone" type="tel" placeholder="0151 23456789" autocomplete="tel"><span class="err hidden"></span></div>
+          <div class="field"><label>E-Mail (optional)</label><input name="email" type="email" placeholder="max@firma.de" autocomplete="email"><span class="err hidden"></span></div>
+        </div>
+        <div class="field"><label>Ihr Anliegen (optional)</label><textarea name="message" rows="3" placeholder="Projekt, Maße, Stückzahl, Anwendung …"></textarea></div>
+        <div class="phone-note"><svg class="svg" style="width:1rem;height:1rem;color:var(--cyan)" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Lieber sofort sprechen? <a href="tel:+4937206578710" style="color:var(--cyan);font-weight:600">037206 / 57 87 10</a></div>
+        <button type="submit" class="btn btn-primary" style="width:100%"><svg class="svg" viewBox="0 0 24 24"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Rückruf anfordern</button>
+      </form></div>`;
+    bindBack();
+    document.getElementById("cbform").addEventListener("submit",onSubmit);
+  }
+  else if(step==="done"){setProgress(2);
+    const ref="EL-"+Array.from({length:6},()=>"ACDEFGHJKLMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*30)]).join("");
+    mBody.innerHTML=`<div class="step"><div class="confirm">
+      <span class="confirm-ico"><svg class="svg" style="width:2.75rem;height:2.75rem" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
+      <h3 style="font-family:'Space Grotesk';font-size:1.9rem;margin-top:1.25rem">Rückruf notiert!</h3>
+      <p class="lead" style="margin-top:.5rem">Vielen Dank. Wir melden uns wie gewünscht bei Ihnen.</p>
+      <div class="ticket">
+        <div class="tr"><span>Referenz</span><span class="ref">${ref}</span></div>
+        <div class="tr"><span>Anliegen</span><span>${st.topic}</span></div>
+        <div class="tr"><span>Wunschzeit</span><span>${longDate(st.date)}, ${winLabel(st.win)}</span></div>
+      </div>
+      <button class="btn btn-ghost" style="margin-top:1.5rem" data-close>Fertig</button>
+    </div></div>`;
+    mBody.querySelector("[data-close]").addEventListener("click",closeModal);
+  }
+}
+function bindBack(){mBody.querySelectorAll("[data-back]").forEach(b=>b.addEventListener("click",()=>renderStep(b.dataset.back)));}
+function onSubmit(e){e.preventDefault();const f=e.target;let ok=true;
+  const set=(n,msg)=>{const fld=f[n].closest(".field");const er=fld.querySelector(".err");
+    if(msg){er.textContent=msg;er.classList.remove("hidden");f[n].style.borderColor="#ef4444";ok=false;}else{er.classList.add("hidden");f[n].style.borderColor="";}};
+  set("name",f.name.value.trim().length<2?"Bitte gib deinen Namen an.":"");
+  set("phone",/^[0-9+()/\s-]{5,}$/.test(f.phone.value.trim())?"":"Bitte gib eine gültige Telefonnummer an.");
+  if(f.email.value.trim())set("email",/^\S+@\S+\.\S+$/.test(f.email.value.trim())?"":"Bitte gib eine gültige E-Mail-Adresse an.");
+  if(ok)renderStep("done");
+}
+// Trigger
+document.addEventListener("click",e=>{const t=e.target.closest("[data-callback]");if(t){e.preventDefault();openModal(t.dataset.topic||"");}});
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-ink text-white/90 font-sans antialiased;
+    background-image:
+      radial-gradient(circle at 15% -10%, rgba(124, 58, 237, 0.18), transparent 45%),
+      radial-gradient(circle at 85% 0%, rgba(225, 29, 72, 0.15), transparent 40%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+
+  ::selection {
+    @apply bg-gold/30 text-white;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .section {
+    @apply scroll-mt-20 py-20 sm:py-28;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3
+           text-sm font-semibold tracking-wide transition-all duration-200
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+           focus-visible:ring-offset-ink;
+  }
+
+  .btn-gold {
+    @apply btn bg-gold text-ink shadow-glow hover:bg-gold-soft hover:-translate-y-0.5
+           focus-visible:ring-gold;
+  }
+
+  .btn-crimson {
+    @apply btn bg-crimson text-white shadow-glow-crimson hover:bg-crimson-soft
+           hover:-translate-y-0.5 focus-visible:ring-crimson;
+  }
+
+  .btn-ghost {
+    @apply btn border border-white/15 bg-white/5 text-white backdrop-blur
+           hover:border-gold/60 hover:text-gold;
+  }
+
+  .eyebrow {
+    @apply mb-3 inline-block text-xs font-semibold uppercase tracking-[0.3em] text-gold;
+  }
+
+  .glass {
+    @apply rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-white/70;
+  }
+
+  .field-input {
+    @apply w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white
+           outline-none transition placeholder:text-white/30
+           focus:border-gold/60 focus:ring-2 focus:ring-gold/20;
+  }
+
+  /* Goldener Verlaufstext */
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-gold-soft via-gold to-gold-deep bg-clip-text text-transparent;
+  }
+}
+
+@layer utilities {
+  /* dezenter Filmkorn-Effekt */
+  .grain::after {
+    content: "";
+    @apply pointer-events-none absolute inset-0 opacity-[0.04];
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem; /* Platz für die fixierte Navbar */
+  }
+
+  body {
+    @apply bg-cream text-bark font-sans antialiased;
+    background-image: theme("backgroundImage.grain");
+    background-size: 22px 22px;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3
+           text-sm font-semibold tracking-wide transition-all duration-200
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-copper text-cream shadow-soft hover:bg-copper-light
+           hover:-translate-y-0.5 focus-visible:ring-copper;
+  }
+
+  .btn-secondary {
+    @apply btn border border-bark/20 bg-cream/60 text-bark backdrop-blur
+           hover:border-copper hover:text-copper;
+  }
+
+  .btn-ghost {
+    @apply btn bg-forest text-cream hover:bg-forest-light focus-visible:ring-forest;
+  }
+
+  .section {
+    @apply scroll-mt-20 py-20 sm:py-28;
+  }
+
+  .eyebrow {
+    @apply mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] text-copper;
+  }
+
+  .card {
+    @apply rounded-2xl border border-bark/10 bg-white/70 p-6 shadow-card backdrop-blur;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-bark/80;
+  }
+
+  .field-input {
+    @apply w-full rounded-xl border border-bark/15 bg-white px-4 py-3 text-bark
+           shadow-sm outline-none transition focus:border-copper
+           focus:ring-2 focus:ring-copper/30 placeholder:text-bark/40;
+  }
+}
+
+/* Respektiert die Systemeinstellung "Bewegung reduzieren" */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

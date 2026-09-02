@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<script>document.documentElement.classList.add('js');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>CineStar Chemnitz – Vorschau</title>
+<meta name="description" content="CineStar – Der Filmpalast am Roten Turm in Chemnitz. Kinoprogramm, Online-Tickets und Sitzplatzauswahl." />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="theme-color" content="#070711" />
+<meta name="format-detection" content="telephone=yes" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#070711; --ink-soft:#0e0e1c; --ink-card:#15152a;
+    --gold:#f5c542; --gold-soft:#fbe08a; --gold-deep:#c9971f;
+    --crimson:#e11d48; --crimson-soft:#fb7185;
+    --violet:#7c3aed; --violet-soft:#a78bfa;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:5rem;-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Inter',-apple-system,system-ui,sans-serif;color:rgba(255,255,255,.9);
+    background:var(--ink);overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 15% -10%,rgba(124,58,237,.18),transparent 45%),
+      radial-gradient(circle at 85% 0%,rgba(225,29,72,.15),transparent 40%);
+    background-attachment:fixed;-webkit-tap-highlight-color:rgba(245,197,66,.2);
+  }
+  h1,h2,h3,h4{font-family:'Bebas Neue','Georgia',serif;font-weight:400;letter-spacing:.02em}
+  a{color:inherit;text-decoration:none}
+  input,select,textarea{font-size:16px;font-family:inherit}
+  ::selection{background:rgba(245,197,66,.3)}
+  .container{max-width:72rem;margin:0 auto;padding:0 1.25rem}
+  .section{padding:5rem 0}
+  @media(min-width:640px){.section{padding:7rem 0}.container{padding:0 2rem}}
+  .eyebrow{display:inline-block;margin-bottom:.75rem;font-size:.72rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:.3em;color:var(--gold)}
+  h2.title{font-size:clamp(2.2rem,6vw,3.2rem);line-height:1}
+  .muted{color:rgba(255,255,255,.55)}
+  .gold{color:var(--gold)}
+  .text-gold-grad{background:linear-gradient(to right,var(--gold-soft),var(--gold),var(--gold-deep));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .glass{border-radius:1rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);backdrop-filter:blur(16px)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:none;cursor:pointer;
+    border-radius:999px;padding:.8rem 1.5rem;font-size:.9rem;font-weight:600;font-family:inherit;transition:all .2s;text-align:center}
+  .btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 0 60px -12px rgba(245,197,66,.45)}
+  .btn-gold:hover{background:var(--gold-soft);transform:translateY(-2px)}
+  .btn-ghost{background:rgba(255,255,255,.05);color:#fff;border:1px solid rgba(255,255,255,.15)}
+  .btn-ghost:hover{border-color:rgba(245,197,66,.6);color:var(--gold)}
+  .svg{width:1.25rem;height:1.25rem;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+  /* Banner */
+  .banner{background:linear-gradient(90deg,var(--violet),var(--crimson));color:#fff;text-align:center;
+    font-size:.78rem;padding:.5rem 1rem;padding-top:max(.5rem,env(safe-area-inset-top))}
+
+  /* Navbar */
+  header{position:fixed;inset-inline:0;z-index:40;transition:all .3s;top:31px}
+  header.scrolled{background:rgba(7,7,17,.8);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.1);top:0}
+  nav{height:5rem;display:flex;align-items:center;justify-content:space-between}
+  .logo{display:flex;align-items:center;gap:.6rem}
+  .logo .badge{width:2.25rem;height:2.25rem;border-radius:.5rem;background:var(--gold);color:var(--ink);display:grid;place-items:center}
+  .logo b{font-family:'Bebas Neue';font-size:1.4rem;letter-spacing:.04em;display:block;line-height:1}
+  .logo span{font-size:.6rem;text-transform:uppercase;letter-spacing:.3em;color:var(--gold)}
+  .nav-links{display:none;gap:2rem}
+  .nav-links a{font-size:.9rem;font-weight:500;color:rgba(255,255,255,.75)}
+  .nav-links a:hover{color:var(--gold)}
+  .nav-cta{display:flex;align-items:center;gap:.75rem}
+  .nav-phone{display:none;align-items:center;gap:.4rem;font-weight:600;font-size:.9rem}
+  .nav-phone:hover{color:var(--gold)}
+  @media(min-width:1024px){.nav-links{display:flex}}
+  @media(min-width:640px){.nav-phone{display:flex}}
+
+  /* Hero */
+  .hero{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center}
+  .beam{position:absolute;top:-10rem;left:50%;width:80vw;height:120vh;transform:translateX(-50%);transform-origin:top;z-index:-1;
+    filter:blur(40px);
+    background:conic-gradient(from 180deg at 50% 0%,transparent 335deg,rgba(245,197,66,.14) 350deg,rgba(245,197,66,.22) 360deg,rgba(245,197,66,.14) 370deg,transparent 385deg)}
+  .particle{position:absolute;border-radius:50%;background:rgba(245,197,66,.3);filter:blur(2px);z-index:-1;
+    animation:floaty 6s ease-in-out infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0);opacity:.2}50%{transform:translateY(-24px);opacity:.7}}
+  .hero-inner{padding:7rem 0 5rem}
+  .pill{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(255,255,255,.15);
+    background:rgba(255,255,255,.05);border-radius:999px;padding:.4rem 1rem;font-size:.85rem;color:rgba(255,255,255,.8);backdrop-filter:blur(6px);margin-bottom:1.5rem}
+  .hero h1{font-size:clamp(3rem,11vw,7rem);line-height:.92;max-width:60rem;margin:0 auto}
+  .hero .lead{max-width:36rem;margin:1.5rem auto 0;font-size:1.05rem;color:rgba(255,255,255,.7)}
+  .hero-btns{margin-top:2.5rem;display:flex;flex-direction:column;gap:.75rem;align-items:center}
+  @media(min-width:640px){.hero-btns{flex-direction:row;justify-content:center}}
+  .hero-meta{margin-top:2rem;display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:.875rem;color:rgba(255,255,255,.55);flex-wrap:wrap}
+  .scroll-ind{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%)}
+  .scroll-ind div{width:1.5rem;height:2.5rem;border:2px solid rgba(255,255,255,.25);border-radius:999px;display:flex;justify-content:center;padding-top:.4rem}
+  .scroll-ind span{width:.25rem;height:.5rem;border-radius:999px;background:var(--gold);animation:dot 1.6s infinite}
+  @keyframes dot{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+  .star{width:1rem;height:1rem;fill:var(--gold);stroke:var(--gold)}
+
+  /* Reveal (nur bei JS) */
+  .js .reveal{opacity:0;transform:translateY(36px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+  .js .reveal.left{transform:translateX(44px)}
+  .js .reveal.visible{opacity:1;transform:none}
+
+  /* Programm / Filmkarten */
+  .head-row{display:flex;flex-direction:column;gap:1rem;align-items:flex-start;justify-content:space-between}
+  @media(min-width:640px){.head-row{flex-direction:row;align-items:flex-end}}
+  .movie-grid{margin-top:3rem;display:grid;gap:1.5rem;grid-template-columns:1fr}
+  @media(min-width:640px){.movie-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1024px){.movie-grid{grid-template-columns:1fr 1fr 1fr}}
+  .card-tilt{perspective:1000px}
+  .movie-card{position:relative;overflow:hidden;border-radius:1.5rem;border:1px solid rgba(255,255,255,.1);
+    background:var(--ink-card);box-shadow:0 20px 60px -20px rgba(0,0,0,.7);transition:transform .15s ease-out;transform-style:preserve-3d}
+  .poster{position:relative;aspect-ratio:2/3;overflow:hidden}
+  .poster-glow{position:absolute;right:-2.5rem;top:-2.5rem;width:10rem;height:10rem;border-radius:50%;opacity:.4;filter:blur(40px);transition:opacity .5s}
+  .movie-card:hover .poster-glow{opacity:.75}
+  .poster-fade{position:absolute;inset:0;background:linear-gradient(to top,var(--ink-card),rgba(21,21,42,.2) 50%,transparent)}
+  .poster-badge{position:absolute;top:1rem;left:1rem;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);padding:.25rem .5rem;border-radius:.375rem;font-size:.75rem;font-weight:700}
+  .poster-rating{position:absolute;top:1rem;right:1rem;display:flex;align-items:center;gap:.25rem;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);padding:.25rem .5rem;border-radius:.375rem;font-size:.75rem;font-weight:600}
+  .poster-play{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transition:opacity .25s}
+  .movie-card:hover .poster-play{opacity:1}
+  .poster-play span{width:4rem;height:4rem;border-radius:50%;background:rgba(245,197,66,.9);color:var(--ink);display:grid;place-items:center;box-shadow:0 0 60px -12px rgba(245,197,66,.45)}
+  .poster-title{position:absolute;inset-inline:0;bottom:0;padding:1rem}
+  .poster-title h3{font-size:1.7rem;line-height:1}
+  .poster-title p{font-size:.75rem;color:rgba(255,255,255,.6);margin-top:.25rem}
+  .card-body{padding:1rem;display:flex;flex-direction:column;gap:.75rem}
+  .tags{display:flex;flex-wrap:wrap;gap:.4rem}
+  .tag{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);border-radius:999px;padding:.1rem .6rem;font-size:.7rem;font-weight:500;color:rgba(255,255,255,.7)}
+  .synopsis{font-size:.875rem;color:rgba(255,255,255,.55);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:.25rem}
+  .dur{display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;color:rgba(255,255,255,.5)}
+
+  /* Experience */
+  .feat-grid{margin-top:3.5rem;display:grid;gap:1.25rem;grid-template-columns:1fr}
+  @media(min-width:640px){.feat-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1024px){.feat-grid{grid-template-columns:repeat(4,1fr)}}
+  .feat{position:relative;overflow:hidden;padding:1.5rem;transition:transform .3s}
+  .feat:hover{transform:translateY(-8px)}
+  .feat-ico{width:3.5rem;height:3.5rem;border-radius:1rem;background:rgba(245,197,66,.1);color:var(--gold);display:inline-flex;align-items:center;justify-content:center;margin-bottom:1.25rem;transition:all .3s}
+  .feat:hover .feat-ico{background:var(--gold);color:var(--ink)}
+  .feat h3{font-size:1.4rem}
+  .feat p{margin-top:.5rem;font-size:.875rem;color:rgba(255,255,255,.55)}
+  .stats{margin-top:3rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;border-radius:1.5rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);padding:2rem}
+  @media(min-width:1024px){.stats{grid-template-columns:repeat(4,1fr)}}
+  .stat{text-align:center}
+  .stat .num{font-family:'Bebas Neue';font-size:clamp(2.5rem,6vw,3.5rem);line-height:1}
+  .stat .lbl{margin-top:.25rem;font-size:.875rem;color:rgba(255,255,255,.55)}
+
+  /* Events */
+  .events-bg{background:rgba(14,14,28,.5)}
+  .marquee{position:relative;overflow:hidden;border-block:1px solid rgba(255,255,255,.1);padding:1rem 0;margin-bottom:4rem}
+  .marquee-track{display:flex;width:max-content;gap:2.5rem;white-space:nowrap;animation:scrollx 22s linear infinite}
+  .marquee-track span{display:flex;align-items:center;gap:2.5rem;font-family:'Bebas Neue';font-size:1.9rem;color:rgba(255,255,255,.15)}
+  @keyframes scrollx{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .event-grid{margin-top:3rem;display:grid;gap:1.25rem;grid-template-columns:1fr}
+  @media(min-width:640px){.event-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1024px){.event-grid{grid-template-columns:repeat(4,1fr)}}
+  .event{height:100%;padding:1.5rem;transition:transform .3s}
+  .event:hover{transform:translateY(-6px)}
+  .event-tag{display:inline-block;border-radius:999px;background:rgba(225,29,72,.2);color:var(--crimson-soft);padding:.25rem .75rem;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+  .event h3{margin-top:1rem;font-size:1.7rem}
+  .event p{margin-top:.5rem;font-size:.875rem;color:rgba(255,255,255,.55)}
+
+  /* Kontakt */
+  .contact-grid{display:grid;gap:2rem;grid-template-columns:1fr}
+  @media(min-width:1024px){.contact-grid{grid-template-columns:1fr 1.4fr}}
+  .contact-col{display:flex;flex-direction:column;gap:1rem;height:100%}
+  .contact-card{display:flex;align-items:flex-start;gap:1rem;padding:1.25rem}
+  a.contact-card{transition:all .2s}
+  a.contact-card:hover{transform:translateY(-2px);border-color:rgba(245,197,66,.4)}
+  .contact-ico{width:2.75rem;height:2.75rem;border-radius:.75rem;flex-shrink:0;background:rgba(245,197,66,.1);color:var(--gold);display:grid;place-items:center}
+  .contact-card .t{display:block;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,.4)}
+  .contact-card .v{display:block;margin-top:.15rem;font-weight:500}
+  .map-wrap{position:relative;min-height:340px;height:100%;overflow:hidden;border-radius:1.5rem;border:1px solid rgba(255,255,255,.1)}
+  .map-fallback{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;text-align:center;padding:1.5rem;background:linear-gradient(135deg,var(--violet),var(--ink))}
+  .map-wrap iframe{position:relative;z-index:3;width:100%;height:100%;min-height:340px;border:0;display:block}
+
+  /* Footer */
+  footer{border-top:1px solid rgba(255,255,255,.1);background:rgba(14,14,28,.6)}
+  .foot-grid{display:grid;gap:2.5rem;padding:4rem 0;grid-template-columns:1fr}
+  @media(min-width:640px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1024px){.foot-grid{grid-template-columns:repeat(4,1fr)}}
+  .foot-grid h4{font-family:'Inter';font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,.8);margin-bottom:1rem}
+  .foot-grid ul{list-style:none;font-size:.9rem;color:rgba(255,255,255,.7)}
+  .foot-grid li{margin-bottom:.6rem;display:flex;gap:.6rem}
+  .foot-grid a:hover{color:var(--gold)}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);font-size:.75rem;color:rgba(255,255,255,.45);padding:1.5rem 0}
+  .foot-bottom .container{display:flex;flex-direction:column;gap:.75rem;justify-content:space-between;align-items:center}
+  @media(min-width:640px){.foot-bottom .container{flex-direction:row}}
+
+  /* Floating */
+  .floating{position:fixed;right:max(1.25rem,env(safe-area-inset-right));bottom:max(1.25rem,calc(env(safe-area-inset-bottom) + .5rem));
+    z-index:30;display:flex;flex-direction:column;align-items:flex-end;gap:.75rem;opacity:0;transform:translateY(30px);pointer-events:none;transition:all .3s}
+  .floating.show{opacity:1;transform:none;pointer-events:auto}
+  .fab{width:3.5rem;height:3.5rem;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);color:#fff;backdrop-filter:blur(8px);box-shadow:0 20px 60px -20px rgba(0,0,0,.7);transition:all .2s}
+  .fab:hover{transform:scale(1.05);background:rgba(255,255,255,.2)}
+  .fab-tix{display:inline-flex;align-items:center;gap:.5rem;border-radius:999px;background:var(--gold);color:var(--ink);padding:.9rem 1.25rem;font-weight:600;box-shadow:0 0 60px -12px rgba(245,197,66,.45);transition:all .2s}
+  .fab-tix:hover{transform:scale(1.05)}
+  @media(min-width:640px){.fab{display:none}}
+
+  /* Booking-Modal */
+  .modal-root{position:fixed;inset:0;z-index:50;display:none}
+  .modal-root.open{display:block}
+  .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);opacity:0;transition:opacity .3s}
+  .modal-root.open .modal-backdrop{opacity:1}
+  .modal-window{position:absolute;inset:0;margin:0 auto;max-width:48rem;display:flex;flex-direction:column;
+    transform:scale(.92) translateY(30px);opacity:0;transition:transform .35s cubic-bezier(.34,1.3,.64,1),opacity .3s}
+  .modal-root.open .modal-window{transform:none;opacity:1}
+  @media(min-width:640px){.modal-window{inset:1.5rem 1rem;top:2.5rem}}
+  .modal-inner{display:flex;flex-direction:column;height:100%;overflow:hidden;background:rgba(21,21,42,.92);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(20px)}
+  @media(min-width:640px){.modal-inner{border-radius:1.5rem}}
+  .modal-head{position:relative;flex-shrink:0;padding:1.25rem;overflow:hidden}
+  @media(min-width:640px){.modal-head{padding:1.5rem}}
+  .modal-head-overlay{position:absolute;inset:0;background:rgba(7,7,17,.4)}
+  .modal-head-row{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
+  .modal-head h2{font-size:2rem;line-height:1;margin-top:.25rem}
+  .modal-head .genre{font-size:.72rem;text-transform:uppercase;letter-spacing:.3em;color:rgba(255,255,255,.6)}
+  .modal-head .meta{margin-top:.5rem;font-size:.875rem;color:rgba(255,255,255,.7)}
+  .modal-close{flex-shrink:0;border:none;cursor:pointer;border-radius:999px;background:rgba(0,0,0,.3);color:rgba(255,255,255,.8);width:2.25rem;height:2.25rem;display:grid;place-items:center;transition:all .2s}
+  .modal-close:hover{background:rgba(0,0,0,.5);color:#fff}
+  .progress{position:relative;margin-top:1.25rem;display:flex;gap:.5rem}
+  .progress .seg{flex:1;display:flex;flex-direction:column;gap:.4rem}
+  .progress .bar{height:.25rem;border-radius:999px;background:rgba(255,255,255,.2);overflow:hidden}
+  .progress .bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .4s}
+  .progress .seg.on .bar i{width:100%}
+  .progress .lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4)}
+  .progress .seg.on .lbl{color:var(--gold)}
+  .modal-body{position:relative;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.25rem}
+  @media(min-width:640px){.modal-body{padding:1.75rem}}
+  .step{animation:stepin .3s ease both}
+  @keyframes stepin{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+  .date-row{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.5rem;margin-bottom:1.25rem}
+  .date-chip{flex-shrink:0;display:flex;flex-direction:column;align-items:center;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);border-radius:.75rem;padding:.5rem 1rem;cursor:pointer;transition:all .2s}
+  .date-chip:hover{border-color:rgba(255,255,255,.25)}
+  .date-chip.active{border-color:var(--gold);background:rgba(245,197,66,.15);color:var(--gold)}
+  .date-chip .wd{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em}
+  .date-chip .dn{font-size:.9rem;font-weight:600}
+  .show-grid{display:grid;gap:.625rem;grid-template-columns:1fr}
+  @media(min-width:640px){.show-grid{grid-template-columns:1fr 1fr}}
+  .show-btn{display:flex;align-items:center;justify-content:between;gap:.5rem;justify-content:space-between;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);border-radius:1rem;padding:1rem;cursor:pointer;text-align:left;transition:all .2s}
+  .show-btn:hover{border-color:rgba(245,197,66,.5);transform:translateY(-3px)}
+  .show-btn .time{font-size:1.1rem;font-weight:600}
+  .show-btn .hall{font-size:.72rem;color:rgba(255,255,255,.5)}
+  .showbar{display:flex;align-items:center;gap:.6rem;width:100%;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);border-radius:.75rem;padding:.625rem 1rem;cursor:pointer;font-size:.875rem;margin-bottom:1.25rem;transition:all .2s}
+  .showbar:hover{border-color:rgba(245,197,66,.4)}
+  .showbar .end{margin-left:auto;font-size:.75rem;color:rgba(255,255,255,.5)}
+
+  /* Sitzplan */
+  .screen{max-width:24rem;margin:0 auto 2rem}
+  .screen-bar{height:.5rem;border-radius:100%;background:linear-gradient(to right,transparent,var(--gold),transparent);box-shadow:0 0 60px -12px rgba(245,197,66,.45);transform-origin:center;animation:screenin .6s ease}
+  @keyframes screenin{from{transform:scaleX(.4);opacity:0}to{transform:scaleX(1);opacity:1}}
+  .screen p{margin-top:.5rem;text-align:center;font-size:.7rem;text-transform:uppercase;letter-spacing:.4em;color:rgba(255,255,255,.4)}
+  .seat-rows{display:flex;flex-direction:column;align-items:center;gap:.4rem;overflow-x:auto;padding-bottom:.5rem}
+  .seat-row{display:flex;align-items:center;gap:.4rem}
+  .seat-row .rl{width:1.25rem;text-align:center;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.35)}
+  .seat{width:1.75rem;height:1.75rem;border:none;cursor:pointer;border-radius:.5rem .5rem .15rem .15rem;font-size:.6rem;font-weight:700;display:grid;place-items:center;
+    background:rgba(255,255,255,.15);color:rgba(255,255,255,.7);transition:transform .12s,background .15s}
+  .seat:hover{transform:scale(1.18) translateY(-2px);background:rgba(255,255,255,.3);color:#fff}
+  .seat.premium{background:rgba(167,139,250,.3);color:var(--violet-soft)}
+  .seat.premium:hover{background:rgba(167,139,250,.5)}
+  .seat.selected{background:var(--gold);color:var(--ink);box-shadow:0 0 60px -12px rgba(245,197,66,.45)}
+  .seat.booked{background:rgba(255,255,255,.05);color:rgba(255,255,255,.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);cursor:not-allowed}
+  .seat.booked:hover{transform:none}
+  .seat.flash{animation:shake .4s}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
+  .aisle{width:1rem}
+  .legend{margin-top:1.75rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem 1.25rem;font-size:.75rem;color:rgba(255,255,255,.6)}
+  .legend span{display:inline-flex;align-items:center;gap:.4rem}
+  .legend i{width:.875rem;height:.875rem;border-radius:.25rem;display:inline-block}
+
+  .field{display:block;margin-bottom:1rem}
+  .field label{display:block;margin-bottom:.4rem;font-size:.875rem;font-weight:500;color:rgba(255,255,255,.7)}
+  .field input{width:100%;border-radius:.75rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);padding:.75rem 1rem;color:#fff;outline:none;transition:all .2s}
+  .field input:focus{border-color:rgba(245,197,66,.6);box-shadow:0 0 0 3px rgba(245,197,66,.2)}
+  .field .err{display:block;margin-top:.3rem;font-size:.75rem;color:var(--crimson-soft)}
+  .grid2{display:grid;gap:1rem}
+  @media(min-width:640px){.grid2{grid-template-columns:1fr 1fr}}
+  .phone-note{display:flex;align-items:center;gap:.5rem;border-radius:.75rem;background:rgba(255,255,255,.05);padding:.75rem;font-size:.78rem;color:rgba(255,255,255,.6);margin-bottom:1rem;flex-wrap:wrap}
+  .modal-foot{flex-shrink:0;border-top:1px solid rgba(255,255,255,.1);background:rgba(14,14,28,.8);backdrop-filter:blur(8px);padding:1rem}
+  @media(min-width:640px){.modal-foot{padding:1.25rem}}
+  .foot-row{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+  .foot-sel{font-size:.875rem;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:.4rem}
+  .foot-total{font-size:1.1rem;font-weight:700;color:var(--gold)}
+  .confirm{display:flex;flex-direction:column;align-items:center;text-align:center;padding:1.5rem 0}
+  .confirm-ico{width:5rem;height:5rem;border-radius:50%;background:rgba(245,197,66,.15);color:var(--gold);display:grid;place-items:center;box-shadow:0 0 60px -12px rgba(245,197,66,.45);animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes pop{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1) rotate(0)}}
+  .ticket{margin-top:1.5rem;width:100%;max-width:24rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);border-radius:1rem;padding:1.25rem;text-align:left;font-size:.875rem}
+  .ticket .tr{display:flex;justify-content:space-between;gap:1rem;padding:.3rem 0}
+  .ticket .tr span:first-child{color:rgba(255,255,255,.5)}
+  .ticket .ref{font-family:ui-monospace,monospace;color:var(--gold)}
+  .err-banner{border:1px solid rgba(225,29,72,.4);background:rgba(225,29,72,.15);color:var(--crimson-soft);border-radius:.75rem;padding:.6rem 1rem;font-size:.875rem;margin-bottom:1rem}
+  .hidden{display:none!important}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+    .js .reveal{opacity:1!important;transform:none!important}
+    .marquee-track,.particle{animation:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">🎬 <b>Interaktive Vorschau</b> · alle Animationen aktiv. Die Buchung ist eine Demo – im Live-System läuft sie über Datenbank &amp; E-Mail (npm run dev).</div>
+
+<!-- NAVBAR -->
+<header id="navbar"><div class="container"><nav>
+  <a href="#top" class="logo">
+    <span class="badge"><svg class="svg" viewBox="0 0 24 24"><path d="M7 4v16M17 4v16M3 8h4M17 8h4M3 12h18M3 16h4M17 16h4M4 20h16a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1z"/></svg></span>
+    <span><b>CineStar</b><span>Chemnitz</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#programm">Programm</a><a href="#erlebnis">Erlebnis</a><a href="#aktionen">Aktionen</a><a href="#kontakt">Anfahrt</a>
+  </div>
+  <div class="nav-cta">
+    <a href="tel:+493716663660" class="nav-phone"><svg class="svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>0371 / 666 36 60</a>
+    <a href="#programm" class="btn btn-gold" style="padding:.6rem 1.25rem">Tickets</a>
+  </div>
+</nav></div></header>
+
+<!-- HERO -->
+<section id="top" class="hero">
+  <div class="beam" id="beam"></div>
+  <div class="container hero-inner" id="hero-inner">
+    <span class="pill"><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9 17 14 19 22 12 17 5 22 7 14 2 9 9 9"/></svg> 4,6 / 5 · Der Filmpalast am Roten Turm</span>
+    <h1>Dein Kinoabend in <span class="text-gold-grad">Chemnitz</span></h1>
+    <p class="lead">11 moderne Säle, gestochen scharfes Bild und Dolby-Atmos-Sound. Wähle deinen Film, sichere dir die besten Plätze – in unter einer Minute.</p>
+    <div class="hero-btns">
+      <a href="#programm" class="btn btn-gold"><svg class="svg" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/></svg> Zum Programm &amp; Tickets</a>
+      <a href="tel:+493716663660" class="btn btn-ghost"><svg class="svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 0371 / 666 36 60</a>
+    </div>
+    <div class="hero-meta"><svg class="svg gold" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Neumarkt 2, 09111 Chemnitz · Täglich 13:30 – 23:00 Uhr</div>
+  </div>
+  <div class="scroll-ind"><div><span></span></div></div>
+</section>
+
+<!-- PROGRAMM -->
+<section id="programm" class="section">
+  <div class="container">
+    <div class="head-row">
+      <div>
+        <span class="eyebrow reveal">Jetzt im Kino</span>
+        <h2 class="title reveal">Aktuelles Programm</h2>
+      </div>
+      <p class="muted reveal" style="max-width:24rem;font-size:.9rem">Wähle einen Film, einen Termin und deine Lieblingsplätze – die Buchung dauert keine Minute.</p>
+    </div>
+    <div class="movie-grid" id="movie-grid">
+      <article class="card-tilt reveal" data-tilt><div class="movie-card" data-movie="nebula-protocol">
+        <div class="poster" style="background:linear-gradient(150deg,#1e3a8a,#0f172a)">
+          <div class="poster-glow" style="background:#60a5fa"></div><div class="poster-fade"></div>
+          <div class="poster-badge">FSK 12</div>
+          <div class="poster-rating"><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9 17 14 19 22 12 17 5 22 7 14 2 9 9 9"/></svg> 4.7</div>
+          <div class="poster-play"><span><svg class="svg" style="width:1.75rem;height:1.75rem;fill:currentColor;stroke:none" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20"/></svg></span></div>
+          <div class="poster-title"><h3>Nebula Protocol</h3><p>Science-Fiction · Action</p></div>
+        </div>
+        <div class="card-body">
+          <div class="tags"><span class="tag">3D</span><span class="tag">Dolby Atmos</span><span class="tag">OV verfügbar</span></div>
+          <p class="synopsis">Als ein Forschungsteam am Rand des Sonnensystems ein uraltes Signal empfängt, beginnt ein Wettlauf gegen die Zeit – und gegen sich selbst.</p>
+          <div class="card-foot"><span class="dur"><svg class="svg" style="width:.875rem;height:.875rem" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 2 Std. 22 Min.</span><button class="btn btn-gold" style="padding:.5rem 1rem;font-size:.75rem" data-book="nebula-protocol"><svg class="svg" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/></svg> Tickets</button></div>
+        </div>
+      </div></article>
+
+      <article class="card-tilt reveal" data-tilt><div class="movie-card" data-movie="herzschlag-momente">
+        <div class="poster" style="background:linear-gradient(150deg,#9d174d,#3b0764)">
+          <div class="poster-glow" style="background:#f472b6"></div><div class="poster-fade"></div>
+          <div class="poster-badge">FSK 6</div>
+          <div class="poster-rating"><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9 17 14 19 22 12 17 5 22 7 14 2 9 9 9"/></svg> 4.4</div>
+          <div class="poster-play"><span><svg class="svg" style="width:1.75rem;height:1.75rem;fill:currentColor;stroke:none" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20"/></svg></span></div>
+          <div class="poster-title"><h3>Herzschlag-Momente</h3><p>Drama · Romanze</p></div>
+        </div>
+        <div class="card-body">
+          <div class="tags"><span class="tag">Deutsch</span><span class="tag">CineLady</span></div>
+          <p class="synopsis">Zwei Fremde, eine verpasste Bahn und eine Nacht in Chemnitz, die alles verändert. Eine warmherzige Geschichte über zweite Chancen.</p>
+          <div class="card-foot"><span class="dur"><svg class="svg" style="width:.875rem;height:.875rem" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 1 Std. 58 Min.</span><button class="btn btn-gold" style="padding:.5rem 1rem;font-size:.75rem" data-book="herzschlag-momente"><svg class="svg" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/></svg> Tickets</button></div>
+        </div>
+      </div></article>
+
+      <article class="card-tilt reveal" data-tilt><div class="movie-card" data-movie="die-letzte-fahrt">
+        <div class="poster" style="background:linear-gradient(150deg,#7c2d12,#171717)">
+          <div class="poster-glow" style="background:#fb923c"></div><div class="poster-fade"></div>
+          <div class="poster-badge">FSK 16</div>
+          <div class="poster-rating"><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9 17 14 19 22 12 17 5 22 7 14 2 9 9 9"/></svg> 4.6</div>
+          <div class="poster-play"><span><svg class="svg" style="width:1.75rem;height:1.75rem;fill:currentColor;stroke:none" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20"/></svg></span></div>
+          <div class="poster-title"><h3>Die letzte Fahrt</h3><p>Action · Thriller</p></div>
+        </div>
+        <div class="card-body">
+          <div class="tags"><span class="tag">Dolby Atmos</span><span class="tag">CineMen</span></div>
+          <p class="synopsis">Ein ausgebrannter Ex-Rennfahrer wird zu einem letzten Job gezwungen. Vollgas durch die Nacht, mit allem auf dem Spiel.</p>
+          <div class="card-foot"><span class="dur"><svg class="svg" style="width:.875rem;height:.875rem" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 2 Std. 11 Min.</span><button class="btn btn-gold" style="padding:.5rem 1rem;font-size:.75rem" data-book="die-letzte-fahrt"><svg class="svg" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/></svg> Tickets</button></div>
+        </div>
+      </div></article>
+
+      <article class="card-tilt reveal" data-tilt><div class="movie-card" data-movie="wunderwald">
+        <div class="poster" style="background:linear-gradient(150deg,#166534,#052e16)">
+          <div class="poster-glow" style="background:#4ade80"></div><div class="poster-fade"></div>
+          <div class="poster-badge">FSK 0</div>
+          <div class="poster-rating"><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9 17 14 19 22 12 17 5 22 7 14 2 9 9 9"/></svg> 4.8</div>
+          <div class="poster-play"><span><svg class="svg" style="width:1.75rem;height:1.75rem;fill:currentColor;stroke:none" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20"/></svg></span></div>
+          <div class="poster-title"><h3>Wunderwald</h3><p>Animation · Familie</p></div>
+        </div>
+        <div class="card-body">
+          <div class="tags"><span class="tag">2D</span><span class="tag">Deutsch</span><span class="tag">Familienfilm</span></div>
+          <p class="synopsis">Im verzauberten Wunderwald muss die kleine Igeldame Fips ihren Mut beweisen, um den Frühling zu retten. Großes Vergnügen für die ganze Familie.</p>
+          <div class="card-foot"><span class="dur"><svg class="svg" style="width:.875rem;height:.875rem" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 1 Std. 36 Min.</span><button class="btn btn-gold" style="padding:.5rem 1rem;font-size:.75rem" data-book="wunderwald"><svg class="svg" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/></svg> Tickets</button></div>
+        </div>
+      </div></article>
+
+      <article class="card-tilt reveal" data-tilt><div class="movie-card" data-movie="schattenspiel">
+        <div class="poster" style="background:linear-gradient(150deg,#374151,#030712)">
+          <div class="poster-glow" style="background:#a78bfa"></div><div class="poster-fade"></div>
+          <div class="poster-badge">FSK 18</div>
+          <div class="poster-rating"><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9 17 14 19 22 12 17 5 22 7 14 2 9 9 9"/></svg> 4.2</div>
+          <div class="poster-play"><span><svg class="svg" style="width:1.75rem;height:1.75rem;fill:currentColor;stroke:none" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20"/></svg></span></div>
+          <div class="poster-title"><h3>Schattenspiel</h3><p>Mystery · Horror</p></div>
+        </div>
+        <div class="card-body">
+          <div class="tags"><span class="tag">Spätvorstellung</span><span class="tag">OV verfügbar</span></div>
+          <p class="synopsis">Eine Restauratorin entdeckt in einem alten Gemälde ein Geheimnis, das nicht ans Licht wollte. Manche Schatten haben einen eigenen Willen.</p>
+          <div class="card-foot"><span class="dur"><svg class="svg" style="width:.875rem;height:.875rem" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 1 Std. 49 Min.</span><button class="btn btn-gold" style="padding:.5rem 1rem;font-size:.75rem" data-book="schattenspiel"><svg class="svg" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/></svg> Tickets</button></div>
+        </div>
+      </div></article>
+
+      <article class="card-tilt reveal" data-tilt><div class="movie-card" data-movie="gipfelstuermer">
+        <div class="poster" style="background:linear-gradient(150deg,#0e7490,#082f49)">
+          <div class="poster-glow" style="background:#22d3ee"></div><div class="poster-fade"></div>
+          <div class="poster-badge">FSK 6</div>
+          <div class="poster-rating"><svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9 17 14 19 22 12 17 5 22 7 14 2 9 9 9"/></svg> 4.5</div>
+          <div class="poster-play"><span><svg class="svg" style="width:1.75rem;height:1.75rem;fill:currentColor;stroke:none" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20"/></svg></span></div>
+          <div class="poster-title"><h3>Gipfelstürmer</h3><p>Abenteuer · Doku-Drama</p></div>
+        </div>
+        <div class="card-body">
+          <div class="tags"><span class="tag">3D</span><span class="tag">Deutsch</span></div>
+          <p class="synopsis">Die wahre Geschichte einer Seilschaft, die das Unmögliche wagt: die Erstbesteigung einer der gefährlichsten Wände der Alpen.</p>
+          <div class="card-foot"><span class="dur"><svg class="svg" style="width:.875rem;height:.875rem" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 2 Std. 4 Min.</span><button class="btn btn-gold" style="padding:.5rem 1rem;font-size:.75rem" data-book="gipfelstuermer"><svg class="svg" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/></svg> Tickets</button></div>
+        </div>
+      </div></article>
+    </div>
+  </div>
+</section>
+
+<!-- ERLEBNIS -->
+<section id="erlebnis" class="section">
+  <div class="container">
+    <div style="text-align:center;max-width:42rem;margin:0 auto">
+      <span class="eyebrow reveal">Warum CineStar</span>
+      <h2 class="title reveal">Großes Kino, das man fühlt</h2>
+    </div>
+    <div class="feat-grid">
+      <article class="glass feat reveal">
+        <span class="feat-ico"><svg class="svg" style="width:1.75rem;height:1.75rem" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4zM15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
+        <h3>Dolby Atmos Sound</h3><p>Dreidimensionaler Klang, der dich mitten ins Geschehen versetzt.</p>
+      </article>
+      <article class="glass feat reveal">
+        <span class="feat-ico"><svg class="svg" style="width:1.75rem;height:1.75rem" viewBox="0 0 24 24"><path d="M5 11a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2 2 2 0 0 1-2-2V7a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2a2 2 0 0 1-2 2zM5 18v2M19 18v2"/></svg></span>
+        <h3>Komfort-Loungesessel</h3><p>Großzügige, gepolsterte Sitze mit viel Beinfreiheit in jedem Saal.</p>
+      </article>
+      <article class="glass feat reveal">
+        <span class="feat-ico"><svg class="svg" style="width:1.75rem;height:1.75rem" viewBox="0 0 24 24"><path d="M7 19v2M17 19v2M2 8h20M21 8v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8l3-4h12z"/><circle cx="12" cy="13" r="2"/></svg></span>
+        <h3>Gestochen scharfes Bild</h3><p>Moderne Digitalprojektion in brillanter 2D- und 3D-Qualität.</p>
+      </article>
+      <article class="glass feat reveal">
+        <span class="feat-ico"><svg class="svg" style="width:1.75rem;height:1.75rem" viewBox="0 0 24 24"><path d="M4 9h16l-1.5 11.5a1 1 0 0 1-1 .5H6.5a1 1 0 0 1-1-.5zM4 9a3 3 0 0 1 3-3M9 6a3 3 0 0 1 6 0M15 6a3 3 0 0 1 3 3M9 13v4M15 13v4"/></svg></span>
+        <h3>Snacks &amp; Bar</h3><p>Frisches Popcorn, Nachos und kühle Getränke direkt im Foyer.</p>
+      </article>
+    </div>
+    <div class="stats reveal">
+      <div class="stat"><div class="num text-gold-grad" data-count="11">11</div><div class="lbl">Kinosäle</div></div>
+      <div class="stat"><div class="num text-gold-grad" data-count="1800" data-suffix="+">1.800+</div><div class="lbl">Sitzplätze</div></div>
+      <div class="stat"><div class="num text-gold-grad" data-count="40" data-suffix="+">40+</div><div class="lbl">Filme pro Woche</div></div>
+      <div class="stat"><div class="num text-gold-grad" data-count="4" data-suffix=",6">4,6</div><div class="lbl">Sterne Bewertung</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AKTIONEN -->
+<section id="aktionen" class="section events-bg">
+  <div class="marquee"><div class="marquee-track" id="marquee"></div></div>
+  <div class="container">
+    <div style="text-align:center;max-width:42rem;margin:0 auto">
+      <span class="eyebrow reveal">Jede Woche neu</span>
+      <h2 class="title reveal">Unsere Aktionen</h2>
+    </div>
+    <div class="event-grid">
+      <div class="reveal"><div class="glass event"><span class="event-tag">Dienstag</span><h3>CineSneak</h3><p>Überraschungs-Preview vor dem offiziellen Start.</p></div></div>
+      <div class="reveal"><div class="glass event"><span class="event-tag">Mittwoch</span><h3>CineLady</h3><p>Ladies-Night mit Sekt-Empfang und Film-Highlight.</p></div></div>
+      <div class="reveal"><div class="glass event"><span class="event-tag">Donnerstag</span><h3>CineMen</h3><p>Männerabend mit Bier und großem Action-Kino.</p></div></div>
+      <div class="reveal"><div class="glass event"><span class="event-tag">Wöchentlich</span><h3>CineExtra</h3><p>Sondervorstellungen, Previews und Eventkino.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt" class="section">
+  <div class="container">
+    <div style="text-align:center;max-width:42rem;margin:0 auto 3rem">
+      <span class="eyebrow reveal">So findest du uns</span>
+      <h2 class="title reveal">Anfahrt &amp; Kontakt</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal"><div class="contact-col">
+        <div class="glass contact-card"><span class="contact-ico"><svg class="svg" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span><span class="t">Adresse</span><span class="v">CineStar – Der Filmpalast am Roten Turm<br>Neumarkt 2, 09111 Chemnitz<br><span style="color:rgba(255,255,255,.5)">Galerie Roter Turm · Obergeschoss</span></span></span></div>
+        <div class="glass contact-card"><span class="contact-ico"><svg class="svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span><span><span class="t">Öffnungszeiten</span><span class="v">Täglich 13:30 – 23:00 Uhr</span></span></div>
+        <a href="tel:+493716663660" class="glass contact-card"><span class="contact-ico"><svg class="svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><span><span class="t">Telefon</span><span class="v">0371 / 666 36 60</span></span></a>
+        <a href="mailto:info@cinestar-chemnitz.de" class="glass contact-card"><span class="contact-ico"><svg class="svg" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></span><span><span class="t">E-Mail</span><span class="v">info@cinestar-chemnitz.de</span></span></a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=CineStar%20Chemnitz%2C%20Neumarkt%202%2C%2009111%20Chemnitz" target="_blank" rel="noopener" class="btn btn-gold" style="margin-top:auto"><svg class="svg" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg> Route planen</a>
+      </div></div>
+      <div class="reveal left"><div class="map-wrap">
+        <a class="map-fallback" id="map-fallback" href="https://maps.google.com/?q=CineStar%20Chemnitz%2C%20Neumarkt%202%2C%2009111%20Chemnitz" target="_blank" rel="noopener">
+          <svg class="svg gold" style="width:2.5rem;height:2.5rem" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span style="font-weight:600">CineStar Chemnitz</span>
+          <span style="font-size:.85rem;color:rgba(255,255,255,.7)">Neumarkt 2, 09111 Chemnitz<br>Zum Öffnen in Karten tippen</span>
+        </a>
+        <iframe title="Standort CineStar Chemnitz" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
+          onload="var f=document.getElementById('map-fallback'); if(f) f.style.display='none';"
+          src="https://maps.google.com/maps?q=CineStar%20Chemnitz%2C%20Neumarkt%202%2C%2009111%20Chemnitz&hl=de&z=16&output=embed"></iframe>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container foot-grid">
+    <div>
+      <div class="logo"><span class="badge"><svg class="svg" viewBox="0 0 24 24"><path d="M7 4v16M17 4v16M3 8h18M3 12h18M3 16h18M4 20h16a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1z"/></svg></span><b style="font-size:1.6rem;font-family:'Bebas Neue'">CineStar Chemnitz</b></div>
+      <p class="muted" style="margin-top:1rem;font-size:.9rem">Der Filmpalast am Roten Turm. 11 Säle, großes Kino und beste Unterhaltung mitten in der Galerie Roter Turm.</p>
+    </div>
+    <div>
+      <h4>Kontakt</h4>
+      <ul>
+        <li><svg class="svg gold" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Neumarkt 2, 09111 Chemnitz</li>
+        <li><a href="tel:+493716663660"><svg class="svg gold" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 0371 / 666 36 60</a></li>
+        <li><a href="mailto:info@cinestar-chemnitz.de"><svg class="svg gold" style="width:1rem;height:1rem" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg> info@cinestar-chemnitz.de</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Öffnungszeiten</h4>
+      <p class="muted" style="font-size:.9rem">Täglich 13:30 – 23:00 Uhr</p>
+      <p class="muted" style="font-size:.78rem;margin-top:.75rem">Die Kassen öffnen 30 Minuten vor der ersten Vorstellung und schließen 15 Minuten nach Beginn der letzten Vorstellung.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <ul><li><a href="#programm">Programm</a></li><li><a href="#erlebnis">Erlebnis</a></li><li><a href="#aktionen">Aktionen</a></li><li><a href="#kontakt">Anfahrt</a></li></ul>
+    </div>
+  </div>
+  <div class="foot-bottom"><div class="container">
+    <p>© <span id="year"></span> CineStar – Der Filmpalast am Roten Turm. Alle Rechte vorbehalten.</p>
+    <p style="display:flex;gap:1rem"><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">AGB</a></p>
+  </div></div>
+</footer>
+
+<!-- FLOATING -->
+<div class="floating" id="floating">
+  <a href="tel:+493716663660" class="fab" aria-label="Anrufen"><svg class="svg" style="width:1.5rem;height:1.5rem" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+  <a href="#programm" class="fab-tix"><svg class="svg" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/></svg><span>Tickets</span></a>
+</div>
+
+<!-- BOOKING MODAL -->
+<div class="modal-root" id="modal" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-window" role="dialog" aria-modal="true" aria-label="Tickets buchen">
+    <div class="modal-inner">
+      <div class="modal-head" id="m-head">
+        <div class="modal-head-overlay"></div>
+        <div class="modal-head-row">
+          <div><p class="genre" id="m-genre"></p><h2 id="m-title"></h2><p class="meta" id="m-meta"></p></div>
+          <button class="modal-close" data-close aria-label="Schließen"><svg class="svg" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        </div>
+        <div class="progress" id="m-progress">
+          <div class="seg" data-seg="0"><div class="bar"><i></i></div><span class="lbl">Vorstellung</span></div>
+          <div class="seg" data-seg="1"><div class="bar"><i></i></div><span class="lbl">Sitzplätze</span></div>
+          <div class="seg" data-seg="2"><div class="bar"><i></i></div><span class="lbl">Daten</span></div>
+        </div>
+      </div>
+      <div class="modal-body" id="m-body"></div>
+      <div class="modal-foot hidden" id="m-foot">
+        <div class="foot-row">
+          <div><div class="foot-sel" id="m-foot-sel">Keine Plätze gewählt</div><div class="foot-total" id="m-foot-total">0,00 €</div></div>
+          <button class="btn btn-gold" id="m-foot-next" disabled>Weiter <svg class="svg" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+// ======================= DATEN =======================
+const MOVIES=[
+ {id:"nebula-protocol",title:"Nebula Protocol",genre:"Science-Fiction · Action",dur:142,fsk:12,rating:4.7,
+  synopsis:"Als ein Forschungsteam am Rand des Sonnensystems ein uraltes Signal empfängt, beginnt ein Wettlauf gegen die Zeit – und gegen sich selbst.",
+  tags:["3D","Dolby Atmos","OV verfügbar"],grad:["#1e3a8a","#0f172a"],accent:"#60a5fa"},
+ {id:"herzschlag-momente",title:"Herzschlag-Momente",genre:"Drama · Romanze",dur:118,fsk:6,rating:4.4,
+  synopsis:"Zwei Fremde, eine verpasste Bahn und eine Nacht in Chemnitz, die alles verändert. Eine warmherzige Geschichte über zweite Chancen.",
+  tags:["Deutsch","CineLady"],grad:["#9d174d","#3b0764"],accent:"#f472b6"},
+ {id:"die-letzte-fahrt",title:"Die letzte Fahrt",genre:"Action · Thriller",dur:131,fsk:16,rating:4.6,
+  synopsis:"Ein ausgebrannter Ex-Rennfahrer wird zu einem letzten Job gezwungen. Vollgas durch die Nacht, mit allem auf dem Spiel.",
+  tags:["Dolby Atmos","CineMen"],grad:["#7c2d12","#171717"],accent:"#fb923c"},
+ {id:"wunderwald",title:"Wunderwald",genre:"Animation · Familie",dur:96,fsk:0,rating:4.8,
+  synopsis:"Im verzauberten Wunderwald muss die kleine Igeldame Fips ihren Mut beweisen, um den Frühling zu retten. Großes Vergnügen für die ganze Familie.",
+  tags:["2D","Deutsch","Familienfilm"],grad:["#166534","#052e16"],accent:"#4ade80"},
+ {id:"schattenspiel",title:"Schattenspiel",genre:"Mystery · Horror",dur:109,fsk:18,rating:4.2,
+  synopsis:"Eine Restauratorin entdeckt in einem alten Gemälde ein Geheimnis, das nicht ans Licht wollte. Manche Schatten haben einen eigenen Willen.",
+  tags:["Spätvorstellung","OV verfügbar"],grad:["#374151","#030712"],accent:"#a78bfa"},
+ {id:"gipfelstuermer",title:"Gipfelstürmer",genre:"Abenteuer · Doku-Drama",dur:124,fsk:6,rating:4.5,
+  synopsis:"Die wahre Geschichte einer Seilschaft, die das Unmögliche wagt: die Erstbesteigung einer der gefährlichsten Wände der Alpen.",
+  tags:["3D","Deutsch"],grad:["#0e7490","#082f49"],accent:"#22d3ee"}
+];
+const BASE_TIMES=["14:00","16:30","18:00","20:15","22:30"];
+const HALLS=11;
+const pad=n=>String(n).padStart(2,"0");
+const dstr=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+function genShowtimes(days){
+  const start=new Date();start.setHours(0,0,0,0);const out=[];
+  for(let d=0;d<days;d++){const day=new Date(start);day.setDate(start.getDate()+d);const ds=dstr(day);
+    MOVIES.forEach((m,mi)=>{const off=(mi+d)%BASE_TIMES.length;
+      const slots=[BASE_TIMES[off],BASE_TIMES[(off+2)%BASE_TIMES.length]];
+      if(mi%2===0)slots.push(BASE_TIMES[(off+3)%BASE_TIMES.length]);
+      const uniq=[...new Set(slots)].sort();
+      uniq.forEach((time,si)=>{const is3D=m.tags.includes("3D")&&si===0;
+        out.push({id:m.id+"_"+ds+"_"+time.replace(":",""),movieId:m.id,date:ds,time,hall:((mi+si)%HALLS)+1,format:is3D?"3D":"2D",price:is3D?1390:1090});});
+    });}
+  return out;
+}
+const ALL_SHOWS=genShowtimes(5);
+// Saalplan
+const ROWS=["A","B","C","D","E","F","G","H","J"],SPR=14,AISLE=7;
+function seatType(ri,row,c){if(row==="A"&&(c===1||c===SPR))return"wheelchair";if(ri>=ROWS.length-3)return"premium";return"standard";}
+const SURCHARGE={standard:0,premium:200,wheelchair:0};
+function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;}return h;}
+// Demo: ein Teil der Plätze ist bereits "gebucht" (deterministisch pro Show)
+function bookedFor(showId){const set=new Set();ROWS.forEach((row,ri)=>{for(let c=1;c<=SPR;c++){const id=row+c;if(hashStr(showId+id)%6===0)set.add(id);}});return set;}
+const eur=cents=>(cents/100).toLocaleString("de-DE",{style:"currency",currency:"EUR"});
+function longDate(ds){const[y,m,d]=ds.split("-").map(Number);return new Date(y,m-1,d).toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"long"});}
+
+// ======================= HELFER =======================
+// Filmkarten stehen statisch im HTML (Text bleibt ohne JS lesbar).
+const tixIco='<svg class="svg" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/></svg>';
+function durTxt(min){return Math.floor(min/60)+" Std. "+(min%60)+" Min.";}
+
+// Marquee
+const MARQUEE=["Popcorn","Dolby Atmos","CineSneak","Premiere","3D","CineLady","Eventkino","CineMen"];
+const sparkle='<svg class="svg" style="width:1.1rem;height:1.1rem;color:rgba(245,197,66,.4)" viewBox="0 0 24 24"><path d="m12 3 1.9 5.8L20 10l-5.1 1.9L12 18l-1.9-6.1L5 10l6.1-1.2z"/></svg>';
+const mq=document.getElementById("marquee");
+const seq=[...MARQUEE,...MARQUEE].map(w=>`<span>${w} ${sparkle}</span>`).join("");
+mq.innerHTML=seq;
+document.getElementById("year").textContent=new Date().getFullYear();
+
+// ======================= EFFEKTE =======================
+// Navbar + Floating + Parallax
+const nav=document.getElementById("navbar"),floating=document.getElementById("floating"),
+  heroInner=document.getElementById("hero-inner"),beam=document.getElementById("beam");
+function onScroll(){const y=scrollY;
+  nav.classList.toggle("scrolled",y>24);
+  floating.classList.toggle("show",y>innerHeight*0.8);
+  if(heroInner&&y<innerHeight){heroInner.style.transform="translateY("+(-y*0.22)+"px)";heroInner.style.opacity=String(Math.max(0,1-y/(innerHeight*0.85)));
+    if(beam)beam.style.transform="translateX(-50%) rotate("+(y/innerHeight*12)+"deg)";}
+}
+addEventListener("scroll",onScroll,{passive:true});onScroll();
+
+// schwebende Partikel
+const hero=document.getElementById("top");
+for(let i=0;i<6;i++){const p=document.createElement("span");p.className="particle";
+  p.style.width=p.style.height=(6+i*2)+"px";p.style.left=(12+i*14)+"%";p.style.top=(30+(i%3)*18)+"%";
+  p.style.animationDuration=(5+i)+"s";p.style.animationDelay=(i*0.4)+"s";hero.appendChild(p);}
+
+// Reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");io.unobserve(e.target);}}),{threshold:0.1,rootMargin:"-40px"});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+// Count-up
+const cio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target,end=+el.dataset.count,suf=el.dataset.suffix||"";
+  const t0=performance.now();function tick(now){const p=Math.min((now-t0)/1700,1),v=Math.round((1-Math.pow(1-p,3))*end);
+    el.textContent=v.toLocaleString("de-DE")+suf;if(p<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);cio.unobserve(el);}),{threshold:0.4});
+document.querySelectorAll("[data-count]").forEach(el=>cio.observe(el));
+
+// 3D-Tilt
+const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+if(!reduce){document.querySelectorAll("[data-tilt]").forEach(wrap=>{const card=wrap.querySelector(".movie-card");
+  wrap.addEventListener("mousemove",e=>{const r=card.getBoundingClientRect();const mx=(e.clientX-r.left)/r.width-0.5,my=(e.clientY-r.top)/r.height-0.5;
+    card.style.transform="rotateX("+(-my*9)+"deg) rotateY("+(mx*9)+"deg)";});
+  wrap.addEventListener("mouseleave",()=>{card.style.transform="";});});}
+
+// ======================= BUCHUNGS-MODAL =======================
+const modal=document.getElementById("modal"),mBody=document.getElementById("m-body"),
+  mFoot=document.getElementById("m-foot"),mFootSel=document.getElementById("m-foot-sel"),
+  mFootTotal=document.getElementById("m-foot-total"),mFootNext=document.getElementById("m-foot-next");
+let state={movie:null,show:null,activeDate:null,booked:new Set(),selected:new Set()};
+
+function openBooking(id){const m=MOVIES.find(x=>x.id===id);if(!m)return;
+  state={movie:m,show:null,activeDate:ALL_SHOWS.find(s=>s.movieId===id)?.date,booked:new Set(),selected:new Set()};
+  document.getElementById("m-genre").textContent=m.genre;
+  document.getElementById("m-title").textContent=m.title;
+  document.getElementById("m-meta").textContent=durTxt(m.dur)+" · FSK "+m.fsk;
+  document.getElementById("m-head").style.background="linear-gradient(135deg,"+m.grad[0]+","+m.grad[1]+")";
+  modal.classList.add("open");modal.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+  renderStep("showtime");
+}
+function closeBooking(){modal.classList.remove("open");modal.setAttribute("aria-hidden","true");document.body.style.overflow="";}
+modal.querySelectorAll("[data-close]").forEach(el=>el.addEventListener("click",closeBooking));
+addEventListener("keydown",e=>{if(e.key==="Escape")closeBooking();});
+
+function setProgress(idx){document.querySelectorAll("#m-progress .seg").forEach(s=>s.classList.toggle("on",+s.dataset.seg<=idx));}
+
+function showsByDate(){const map=new Map();ALL_SHOWS.filter(s=>s.movieId===state.movie.id).forEach(s=>{if(!map.has(s.date))map.set(s.date,[]);map.get(s.date).push(s);});return map;}
+
+function renderStep(step){
+  if(step==="showtime"){setProgress(0);mFoot.classList.add("hidden");
+    const map=showsByDate();const dates=[...map.keys()];if(!state.activeDate)state.activeDate=dates[0];
+    const today=dstr(new Date());
+    const chips=dates.map(d=>{const[y,mo,da]=d.split("-").map(Number);const dt=new Date(y,mo-1,da);
+      const wd=d===today?"Heute":dt.toLocaleDateString("de-DE",{weekday:"short"});
+      const dn=dt.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"});
+      return `<button class="date-chip ${d===state.activeDate?"active":""}" data-date="${d}"><span class="wd">${wd}</span><span class="dn">${dn}</span></button>`;}).join("");
+    const shows=(map.get(state.activeDate)||[]).map(s=>`
+      <button class="show-btn" data-show="${s.id}">
+        <span style="display:flex;align-items:center;gap:.75rem"><svg class="svg gold" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span><span class="time">${s.time} Uhr</span><br><span class="hall">Saal ${s.hall} · ${s.format}</span></span></span>
+        <span style="font-size:.875rem;color:rgba(255,255,255,.7)">ab ${eur(s.price)}</span>
+      </button>`).join("");
+    mBody.innerHTML=`<div class="step"><div class="date-row">${chips}</div><div class="show-grid">${shows}</div></div>`;
+    mBody.querySelectorAll("[data-date]").forEach(b=>b.addEventListener("click",()=>{state.activeDate=b.dataset.date;renderStep("showtime");}));
+    mBody.querySelectorAll("[data-show]").forEach(b=>b.addEventListener("click",()=>{state.show=ALL_SHOWS.find(s=>s.id===b.dataset.show);state.selected=new Set();state.booked=bookedFor(state.show.id);renderStep("seats");}));
+  }
+  else if(step==="seats"){setProgress(1);mFoot.classList.remove("hidden");
+    mBody.innerHTML=`<div class="step">${showbarHTML()}
+      <div class="screen"><div class="screen-bar"></div><p>Leinwand</p></div>
+      <div class="seat-rows">${seatRowsHTML()}</div>
+      <div class="legend">
+        <span><i style="background:rgba(255,255,255,.15)"></i>Frei</span>
+        <span><i style="background:var(--gold)"></i>Ausgewählt</span>
+        <span><i style="background:rgba(167,139,250,.7)"></i>Premium</span>
+        <span><i style="background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)"></i>Belegt</span>
+      </div></div>`;
+    bindShowbar();bindSeats();updateFoot();
+    mFootNext.onclick=()=>{if(state.selected.size>0)renderStep("details");};
+  }
+  else if(step==="details"){setProgress(2);mFoot.classList.add("hidden");
+    mBody.innerHTML=`<div class="step">${showbarHTML()}
+      <div id="err-slot"></div>
+      <form id="bookform" novalidate>
+        <div class="field"><label>Name</label><input name="name" placeholder="Max Mustermann" autocomplete="name"><span class="err hidden"></span></div>
+        <div class="grid2">
+          <div class="field"><label>E-Mail</label><input name="email" type="email" placeholder="max@beispiel.de" autocomplete="email"><span class="err hidden"></span></div>
+          <div class="field"><label>Telefon</label><input name="phone" type="tel" placeholder="0171 1234567" autocomplete="tel"><span class="err hidden"></span></div>
+        </div>
+        <div class="phone-note"><svg class="svg gold" style="width:1rem;height:1rem" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Lieber telefonisch buchen? <a href="tel:+493716663660" class="gold" style="font-weight:600">0371 / 666 36 60</a></div>
+        <button type="submit" class="btn btn-gold" style="width:100%">${tixIco} Kostenpflichtig buchen · ${eur(total())}</button>
+      </form></div>`;
+    bindShowbar();
+    document.getElementById("bookform").addEventListener("submit",onSubmit);
+  }
+  else if(step==="done"){setProgress(2);mFoot.classList.add("hidden");
+    const ref="CS-"+Array.from({length:6},()=>"ACDEFGHJKLMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*30)]).join("");
+    const seats=[...state.selected].sort().join(", ");
+    mBody.innerHTML=`<div class="step"><div class="confirm">
+      <span class="confirm-ico"><svg class="svg" style="width:2.75rem;height:2.75rem" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
+      <h3 style="font-size:2rem;margin-top:1.25rem">Viel Vergnügen!</h3>
+      <p class="muted" style="margin-top:.5rem">Deine Buchung ist bestätigt.</p>
+      <div class="ticket">
+        <div class="tr"><span>Buchungsnummer</span><span class="ref">${ref}</span></div>
+        <div class="tr"><span>Film</span><span>${state.movie.title}</span></div>
+        <div class="tr"><span>Termin</span><span>${longDate(state.show.date)}, ${state.show.time} Uhr</span></div>
+        <div class="tr"><span>Saal</span><span>Saal ${state.show.hall} · ${state.show.format}</span></div>
+        <div class="tr"><span>Plätze</span><span>${seats}</span></div>
+        <div class="tr" style="border-top:1px solid rgba(255,255,255,.1);margin-top:.5rem;padding-top:.75rem"><span>Gesamt</span><span style="font-weight:700;color:var(--gold)">${eur(total())}</span></div>
+      </div>
+      <p class="muted" style="font-size:.75rem;margin-top:1rem;max-width:24rem">Die Kassen öffnen 30 Minuten vor der ersten Vorstellung. Bitte zeige die Buchungsnummer vor.</p>
+      <button class="btn btn-ghost" style="margin-top:1.5rem" data-close>Fertig</button>
+    </div></div>`;
+    mBody.querySelector("[data-close]").addEventListener("click",closeBooking);
+  }
+}
+function showbarHTML(){const s=state.show;return `<button class="showbar" data-back>
+  <svg class="svg gold" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+  <svg class="svg" style="width:1rem;height:1rem;color:rgba(255,255,255,.5)" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+  <span style="font-weight:500">${longDate(s.date)}</span><span style="color:rgba(255,255,255,.4)">·</span>
+  <span style="font-weight:500">${s.time} Uhr</span><span class="end">Saal ${s.hall} · ${s.format}</span></button>`;}
+function bindShowbar(){const b=mBody.querySelector("[data-back]");if(b)b.addEventListener("click",()=>renderStep(state.show&&mFoot.classList.contains("hidden")&&document.getElementById("bookform")?"seats":"showtime"));}
+function seatRowsHTML(){const wheel='<svg class="svg" style="width:.9rem;height:.9rem" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2"/><path d="M19 13v-2a4 4 0 0 0-4-4h-3l-2-3M7 9v6a4 4 0 0 0 4 4h7"/></svg>';
+  return ROWS.map((row,ri)=>{let cells="";for(let c=1;c<=SPR;c++){const id=row+c;const tp=seatType(ri,row,c);
+    const booked=state.booked.has(id),sel=state.selected.has(id);
+    let cls="seat";if(tp==="premium")cls+=" premium";if(sel)cls+=" selected";if(booked)cls+=" booked";
+    cells+=`<button class="${cls}" data-seat="${id}" data-type="${tp}" ${booked?"disabled":""} aria-label="Sitz ${id}">${tp==="wheelchair"?wheel:c}</button>`;
+    if(c===AISLE)cells+='<span class="aisle"></span>';}
+    return `<div class="seat-row"><span class="rl">${row}</span>${cells}</div>`;}).join("");
+}
+function bindSeats(){mBody.querySelectorAll("[data-seat]").forEach(b=>{if(b.disabled)return;
+  b.addEventListener("click",()=>{const id=b.dataset.seat;
+    if(state.selected.has(id)){state.selected.delete(id);b.classList.remove("selected");}
+    else if(state.selected.size<10){state.selected.add(id);b.classList.add("selected");}
+    updateFoot();});});}
+function total(){let s=0;state.selected.forEach(id=>{const ri=ROWS.indexOf(id[0]);const c=+id.slice(1);const tp=seatType(ri,id[0],c);s+=state.show.price+SURCHARGE[tp];});return s;}
+function updateFoot(){const n=state.selected.size;
+  mFootSel.innerHTML=n===0?"Keine Plätze gewählt":`${n} ${n===1?"Platz":"Plätze"}: ${[...state.selected].sort().join(", ")}`;
+  mFootTotal.textContent=eur(total());mFootNext.disabled=n===0;}
+function onSubmit(e){e.preventDefault();const f=e.target;let ok=true;
+  const set=(name,msg)=>{const fld=f[name].closest(".field");const er=fld.querySelector(".err");
+    if(msg){er.textContent=msg;er.classList.remove("hidden");f[name].style.borderColor="var(--crimson)";ok=false;}
+    else{er.classList.add("hidden");f[name].style.borderColor="";}};
+  set("name",f.name.value.trim().length<2?"Bitte gib deinen Namen an.":"");
+  set("email",/^\S+@\S+\.\S+$/.test(f.email.value.trim())?"":"Bitte gib eine gültige E-Mail-Adresse an.");
+  set("phone",/^[0-9+()/\s-]{5,}$/.test(f.phone.value.trim())?"":"Bitte gib eine gültige Telefonnummer an.");
+  if(ok)renderStep("done");
+}
+// Klicks auf Karten / Tickets-Buttons
+document.addEventListener("click",e=>{const bk=e.target.closest("[data-book]");if(bk){openBooking(bk.dataset.book);return;}
+  const card=e.target.closest("[data-movie]");if(card)openBooking(card.dataset.movie);});
+</script>
+</body>
+</html>
