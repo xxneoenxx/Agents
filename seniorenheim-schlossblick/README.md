@@ -81,3 +81,64 @@ durch ein `<img>` tauscht:
 Zoom, Überblendung und Untertitel laufen unverändert weiter — die Mechanik hängt
 nicht am SVG. Vorher die Bildrechte und die Einwilligungen abgebildeter Personen
 klären, siehe Punkt 9 der Checkliste.
+
+## Go-Live-Schalter
+
+Die Seite liegt derzeit auf einer Vorschau-Adresse und ist für Suchmaschinen
+gesperrt. Beim Umzug auf die echte Domain sind es **drei Handgriffe**:
+
+**1 · Domain eintragen.** In allen Dateien den Platzhalter ersetzen:
+
+```bash
+grep -rl 'VORSCHAU-DOMAIN.example' . \
+  | xargs sed -i 's|VORSCHAU-DOMAIN.example|ihre-domain.de|g'
+```
+
+**2 · Sperre lösen.** In `index.html`, `impressum.html` und `datenschutz.html`
+jeweils die eine Zeile löschen, die so endet:
+
+```html
+<meta name="robots" content="noindex, nofollow"><!-- ← BEIM GO-LIVE LÖSCHEN -->
+```
+
+**3 · `robots.txt` umstellen.** Oberen Block löschen, unteren einkommentieren,
+Sitemap-Adresse eintragen. Danach in `sitemap.xml` noch die `<lastmod>`-Daten
+auf den Veröffentlichungstag setzen.
+
+Prüfen lässt sich das Ergebnis mit dem Rich-Results-Test von Google
+(strukturierte Daten) und dem Sharing Debugger von Facebook (Vorschaubild).
+
+## Vorschaubild fürs Teilen
+
+`og-image.jpg` ist das Bild, das bei WhatsApp, Facebook, LinkedIn oder Signal
+erscheint, wenn jemand den Link verschickt. Es wird aus `og-card.html` gerendert:
+
+```bash
+npm install playwright && npx playwright install chromium
+node og-render.js
+```
+
+Neu rendern, sobald die Schriften lokal eingebunden sind — sonst steht die Karte
+in der Systemschrift statt in Fraunces.
+
+## Schriften lokal ausliefern
+
+Der einzige Fremd-Request dieser Seite. Die vollständige Anleitung steht als
+Kommentar oben im `<style>`-Block von `index.html`; kurz gefasst:
+
+1. `Fraunces` und `Atkinson Hyperlegible` herunterladen (beide SIL Open Font
+   License, Self-Hosting ausdrücklich erlaubt)
+2. `.woff2`-Dateien nach `fonts/` legen
+3. Den `<link>` auf Google Fonts und die beiden `preconnect`-Zeilen löschen
+4. Den vorbereiteten `@font-face`-Block einkommentieren
+5. Abschnitt 7 der Datenschutzerklärung auf die Self-Hosting-Variante umstellen
+
+Danach lädt die Seite nichts mehr von fremden Servern — kein Cookie-Banner,
+kein Consent-Tool, kein Auftragsverarbeiter außer dem Hoster.
+
+## Drucken
+
+Die Seite hat eine eigene Druckfassung: Kontakt und Eckdaten zuerst, ein Bild
+statt der Bildstrecke, FAQ aufgeklappt, alles Interaktive ausgeblendet, Links
+mit ausgeschriebener Adresse. Angehörige drucken solche Seiten wirklich aus —
+meist, um die Nummer am Küchentisch liegen zu haben.

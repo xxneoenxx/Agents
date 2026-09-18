@@ -1,0 +1,14 @@
+# ══════════════════════════════════════════════════════════════════════════
+# VORSCHAU-FASSUNG — die Seite liegt derzeit auf einer Testadresse und soll
+# NICHT in Suchmaschinen auftauchen. Beim Go-Live: diese vier Zeilen löschen
+# und den Block darunter einkommentieren.
+# ══════════════════════════════════════════════════════════════════════════
+User-agent: *
+Disallow: /
+
+# ── Produktivfassung (beim Go-Live einkommentieren) ──────────────────────
+# User-agent: *
+# Allow: /
+# Disallow: /og-card.html
+#
+# Sitemap: https://ECHTE-DOMAIN.de/sitemap.xml

@@ -125,7 +125,28 @@ absichtlich gut aus und kostet nichts. Trotzdem:
 - [ ] Wenn Fotos kommen: Team-Sektion ergänzen. Sie fehlt bisher bewusst, weil
       eine Team-Sektion mit Platzhalter-Personen schlechter wirkt als gar keine.
 
-## 10 · Letzter Blick
+## 10 · Adresse, Suche und Teilen 🟠
+
+- [ ] **Domain festlegen.** Überall steht der Platzhalter `VORSCHAU-DOMAIN.example`.
+      Der Ersetzungsbefehl steht im README unter „Go-Live-Schalter".
+- [ ] **Sperre lösen.** Alle drei Seiten tragen `noindex, nofollow`, damit die
+      Vorschau nicht in der Suche auftaucht. Beim Livegang entfernen — sonst
+      findet Google die Seite nie.
+- [ ] **`robots.txt`** von der Vorschau- auf die Produktivfassung umstellen.
+- [ ] **`sitemap.xml`**: Datumsangaben auf den Veröffentlichungstag setzen.
+- [ ] **Geokoordinaten**: In den strukturierten Daten fehlen Breiten- und
+      Längengrad bewusst — ich hatte keine verifizierten. Mit dem Haus abstimmen
+      und als `"geo": {"@type":"GeoCoordinates","latitude":…,"longitude":…}`
+      im JSON-LD ergänzen. Das verbessert die lokale Auffindbarkeit spürbar.
+- [ ] **Vorschaubild** nach dem Einbinden der lokalen Schriften mit
+      `node og-render.js` neu rendern.
+- [ ] Nach dem Livegang einmal den Rich-Results-Test von Google und den Sharing
+      Debugger von Facebook über die Adresse laufen lassen.
+- [ ] **Google-Unternehmensprofil** prüfen: Ist der Eintrag beansprucht? Stimmen
+      Adresse, Telefon und Öffnungszeiten dort mit der Seite überein? Für ein
+      Pflegeheim ist das der wichtigste Kanal überhaupt — wichtiger als die Website.
+
+## 11 · Letzter Blick
 
 - [ ] Telefonnummer angerufen und geprüft, ob der Tap-to-Call-Link funktioniert
 - [ ] Eine Testanfrage über das Formular abgeschickt — kommt sie an?
