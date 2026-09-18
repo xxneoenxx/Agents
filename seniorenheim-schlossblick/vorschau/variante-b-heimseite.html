@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Seniorenheim Schlossblick Rochsburg – Pflege mit Aussicht im Muldental</title>
+<title>Variante B — Heimseite · Seniorenheim Schlossblick Rochsburg</title>
 <meta name="description" content="Seniorenheim Schlossblick Rochsburg: 44 Einzel- und 8 Doppelzimmer, komplett barrierefrei, seit 1999 spezialisiert auf das Zusammenleben blinder, sehbehinderter und sehender Bewohner. Träger: BSVS Pflege- und Betreuungs gGmbH.">
 <meta name="theme-color" content="#2B6A73">
 <!-- ══ GO-LIVE-SCHALTER ════════════════════════════════════════════════════
@@ -1023,6 +1023,42 @@ p{text-wrap:pretty}
   html{scroll-behavior:auto}
   *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
 }
+
+/* ══ Vorschauleiste ══════════════════════════════════════════════════════
+   Gehört NICHT zur Website. Wird von vorschau/bauen.js eingefügt, damit im
+   Kundentermin klar ist, welcher Entwurf zu sehen ist und man umschalten
+   kann, ohne zurück in die Dateien-App zu müssen.                        */
+:root{--vorschau-h:3.5rem}
+body{padding-bottom:calc(var(--vorschau-h) + env(safe-area-inset-bottom,0px))}
+.vorschau{
+  position:fixed;left:0;right:0;bottom:0;z-index:300;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  min-height:var(--vorschau-h);
+  padding:.5rem clamp(.9rem,3vw,1.6rem);
+  padding-bottom:calc(.5rem + env(safe-area-inset-bottom,0px));
+  background:#16232A;color:#C2D2D4;border-top:3px solid #D9A441;
+  font-family:'Atkinson Hyperlegible',system-ui,-apple-system,sans-serif;
+  font-size:.8rem;font-weight:700;line-height:1.25;
+}
+.vorschau span{min-width:0}
+.vorschau b{color:#fff;display:block;font-size:.92rem}
+.vorschau em{font-style:normal;letter-spacing:.11em;text-transform:uppercase;
+  font-size:.66rem;color:#8FA8AB;display:block;margin-bottom:.12rem}
+.vorschau a{
+  color:#fff;background:#2B6A73;text-decoration:none;white-space:nowrap;
+  padding:.62rem 1rem;border-radius:.2rem;border:2px solid #2B6A73;flex:none;
+}
+.vorschau a:hover,.vorschau a:focus-visible{background:#3E7D86;border-color:#3E7D86}
+@media (max-width:460px){
+  .vorschau{font-size:.74rem;padding:.4rem .8rem;padding-bottom:calc(.4rem + env(safe-area-inset-bottom,0px))}
+  .vorschau em{display:none}
+  .vorschau b{font-size:.84rem}
+  .vorschau a{padding:.55rem .8rem}
+}
+/* Alles, was sonst unten klebt, über die Leiste heben */
+.a11y{bottom:calc(var(--vorschau-h) + 1rem + env(safe-area-inset-bottom,0px))!important}
+.captions{bottom:calc(var(--vorschau-h) + clamp(1rem,4vh,2.4rem))!important}
+@media print{ .vorschau{display:none!important} body{padding-bottom:0!important} }
 </style>
 </head>
 <body>
@@ -3705,6 +3741,26 @@ $$('.faq__q').forEach(q => q.addEventListener('click', () => {
   });
 })();
 
+})();
+</script>
+
+<div class="vorschau">
+  <span><em>Entwurf · nicht veröffentlicht</em><b>Variante B — Heimseite</b></span>
+  <a href="variante-a-landingpage.html">Variante A ansehen →</a>
+</div>
+<script>
+/* Die Leiste misst sich selbst. Auf dem iPhone bricht der Text um und sie
+   wird höher als jede geratene Zahl – dann säße das Barrierefreiheits-Rad
+   darauf. */
+(function () {
+  var l = document.querySelector('.vorschau');
+  if (!l) return;
+  var setzen = function () {
+    document.documentElement.style.setProperty('--vorschau-h', l.offsetHeight + 'px');
+  };
+  setzen();
+  addEventListener('resize', setzen);
+  addEventListener('orientationchange', function () { setTimeout(setzen, 250); });
 })();
 </script>
 </body>

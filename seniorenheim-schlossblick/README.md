@@ -165,3 +165,37 @@ und die rechtlichen Hinweise stehen in `fotos/README.md`.
 
 **Keine Code-Änderung nötig.** Auch einzelne Fotos funktionieren: Wo eines
 liegt, erscheint es; wo keines liegt, bleibt die Zeichnung.
+
+## Vorschau für den Kundentermin
+
+Im Ordner `vorschau/` liegen **beide Entwürfe** als je eine in sich geschlossene
+Datei, dazu eine Auswahlseite:
+
+```
+vorschau/index.html                    Auswahlseite
+vorschau/variante-a-landingpage.html   Die glänzende Landingpage-Fassung
+vorschau/variante-b-heimseite.html     Die nüchterne Heimseiten-Fassung
+vorschau/ANLEITUNG.md                  Wie du sie aufs iPhone bekommst
+```
+
+Unten in jeder Fassung liegt eine Leiste mit dem Namen des Entwurfs und einem
+Umschalter zur anderen Variante.
+
+**Auf dem iPhone:** Safari kann keine lokalen Dateien öffnen. Der verlässliche
+Weg ist ein Link — Ordner `vorschau` auf `app.netlify.com/drop` ziehen, kein
+Konto nötig, Adresse erscheint sofort. Als Rückfall ohne Netz lassen sich die
+Dateien per AirDrop übertragen und in der Dateien-App antippen; ob die
+Schnellvorschau dort die Kamerafahrt zeigt, hängt an der iOS-Version. Beide
+Dateien sind darauf vorbereitet und bleiben ohne JavaScript vollständig lesbar
+— aus der Fahrt wird dann eine ruhige Bildstrecke.
+
+Details stehen in `vorschau/ANLEITUNG.md`.
+
+**Neu erzeugen** nach Änderungen an der Website:
+
+```bash
+node vorschau/bauen.js
+```
+
+Variante A kommt dabei aus dem Git-Verlauf (Stand `4fe2596`) und bleibt
+dadurch exakt die Fassung von damals.
