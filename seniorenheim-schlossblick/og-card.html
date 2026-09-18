@@ -6,7 +6,7 @@
 <title>Vorlage für das Teilen-Vorschaubild</title>
 <!-- ══════════════════════════════════════════════════════════════════════
      Diese Datei ist KEINE Seite der Website, sondern die Vorlage, aus der
-     og-image.jpg gerendert wird — das Bild, das bei WhatsApp, Facebook,
+     og-image.jpg gerendert wird – das Bild, das bei WhatsApp, Facebook,
      LinkedIn oder Signal erscheint, wenn jemand den Link teilt.
 
      Neu rendern:  node og-render.js
@@ -33,27 +33,27 @@ body{
 .scene{position:absolute;inset:0;z-index:0}
 .scene svg{width:100%;height:100%;display:block}
 /* Weicher Verlauf nach links, damit die Schrift immer trägt */
-.scrim{position:absolute;inset:0;z-index:1;
-  background:linear-gradient(100deg,rgba(255,253,250,.96) 0%,rgba(255,253,250,.9) 30%,
-    rgba(255,253,250,.45) 44%,rgba(255,253,250,0) 56%)}
-.grain{position:absolute;inset:0;z-index:2;opacity:.2;mix-blend-mode:overlay;pointer-events:none;
+/* Fester Block statt weichem Verlauf – dieselbe Sprache wie auf der Seite */
+.scrim{position:absolute;left:0;top:0;bottom:0;width:640px;z-index:1;
+  background:var(--milch);border-right:6px solid var(--mulde)}
+.grain{position:absolute;left:640px;right:0;top:0;bottom:0;z-index:2;opacity:.2;mix-blend-mode:overlay;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
 
 .in{position:relative;z-index:3;height:100%;display:flex;flex-direction:column;
-  justify-content:center;padding:62px 70px;max-width:700px}
+  justify-content:center;padding:58px 62px;max-width:640px}
 .brand{display:flex;align-items:center;gap:14px;margin-bottom:34px}
 .brand svg{width:56px;height:56px;flex:none}
 .brand b{font-family:'Fraunces','Iowan Old Style',Georgia,serif;font-weight:600;
   font-size:24px;letter-spacing:-.01em;line-height:1.1;display:block}
-.brand .sub{font-size:13px;letter-spacing:.17em;text-transform:uppercase;color:var(--nebel);display:block}
+.brand .sub{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--nebel);display:block}
 h1{font-family:'Fraunces','Iowan Old Style',Georgia,serif;font-weight:600;
   font-size:64px;line-height:1.04;letter-spacing:-.022em;margin-bottom:18px}
 h1 em{font-style:normal;color:var(--mulde);position:relative;white-space:nowrap}
-h1 em::after{content:'';position:absolute;left:0;right:0;bottom:.08em;height:.2em;
-  background:var(--bernstein);opacity:.4;border-radius:3px;z-index:-1}
+h1 em::after{content:'';position:absolute;left:0;right:0;bottom:.06em;height:.16em;
+  background:var(--bernstein);opacity:.45;z-index:-1}
 p{font-size:23px;line-height:1.45;color:var(--nebel);max-width:560px}
-.facts{display:flex;gap:26px;margin-top:38px;padding-top:24px;
-  border-top:2px solid rgba(43,106,115,.18);flex-wrap:wrap}
+.facts{display:flex;gap:24px;margin-top:34px;padding-top:20px;
+  border-top:2px solid var(--schiefer);flex-wrap:wrap}
 .facts li{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:700;list-style:none}
 .facts svg{width:19px;height:19px;color:var(--linde-tief);flex:none;stroke-width:3}
 </style>
@@ -237,7 +237,7 @@ p{font-size:23px;line-height:1.45;color:var(--nebel);max-width:560px}
   </div>
 
   <h1>Ein Zuhause mit<br><em>Schlossblick</em>.</h1>
-  <p>Im ruhigen Tal der Zwickauer Mulde — seit 1999 barrierefrei für blinde,
+  <p>Im ruhigen Tal der Zwickauer Mulde – seit 1999 barrierefrei für blinde,
      sehbehinderte und sehende Bewohnerinnen und Bewohner.</p>
 
   <ul class="facts">

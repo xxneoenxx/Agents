@@ -142,3 +142,26 @@ Die Seite hat eine eigene Druckfassung: Kontakt und Eckdaten zuerst, ein Bild
 statt der Bildstrecke, FAQ aufgeklappt, alles Interaktive ausgeblendet, Links
 mit ausgeschriebener Adresse. Angehörige drucken solche Seiten wirklich aus —
 meist, um die Nummer am Küchentisch liegen zu haben.
+
+## Fotos einsetzen
+
+Die sechs Szenen der Bildstrecke sind **echte `<img>`-Elemente** mit den
+Zeichnungen als Rückfallebene. Legst du eine Datei mit dem passenden Namen in
+`fotos/`, ersetzt sie die Zeichnung sofort — die Kamerafahrt zoomt das Foto
+genauso wie vorher die Grafik, und der Hinweis „Illustration · Fotos folgen"
+oben links verschwindet automatisch.
+
+```
+fotos/01-tal.jpg          Das Haus in der Landschaft
+fotos/02-haus.jpg         Das Haus von der Schloßstraße
+fotos/03-foyer.jpg        Foyer mit Empfang
+fotos/04-zimmer.jpg       Ein Bewohnerzimmer
+fotos/05-speisesaal.jpg   Speisesaal
+fotos/06-garten.jpg       Terrasse und Garten
+```
+
+Querformat 16:9, mindestens 1920 × 1080, JPEG unter 400 KB. Motive, Lichtwahl
+und die rechtlichen Hinweise stehen in `fotos/README.md`.
+
+**Keine Code-Änderung nötig.** Auch einzelne Fotos funktionieren: Wo eines
+liegt, erscheint es; wo keines liegt, bleibt die Zeichnung.

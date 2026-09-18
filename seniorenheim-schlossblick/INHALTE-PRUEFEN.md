@@ -125,6 +125,50 @@ absichtlich gut aus und kostet nichts. Trotzdem:
 - [ ] Wenn Fotos kommen: Team-Sektion ergänzen. Sie fehlt bisher bewusst, weil
       eine Team-Sektion mit Platzhalter-Personen schlechter wirkt als gar keine.
 
+## 10 · Die neuen Abschnitte 🟠 — das meiste davon klärt ein Telefonat
+
+**Ansprechpartner (Abschnitt 06)**
+- [ ] Namen für Heimleitung, Pflegedienstleitung, Sozialdienst und Verwaltung
+- [ ] Gibt es Durchwahlen? Dann statt der Zentrale eintragen.
+- [ ] Stimmt die Spalte „Wofür zuständig" für dieses Haus?
+
+**Aufnahme und Anmeldung (Abschnitt 07)**
+- [ ] Läuft die Aufnahme tatsächlich in diesen vier Schritten ab?
+- [ ] Welche Unterlagen werden wirklich verlangt?
+- [ ] Die vier PDFs besorgen: Anmeldeformular, Hausprospekt, Speiseplan,
+      Muster-Heimvertrag. Bis dahin steht dort „Datei folgt".
+
+**Träger und Qualität (Abschnitt 08)**
+- [ ] Registereintrag der gGmbH
+- [ ] Mitgliedschaften (Paritätischer, Diakonie, AWO oder keine)
+- [ ] Datum und Prüfstelle des Ergebnisses „sehr gut"
+- [ ] Link auf den Transparenzbericht
+
+**Arbeiten im Schlossblick**
+- [ ] **Vorher abstimmen:** Sucht das Haus überhaupt Personal, und sind
+      Initiativbewerbungen erwünscht? Wenn nicht, fliegt das Band raus.
+- [ ] Wenn ja: offene Stellen und Ansprechpartner für Bewerbungen
+
+**Besuchszeiten und Anfahrt (Abschnitt 10)**
+- [ ] Besuchszeiten werktags, am Wochenende und an Feiertagen
+- [ ] Muss ein Besuch angemeldet werden?
+- [ ] Nummer der Buslinie und Name der Haltestelle
+- [ ] Anzahl der Parkplätze am Haus
+
+## 11 · Fotos 🟠 — der größte Hebel überhaupt
+
+Die sechs Szenen der Bildstrecke sind **Zeichnungen als Platzhalter**. Sobald
+Fotos in `fotos/` liegen, ersetzen sie die Zeichnungen automatisch, und der
+Hinweis „Illustration · Fotos folgen" verschwindet von selbst.
+
+- [ ] Die sechs Aufnahmen machen — die Liste mit Motiven, Formaten und
+      rechtlichen Hinweisen steht in `fotos/README.md`
+- [ ] Einwilligung nach Art. 6 DSGVO für jede erkennbare Person
+- [ ] Nutzungsrechte mit dem Fotografen klären
+
+Ohne echte Fotos wirkt jede Heimseite gezeichnet und damit unecht. Handyfotos
+bei gutem Licht genügen völlig.
+
 ## 10 · Adresse, Suche und Teilen 🟠
 
 - [ ] **Domain festlegen.** Überall steht der Platzhalter `VORSCHAU-DOMAIN.example`.
