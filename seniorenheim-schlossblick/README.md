@@ -18,6 +18,11 @@ Eine Landing Page für das Seniorenheim Schlossblick Rochsburg
 `index.html` doppelklicken. Mehr ist nicht nötig — die Seite braucht keinen Server,
 keinen Build-Schritt und keine Installation.
 
+Einzige Ausnahme sind die **Karten**: Aus einer lokalen Datei zeigt die Seite
+statt der Live-Karte die gezeichnete Skizze (warum, steht unter „Karten").
+Zum Ausprobieren im Ordner `python3 -m http.server` starten und
+`http://localhost:8000` öffnen.
+
 ## Veröffentlichen
 
 Die drei HTML-Dateien in ein beliebiges Webspace-Verzeichnis kopieren. Fertig.
@@ -28,10 +33,12 @@ die nur der Träger beantworten kann, und die rechtlichen Pflichtangaben.
 
 ## Wie die Seite gebaut ist
 
-**Keine Frameworks, keine Bibliotheken, keine externen Skripte.** Die Seite lädt
-genau einen fremden Request (die Schriften von Google Fonts), und der soll vor dem
-Livegang auch noch weg — siehe Punkt 8 der Checkliste. Danach lädt sie nichts von
-fremden Servern: kein Cookie-Banner, kein Consent-Tool.
+**Keine Frameworks, keine externen Skripte.** Die einzige Bibliothek ist
+Leaflet für die Karten, und die steckt in der Datei selbst, nicht auf einem CDN.
+Von fremden Servern kommen genau zwei Dinge: die Schriften von Google Fonts (die
+sollen vor dem Livegang weg, Punkt 8 der Checkliste) und die Karte von
+OpenStreetMap (Punkt 9). Kein Cookie-Banner, kein Consent-Tool; was die Karte
+lädt, beschreibt die Datenschutzerklärung in Abschnitt 8.
 
 **Die Kamerafahrt** ist das Herzstück: eine einzige, ungeschnittene Einstellung vom
 Blick über das Muldental bis auf die Gartenterrasse. Sechs Szenen liegen übereinander;
@@ -68,19 +75,37 @@ Stellen:
 - **Leistungsbeträge der Pflegekasse** — Objekt `SGB` im Skriptabschnitt 8
 - **Die Szenen selbst** — die sechs `<div class="scene">`-Blöcke im `<main>`
 
-## Fotos einbauen
+## Karten
 
-Eine Szene ersetzt man, indem man im jeweiligen `<div class="scene">` das `<svg>`
-durch ein `<img>` tauscht:
+Zwei Karten, eine Komponente: **„Lage"** im Abschnitt Das Haus (Heim und
+Sehenswürdigkeiten) und **„Anfahrt"** im Kontakt, dort mit Ortsliste,
+„Mein Standort" und Routenlinks zu Apple Karten und Google Maps.
 
-```html
-<img src="fotos/haus.jpg" alt="Das Seniorenheim von der Schloßstraße aus"
-     style="width:100%;height:100%;object-fit:cover">
-```
+- **Kartenbilder** kommen von OpenStreetMap, die Bibliothek (Leaflet 1.9.4,
+  BSD-Lizenz) ist eingebettet — Blöcke `KARTE:LIB-CSS`, `KARTE:CSS`,
+  `KARTE:HAUS`, `KARTE:KONTAKT` und `KARTE:JS` in `index.html`.
+- **Die Positionen:** Belegt war beim Bau nur das Schloss. Heim, Haltestellen,
+  Kirche und Hängebrücke sucht die Karte selbst in OpenStreetMap (Overpass,
+  als Rückfall Nominatim) und speichert sie 30 Tage im Browser. Was nicht
+  gefunden wird, bekommt **keinen** Pin — geraten wird nichts.
+- **Namen und Beschreibungen** der Orte stehen im HTML, in der Ortsliste im
+  Kontakt (`data-ort`). Die Karte liest sie von dort.
+- **Verhalten:** Die Karten laden erst, wenn man in ihre Nähe scrollt. Auf dem
+  Telefon verschiebt man sie mit zwei Fingern — ein Finger scrollt weiter die
+  Seite, sonst bliebe man in der Karte hängen. Am Rechner zoomt das Mausrad erst
+  nach einem Klick in die Karte.
+- **Rückfälle:** Ohne JavaScript, ohne Netz und im Druck steht die gezeichnete
+  Skizze. Aus einer lokalen Datei ebenfalls: Der Browser schickt dann keine
+  Herkunftsangabe mit, und die verlangen die Nutzungsregeln der OSM-Kachelserver.
 
-Zoom, Überblendung und Untertitel laufen unverändert weiter — die Mechanik hängt
-nicht am SVG. Vorher die Bildrechte und die Einwilligungen abgebildeter Personen
-klären, siehe Punkt 9 der Checkliste.
+**Vor dem Livegang festschreiben.** Seite über ihre Adresse öffnen, die
+Browser-Konsole aufmachen und nach „Karte: Orte aus OpenStreetMap ermittelt"
+suchen. Dort steht je Ort eine Zeile mit `lat` und `lon`. Pins auf der Karte
+prüfen, dann die Werte in `index.html` in die Liste `var ORTE = [` eintragen
+(beim Schloss steht das Muster). Sind alle Orte eingetragen, fragt die Seite
+keine Suchdienste mehr ab; dann in der Datenschutzerklärung den zweiten Absatz
+von Abschnitt 8 und den Karten-Zusatz in Abschnitt 5 streichen. Danach
+`node vorschau/bauen.js`, damit die Vorschau mitzieht.
 
 ## Go-Live-Schalter
 
@@ -123,8 +148,9 @@ in der Systemschrift statt in Fraunces.
 
 ## Schriften lokal ausliefern
 
-Der einzige Fremd-Request dieser Seite. Die vollständige Anleitung steht als
-Kommentar oben im `<style>`-Block von `index.html`; kurz gefasst:
+Neben der Karte der einzige Abruf von fremden Servern. Die vollständige
+Anleitung steht als Kommentar oben im `<style>`-Block von `index.html`; kurz
+gefasst:
 
 1. `Fraunces` und `Atkinson Hyperlegible` herunterladen (beide SIL Open Font
    License, Self-Hosting ausdrücklich erlaubt)
@@ -133,14 +159,13 @@ Kommentar oben im `<style>`-Block von `index.html`; kurz gefasst:
 4. Den vorbereiteten `@font-face`-Block einkommentieren
 5. Abschnitt 7 der Datenschutzerklärung auf die Self-Hosting-Variante umstellen
 
-Danach lädt die Seite nichts mehr von fremden Servern — kein Cookie-Banner,
-kein Consent-Tool, kein Auftragsverarbeiter außer dem Hoster.
+Danach kommt von fremden Servern nur noch die Karte.
 
 ## Drucken
 
 Die Seite hat eine eigene Druckfassung: Kontakt und Eckdaten zuerst, ein Bild
-statt der Bildstrecke, FAQ aufgeklappt, alles Interaktive ausgeblendet, Links
-mit ausgeschriebener Adresse. Angehörige drucken solche Seiten wirklich aus —
+statt der Bildstrecke, die Skizzen statt der Live-Karten, FAQ aufgeklappt,
+alles Interaktive ausgeblendet, Links mit ausgeschriebener Adresse. Angehörige drucken solche Seiten wirklich aus —
 meist, um die Nummer am Küchentisch liegen zu haben.
 
 ## Fotos einsetzen
@@ -187,7 +212,8 @@ Konto nötig, Adresse erscheint sofort. Als Rückfall ohne Netz lassen sich die
 Dateien per AirDrop übertragen und in der Dateien-App antippen; ob die
 Schnellvorschau dort die Kamerafahrt zeigt, hängt an der iOS-Version. Beide
 Dateien sind darauf vorbereitet und bleiben ohne JavaScript vollständig lesbar
-— aus der Fahrt wird dann eine ruhige Bildstrecke.
+— aus der Fahrt wird dann eine ruhige Bildstrecke, aus der Karte die Skizze.
+**Die Live-Karten und „Mein Standort" gibt es nur über den Link.**
 
 Details stehen in `vorschau/ANLEITUNG.md`.
 
@@ -198,4 +224,7 @@ node vorschau/bauen.js
 ```
 
 Variante A kommt dabei aus dem Git-Verlauf (Stand `4fe2596`) und bleibt
-dadurch exakt die Fassung von damals.
+dadurch die Fassung von damals. Sie bekommt nur Funktionskorrekturen: die
+echten Zahlen im Abschnitt Das Haus (vorher stand dort in der Dateivorschau
+überall 0) und die Karten, die das Skript aus `index.html` übernimmt.
+Außerdem kopiert es Impressum und Datenschutzerklärung in den Ordner.

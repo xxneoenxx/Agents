@@ -28,7 +28,8 @@ Zwei Kategorien:
 | Zimmerausstattung | eigener Vorraum, eigenes Bad mit WC | ☐ |
 | Baujahr | Neubau 1999 | ☐ |
 | Qualitätsergebnis | „sehr gut" — **Datum und Prüfstelle fehlen noch** | ☐ |
-| ÖPNV | Bushaltestelle direkt vor dem Haus | ☐ |
+| ÖPNV | Haltestelle „Rochsburg Blindenheim" direkt vor dem Haus, Linie 664 — siehe Punkt 9 | ☐ |
+| Weitere Haltestelle | „Rochsburg Parkplatz", Linien 629, 663 und 664 — siehe Punkt 9 | ☐ |
 
 > Die Zahl **60 Plätze** ist von uns aus 44 + 8 Doppelzimmern hergeleitet, nicht
 > direkt belegt. Falls Doppelzimmer teilweise einzeln belegt werden, stimmt sie nicht.
@@ -94,13 +95,18 @@ In `datenschutz.html`, ebenfalls markiert:
 - [ ] Anschrift des Sächsischen Datenschutzbeauftragten ergänzen
 - [ ] Stand-Datum eintragen
 - [ ] **Schriften-Abschnitt entsprechend Punkt 8 anpassen**
+- [ ] **Abschnitt 8 (Karte) prüfen lassen:** Die Karte lädt ohne vorherige
+      Zustimmung, sobald man in ihre Nähe scrollt. So entschieden, das kleine
+      Restrisiko ist bekannt. Mitprüfen: Angemessenheitsbeschluss für das
+      Vereinigte Königreich, Anschrift der OpenStreetMap Foundation, Betreiber
+      der Overpass API
 - [ ] Gesamten Text juristisch prüfen lassen
 
-## 8 · Schriften lokal ausliefern 🟠 — der einzige technische Restpunkt
+## 8 · Schriften lokal ausliefern 🟠
 
-Die Seite lädt **einen einzigen** externen Request: die beiden Schriften von
-Google Fonts. Damit geht die IP-Adresse jedes Besuchers an Google — in Deutschland
-abmahnrelevant (LG München I, Az. 3 O 17493/20).
+Neben der Karte (Punkt 9) lädt die Seite nur noch die beiden Schriften von
+Google Fonts von fremden Servern. Damit geht die IP-Adresse jedes Besuchers an
+Google — in Deutschland abmahnrelevant (LG München I, Az. 3 O 17493/20).
 
 - [ ] `Fraunces` und `Atkinson Hyperlegible` herunterladen (beide SIL Open Font License,
       kommerzielle Nutzung und Selbst-Hosting ausdrücklich erlaubt)
@@ -109,10 +115,36 @@ abmahnrelevant (LG München I, Az. 3 O 17493/20).
       `font-display: swap` ersetzen
 - [ ] Abschnitt 7 der Datenschutzerklärung auf die Selbst-Hosting-Variante umstellen
 
-Danach lädt die Seite **nichts** von fremden Servern. Kein Cookie-Banner,
-kein Consent-Tool, keine Auftragsverarbeiter außer dem Hoster.
+Danach kommt von fremden Servern nur noch die Karte.
 
-## 9 · Bildmaterial 🟠 — optional, aber der größte Hebel
+## 9 · Karten 🟠 — einmal auf einem echten Gerät ansehen
+
+Belegt ist nur die Lage des Schlosses (Wikipedia, Mapcarta). Alle anderen Orte
+sucht die Karte beim ersten Aufruf selbst in OpenStreetMap. Ob sie dort
+eingetragen sind und wie genau, ließ sich beim Bau nicht prüfen. Findet sie
+einen Ort nicht, erscheint **kein** Pin; der Eintrag in der Ortsliste bleibt
+stehen.
+
+- [ ] Die Seite über ihre Adresse öffnen (nicht als Datei) und die Pins prüfen:
+      Heim, Haltestelle Blindenheim, Haltestelle Parkplatz, Kirche, Hängebrücke
+- [ ] **Festschreiben:** Die Browser-Konsole gibt einen fertigen Block mit den
+      gefundenen Koordinaten aus. Nach der Prüfung in `index.html` in die Liste
+      `var ORTE = [` eintragen (Anleitung im README unter „Karten"). Danach fragt
+      die Seite keine Suchdienste mehr ab, und die Datenschutzerklärung wird kürzer
+- [ ] Fehlt ein Ort in OpenStreetMap: dort eintragen (der saubere Weg, hilft
+      auch allen anderen Karten) oder die Koordinaten vor Ort bestimmen und
+      festschreiben — **nicht schätzen**
+- [ ] **Ist „Rochsburg Blindenheim" die Haltestelle vor dem Haus?** Das ist
+      unser Schluss aus dem Namen, nicht belegt
+- [ ] **Linien** mit dem aktuellen VMS-Fahrplan abgleichen. Stand der Recherche
+      September 2026: Blindenheim Linie 664, Parkplatz Linien 629, 663 und 664
+- [ ] Texte der Ortsliste freigeben: Schloss mit Museum auf dem Felssporn,
+      Kirche spätromanisch und 1195 erstmals erwähnt, Hängebrücke 2010/11 neu
+      gebaut
+- [ ] Sobald die Position des Heims bestätigt ist: dieselben Koordinaten als
+      `geo` in die strukturierten Daten übernehmen (Punkt 13)
+
+## 10 · Bildmaterial 🟠 — optional, aber der größte Hebel
 
 Alle Szenen sind eigens gezeichnete Vektorgrafiken. Das funktioniert, sieht
 absichtlich gut aus und kostet nichts. Trotzdem:
@@ -125,7 +157,7 @@ absichtlich gut aus und kostet nichts. Trotzdem:
 - [ ] Wenn Fotos kommen: Team-Sektion ergänzen. Sie fehlt bisher bewusst, weil
       eine Team-Sektion mit Platzhalter-Personen schlechter wirkt als gar keine.
 
-## 10 · Die neuen Abschnitte 🟠 — das meiste davon klärt ein Telefonat
+## 11 · Die neuen Abschnitte 🟠 — das meiste davon klärt ein Telefonat
 
 **Ansprechpartner (Abschnitt 06)**
 - [ ] Namen für Heimleitung, Pflegedienstleitung, Sozialdienst und Verwaltung
@@ -152,10 +184,10 @@ absichtlich gut aus und kostet nichts. Trotzdem:
 **Besuchszeiten und Anfahrt (Abschnitt 10)**
 - [ ] Besuchszeiten werktags, am Wochenende und an Feiertagen
 - [ ] Muss ein Besuch angemeldet werden?
-- [ ] Nummer der Buslinie und Name der Haltestelle
+- [ ] Buslinie und Haltestelle: siehe Punkt 9
 - [ ] Anzahl der Parkplätze am Haus
 
-## 11 · Fotos 🟠 — der größte Hebel überhaupt
+## 12 · Fotos 🟠 — der größte Hebel überhaupt
 
 Die sechs Szenen der Bildstrecke sind **Zeichnungen als Platzhalter**. Sobald
 Fotos in `fotos/` liegen, ersetzen sie die Zeichnungen automatisch, und der
@@ -169,7 +201,7 @@ Hinweis „Illustration · Fotos folgen" verschwindet von selbst.
 Ohne echte Fotos wirkt jede Heimseite gezeichnet und damit unecht. Handyfotos
 bei gutem Licht genügen völlig.
 
-## 10 · Adresse, Suche und Teilen 🟠
+## 13 · Adresse, Suche und Teilen 🟠
 
 - [ ] **Domain festlegen.** Überall steht der Platzhalter `VORSCHAU-DOMAIN.example`.
       Der Ersetzungsbefehl steht im README unter „Go-Live-Schalter".
@@ -179,8 +211,9 @@ bei gutem Licht genügen völlig.
 - [ ] **`robots.txt`** von der Vorschau- auf die Produktivfassung umstellen.
 - [ ] **`sitemap.xml`**: Datumsangaben auf den Veröffentlichungstag setzen.
 - [ ] **Geokoordinaten**: In den strukturierten Daten fehlen Breiten- und
-      Längengrad bewusst — ich hatte keine verifizierten. Mit dem Haus abstimmen
-      und als `"geo": {"@type":"GeoCoordinates","latitude":…,"longitude":…}`
+      Längengrad bewusst — ich hatte keine verifizierten. Sobald die Position
+      des Heims auf der Karte bestätigt und festgeschrieben ist (Punkt 9),
+      dieselben Werte als `"geo": {"@type":"GeoCoordinates","latitude":…,"longitude":…}`
       im JSON-LD ergänzen. Das verbessert die lokale Auffindbarkeit spürbar.
 - [ ] **Vorschaubild** nach dem Einbinden der lokalen Schriften mit
       `node og-render.js` neu rendern.
@@ -190,10 +223,13 @@ bei gutem Licht genügen völlig.
       Adresse, Telefon und Öffnungszeiten dort mit der Seite überein? Für ein
       Pflegeheim ist das der wichtigste Kanal überhaupt — wichtiger als die Website.
 
-## 11 · Letzter Blick
+## 14 · Letzter Blick
 
 - [ ] Telefonnummer angerufen und geprüft, ob der Tap-to-Call-Link funktioniert
 - [ ] Eine Testanfrage über das Formular abgeschickt — kommt sie an?
 - [ ] Den `.ics`-Termin heruntergeladen und in einen Kalender importiert
 - [ ] Seite auf einem echten Telefon durchgescrollt, nicht nur im Simulator
+- [ ] Auf dem Telefon über beide Karten gewischt: Mit einem Finger scrollt die
+      Seite weiter, mit zwei bewegt sich die Karte. „Mein Standort" einmal
+      ausprobiert
 - [ ] Jemanden über 70 die Seite bedienen lassen und dabei zusehen, ohne zu helfen

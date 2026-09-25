@@ -32,6 +32,15 @@ Weitergeben an Dritte kurz überlegen.
 **Tipp:** Die Adresse als Lesezeichen auf den Homebildschirm legen. Dann
 startest du im Termin mit einem Tipp und ohne Suchen.
 
+**Vor dem Termin einmal durchscrollen, mit Netz.** Die Karten in „Das Haus"
+und im Kontakt holen ihre Kartenbilder von OpenStreetMap und suchen beim
+ersten Aufruf die Orte (Heim, Haltestellen, Sehenswürdigkeiten). Die Orte
+merkt sich das Telefon danach 30 Tage – im Termin erscheinen die Pins dann
+sofort. Die Kartenbilder selbst brauchen weiter Netz.
+
+**„Mein Standort"** fragt nach der Freigabe des Standorts. Einmal vorher
+ausprobieren, damit die Frage im Termin nicht überrascht.
+
 ---
 
 ## Weg 2 · Als Datei — ohne Netz
@@ -45,7 +54,13 @@ hängt an der iOS-Version — das lässt sich nicht garantieren.
 
 Beide Dateien sind darauf vorbereitet: Läuft kein JavaScript, wird aus der
 Fahrt eine ruhige Bildstrecke — Bild, Text, Bild, Text. **Kein Inhalt geht
-verloren**, nur die Bewegung fehlt.
+verloren**, nur die Bewegung fehlt. Die Zahlen im Abschnitt „Das Haus" stehen
+jetzt auch dort richtig (vorher zeigte Variante A in der Schnellvorschau
+überall 0).
+
+**Die Live-Karten gibt es auf diesem Weg nicht.** Aus einer Datei heraus zeigt
+die Seite an ihrer Stelle die gezeichnete Lageskizze, dazu die Ortsliste und
+die Routenlinks. Die Karte selbst und „Mein Standort" brauchen Weg 1.
 
 Für den Termin also besser Weg 1, und die Dateien als Rückfall, falls im Heim
 kein Netz ist.
@@ -56,6 +71,10 @@ kein Netz ist.
 
 `index.html` doppelklicken. Läuft in jedem Browser, ohne Server, ohne
 Installation. Für die Kamerafahrt mit dem Mausrad langsam scrollen.
+
+Auch hier gilt: Die Live-Karten erscheinen nur über eine Adresse. Wer sie am
+Rechner sehen will, startet im Ordner `vorschau` einen kleinen Server
+(`python3 -m http.server`) und öffnet `http://localhost:8000`.
 
 ---
 
@@ -72,6 +91,9 @@ Installation. Für die Kamerafahrt mit dem Mausrad langsam scrollen.
   groß", Kontrast auf „Stark", dann „Abschnitt vorlesen". Bei einem Haus, das
   auf blinde und sehbehinderte Menschen spezialisiert ist, ist das der
   stärkste Moment der ganzen Vorführung.
+- **Die Karte im Kontakt:** einen Ort in der Liste antippen – die Karte fliegt
+  hin und öffnet das Infofenster. Verschieben mit zwei Fingern; mit einem
+  Finger scrollt die Seite weiter, so bleibt niemand in der Karte hängen.
 
 ---
 
@@ -98,5 +120,7 @@ node vorschau/bauen.js
 
 Das Skript holt Variante A aus dem Git-Verlauf (Stand `4fe2596`) und Variante B
 aus dem Arbeitsverzeichnis, härtet beide für iOS und setzt die Umschaltleiste
-ein. Variante A bleibt dadurch exakt die Fassung von damals und wird nicht
-versehentlich mitverändert.
+ein. Variante A bleibt dadurch die Fassung von damals und bekommt nur
+Funktionskorrekturen: die echten Zahlen und die Karten, übernommen aus der
+echten Seite. Impressum und Datenschutzerklärung kopiert es mit, damit die
+Links in der Fußzeile funktionieren.

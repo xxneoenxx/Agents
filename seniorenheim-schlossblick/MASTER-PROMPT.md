@@ -179,8 +179,17 @@ Mindestens fünf, alle tastaturbedienbar, alle flüssig animiert:
   und dem ausdrücklichen Hinweis, dass der Eigenanteil hausspezifisch ist.
   **Nie** Hauspreise erfinden.
 - **Zimmer-Umschalter** — Einzel-/Doppelzimmer mit wechselndem Grundriss.
-- **Anfahrtsskizze als eigenes SVG** — statt eingebetteter Fremdkarte. Spart das
-  Consent-Banner und wirkt hochwertiger als ein grauer Karten-Placeholder.
+- **Karte mit Umgebung** — OpenStreetMap über Leaflet, die Bibliothek in die
+  Datei eingebettet (kein CDN). Eigene Marker für Heim, Haltestellen und
+  Sehenswürdigkeiten, daneben eine Ortsliste als vollwertige Textalternative
+  (antippen → Karte fliegt hin). „Mein Standort" nur auf Knopfdruck, Routenlinks
+  zu Apple Karten und Google Maps. **Auf dem Telefon verschiebt man die Karte mit
+  zwei Fingern, am Rechner zoomt das Mausrad erst nach einem Klick** — sonst
+  kapert sie die Kamerafahrt. Eine gezeichnete Lageskizze bleibt als Rückfall
+  (ohne JavaScript, ohne Netz, im Druck, aus einer lokalen Datei).
+  Koordinaten nur belegt oder aus OSM ermittelt, **nie geschätzt**, und vor dem
+  Livegang festschreiben. Die Datenschutzerklärung benennt Kachelserver und
+  Suchdienste; ob die Karte ohne Zwei-Klick-Lösung lädt, entscheidet der Kunde.
 - **Barrierefreiheits-Panel** — Schriftgröße, Kontrast, Bewegung aus, Vorlesen.
   Einstellungen in `localStorage`.
 - **FAQ** — echtes Disclosure-Pattern über `grid-template-rows: 0fr → 1fr`.
@@ -218,11 +227,16 @@ Nicht „möglichst", sondern Abnahmekriterium:
   Pitch ist das mehr wert als eine Ordnerstruktur.
 - **Keine externen Bibliotheken.** Die Kamerafahrt ist eine Zeitachse — das sind
   40 Zeilen Vanilla-JS. GSAP, Lenis und Co. sind hier Ballast und zusätzlich
-  ein DSGVO-Thema, sobald sie vom CDN kommen.
-- **Keine Requests an fremde Server.** Schriften lokal ausliefern. Wenn in der
-  Pitch-Fassung noch Google Fonts eingebunden sind, muss das in
-  `INHALTE-PRUEFEN.md` als Punkt vor dem Livegang stehen, und die
+  ein DSGVO-Thema, sobald sie vom CDN kommen. Einzige Ausnahme ist die Karte:
+  Leaflet, eingebettet statt vom CDN.
+- **Keine Requests an fremde Server** außer den Kartenbildern. Schriften lokal
+  ausliefern. Wenn in der Pitch-Fassung noch Google Fonts eingebunden sind, muss
+  das in `INHALTE-PRUEFEN.md` als Punkt vor dem Livegang stehen, und die
   Datenschutzerklärung muss es benennen.
+- **Inhalt nie nur im Skript.** Zahlen, die hochzählen, stehen als echte Zahl im
+  HTML. Das Skript zählt nur, wenn die Zahl ins Bild kommt, und setzt am Ende
+  per Zeitgeber garantiert den Endwert. Steht im HTML eine 0, bleibt sie in jeder
+  Dateivorschau stehen, in der die Animation nicht läuft.
 - IntersectionObserver für Reveals, `requestAnimationFrame` für alles Scroll-Gebundene.
 - Nur `transform` und `opacity` animieren.
 - Zusätzlich: `impressum.html` und `datenschutz.html` als Gerüst mit markierten
@@ -237,13 +251,13 @@ Kopfzeile        sticky, Telefonnummer als dickes Tap-to-Call-Ziel
 Hero             über der ersten Szene, Nutzenversprechen in einem Satz,
                  zwei CTAs, drei belegte Vertrauensfakten
 Kamerafahrt      sechs Szenen (Abschnitt 4)
-Hausvorstellung  Konzept, Lage, Geschichte + Zahlen, die hochzählen
+Hausvorstellung  Konzept, Lage mit Karte, Geschichte + Zahlen, die hochzählen
 Wohnen           Zimmerarten mit Grundriss-Umschalter
 Leistungen       Karten-Raster, jede Karte ein belegtes Angebot
 Alleinstellung   die eigene Sektion für das, was nur dieses Haus hat
 Alltag           ein Tag im Haus, ohne erfundene Uhrzeiten
 Widget-Zone      Anfrage + Rechner + Terminplaner
-Kontakt          Adresse, Telefon, eigene Anfahrtsskizze, FAQ
+Kontakt          Adresse, Telefon, Karte mit Ortsliste und Routenlinks, FAQ
 Fußzeile         Träger, Rechtslinks
 ```
 
