@@ -1,0 +1,42 @@
+{
+  "name": "claude-island",
+  "productName": "Claude Island",
+  "version": "0.1.0",
+  "description": "Schwebende Insel, die Claude-Code-Sitzungen anzeigt und steuert.",
+  "main": "src/main.js",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js",
+    "dist": "electron-builder --win"
+  },
+  "dependencies": {
+    "@fontsource/bricolage-grotesque": "5.3.0",
+    "@fontsource/figtree": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0"
+  },
+  "devDependencies": {
+    "electron": "44.4.5",
+    "electron-builder": "26.16.1"
+  },
+  "build": {
+    "appId": "local.claude-island",
+    "productName": "Claude Island",
+    "files": [
+      "src/**",
+      "renderer/**",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false
+    }
+  }
+}

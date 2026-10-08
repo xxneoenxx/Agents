@@ -1,0 +1,111 @@
+{
+  "description": "Claude Island: meldet den Sitzungsstatus an die Island-App, lässt Freigaben dort beantworten und übernimmt Modell, Aufwand und Hinweise.",
+  "modules": [
+    "./register.ts"
+  ],
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "http",
+            "url": "http://127.0.0.1:47821/hook/SessionStart",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "http",
+            "url": "http://127.0.0.1:47821/hook/UserPromptSubmit",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "http",
+            "url": "http://127.0.0.1:47821/hook/PostToolUse",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "http",
+            "url": "http://127.0.0.1:47821/hook/PostToolUseFailure",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "http",
+            "url": "http://127.0.0.1:47821/hook/PermissionRequest",
+            "timeout": 600,
+            "statusMessage": "Wartet auf Freigabe in Claude Island …"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "http",
+            "url": "http://127.0.0.1:47821/hook/Notification",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "http",
+            "url": "http://127.0.0.1:47821/hook/Stop",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "http",
+            "url": "http://127.0.0.1:47821/hook/StopFailure",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "http",
+            "url": "http://127.0.0.1:47821/hook/SessionEnd",
+            "timeout": 2
+          }
+        ]
+      }
+    ]
+  }
+}

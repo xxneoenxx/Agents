@@ -1,0 +1,14 @@
+{
+  "name": "neo-agents",
+  "description": "Plugins aus xxneoenxx/Agents, darunter die Brücke zur Desktop-App Claude Island.",
+  "owner": {
+    "name": "xxneoenxx"
+  },
+  "plugins": [
+    {
+      "name": "island-bridge",
+      "source": "./claude-island/plugin",
+      "description": "Verbindet Claude-Code-Sitzungen mit der Desktop-App Claude Island: Status, Freigaben, Hinweise, Modell und Aufwand."
+    }
+  ]
+}

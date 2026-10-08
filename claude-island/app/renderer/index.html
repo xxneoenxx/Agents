@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' file:; style-src 'self' file:; font-src 'self' file: data:; img-src 'self' file: data:"
+    />
+    <title>Claude Island</title>
+    <link rel="stylesheet" href="../node_modules/@fontsource/bricolage-grotesque/600.css" />
+    <link rel="stylesheet" href="../node_modules/@fontsource/bricolage-grotesque/700.css" />
+    <link rel="stylesheet" href="../node_modules/@fontsource/figtree/400.css" />
+    <link rel="stylesheet" href="../node_modules/@fontsource/figtree/500.css" />
+    <link rel="stylesheet" href="../node_modules/@fontsource/figtree/600.css" />
+    <link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-mono/400.css" />
+    <link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-mono/500.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="island" class="island" data-mood="idle" data-expanded="false">
+      <button class="pill" id="pill" type="button" aria-label="Claude Island aufklappen">
+        <span class="pill__funke" data-funke></span>
+        <span class="pill__text">
+          <span class="pill__status" id="pill-status">Ruhig</span>
+          <span class="pill__name" id="pill-name">Keine Sitzung</span>
+        </span>
+        <span class="pill__count" id="pill-count">0</span>
+      </button>
+
+      <section class="panel" id="panel" aria-label="Claude Island">
+        <header class="head">
+          <div class="head__brand"><span class="head__spark"></span>Claude Island</div>
+          <div class="head__summary" id="summary">Keine Sitzungen</div>
+          <div class="head__actions">
+            <button class="icon-btn" id="btn-pin" type="button" title="Anpinnen" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 5 3 3v2h-4.2L12 20l-.8-6H7v-2l3-3z" /></svg>
+            </button>
+            <button class="icon-btn" id="btn-sound" type="button" title="Ton" aria-pressed="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 10v4h3.5L12 18V6L7.5 10z" />
+                <path class="icon-btn__wave" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" />
+                <path class="icon-btn__mute" d="M15.5 9.5l5 5M20.5 9.5l-5 5" />
+              </svg>
+            </button>
+            <button class="icon-btn" id="btn-collapse" type="button" title="Einklappen">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" /></svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="body">
+          <aside class="stage" id="stage">
+            <span class="stage__funke" data-funke></span>
+            <div class="stage__mood" id="stage-mood">Ruhig</div>
+            <div class="stage__sub" id="stage-sub">Keine Sitzung</div>
+            <div class="stage__conn" id="stage-conn"></div>
+          </aside>
+          <div class="detail">
+            <nav class="chips" id="chips" aria-label="Sitzungen"></nav>
+            <article class="card" id="card"></article>
+          </div>
+        </div>
+
+        <footer class="foot" id="foot"></footer>
+      </section>
+    </div>
+    <script src="funke.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
