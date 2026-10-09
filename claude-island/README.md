@@ -15,12 +15,17 @@ gerade los ist, und deren Augen deiner Maus folgen.
 
 Bei mehreren Sitzungen zeigt Funke die dringendste (in dieser Reihenfolge).
 
+Außerdem verbindet die Insel Claude mit deinem **Obsidian-Vault**: Claude kann
+Notizen suchen, lesen und schreiben, und ein kleines **Vault-Widget** unter der
+Insel zeigt deinen Vault und was Claude darin gerade tut (siehe
+[Obsidian](#obsidian)).
+
 ## Aufbau
 
 ```
 claude-island/
-  app/      Electron-App (Fenster, lokaler Server auf 127.0.0.1:47821)
-  plugin/   Claude-Code-Plugin „island-bridge“: HTTP-Hooks + Mod
+  app/      Electron-App (Insel + Vault-Widget, lokaler Server auf 127.0.0.1:47821)
+  plugin/   Claude-Code-Plugin „island-bridge“: HTTP-Hooks + Mod mit Vault-Werkzeugen
 ```
 
 Das Plugin heißt `island-bridge`, weil Claude Code Plugin-Namen mit
@@ -70,6 +75,12 @@ Alternativ in einer Terminal-Sitzung in einem Schritt:
 /plugin install island-bridge --marketplace xxneoenxx/Agents
 ```
 
+**Update auf 0.2.0** (bringt die Obsidian-Werkzeuge): Die Insel erkennt eine
+ältere installierte Version und bietet **Plugin aktualisieren** an (Bühne links,
+leere Karte oder Rechtsklick-Menü). Von Hand:
+`claude plugin marketplace update neo-agents` und
+`claude plugin update island-bridge@neo-agents`, danach die Claude-App neu starten.
+
 Ist der Marketplace einmal hinzugefügt, findest du das Plugin auch in der
 Desktop-App unter **+ › Plugins › Add plugin**. Offene Sitzungen laden es mit
 `/reload-plugins` oder beim nächsten Start. Mods brauchen in der Desktop-App
@@ -94,7 +105,9 @@ Claude Code 2.1.286 oder neuer (`/status` zeigt die Version).
   - unten **Modell** (Opus/Sonnet/Haiku) und **Aufwand** (Niedrig, Mittel,
     Hoch, Sehr hoch, Max) für die gewählte Sitzung. Ein Punkt markiert, was
     gerade tatsächlich läuft, wenn deine Wahl noch nicht angekommen ist.
-- **Rechtsklick**: Größe, Plugin aktivieren, „Mit Windows starten“, „Beenden“.
+- **Kopfzeile**: der Knopf mit der Raute blendet das Vault-Widget ein und aus.
+- **Rechtsklick**: Größe, Vault-Widget, Plugin aktivieren/aktualisieren,
+  „Mit Windows starten“, „Beenden“.
 
 **Animationen** laufen mit der Bildrate des Monitors, auf dem die Insel steht
 (60 Hz am Laptop, bis 144 Hz am Monitor): Alle Dauer-Animationen bewegen nur
@@ -134,6 +147,53 @@ doch im Code-Tab, verschwindet die Karte aus der Insel.
   `$.prompt.submit({ text, asUser: true })`; sie starten einen eigenen Zug,
   sobald die Sitzung frei ist.
 - Er meldet zurück, welches Modell und welchen Aufwand er tatsächlich schickt.
+
+## Obsidian
+
+**Vault finden**: Die Insel liest Obsidians eigene Vault-Liste
+(`%APPDATA%\obsidian\obsidian.json`) und verbindet den offenen bzw. zuletzt
+benutzten Vault. Über den Wechsel-Knopf im Widget wählst du einen anderen
+Vault aus der Liste oder einen beliebigen Ordner.
+
+**Claude im Vault**: Der Mod gibt Claude vier Werkzeuge, die über die Insel
+laufen:
+
+| Werkzeug | Was es tut |
+| :- | :- |
+| `vault_search` | Notizen nach Name, Pfad und Inhalt suchen (mit Ausschnitt) |
+| `vault_read` | eine Notiz lesen (`Projekte/Insel` oder `Projekte/Insel.md`) |
+| `vault_list` | Unterordner und Notizen eines Ordners auflisten |
+| `vault_write` | Notiz anlegen (`create`), ergänzen (`append`) oder ersetzen (`replace`) |
+
+Claude schreibt Obsidian-Markdown mit `[[Wikilinks]]`, `#Tags` und optional
+Frontmatter. Sag einfach z. B. „Leg in meinem Vault eine Notiz mit den
+Ergebnissen an“ oder „Was steht in meinen Notizen zu Projekt X?“.
+
+**Schalter „Claude schreibt: Fragen | Frei“** im Widget:
+
+- **Fragen** (Standard): Jeder Schreibwunsch erscheint als Freigabe
+  „Notiz schreiben“ in der Insel, mit Pfad, Modus und Vorschau. Geschrieben
+  wird erst nach **Freigeben**; bei **Ablehnen** bleibt der Vault unverändert
+  und Claude erfährt das. Das gilt in jedem Berechtigungsmodus von Claude Code,
+  weil die Insel selbst anhält. Ohne Antwort nach 10 Minuten wird nichts
+  geschrieben.
+- **Frei**: Claude schreibt ohne Rückfrage; das Widget zeigt, was geschrieben
+  wurde.
+
+Lesen und Suchen gehen immer ohne Rückfrage.
+
+**Schutz**: Nur Pfade innerhalb des Vaults, keine `..`, keine absoluten Pfade,
+keine versteckten Ordner wie `.obsidian` und `.trash`, kein Weg über
+Verknüpfungen nach draußen; geschrieben werden nur `.md`-Dateien bis 1 MB.
+
+**Widget**: eigenes kleines Fenster unter der Insel. Es zeigt Vault-Name und
+Anzahl der Notizen, den Schalter, eine Suche, unter „Claude“ die letzten
+Lese-, Such- und Schreibaktionen und unter „Zuletzt geändert“ die neuesten
+Notizen. Ein Klick öffnet die Notiz in Obsidian. Änderungen auf der Platte (auch
+aus Obsidian selbst) erscheinen sofort.
+
+Die Werkzeuge brauchen die laufende Insel; ohne sie sagt Claude, dass die Insel
+gestartet werden muss.
 
 ## In der Doku geprüft (Claude Code 2.1.294)
 
@@ -176,9 +236,16 @@ Anpinnen oder Größe angelegt):
   "sound": true,
   "pinned": false,
   "scale": 0.6,
-  "pluginSource": "xxneoenxx/Agents#claude/fervent-tesla-3kfm1o"
+  "pluginSource": "xxneoenxx/Agents#claude/fervent-tesla-3kfm1o",
+  "vaultPath": null,
+  "vaultWidget": true,
+  "vaultWriteMode": "ask"
 }
 ```
+
+In der Datei steht nur, was du geändert hast; alles andere sind Standardwerte.
+`vaultPath` ist der gewählte Vault-Ordner (`null` = aus Obsidian),
+`vaultWriteMode` ist `"ask"` (Fragen) oder `"free"` (Frei).
 
 `scale` ist eine der Größen 0.5, 0.6, 0.75 oder 1. `pluginSource` ist der
 Marketplace, aus dem **Plugin aktivieren** installiert.
@@ -199,5 +266,5 @@ das Fenster der App, nicht über HTTP.
 ```bash
 cd claude-island/app && npm test                 # Zustand und Server
 claude plugin validate claude-island/plugin      # Plugin, Hooks, Mod
-claude plugin test claude-island/plugin          # Mod: Modell, Aufwand, Hinweise
+claude plugin test claude-island/plugin          # Mod: Modell, Aufwand, Hinweise, Vault-Werkzeuge
 ```
