@@ -102,6 +102,8 @@ input:focus-visible {
 
 .island[data-mood='waiting'] .pill::after,
 .island[data-mood='problem'] .pill::after {
+  /* Ruhewert: sichtbar, auch wenn Windows-Animationen aus sind. */
+  opacity: 0.55;
   animation: ring-pulse 1.6s ease-in-out infinite;
   will-change: opacity;
 }
@@ -369,6 +371,18 @@ input:focus-visible {
 
 .conn[data-ok='false']::before {
   background: var(--problem);
+}
+
+.conn--action {
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.conn--action[disabled] {
+  opacity: 0.6;
+  text-decoration: none;
 }
 
 /* ---------- Rechts: Chips + Karte ---------- */
@@ -915,7 +929,13 @@ textarea.field {
   position: absolute;
   inset: -0.09em;
   border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--status) 65%, transparent) 0%, transparent 68%);
+  /* Mitte frei, damit der Glanzpunkt der Kugel sichtbar bleibt. */
+  background: radial-gradient(
+    circle,
+    transparent 0 34%,
+    color-mix(in srgb, var(--status) 60%, transparent) 40%,
+    transparent 70%
+  );
   animation: glow 2.4s ease-in-out infinite;
   will-change: transform, opacity;
 }

@@ -29,9 +29,9 @@ function request(port, path, { method = 'POST', body, headers = {}, agent } = {}
   })
 }
 
-async function withServer(fn) {
+async function withServer(fn, { getVault = null } = {}) {
   const store = new SessionStore({ modelIds: { opus: 'claude-opus-5-5', sonnet: 'claude-sonnet-5-5', haiku: 'claude-haiku-5-5' } })
-  const island = createIslandServer(store, { port: 0 })
+  const island = createIslandServer(store, { port: 0, getVault })
   const { port } = await island.listen()
   try {
     await fn({ store, port })
@@ -117,7 +117,7 @@ test('Mod-Poll liefert Wünsche und Hinweise', async () => {
     store.setDesired('s', { model: 'haiku', effort: 'low' })
     store.queueHint('s', 'Bitte versuche es erneut.')
     const r = await request(port, '/mod/poll', { body: { session_id: 's', model: 'claude-opus-5-5', effort: 'high' } })
-    assert.deepEqual(r.json, { model: 'claude-haiku-5-5', effort: 'low', hints: ['Bitte versuche es erneut.'] })
+    assert.deepEqual(r.json, { model: 'claude-haiku-5-5', effort: 'low', hints: ['Bitte versuche es erneut.'], vault: null })
     const bad = await request(port, '/mod/poll', { body: {} })
     assert.equal(bad.status, 400)
   })
@@ -139,4 +139,94 @@ test('Browser-Anfragen, fremde Hosts und falsche Inhalte werden abgewiesen', asy
     assert.deepEqual(health.json, { ok: true, app: 'claude-island' })
     assert.equal(store.snapshot().sessions.length, 0)
   })
+})
+
+test('Vault-Endpunkte: suchen, lesen, schreiben, Fehler und Aktivität', async () => {
+  const fs = require('node:fs')
+  const os = require('node:os')
+  const path = require('node:path')
+  const { Vault } = require('../src/vault')
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'island-srv-vault-'))
+  fs.mkdirSync(path.join(root, 'Rezepte'))
+  fs.writeFileSync(path.join(root, 'Rezepte', 'Pasta.md'), 'Nudeln mit Tomaten')
+  const vault = new Vault(root)
+  await vault.scan()
+  let current = null
+  await withServer(
+    async ({ store, port }) => {
+      const sid = { session_id: 'abc' }
+      const none = await request(port, '/vault/status', { body: sid })
+      assert.deepEqual([none.status, none.json.error], [409, 'no-vault'])
+      current = vault
+
+      store.setVaultInfo({ name: vault.name, writeMode: 'free' })
+      assert.deepEqual((await request(port, '/vault/status', { body: sid })).json, { name: vault.name, count: 1, truncated: false })
+      const found = await request(port, '/vault/search', { body: { ...sid, query: 'tomaten' } })
+      assert.deepEqual(found.json.results.map((r) => [r.path, r.match]), [['Rezepte/Pasta.md', 'content']])
+      const read = await request(port, '/vault/read', { body: { ...sid, path: 'Rezepte/Pasta.md' } })
+      assert.equal(read.json.content, 'Nudeln mit Tomaten')
+      const written = await request(port, '/vault/write', { body: { ...sid, path: 'Ideen/Neu', content: '# Neu' } })
+      assert.deepEqual(written.json, { path: 'Ideen/Neu.md', created: true, bytes: 5 })
+      assert.equal(fs.readFileSync(path.join(root, 'Ideen', 'Neu.md'), 'utf8'), '# Neu')
+      const listed = await request(port, '/vault/list', { body: sid })
+      assert.deepEqual(listed.json.folders, ['Ideen', 'Rezepte'])
+
+      const bad = await request(port, '/vault/read', { body: { ...sid, path: '../../etc/passwd' } })
+      assert.deepEqual([bad.status, bad.json.error], [400, 'bad-path'])
+      const exists = await request(port, '/vault/write', { body: { ...sid, path: 'Ideen/Neu.md', content: 'x', mode: 'create' } })
+      assert.deepEqual([exists.status, exists.json.error], [400, 'exists'])
+      const anon = await request(port, '/vault/read', { body: { path: 'Rezepte/Pasta.md' } })
+      assert.equal(anon.status, 400)
+      const fromPage = await request(port, '/vault/read', { body: { ...sid, path: 'Rezepte/Pasta.md' }, headers: { Origin: 'https://evil.example' } })
+      assert.equal(fromPage.status, 403)
+
+      assert.deepEqual(store.vaultActivity.map((a) => [a.op, a.path || a.query]), [
+        ['write', 'Ideen/Neu.md'],
+        ['read', 'Rezepte/Pasta.md'],
+        ['search', 'tomaten'],
+      ])
+    },
+    { getVault: () => current },
+  )
+  vault.close()
+})
+
+test('Modus „Fragen“: Schreiben wartet auf die Insel, Ablehnen schreibt nichts', async () => {
+  const fs = require('node:fs')
+  const os = require('node:os')
+  const path = require('node:path')
+  const { Vault } = require('../src/vault')
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'island-ask-vault-'))
+  const vault = new Vault(root)
+  await vault.scan()
+  await withServer(
+    async ({ store, port }) => {
+      store.setVaultInfo({ name: vault.name, writeMode: 'ask' })
+      const sid = { session_id: 'abc' }
+
+      const pending = request(port, '/vault/write', { body: { ...sid, path: 'Ideen/Ja', content: '# Ja\nZeile' } })
+      await waitFor(() => store.snapshot().sessions[0]?.approvals.length === 1)
+      const card = store.snapshot().sessions[0].approvals[0]
+      assert.equal(card.tool, 'Notiz schreiben')
+      assert.equal(card.detail, 'Ideen/Ja.md (neu anlegen)\n\n# Ja\nZeile')
+      assert.equal(fs.existsSync(path.join(root, 'Ideen', 'Ja.md')), false)
+      store.decide(card.id, 'allow')
+      const ok = await pending
+      assert.deepEqual([ok.status, ok.json.path], [200, 'Ideen/Ja.md'])
+      assert.equal(fs.readFileSync(path.join(root, 'Ideen', 'Ja.md'), 'utf8'), '# Ja\nZeile')
+
+      const pending2 = request(port, '/vault/write', { body: { ...sid, path: 'Nein.md', content: 'x' } })
+      await waitFor(() => store.snapshot().sessions[0]?.approvals.length === 1)
+      store.decide(store.snapshot().sessions[0].approvals[0].id, 'deny')
+      const no = await pending2
+      assert.deepEqual([no.status, no.json.error], [403, 'denied'])
+      assert.equal(fs.existsSync(path.join(root, 'Nein.md')), false)
+
+      // Ungültiges wird abgelehnt, bevor jemand gefragt wird.
+      const bad = await request(port, '/vault/write', { body: { ...sid, path: '../raus.md', content: 'x' } })
+      assert.deepEqual([bad.status, bad.json.error], [400, 'bad-path'])
+      assert.equal(store.snapshot().sessions[0].approvals.length, 0)
+    },
+    { getVault: () => vault },
+  )
 })

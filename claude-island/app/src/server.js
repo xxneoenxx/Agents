@@ -16,8 +16,46 @@ const STATUS_EVENTS = new Set([
   'StopFailure',
   'SessionEnd',
 ])
-const MAX_BODY = 1024 * 1024
+// Notizen bis 1 MB plus JSON-Hülle.
+const MAX_BODY = 2 * 1024 * 1024
 const DENY_MESSAGE = 'Abgelehnt in Claude Island.'
+const VAULT_OPS = new Set(['status', 'list', 'search', 'read', 'write'])
+const VAULT_ERRORS = new Set(['bad-path', 'not-found', 'exists', 'too-big', 'bad-input'])
+const NO_VAULT = 'Kein Obsidian-Vault verbunden. In Claude Island im Vault-Widget einen Vault wählen.'
+const WRITE_APPROVAL_MS = 10 * 60 * 1000
+
+// Im Modus „Fragen“ hält die Insel den Schreibwunsch an, bis in ihr
+// entschieden wird: 'allow', 'deny', 'timeout' oder 'gone' (Anfrage weg).
+function askToWrite(store, payload, planned, res) {
+  return new Promise((resolve) => {
+    let timer = null
+    const approvalId = store.addApproval(
+      {
+        session_id: payload.session_id,
+        tool_name: 'mcp__island-bridge__vault_write',
+        tool_input: { path: planned.path, content: payload.content, mode: payload.mode || 'create' },
+      },
+      (behavior) => {
+        clearTimeout(timer)
+        resolve(behavior)
+      },
+    )
+    if (!approvalId) {
+      resolve('deny')
+      return
+    }
+    timer = setTimeout(() => {
+      store.dropApproval(approvalId)
+      resolve('timeout')
+    }, WRITE_APPROVAL_MS)
+    res.on('close', () => {
+      if (res.writableFinished) return
+      clearTimeout(timer)
+      store.dropApproval(approvalId)
+      resolve('gone')
+    })
+  })
+}
 
 function send(res, status, body) {
   if (res.headersSent || res.destroyed) return
@@ -60,7 +98,58 @@ function permissionAnswer(behavior) {
   return { hookSpecificOutput: { hookEventName: 'PermissionRequest', decision } }
 }
 
-function createIslandServer(store, { port, host = '127.0.0.1' }) {
+// Ein Vault-Aufruf des Mods; `getVault()` liefert den verbundenen Vault oder null.
+async function handleVault(op, payload, store, getVault, res) {
+  const sessionId = payload.session_id
+  if (typeof sessionId !== 'string' || !sessionId) return [400, { error: 'session_id', message: 'session_id fehlt.' }]
+  const vault = getVault ? getVault() : null
+  if (!vault) return [409, { error: 'no-vault', message: NO_VAULT }]
+  try {
+    switch (op) {
+      case 'status':
+        return [200, { name: vault.name, count: vault.count, truncated: vault.truncated }]
+      case 'list': {
+        const { folder, folders, notes } = vault.list(typeof payload.folder === 'string' ? payload.folder : '')
+        return [200, { folder, folders, notes: notes.map((n) => ({ path: n.path, modified: new Date(n.mtimeMs).toISOString() })) }]
+      }
+      case 'search': {
+        const found = await vault.search(payload.query, payload.limit)
+        store.recordVaultActivity({ sessionId, op: 'search', query: String(payload.query || '') })
+        return [
+          200,
+          {
+            partial: found.partial,
+            results: found.results.map((r) => ({ path: r.path, match: r.match, snippet: r.snippet, modified: new Date(r.mtimeMs).toISOString() })),
+          },
+        ]
+      }
+      case 'read': {
+        const note = await vault.read(payload.path)
+        store.recordVaultActivity({ sessionId, op: 'read', path: note.path })
+        return [200, { path: note.path, content: note.content, modified: new Date(note.mtimeMs).toISOString() }]
+      }
+      case 'write': {
+        const mode = payload.mode || 'create'
+        const planned = await vault.plan(payload.path, payload.content, mode)
+        if (store.vaultInfo?.writeMode !== 'free') {
+          const decision = await askToWrite(store, payload, planned, res)
+          if (decision === 'gone') return [0, null]
+          if (decision === 'timeout') return [408, { error: 'timeout', message: 'Keine Antwort in Claude Island (10 Minuten). Nichts geschrieben.' }]
+          if (decision !== 'allow') return [403, { error: 'denied', message: 'Abgelehnt in Claude Island. Nichts geschrieben.' }]
+        }
+        const written = await vault.write(payload.path, payload.content, mode)
+        store.recordVaultActivity({ sessionId, op: 'write', path: written.path })
+        return [200, written]
+      }
+    }
+  } catch (err) {
+    if (VAULT_ERRORS.has(err.code)) return [400, { error: err.code, message: err.message }]
+    return [500, { error: 'io', message: `Dateifehler: ${err.code || err.message}` }]
+  }
+  return [404, { error: 'not found' }]
+}
+
+function createIslandServer(store, { port, host = '127.0.0.1', getVault = null }) {
   let allowedHosts = new Set()
 
   const server = http.createServer(async (req, res) => {
@@ -107,6 +196,13 @@ function createIslandServer(store, { port, host = '127.0.0.1' }) {
     if (hook && STATUS_EVENTS.has(hook[1])) {
       store.handleHook(hook[1], payload)
       send(res, 200)
+      return
+    }
+
+    const vaultOp = /^\/vault\/([a-z]+)$/.exec(url.pathname)
+    if (vaultOp && VAULT_OPS.has(vaultOp[1])) {
+      const [status, body] = await handleVault(vaultOp[1], payload, store, getVault, res)
+      if (status) send(res, status, body)
       return
     }
 

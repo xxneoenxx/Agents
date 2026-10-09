@@ -31,9 +31,9 @@
     sessions: [],
     counts: {},
     overall: 'idle',
-    ui: { expanded: false, pinned: false, sound: true, scale: 1 },
+    ui: { expanded: false, pinned: false, sound: true, scale: 1, vaultWidget: false },
     server: { listening: false, error: null, port: null },
-    plugin: { state: 'checking', busy: false, message: '' },
+    plugin: { state: 'checking', busy: false, message: '', outdated: false },
   }
   let selectedId = null
   let closing = false
@@ -61,6 +61,8 @@
     byId('btn-pin').title = state.ui.pinned ? 'Angepinnt – bleibt offen' : 'Anpinnen'
     byId('btn-sound').setAttribute('aria-pressed', String(Boolean(state.ui.sound)))
     byId('btn-sound').title = state.ui.sound ? 'Ton an' : 'Ton aus'
+    byId('btn-vault').setAttribute('aria-pressed', String(Boolean(state.ui.vaultWidget)))
+    byId('btn-vault').title = state.ui.vaultWidget ? 'Vault-Widget ausblenden' : 'Vault-Widget zeigen'
     byId('summary').innerHTML = summary()
 
     // selectedId bleibt stehen, auch wenn die Sitzung noch nicht im Zustand ist
@@ -103,7 +105,11 @@
       mood: MOOD[state.overall],
       sub,
       server: state.server,
-      plugin: state.plugin.state,
+      // Ohne Sitzungen erklärt der Plugin-Zustand, warum nichts ankommt; mit
+      // Sitzungen zählt nur noch, ob ein Update bereitsteht.
+      plugin: state.sessions.length ? 'active' : state.plugin.state,
+      outdated: state.plugin.state === 'active' && Boolean(state.plugin.outdated),
+      busy: Boolean(state.plugin.busy),
       mod: current ? current.modConnected : null,
     }
   }
@@ -120,7 +126,10 @@
       m.plugin === 'active' || m.plugin === 'checking' || m.plugin === 'unknown'
         ? ''
         : `<div class="conn" data-ok="false">${m.plugin === 'no-cli' ? 'claude-CLI fehlt' : 'Plugin nicht aktiv'}</div>`
-    byId('stage-conn').innerHTML = server + plugin + mod
+    const update = m.outdated
+      ? `<button class="conn conn--action" type="button" data-act="update-plugin" data-ok="false"${m.busy ? ' disabled' : ''}>${m.busy ? 'Aktualisiere …' : 'Plugin aktualisieren'}</button>`
+      : ''
+    byId('stage-conn').innerHTML = server + plugin + update + mod
   }
 
   function renderChips(el, rows) {
@@ -279,9 +288,17 @@
     } else {
       parts.push('<span>Damit sich Sitzungen hier melden, muss das Plugin <code>island-bridge</code> aktiv sein.</span>')
     }
+    if (p.state === 'active' && p.outdated) {
+      parts.push('<span class="empty__note">Eine neue Plugin-Version (mit Obsidian-Werkzeugen) ist bereit.</span>')
+    }
     if (p.message) parts.push(`<span class="empty__note">${esc(p.message)}</span>`)
     parts.push('</div>')
-    if (p.state !== 'active' && p.state !== 'checking') {
+    if (p.state === 'active' && p.outdated) {
+      parts.push(
+        `<div class="actions"><button class="btn btn--primary" type="button" data-act="update-plugin"${p.busy ? ' disabled' : ''}>` +
+          `${p.busy ? 'Aktualisiere …' : 'Plugin aktualisieren'}</button></div>`,
+      )
+    } else if (p.state !== 'active' && p.state !== 'checking') {
       parts.push(
         `<div class="actions"><button class="btn btn--primary" type="button" data-act="activate"${p.busy ? ' disabled' : ''}>` +
           `${p.busy ? 'Aktiviere …' : p.state === 'no-cli' ? 'Erneut prüfen' : 'Plugin aktivieren'}</button></div>`,
@@ -365,6 +382,8 @@
       sendHint(byId('card').querySelector('textarea[data-draft]'))
     } else if (act === 'activate') {
       api.activatePlugin()
+    } else if (act === 'update-plugin') {
+      api.updatePlugin()
     } else if (act === 'send') {
       sendHint(byId('card').querySelector('input[data-draft]'))
     }
@@ -402,6 +421,10 @@
   byId('btn-collapse').addEventListener('click', collapse)
   byId('btn-pin').addEventListener('click', () => api.setPinned(!state.ui.pinned))
   byId('btn-sound').addEventListener('click', () => api.setSound(!state.ui.sound))
+  byId('btn-vault').addEventListener('click', () => api.setVaultWidget(!state.ui.vaultWidget))
+  byId('stage-conn').addEventListener('click', (event) => {
+    if (event.target.closest('[data-act="update-plugin"]')) api.updatePlugin()
+  })
   window.addEventListener('contextmenu', (event) => {
     event.preventDefault()
     api.openMenu()
@@ -454,13 +477,15 @@
     if (!next) return
     if (!next.ui.expanded) closing = false
     if (next.ui.expanded && !state.ui.expanded) closing = false
+    const moved = next.ui.expanded !== state.ui.expanded || next.overall !== state.overall
     state = next
     render()
+    if (moved) requestAnimationFrame(() => Funke.refresh())
   }
 
   Funke.init()
   api.onState(apply)
-  api.onCursor((point) => Funke.look(point, state.ui.scale || 1))
+  api.onCursor((point) => Funke.look(point))
   api.onSignal((signal) => chime(signal.type))
   api.onSelect((id) => {
     selectedId = id

@@ -17,6 +17,7 @@ const Funke = (() => {
   const figures = []
   let frame = 0
   let lastTime = 0
+  let lastCursor = null
 
   function build(el) {
     el.classList.add('funke')
@@ -36,8 +37,10 @@ const Funke = (() => {
     figures.push({ el, pupils: [...el.querySelectorAll('.funke__pupil')], x: 0, y: 0, tx: 0, ty: 0 })
   }
 
-  // cursor: Mausposition und Fensterecke in Bildschirm-DIP; zoom: CSS-px → DIP.
-  function look(cursor, zoom = 1) {
+  // cursor: Mausposition und Fensterecke in Bildschirm-DIP, zoom: CSS-px → DIP.
+  function look(cursor) {
+    lastCursor = cursor
+    const zoom = cursor.zoom || 1
     for (const f of figures) {
       if (!f.el.offsetParent) continue
       const r = f.el.getBoundingClientRect()
@@ -54,6 +57,12 @@ const Funke = (() => {
       lastTime = performance.now()
       frame = requestAnimationFrame(step)
     }
+  }
+
+  // Nach Auf-/Zuklappen oder Stimmungswechsel stehen die Figuren woanders:
+  // mit der letzten Mausposition neu zielen.
+  function refresh() {
+    if (lastCursor) look(lastCursor)
   }
 
   function step(now) {
@@ -92,5 +101,5 @@ const Funke = (() => {
     blinkLoop()
   }
 
-  return { init, look }
+  return { init, look, refresh }
 })()

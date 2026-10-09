@@ -24,4 +24,6 @@ contextBridge.exposeInMainWorld('island', {
   setDesired: (sessionId, desired) => ipcRenderer.send('island:desired', sessionId, desired),
   openMenu: () => ipcRenderer.send('island:menu'),
   activatePlugin: () => ipcRenderer.send('island:activate-plugin'),
+  updatePlugin: () => ipcRenderer.send('island:update-plugin'),
+  setVaultWidget: (value) => ipcRenderer.send('island:vault-widget', value),
 })

@@ -1,0 +1,265 @@
+/* Vault-Widget: nutzt Farben, Schriften, .seg und .icon-btn aus styles.css. */
+
+.widget {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 12px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--line-strong);
+  background:
+    radial-gradient(80% 50% at 0% 0%, rgba(255, 154, 98, 0.08), transparent 65%),
+    var(--bg);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: widget-in 0.24s var(--ease-out);
+}
+
+@keyframes widget-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+}
+
+.w-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.w-gem {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  margin: 0 3px;
+  border-radius: 2px;
+  background: linear-gradient(135deg, #c9b3ff, #8a6cff);
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px rgba(138, 108, 255, 0.55);
+}
+
+.w-title {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.w-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 14.5px;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.w-count {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+.w-head .icon-btn {
+  width: 28px;
+  height: 28px;
+}
+
+.w-mode {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.w-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.w-mode .seg__btn {
+  height: 24px;
+  padding: 0 12px;
+  font-size: 12px;
+}
+
+/* „Frei“ ist die mutigere Wahl: warm statt Akzent. */
+.w-mode .seg__btn[data-mode='free'][aria-pressed='true'] {
+  background: var(--waiting);
+}
+
+.w-search {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 11px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--line-strong);
+  color: var(--muted);
+}
+
+.w-search:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.w-search svg {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.w-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  user-select: text;
+}
+
+.w-input::placeholder {
+  color: color-mix(in srgb, var(--muted) 75%, transparent);
+}
+
+.w-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.w-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 -4px;
+  padding: 0 4px;
+  scrollbar-width: thin;
+}
+
+.w-section {
+  margin: 6px 4px 3px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.w-section:first-child {
+  margin-top: 0;
+}
+
+.w-item {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 34px;
+  padding: 4px 6px;
+  border-radius: 9px;
+  text-align: left;
+  transition: background 0.12s;
+}
+
+.w-item:hover,
+.w-item:focus-visible {
+  background: var(--raise-2);
+}
+
+.w-icon {
+  justify-self: center;
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.w-item[data-op='write'] .w-icon {
+  stroke: var(--accent);
+}
+
+.w-item[data-op='read'] .w-icon {
+  stroke: var(--working);
+}
+
+.w-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.w-main {
+  font-weight: 600;
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.w-sub {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.w-time {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.w-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.w-empty strong {
+  font-family: var(--display);
+  font-size: 15px;
+  color: var(--text);
+}
+
+.w-note {
+  margin: 4px 4px 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.widget[data-has-vault='false'] .w-mode,
+.widget[data-has-vault='false'] .w-search,
+.widget[data-has-vault='false'] .w-count {
+  display: none;
+}

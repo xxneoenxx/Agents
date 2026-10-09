@@ -1,25 +1,32 @@
 'use strict'
 
-const { app, BrowserWindow, Menu, ipcMain, screen, dialog } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain, screen, dialog, shell } = require('electron')
 const path = require('node:path')
 const { loadConfig } = require('./config')
 const { SessionStore } = require('./sessions')
 const { createIslandServer } = require('./server')
-const { checkPlugin, activatePlugin } = require('./plugin')
+const { checkPlugin, activatePlugin, updatePlugin } = require('./plugin')
+const { VaultService } = require('./vault-service')
 
 // Grundmaße bei Größe 100 %; die Fenster werden mit `scale` verkleinert und
 // der Inhalt per Zoom mitskaliert, sodass das Layout in CSS gleich bleibt.
 const PILL = { width: 232, height: 48 }
 const PANEL = { width: 720, height: 436 }
+const WIDGET = { width: 300, height: 360 }
 const SCALES = [
   [0.5, 'Klein (50 %)'],
   [0.6, 'Kompakt (60 %)'],
   [0.75, 'Mittel (75 %)'],
   [1, 'Groß (100 %)'],
 ]
+// Das Widget zeigt Notiznamen; darunter wird es unlesbar.
+const WIDGET_MIN_ZOOM = 0.75
 const TOP_GAP = 8
+const WIDGET_GAP = 8
 const MAX_HZ = 144
 const RETRY_TEXT = 'Bitte versuche es erneut.'
+// Strg/Cmd mit diesen Tasten würde zoomen und die Größe verstellen.
+const ZOOM_KEYS = new Set(['0', '+', '-', '=', 'Add', 'Subtract'])
 
 if (!app.requestSingleInstanceLock()) {
   app.quit()
@@ -29,23 +36,20 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 let win = null
+let widget = null
 let expanded = false
 let serverState = { listening: false, error: null, port: null }
-let pluginState = { state: 'checking', busy: false, message: '' }
+let pluginState = { state: 'checking', busy: false, message: '', outdated: false, version: null }
 
 const scaled = (size, scale) => ({ width: Math.round(size.width * scale), height: Math.round(size.height * scale) })
 const validScale = (value) => (SCALES.some(([s]) => s === value) ? value : 0.6)
+const alive = (w) => w && !w.isDestroyed()
 
-function start() {
-  const { config, save } = loadConfig(app.getPath('userData'))
-  const store = new SessionStore({ modelIds: config.models })
-  serverState.port = config.port
-  let scale = validScale(config.scale)
-  const pill = scaled(PILL, scale)
-
-  win = new BrowserWindow({
-    ...pill,
-    ...topCenter(pill),
+// Ein rahmenloses, durchsichtiges Fenster, das immer oben bleibt und seinen
+// Zoom (= die gewählte Größe) gegen Tastenkürzel und Mausrad verteidigt.
+function makeWindow({ bounds, preload, page, zoom }) {
+  const w = new BrowserWindow({
+    ...bounds,
     frame: false,
     transparent: true,
     backgroundColor: '#00000000',
@@ -59,28 +63,72 @@ function start() {
     show: false,
     title: 'Claude Island',
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, preload),
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
       backgroundThrottling: false,
       autoplayPolicy: 'no-user-gesture-required',
-      zoomFactor: scale,
+      zoomFactor: zoom(),
     },
   })
-  win.setAlwaysOnTop(true, 'screen-saver')
-  win.webContents.setVisualZoomLevelLimits(1, 1)
+  w.setAlwaysOnTop(true, 'screen-saver')
+  const wc = w.webContents
+  wc.setVisualZoomLevelLimits(1, 1)
+  const keepZoom = () => {
+    if (Math.abs(wc.getZoomFactor() - zoom()) > 0.001) wc.setZoomFactor(zoom())
+  }
   // Chromium merkt sich Zoom je Herkunft; nach jedem Laden die eigene Größe setzen.
-  win.webContents.on('did-finish-load', () => win.webContents.setZoomFactor(scale))
-  win.loadFile(path.join(__dirname, '..', 'renderer', 'index.html'))
-  win.once('ready-to-show', () => win.showInactive())
-  win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }))
-  win.webContents.on('will-navigate', (event) => event.preventDefault())
+  wc.on('did-finish-load', keepZoom)
+  wc.on('zoom-changed', keepZoom)
+  wc.on('before-input-event', (event, input) => {
+    if ((input.control || input.meta) && ZOOM_KEYS.has(input.key)) event.preventDefault()
+  })
+  wc.setWindowOpenHandler(() => ({ action: 'deny' }))
+  wc.on('will-navigate', (event) => event.preventDefault())
+  w.loadFile(path.join(__dirname, '..', 'renderer', page))
+  return w
+}
 
-  // Zustand an das Fenster schicken, gebündelt auf höchstens einen Frame.
+// Ein nicht skalierbares Fenster nimmt neue Maße unter Windows nicht immer an.
+function setBoundsSafely(w, bounds) {
+  w.setResizable(true)
+  w.setBounds(bounds)
+  w.setResizable(false)
+}
+
+function start() {
+  // Ohne Standardmenü: kein Strg+R, Strg+Shift+I oder Zoom über Menükürzel.
+  Menu.setApplicationMenu(null)
+  const { config, save } = loadConfig(app.getPath('userData'))
+  const store = new SessionStore({ modelIds: config.models })
+  const vaults = new VaultService({ config, save, store })
+  serverState.port = config.port
+  let scale = validScale(config.scale)
+  const islandZoom = () => scale
+  const widgetZoom = () => Math.max(scale, WIDGET_MIN_ZOOM)
+
+  const islandBounds = () => {
+    const size = scaled(expanded ? PANEL : PILL, scale)
+    return { ...size, ...topCenter(size) }
+  }
+  const widgetBounds = () => {
+    const size = scaled(WIDGET, widgetZoom())
+    const island = alive(win) ? win.getBounds() : islandBounds()
+    return { ...size, x: island.x + Math.round((island.width - size.width) / 2), y: island.y + island.height + WIDGET_GAP }
+  }
+
+  win = makeWindow({ bounds: islandBounds(), preload: 'preload.js', page: 'index.html', zoom: islandZoom })
+  win.once('ready-to-show', () => {
+    win.showInactive()
+    measureRefresh()
+    if (config.vaultWidget) showWidget(true)
+  })
+
+  // Zustand an die Insel schicken, gebündelt auf höchstens einen Frame.
   const fullState = () => ({
     ...store.snapshot(),
-    ui: { expanded, pinned: config.pinned, sound: config.sound, scale },
+    ui: { expanded, pinned: config.pinned, sound: config.sound, scale, vaultWidget: Boolean(config.vaultWidget) },
     server: serverState,
     plugin: pluginState,
   })
@@ -89,20 +137,32 @@ function start() {
     if (pushTimer) return
     pushTimer = setTimeout(() => {
       pushTimer = null
-      send('island:state', fullState())
+      send(win, 'island:state', fullState())
     }, 8)
   }
   store.on('change', pushState)
   store.on('signal', (signal) => {
-    send('island:signal', signal)
+    send(win, 'island:signal', signal)
     if (signal.type === 'approval') {
-      send('island:select', signal.sessionId)
+      send(win, 'island:select', signal.sessionId)
       setExpanded(true)
     }
   })
   setInterval(() => store.tick(), 1000)
 
-  const island = createIslandServer(store, { port: config.port })
+  // Zustand ans Widget, ebenso gebündelt.
+  let vaultTimer = null
+  const pushVault = () => {
+    if (vaultTimer) return
+    vaultTimer = setTimeout(() => {
+      vaultTimer = null
+      if (alive(widget)) send(widget, 'vault:state', vaults.snapshot())
+    }, 30)
+  }
+  vaults.on('change', pushVault)
+  vaults.init()
+
+  const island = createIslandServer(store, { port: config.port, getVault: () => vaults.current() })
   island
     .listen()
     .then(() => {
@@ -120,38 +180,36 @@ function start() {
     })
 
   // Pupillen: Mausposition auf dem ganzen Bildschirm, so oft wie der Monitor
-  // unter der Insel Bilder zeigt (60 Hz am Laptop, bis 144 Hz am Monitor).
-  // Der Renderer glättet die Bewegung zusätzlich in jedem Frame.
-  let cursorEvery = 1000 / 60
-  const measureRefresh = () => {
-    if (!win || win.isDestroyed()) return
-    const hz = screen.getDisplayMatching(win.getBounds()).displayFrequency
-    cursorEvery = 1000 / Math.min(MAX_HZ, Math.max(30, Number.isFinite(hz) && hz > 0 ? hz : 60))
-  }
-  let last = { x: NaN, y: NaN }
-  const sampleCursor = () => {
-    if (!win || win.isDestroyed()) return
+  // unter der Insel Bilder zeigt (60 Hz am Laptop, bis 144 Hz am Monitor),
+  // aber mindestens alle 8 ms, damit grobe Windows-Timer noch ≥64 Hz liefern.
+  // Der Renderer glättet die Bewegung zusätzlich in jedem Bild.
+  let cursorTimer = null
+  let cursorEvery = 0
+  let last = { x: NaN, y: NaN, wx: NaN, wy: NaN }
+  function sampleCursor() {
+    if (!alive(win)) return
     const p = screen.getCursorScreenPoint()
-    if (p.x !== last.x || p.y !== last.y) {
-      last = p
-      const b = win.getBounds()
-      send('island:cursor', { x: p.x, y: p.y, wx: b.x, wy: b.y })
-    }
-    setTimeout(sampleCursor, cursorEvery)
+    const b = win.getBounds()
+    if (p.x === last.x && p.y === last.y && b.x === last.wx && b.y === last.wy) return
+    last = { x: p.x, y: p.y, wx: b.x, wy: b.y }
+    send(win, 'island:cursor', { x: p.x, y: p.y, wx: b.x, wy: b.y, zoom: win.webContents.getZoomFactor() })
   }
-  win.once('ready-to-show', () => {
-    measureRefresh()
-    sampleCursor()
-  })
+  function measureRefresh() {
+    if (!alive(win)) return
+    const hz = screen.getDisplayMatching(win.getBounds()).displayFrequency
+    const every = Math.min(8, 1000 / Math.min(MAX_HZ, Math.max(30, Number.isFinite(hz) && hz > 0 ? hz : 60)))
+    if (cursorTimer && every === cursorEvery) return
+    cursorEvery = every
+    clearInterval(cursorTimer)
+    cursorTimer = setInterval(sampleCursor, cursorEvery)
+  }
 
-  const place = () => {
-    if (!win || win.isDestroyed()) return
+  function place() {
+    if (!alive(win)) return
+    setBoundsSafely(win, islandBounds())
+    // Erst nach dem Verschieben messen: die Insel kann jetzt auf einem anderen Monitor stehen.
     measureRefresh()
-    const size = scaled(expanded ? PANEL : PILL, scale)
-    // Ein nicht skalierbares Fenster nimmt neue Maße unter Windows nicht immer an.
-    win.setResizable(true)
-    win.setBounds({ ...size, ...topCenter(size) })
-    win.setResizable(false)
+    if (alive(widget)) setBoundsSafely(widget, widgetBounds())
   }
   function setExpanded(next) {
     if (expanded === next) return
@@ -164,48 +222,136 @@ function start() {
   screen.on('display-removed', place)
 
   win.on('blur', () => {
-    if (expanded && !config.pinned) send('island:blur')
+    if (expanded && !config.pinned) send(win, 'island:blur')
   })
 
   function setScale(next) {
     scale = validScale(next)
     save({ scale })
-    win.webContents.setZoomFactor(scale)
+    win.webContents.setZoomFactor(islandZoom())
+    if (alive(widget)) widget.webContents.setZoomFactor(widgetZoom())
     place()
     pushState()
   }
 
-  let pluginCheckedAt = 0
-  const refreshPlugin = async () => {
-    pluginCheckedAt = Date.now()
-    const found = await checkPlugin()
-    if (pluginState.busy) return
-    pluginState = { ...pluginState, state: found.state }
+  // ---------- Vault-Widget ----------
+
+  function showWidget(show) {
+    if (Boolean(config.vaultWidget) !== show) save({ vaultWidget: show })
+    if (show) {
+      if (!alive(widget)) {
+        widget = makeWindow({ bounds: widgetBounds(), preload: 'widget-preload.js', page: 'widget.html', zoom: widgetZoom })
+        widget.once('ready-to-show', () => widget.showInactive())
+        widget.on('closed', () => (widget = null))
+      } else {
+        setBoundsSafely(widget, widgetBounds())
+        widget.showInactive()
+      }
+    } else if (alive(widget)) {
+      widget.hide()
+    }
     pushState()
+  }
+
+  ipcMain.handle('vault:get-state', () => vaults.snapshot())
+  ipcMain.handle('vault:search', (_e, query) => vaults.search(String(query || '').slice(0, 200)))
+  ipcMain.on('vault:open', (_e, rel) => {
+    const uri = vaults.uriFor(String(rel || ''))
+    if (uri) shell.openExternal(uri)
+  })
+  ipcMain.on('vault:write-mode', (_e, mode) => vaults.setWriteMode(mode))
+  ipcMain.on('vault:select', (_e, dir) => {
+    // Nur Vaults aus Obsidians eigener Liste; alles andere über den Ordner-Dialog.
+    if (vaults.find().some((v) => v.path === dir)) vaults.choose(dir)
+  })
+  async function chooseFolder() {
+    const result = await dialog.showOpenDialog(alive(widget) ? widget : win, {
+      title: 'Obsidian-Vault wählen',
+      properties: ['openDirectory'],
+    })
+    if (!result.canceled && result.filePaths[0]) await vaults.choose(result.filePaths[0])
+  }
+  ipcMain.on('vault:choose', () => chooseFolder())
+  // Die Vaults aus Obsidian zum Wechseln, darunter der Ordner-Dialog.
+  ipcMain.on('vault:menu', () => {
+    const current = vaults.current()?.root
+    const known = vaults.find()
+    Menu.buildFromTemplate([
+      ...known.map((v) => ({ label: v.name, type: 'radio', checked: v.path === current, click: () => vaults.choose(v.path) })),
+      ...(known.length ? [{ type: 'separator' }] : []),
+      { label: 'Ordner wählen …', click: () => chooseFolder() },
+    ]).popup({ window: alive(widget) ? widget : win })
+  })
+  ipcMain.on('vault:hide', () => showWidget(false))
+  ipcMain.on('island:vault-widget', (_e, value) => showWidget(Boolean(value)))
+
+  // ---------- Plugin ----------
+
+  let pluginCheck = null
+  let pluginCheckedAt = 0
+  const refreshPlugin = () => {
+    if (pluginCheck) return pluginCheck
+    pluginCheck = (async () => {
+      const found = await checkPlugin()
+      pluginCheckedAt = Date.now()
+      if (pluginState.busy) return
+      // Eine alte Meldung gilt nicht mehr, wenn sich der Zustand geändert hat.
+      const changed = found.state !== pluginState.state || found.outdated !== pluginState.outdated
+      pluginState = {
+        ...pluginState,
+        state: found.state,
+        outdated: found.outdated,
+        version: found.version,
+        message: changed ? '' : pluginState.message,
+      }
+      pushState()
+    })().finally(() => (pluginCheck = null))
+    return pluginCheck
   }
   refreshPlugin()
 
-  async function enablePlugin() {
+  async function runPluginTask(task, busyText) {
     if (pluginState.busy) return
-    pluginState = { ...pluginState, busy: true, message: 'Aktiviere das Plugin …' }
+    await pluginCheck
+    pluginState = { ...pluginState, busy: true, message: busyText }
     pushState()
-    const result = await activatePlugin(config.pluginSource)
     let message
-    if (result.ok) {
-      message = result.changed
-        ? 'Plugin aktiviert. Starte die Claude-App neu (oder tippe /reload-plugins in offenen Sitzungen).'
-        : 'Plugin ist schon aktiv.'
-    } else if (result.reason === 'no-cli') {
-      message = 'claude-CLI nicht gefunden. In PowerShell installieren: irm https://claude.ai/install.ps1 | iex'
-    } else {
-      message = `Aktivieren fehlgeschlagen.${result.detail ? ` ${result.detail}` : ''}`
+    let result
+    try {
+      result = await task()
+    } catch (err) {
+      result = { ok: false, reason: 'failed', detail: err.message, state: { state: pluginState.state } }
     }
-    pluginState = { state: result.state.state, busy: false, message }
+    if (result.ok) {
+      message =
+        result.changed === false
+          ? 'Plugin ist schon aktiv.'
+          : 'Fertig. Starte die Claude-App neu (oder tippe /reload-plugins in offenen Sitzungen).'
+    } else if (result.reason === 'no-cli') {
+      message = 'claude-CLI nicht gefunden. In PowerShell installieren: irm https://claude.ai/install.ps1 | iex – danach Claude Island neu starten.'
+    } else if (result.reason === 'timeout') {
+      message = 'Die claude-CLI hat nicht rechtzeitig geantwortet. Bitte später noch einmal versuchen.'
+    } else {
+      message = `Das hat nicht geklappt.${result.detail ? ` ${result.detail}` : ''}`
+    }
+    const s = result.state || {}
+    pluginState = {
+      state: s.state || pluginState.state,
+      outdated: Boolean(s.outdated),
+      version: s.version || null,
+      busy: false,
+      message,
+    }
     pushState()
   }
+  const enablePlugin = () => runPluginTask(() => activatePlugin(config.pluginSource), 'Aktiviere das Plugin …')
+  const upgradePlugin = () => runPluginTask(() => updatePlugin(), 'Aktualisiere das Plugin …')
+
+  // ---------- Insel ----------
 
   ipcMain.handle('island:get-state', () => fullState())
   ipcMain.on('island:activate-plugin', () => enablePlugin())
+  ipcMain.on('island:update-plugin', () => upgradePlugin())
   ipcMain.on('island:expand', (_e, value) => setExpanded(Boolean(value)))
   ipcMain.on('island:pin', (_e, value) => {
     save({ pinned: Boolean(value) })
@@ -227,6 +373,14 @@ function start() {
   })
   ipcMain.on('island:menu', () => {
     const login = app.getLoginItemSettings()
+    const pluginItem =
+      pluginState.state === 'active' && pluginState.outdated
+        ? { label: 'Plugin aktualisieren', enabled: !pluginState.busy, click: () => upgradePlugin() }
+        : {
+            label: pluginState.state === 'active' ? 'Plugin ist aktiv' : 'Plugin aktivieren',
+            enabled: pluginState.state !== 'active' && !pluginState.busy,
+            click: () => enablePlugin(),
+          }
     Menu.buildFromTemplate([
       { label: 'Claude Island', enabled: false },
       { type: 'separator' },
@@ -239,11 +393,8 @@ function start() {
           click: () => setScale(value),
         })),
       },
-      {
-        label: pluginState.state === 'active' ? 'Plugin ist aktiv' : 'Plugin aktivieren',
-        enabled: pluginState.state !== 'active' && !pluginState.busy,
-        click: () => enablePlugin(),
-      },
+      { label: 'Vault-Widget', type: 'checkbox', checked: Boolean(config.vaultWidget), click: (item) => showWidget(item.checked) },
+      pluginItem,
       { type: 'separator' },
       {
         label: 'Mit Windows starten',
@@ -257,11 +408,15 @@ function start() {
 
   // Wer das Plugin von Hand installiert, sieht den neuen Stand beim nächsten Klick.
   win.on('focus', () => {
-    if (pluginState.state !== 'active' && !pluginState.busy && Date.now() - pluginCheckedAt > 10_000) refreshPlugin()
+    const settled = pluginState.state === 'active' && !pluginState.outdated
+    if (!settled && !pluginState.busy && Date.now() - pluginCheckedAt > 10_000) refreshPlugin()
   })
   app.on('second-instance', () => setExpanded(true))
   app.on('window-all-closed', () => app.quit())
-  app.on('before-quit', () => island.close())
+  app.on('before-quit', () => {
+    vaults.close()
+    island.close()
+  })
 }
 
 function topCenter(size) {
@@ -272,6 +427,6 @@ function topCenter(size) {
   }
 }
 
-function send(channel, payload) {
-  if (win && !win.isDestroyed()) win.webContents.send(channel, payload)
+function send(target, channel, payload) {
+  if (alive(target)) target.webContents.send(channel, payload)
 }
