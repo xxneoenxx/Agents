@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<title>Vorlage für das Teilen-Vorschaubild</title>
+<!-- ══════════════════════════════════════════════════════════════════════
+     Diese Datei ist KEINE Seite der Website, sondern die Vorlage, aus der
+     og-image.jpg gerendert wird – das Bild, das bei WhatsApp, Facebook,
+     LinkedIn oder Signal erscheint, wenn jemand den Link teilt.
+
+     Neu rendern:  node og-render.js
+     (oder: im Browser öffnen, Fenster exakt 1200 × 630 groß, Screenshot)
+
+     Nach dem Einbinden der lokalen Schriften bitte einmal neu rendern,
+     damit die Karte in Fraunces statt in der Systemschrift erscheint.
+     ══════════════════════════════════════════════════════════════════════ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}*{margin:0}
+:root{
+  --mulde:#2B6A73;--bernstein:#D9A441;--schiefer:#1D2A2E;--nebel:#4A5C62;
+  --milch:#FFFDFA;--linde-tief:#4C7239;
+}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{
+  position:relative;background:#F8FAF9;
+  font-family:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--schiefer);
+}
+.scene{position:absolute;inset:0;z-index:0}
+.scene svg{width:100%;height:100%;display:block}
+/* Weicher Verlauf nach links, damit die Schrift immer trägt */
+/* Fester Block statt weichem Verlauf – dieselbe Sprache wie auf der Seite */
+.scrim{position:absolute;left:0;top:0;bottom:0;width:640px;z-index:1;
+  background:var(--milch);border-right:6px solid var(--mulde)}
+.grain{position:absolute;left:640px;right:0;top:0;bottom:0;z-index:2;opacity:.2;mix-blend-mode:overlay;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.in{position:relative;z-index:3;height:100%;display:flex;flex-direction:column;
+  justify-content:center;padding:58px 62px;max-width:640px}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:34px}
+.brand svg{width:56px;height:56px;flex:none}
+.brand b{font-family:'Fraunces','Iowan Old Style',Georgia,serif;font-weight:600;
+  font-size:24px;letter-spacing:-.01em;line-height:1.1;display:block}
+.brand .sub{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--nebel);display:block}
+h1{font-family:'Fraunces','Iowan Old Style',Georgia,serif;font-weight:600;
+  font-size:64px;line-height:1.04;letter-spacing:-.022em;margin-bottom:18px}
+h1 em{font-style:normal;color:var(--mulde);position:relative;white-space:nowrap}
+h1 em::after{content:'';position:absolute;left:0;right:0;bottom:.06em;height:.16em;
+  background:var(--bernstein);opacity:.45;z-index:-1}
+p{font-size:23px;line-height:1.45;color:var(--nebel);max-width:560px}
+.facts{display:flex;gap:24px;margin-top:34px;padding-top:20px;
+  border-top:2px solid var(--schiefer);flex-wrap:wrap}
+.facts li{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:700;list-style:none}
+.facts svg{width:19px;height:19px;color:var(--linde-tief);flex:none;stroke-width:3}
+</style>
+</head>
+<body>
+
+<div class="scene">
+  <svg viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#8FB9D4"/><stop offset="34%" stop-color="#B7D3E0"/>
+        <stop offset="64%" stop-color="#DCE8E6"/><stop offset="100%" stop-color="#FBEFD9"/>
+      </linearGradient>
+      <radialGradient id="sun" cx=".5" cy=".5" r=".5">
+        <stop offset="0%" stop-color="#FFF9E8" stop-opacity=".9"/>
+        <stop offset="40%" stop-color="#FFE9B4" stop-opacity=".45"/>
+        <stop offset="100%" stop-color="#FFD98A" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#EFF4F2" stop-opacity="0"/>
+        <stop offset="60%" stop-color="#EFF4F2" stop-opacity=".7"/>
+        <stop offset="100%" stop-color="#E4EDEC" stop-opacity=".1"/>
+      </linearGradient>
+      <linearGradient id="rock" x1=".2" y1="0" x2=".8" y2="1">
+        <stop offset="0%" stop-color="#9E9482"/><stop offset="45%" stop-color="#7C7565"/>
+        <stop offset="100%" stop-color="#4E4C43"/>
+      </linearGradient>
+      <linearGradient id="stoneL" x1="0" y1="0" x2="1" y2=".4">
+        <stop offset="0%" stop-color="#F0DCBA"/><stop offset="50%" stop-color="#DCC49C"/>
+        <stop offset="100%" stop-color="#BFA37B"/>
+      </linearGradient>
+      <linearGradient id="stoneS" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#AE9270"/><stop offset="100%" stop-color="#836B4E"/>
+      </linearGradient>
+      <linearGradient id="roof" x1="0" y1="0" x2=".5" y2="1">
+        <stop offset="0%" stop-color="#5A6872"/><stop offset="60%" stop-color="#3D4952"/>
+        <stop offset="100%" stop-color="#2A333A"/>
+      </linearGradient>
+      <linearGradient id="roofL" x1="0" y1="0" x2=".6" y2="1">
+        <stop offset="0%" stop-color="#77848E"/><stop offset="100%" stop-color="#48545E"/>
+      </linearGradient>
+      <linearGradient id="rend" x1="0" y1="0" x2=".25" y2="1">
+        <stop offset="0%" stop-color="#FFFCF6"/><stop offset="55%" stop-color="#F6F0E4"/>
+        <stop offset="100%" stop-color="#E3DCCB"/>
+      </linearGradient>
+      <linearGradient id="glass" x1=".1" y1="0" x2=".9" y2="1">
+        <stop offset="0%" stop-color="#DCEDF3"/><stop offset="50%" stop-color="#A9C9D4"/>
+        <stop offset="100%" stop-color="#6B93A1"/>
+      </linearGradient>
+      <linearGradient id="warm" x1=".2" y1="0" x2=".8" y2="1">
+        <stop offset="0%" stop-color="#FFF2D2"/><stop offset="100%" stop-color="#E9AE4E"/>
+      </linearGradient>
+      <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#9FC2CB"/><stop offset="50%" stop-color="#6C99A5"/>
+        <stop offset="100%" stop-color="#3E6B78"/>
+      </linearGradient>
+      <linearGradient id="gFar" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#B9CDA4"/><stop offset="100%" stop-color="#8FB077"/>
+      </linearGradient>
+      <linearGradient id="gMid" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#9DBB82"/><stop offset="100%" stop-color="#6E9257"/>
+      </linearGradient>
+      <linearGradient id="leaf" x1=".2" y1="0" x2=".8" y2="1">
+        <stop offset="0%" stop-color="#9CBE7C"/><stop offset="55%" stop-color="#6E9455"/>
+        <stop offset="100%" stop-color="#40603A"/>
+      </linearGradient>
+      <filter id="lf" x="-25%" y="-25%" width="150%" height="150%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="4" seed="7" result="t"/>
+        <feDisplacementMap in="SourceGraphic" in2="t" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <filter id="b4"><feGaussianBlur stdDeviation="4"/></filter>
+      <filter id="b12"><feGaussianBlur stdDeviation="12"/></filter>
+      <filter id="glow" x="-70%" y="-70%" width="240%" height="240%">
+        <feGaussianBlur stdDeviation="7" result="g"/>
+        <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <symbol id="t" viewBox="0 0 100 140">
+        <path d="M48 140V78h5v62z" fill="#5A4B39"/>
+        <g filter="url(#lf)">
+          <ellipse cx="50" cy="52" rx="40" ry="38" fill="url(#leaf)"/>
+          <ellipse cx="32" cy="66" rx="26" ry="24" fill="url(#leaf)"/>
+          <ellipse cx="70" cy="64" rx="25" ry="23" fill="url(#leaf)"/>
+          <ellipse cx="50" cy="30" rx="27" ry="22" fill="#8FB570"/>
+        </g>
+      </symbol>
+    </defs>
+
+    <rect width="1200" height="630" fill="url(#sky)"/>
+    <circle cx="240" cy="110" r="200" fill="url(#sun)"/>
+    <g opacity=".62" filter="url(#b12)">
+      <ellipse cx="520" cy="86" rx="180" ry="22" fill="#FFFCF4"/>
+      <ellipse cx="900" cy="62" rx="200" ry="20" fill="#FDFAF2"/>
+    </g>
+
+    <!-- ferne Höhenzüge -->
+    <path d="M0 330c130-34 220 12 320-12s180-44 290-24 200 46 330 28 260-28 260-28v336H0z"
+          fill="#B4C9D2" opacity=".5" filter="url(#b12)"/>
+    <rect y="286" width="1200" height="130" fill="url(#haze)"/>
+
+    <!-- Schloss Rochsburg auf dem Felsen, rechts oben -->
+    <g opacity=".95">
+      <path d="M828 430V274l30-46 52-28 72 6 56 34 32 50v140z" fill="url(#rock)"/>
+      <g opacity=".3" stroke="#3B3931" stroke-width="2" fill="none">
+        <path d="M838 312c46-12 96-14 148-4s92 10 108 0M834 356c54-10 112-8 162 4s94 6 124-4M842 400c60-8 120-4 168 6"/>
+      </g>
+      <rect x="902" y="180" width="92" height="58" fill="url(#stoneL)"/>
+      <rect x="972" y="180" width="22" height="58" fill="url(#stoneS)"/>
+      <path d="M892 180l51-36 51 36z" fill="url(#roofL)"/>
+      <rect x="866" y="156" width="40" height="82" fill="url(#stoneL)"/>
+      <rect x="892" y="156" width="14" height="82" fill="url(#stoneS)"/>
+      <path d="M860 156h52l-26-34z" fill="url(#roof)"/>
+      <g fill="#33414A" opacity=".85">
+        <rect x="916" y="196" width="11" height="17" rx="3"/><rect x="940" y="196" width="11" height="17" rx="3"/>
+        <rect x="964" y="196" width="11" height="17" rx="3"/><rect x="878" y="176" width="9" height="14" rx="3"/>
+      </g>
+      <use href="#t" x="990" y="224" width="76" height="106" opacity=".9"/>
+      <use href="#t" x="820" y="238" width="66" height="92" opacity=".85"/>
+      <rect x="810" y="150" width="400" height="300" fill="url(#haze)" opacity=".45"/>
+    </g>
+
+    <!-- Waldband -->
+    <path d="M560 404c50-20 96-4 144-16s102-30 164-20 106 34 174 24 118-28 158-18v88H560z"
+          fill="#7E9E7D" filter="url(#b4)" opacity=".9"/>
+    <path d="M0 432c160-24 300 12 460-6s300-30 460-12 280 18 280 18v198H0z" fill="url(#gFar)"/>
+
+    <!-- Das Haus -->
+    <g>
+      <ellipse cx="800" cy="448" rx="170" ry="18" fill="#3F5A3A" opacity=".2" filter="url(#b12)"/>
+      <rect x="668" y="352" width="268" height="94" fill="url(#rend)"/>
+      <rect x="908" y="352" width="28" height="94" fill="#DDD6C6"/>
+      <path d="M650 354l58-36h212l58 36z" fill="url(#roofL)"/>
+      <path d="M920 318l58 36h-58z" fill="url(#roof)"/>
+      <rect x="708" y="314" width="212" height="6" rx="3" fill="#212A30"/>
+      <g fill="url(#glass)">
+        <rect x="688" y="368" width="22" height="28" rx="3"/><rect x="726" y="368" width="22" height="28" rx="3"/>
+        <rect x="764" y="368" width="22" height="28" rx="3"/><rect x="802" y="368" width="22" height="28" rx="3"/>
+        <rect x="840" y="368" width="22" height="28" rx="3"/><rect x="878" y="368" width="22" height="28" rx="3"/>
+        <rect x="688" y="410" width="22" height="26" rx="3"/><rect x="726" y="410" width="22" height="26" rx="3"/>
+        <rect x="840" y="410" width="22" height="26" rx="3"/><rect x="878" y="410" width="22" height="26" rx="3"/>
+      </g>
+      <g filter="url(#glow)" opacity=".9">
+        <rect x="726" y="368" width="22" height="28" rx="3" fill="url(#warm)"/>
+        <rect x="840" y="368" width="22" height="28" rx="3" fill="url(#warm)"/>
+        <rect x="688" y="410" width="22" height="26" rx="3" fill="url(#warm)"/>
+      </g>
+      <rect x="764" y="406" width="62" height="40" rx="2" fill="#2B6A73" opacity=".9"/>
+      <rect x="793" y="406" width="4" height="40" fill="#F6F0E4" opacity=".7"/>
+      <path d="M756 406h78l-8-11h-62z" fill="#E8E1D2"/>
+      <rect x="668" y="446" width="268" height="7" rx="3" fill="#D8D2C2"/>
+      <use href="#t" x="944" y="356" width="74" height="104"/>
+      <use href="#t" x="606" y="366" width="68" height="95"/>
+    </g>
+
+    <!-- Die Zwickauer Mulde -->
+    <path d="M0 516c150-34 300-42 450-28s258 40 404 30 240-36 346-24v136H0z" fill="url(#water)"/>
+    <g opacity=".45" filter="url(#b4)">
+      <path d="M60 526c130-22 260-28 376-16" stroke="#DCEBEE" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M540 534c140 12 270 16 396 4" stroke="#CFE3E7" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </g>
+    <path d="M0 566c180-26 350-18 530 2s360 14 550-6v70H0z" fill="url(#gMid)"/>
+    <g filter="url(#b12)" opacity=".8">
+      <ellipse cx="60" cy="626" rx="200" ry="52" fill="#3C5A38"/>
+      <ellipse cx="1160" cy="618" rx="180" ry="46" fill="#334F31"/>
+    </g>
+  </svg>
+</div>
+<div class="scrim"></div>
+<div class="grain"></div>
+
+<div class="in">
+  <div class="brand">
+    <svg viewBox="0 0 48 48" aria-hidden="true">
+      <rect width="48" height="48" rx="12" fill="#2B6A73"/>
+      <path d="M10 22l14-11 14 11v16a2 2 0 01-2 2H12a2 2 0 01-2-2z" fill="#FFFDFA"/>
+      <path d="M24 9l16 13H8z" fill="#D9A441"/>
+      <rect x="16" y="26" width="6" height="7" rx="1" fill="#2B6A73"/>
+      <rect x="26" y="26" width="6" height="7" rx="1" fill="#2B6A73"/>
+      <rect x="20" y="34" width="8" height="6" rx="1" fill="#6E9A57"/>
+    </svg>
+    <span><b>Seniorenheim Schlossblick</b><span class="sub">Rochsburg · Lunzenau</span></span>
+  </div>
+
+  <h1>Ein Zuhause mit<br><em>Schlossblick</em>.</h1>
+  <p>Im ruhigen Tal der Zwickauer Mulde – seit 1999 barrierefrei für blinde,
+     sehbehinderte und sehende Bewohnerinnen und Bewohner.</p>
+
+  <ul class="facts">
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>44 Einzel- &amp; 8 Doppelzimmer</li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Komplett barrierefrei</li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Prüfung „sehr gut"</li>
+  </ul>
+</div>
+
+</body>
+</html>
