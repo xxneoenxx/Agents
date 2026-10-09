@@ -23,4 +23,5 @@ contextBridge.exposeInMainWorld('island', {
   retry: (sessionId) => ipcRenderer.send('island:retry', sessionId),
   setDesired: (sessionId, desired) => ipcRenderer.send('island:desired', sessionId, desired),
   openMenu: () => ipcRenderer.send('island:menu'),
+  activatePlugin: () => ipcRenderer.send('island:activate-plugin'),
 })

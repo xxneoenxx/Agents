@@ -31,8 +31,9 @@
     sessions: [],
     counts: {},
     overall: 'idle',
-    ui: { expanded: false, pinned: false, sound: true },
+    ui: { expanded: false, pinned: false, sound: true, scale: 1 },
     server: { listening: false, error: null, port: null },
+    plugin: { state: 'checking', busy: false, message: '' },
   }
   let selectedId = null
   let closing = false
@@ -102,6 +103,7 @@
       mood: MOOD[state.overall],
       sub,
       server: state.server,
+      plugin: state.plugin.state,
       mod: current ? current.modConnected : null,
     }
   }
@@ -114,7 +116,11 @@
       : `<div class="conn" data-ok="false">${esc(m.server.error || 'Server startet …')}</div>`
     const mod =
       m.mod === null ? '' : `<div class="conn" data-ok="${m.mod}">${m.mod ? 'Mod verbunden' : 'Mod nicht verbunden'}</div>`
-    byId('stage-conn').innerHTML = server + mod
+    const plugin =
+      m.plugin === 'active' || m.plugin === 'checking' || m.plugin === 'unknown'
+        ? ''
+        : `<div class="conn" data-ok="false">${m.plugin === 'no-cli' ? 'claude-CLI fehlt' : 'Plugin nicht aktiv'}</div>`
+    byId('stage-conn').innerHTML = server + plugin + mod
   }
 
   function renderChips(el, rows) {
@@ -129,7 +135,7 @@
   }
 
   function cardModel(s) {
-    if (!s) return { kind: 'empty', server: state.server }
+    if (!s) return { kind: 'empty', server: state.server, plugin: state.plugin }
     const base = { id: s.id, notice: s.notice, pendingHints: s.pendingHints, mod: s.modConnected }
     if (s.approvals.length) {
       const a = s.approvals[0]
@@ -178,11 +184,7 @@
     let html = ''
     switch (m.kind) {
       case 'empty':
-        html =
-          '<div class="empty"><strong>Noch keine Sitzung</strong>' +
-          '<span>Starte eine Sitzung im Code-Tab der Claude-App. Mit dem Plugin <code>island-bridge</code> meldet sie sich hier.</span>' +
-          (m.server.listening ? '' : `<span>Der lokale Server läuft nicht: ${esc(m.server.error || 'startet …')}</span>`) +
-          '</div>'
+        html = emptyCard(m)
         break
       case 'approval': {
         const a = m.approval
@@ -255,6 +257,37 @@
     restoreFocus(el, focus)
     const list = el.querySelector('.steps')
     if (list) list.scrollTop = list.scrollHeight
+  }
+
+  // Ohne Sitzung: sagen, warum nichts ankommt, und das Plugin aktivieren lassen.
+  function emptyCard(m) {
+    const p = m.plugin
+    const parts = ['<div class="empty"><strong>Noch keine Sitzung</strong>']
+    if (!m.server.listening) parts.push(`<span>Der lokale Server läuft nicht: ${esc(m.server.error || 'startet …')}</span>`)
+    if (p.state === 'active') {
+      parts.push(
+        '<span>Plugin <code>island-bridge</code> ist aktiv. Starte im Code-Tab eine <b>lokale</b> Sitzung; schon offene Sitzungen einmal neu starten.</span>',
+        '<span class="empty__note">Cloud-Sitzungen laufen auf Anthropic-Servern und erreichen die Insel auf deinem PC nicht.</span>',
+      )
+    } else if (p.state === 'no-cli') {
+      parts.push(
+        '<span>Zum Aktivieren braucht die Insel die <code>claude</code>-CLI. In PowerShell installieren:</span>',
+        '<code class="empty__cmd">irm https://claude.ai/install.ps1 | iex</code>',
+      )
+    } else if (p.state === 'checking') {
+      parts.push('<span>Prüfe, ob das Plugin <code>island-bridge</code> aktiv ist …</span>')
+    } else {
+      parts.push('<span>Damit sich Sitzungen hier melden, muss das Plugin <code>island-bridge</code> aktiv sein.</span>')
+    }
+    if (p.message) parts.push(`<span class="empty__note">${esc(p.message)}</span>`)
+    parts.push('</div>')
+    if (p.state !== 'active' && p.state !== 'checking') {
+      parts.push(
+        `<div class="actions"><button class="btn btn--primary" type="button" data-act="activate"${p.busy ? ' disabled' : ''}>` +
+          `${p.busy ? 'Aktiviere …' : p.state === 'no-cli' ? 'Erneut prüfen' : 'Plugin aktivieren'}</button></div>`,
+      )
+    }
+    return parts.join('')
   }
 
   function rememberFocus(el) {
@@ -330,6 +363,8 @@
       api.retry(s.id)
     } else if (act === 'hint') {
       sendHint(byId('card').querySelector('textarea[data-draft]'))
+    } else if (act === 'activate') {
+      api.activatePlugin()
     } else if (act === 'send') {
       sendHint(byId('card').querySelector('input[data-draft]'))
     }
@@ -425,7 +460,7 @@
 
   Funke.init()
   api.onState(apply)
-  api.onCursor((point) => Funke.look(point))
+  api.onCursor((point) => Funke.look(point, state.ui.scale || 1))
   api.onSignal((signal) => chime(signal.type))
   api.onSelect((id) => {
     selectedId = id

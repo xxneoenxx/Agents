@@ -42,10 +42,19 @@ Installer bauen (auf Windows): `npm run dist` legt unter `app/dist/` einen
 Installer und eine portable `.exe` ab. Im Rechtsklick-Menü der Insel kannst du
 „Mit Windows starten“ einschalten.
 
-### 2. Plugin installieren
+### 2. Plugin aktivieren
 
-Im Terminal (die Desktop-App liest dieselben Einstellungen, ein Plugin im
-Benutzerbereich gilt also auch im Code-Tab):
+Am einfachsten in der Insel: Solange keine Sitzung da ist, zeigt sie, ob das
+Plugin aktiv ist, und bietet **Plugin aktivieren** an (auch im
+Rechtsklick-Menü). Das ruft die `claude`-CLI deines Rechners auf und
+installiert `island-bridge` im Benutzerbereich. Danach die Claude-App neu
+starten oder in offenen Sitzungen `/reload-plugins` eingeben.
+
+Nur **lokale** Sitzungen melden sich bei der Insel. Cloud-Sitzungen laufen auf
+Anthropic-Servern und kommen an `127.0.0.1` auf deinem PC nicht heran.
+
+Von Hand im Terminal (die Desktop-App liest dieselben Einstellungen, ein Plugin
+im Benutzerbereich gilt also auch im Code-Tab):
 
 ```bash
 claude plugin marketplace add xxneoenxx/Agents
@@ -68,9 +77,12 @@ Claude Code 2.1.286 oder neuer (`/status` zeigt die Version).
 
 ## Bedienung
 
-- **Pille** (232×48): Figur, Stimmung, Name der dringendsten Sitzung, Anzahl
+- **Größe**: Rechtsklick › **Größe**: Klein (50 %), Kompakt (60 %, Standard),
+  Mittel (75 %) oder Groß (100 %). Bei 100 % ist die Pille 232×48 und das
+  aufgeklappte Fenster 720×436 Pixel, bei 60 % 139×29 bzw. 432×262.
+- **Pille**: Figur, Stimmung, Name der dringendsten Sitzung, Anzahl
   der Sitzungen. Klick klappt auf.
-- **Aufgeklappt** (720×436): Kopfzeile mit Zusammenfassung, **Anpinnen** (bleibt
+- **Aufgeklappt**: Kopfzeile mit Zusammenfassung, **Anpinnen** (bleibt
   offen, auch wenn du woanders klickst), **Ton** und **Einklappen** (auch `Esc`).
   Links Funke mit Status, rechts die Sitzungs-Chips und eine Karte je Zustand:
   - **Freigabe**: Werkzeug und Befehl/Datei, **Freigeben** / **Ablehnen**.
@@ -82,7 +94,14 @@ Claude Code 2.1.286 oder neuer (`/status` zeigt die Version).
   - unten **Modell** (Opus/Sonnet/Haiku) und **Aufwand** (Niedrig, Mittel,
     Hoch, Sehr hoch, Max) für die gewählte Sitzung. Ein Punkt markiert, was
     gerade tatsächlich läuft, wenn deine Wahl noch nicht angekommen ist.
-- **Rechtsklick**: „Mit Windows starten“, „Beenden“.
+- **Rechtsklick**: Größe, Plugin aktivieren, „Mit Windows starten“, „Beenden“.
+
+**Animationen** laufen mit der Bildrate des Monitors, auf dem die Insel steht
+(60 Hz am Laptop, bis 144 Hz am Monitor): Alle Dauer-Animationen bewegen nur
+`transform` und `opacity`, die der Grafikchip ohne Neuzeichnen abspielt. Die
+Pupillen folgen der Maus pro Bild mit zeitbasierter Glättung, also bei jeder
+Bildrate gleich schnell, und die Maus wird so oft abgefragt, wie der Monitor
+Bilder zeigt.
 
 ## So hängt es zusammen
 
@@ -147,17 +166,22 @@ doch im Code-Tab, verschwindet die Karte aus der Insel.
 
 ## Einstellungen
 
-`%APPDATA%\Claude Island\config.json` (wird beim ersten Umschalten von Ton
-oder Anpinnen angelegt):
+`%APPDATA%\Claude Island\config.json` (wird beim ersten Umschalten von Ton,
+Anpinnen oder Größe angelegt):
 
 ```json
 {
   "port": 47821,
   "models": { "opus": "claude-opus-5-5", "sonnet": "claude-sonnet-5-5", "haiku": "claude-haiku-5-5" },
   "sound": true,
-  "pinned": false
+  "pinned": false,
+  "scale": 0.6,
+  "pluginSource": "xxneoenxx/Agents#claude/fervent-tesla-3kfm1o"
 }
 ```
+
+`scale` ist eine der Größen 0.5, 0.6, 0.75 oder 1. `pluginSource` ist der
+Marketplace, aus dem **Plugin aktivieren** installiert.
 
 Unter `models` stehen die IDs, die beim Umschalten geschickt werden. Den Port
 nur zusammen mit `plugin/hooks/hooks.json` und `plugin/hooks/register.ts`

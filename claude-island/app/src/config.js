@@ -16,6 +16,10 @@ const DEFAULTS = {
   },
   sound: true,
   pinned: false,
+  // Größe der Insel: 1 = 232×48 bzw. 720×436, 0.6 = 60 % davon.
+  scale: 0.6,
+  // Woher „Plugin aktivieren“ das Plugin holt (GitHub owner/repo#branch).
+  pluginSource: 'xxneoenxx/Agents#claude/fervent-tesla-3kfm1o',
 }
 
 function loadConfig(dir) {

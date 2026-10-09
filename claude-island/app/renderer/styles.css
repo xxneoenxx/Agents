@@ -90,14 +90,25 @@ input:focus-visible {
   transition: border-color 0.3s;
 }
 
-.island[data-mood='waiting'] .pill,
-.island[data-mood='problem'] .pill {
-  border-color: color-mix(in srgb, var(--status) 55%, transparent);
-  animation: pill-glow 1.6s ease-in-out infinite;
+.pill::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid var(--status);
+  opacity: 0;
+  pointer-events: none;
 }
 
-@keyframes pill-glow {
-  50% { border-color: color-mix(in srgb, var(--status) 20%, transparent); }
+.island[data-mood='waiting'] .pill::after,
+.island[data-mood='problem'] .pill::after {
+  animation: ring-pulse 1.6s ease-in-out infinite;
+  will-change: opacity;
+}
+
+@keyframes ring-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.12; }
 }
 
 .pill__funke {
@@ -192,7 +203,7 @@ input:focus-visible {
 }
 
 @keyframes panel-in {
-  from { opacity: 0; transform: scale(0.94, 0.86); border-radius: 30px; }
+  from { opacity: 0; transform: scale(0.94, 0.86); }
 }
 
 @keyframes panel-out {
@@ -409,6 +420,7 @@ input:focus-visible {
 }
 
 .chip__dot {
+  position: relative;
   flex: none;
   width: 8px;
   height: 8px;
@@ -416,14 +428,21 @@ input:focus-visible {
   background: var(--chip);
 }
 
-.chip[data-status='waiting'] .chip__dot,
-.chip[data-status='problem'] .chip__dot {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--chip) 25%, transparent);
-  animation: dot-pulse 1.2s ease-in-out infinite;
+.chip[data-status='waiting'] .chip__dot::after,
+.chip[data-status='problem'] .chip__dot::after,
+.step.is-current .step__dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid var(--chip, var(--working));
+  animation: dot-ring 1.2s ease-out infinite;
+  will-change: transform, opacity;
 }
 
-@keyframes dot-pulse {
-  50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--chip) 0%, transparent); }
+@keyframes dot-ring {
+  from { transform: scale(0.55); opacity: 0.8; }
+  to { transform: scale(1.5); opacity: 0; }
 }
 
 .chip__name {
@@ -650,6 +669,7 @@ textarea.field {
 }
 
 .step__dot {
+  position: relative;
   width: 7px;
   height: 7px;
   border-radius: 50%;
@@ -682,7 +702,6 @@ textarea.field {
 
 .step.is-current .step__dot {
   background: var(--working);
-  animation: step-pulse 1s ease-in-out infinite;
 }
 
 .step.is-current .step__text {
@@ -697,9 +716,6 @@ textarea.field {
   color: var(--problem);
 }
 
-@keyframes step-pulse {
-  50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--working) 25%, transparent); }
-}
 
 .thinking {
   display: flex;
@@ -744,6 +760,24 @@ textarea.field {
   font-family: var(--mono);
   font-size: 11.5px;
   color: var(--accent);
+}
+
+.empty b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.empty__note {
+  font-size: 12px;
+}
+
+.empty__cmd {
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid var(--line);
+  user-select: text;
 }
 
 /* ---------- Fuß: Modell & Aufwand ---------- */
@@ -831,8 +865,6 @@ textarea.field {
 /* ---------- Funke ---------- */
 
 .funke {
-  --look-x: 0;
-  --look-y: 0;
   --apricot-1: #ffd8bb;
   --apricot-2: #ffb487;
   --apricot-3: #ff9a62;
@@ -842,6 +874,7 @@ textarea.field {
   width: 1em;
   height: 1.12em;
   line-height: 0;
+  will-change: transform;
 }
 
 .funke__antenna {
@@ -874,18 +907,22 @@ textarea.field {
   border-radius: 50%;
   transform: translateX(-50%);
   background: radial-gradient(circle at 35% 30%, #fff 0 12%, var(--status) 45%);
-  box-shadow:
-    0 0 0.05em var(--status),
-    0 0 0.16em color-mix(in srgb, var(--status) 70%, transparent);
-  animation: bulb-glow 2.4s ease-in-out infinite;
+  box-shadow: 0 0 0.04em var(--status);
 }
 
-@keyframes bulb-glow {
-  50% {
-    box-shadow:
-      0 0 0.03em var(--status),
-      0 0 0.08em color-mix(in srgb, var(--status) 40%, transparent);
-  }
+.funke__bulb::after {
+  content: '';
+  position: absolute;
+  inset: -0.09em;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--status) 65%, transparent) 0%, transparent 68%);
+  animation: glow 2.4s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.78); }
 }
 
 .funke__body {
@@ -901,6 +938,7 @@ textarea.field {
     inset 0.025em 0.03em 0.06em rgba(255, 245, 235, 0.55);
   transform-origin: 50% 100%;
   animation: breathe 4.2s ease-in-out infinite;
+  will-change: transform;
 }
 
 @keyframes breathe {
@@ -932,8 +970,8 @@ textarea.field {
   margin: -0.0575em 0 0 -0.0525em;
   border-radius: 50%;
   background: var(--ink);
-  transform: translate(calc(var(--look-x) * 0.045em), calc(var(--look-y) * 0.05em));
-  transition: transform 0.08s linear, opacity 0.2s;
+  transition: opacity 0.2s;
+  will-change: transform;
 }
 
 .funke__pupil::after {
@@ -994,7 +1032,12 @@ textarea.field {
   border: 0.024em solid #5a2410;
   border-top: 0;
   border-radius: 0 0 0.08em 0.08em;
-  transition: all 0.25s var(--ease-out);
+  transition:
+    width 0.25s var(--ease-out),
+    height 0.25s var(--ease-out),
+    top 0.25s var(--ease-out),
+    border-radius 0.25s var(--ease-out),
+    background-color 0.25s;
 }
 
 .funke__zzz {
@@ -1063,9 +1106,12 @@ textarea.field {
 }
 
 .island[data-mood='idle'] .funke__bulb {
-  animation: none;
-  box-shadow: 0 0 0.04em var(--status);
   opacity: 0.6;
+}
+
+.island[data-mood='idle'] .funke__bulb::after {
+  animation: none;
+  opacity: 0.25;
 }
 
 /* Fertig: ^ ^ */
@@ -1121,7 +1167,7 @@ textarea.field {
   50% { transform: scale(1.04, 0.95); }
 }
 
-.island[data-mood='working'] .funke__bulb {
+.island[data-mood='working'] .funke__bulb::after {
   animation-duration: 0.85s;
 }
 
@@ -1215,7 +1261,7 @@ textarea.field {
   background: #7a2c14;
 }
 
-.island[data-mood='waiting'] .funke__bulb {
+.island[data-mood='waiting'] .funke__bulb::after {
   animation-duration: 0.95s;
 }
 
