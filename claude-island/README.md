@@ -75,7 +75,7 @@ Alternativ in einer Terminal-Sitzung in einem Schritt:
 /plugin install island-bridge --marketplace xxneoenxx/Agents
 ```
 
-**Update auf 0.2.0** (bringt die Obsidian-Werkzeuge): Die Insel erkennt eine
+**Update auf 0.2.1** (bringt die Obsidian-Werkzeuge): Die Insel erkennt eine
 ältere installierte Version und bietet **Plugin aktualisieren** an (Bühne links,
 leere Karte oder Rechtsklick-Menü). Von Hand:
 `claude plugin marketplace update neo-agents` und
@@ -175,16 +175,23 @@ Ergebnissen an“ oder „Was steht in meinen Notizen zu Projekt X?“.
   „Notiz schreiben“ in der Insel, mit Pfad, Modus und Vorschau. Geschrieben
   wird erst nach **Freigeben**; bei **Ablehnen** bleibt der Vault unverändert
   und Claude erfährt das. Das gilt in jedem Berechtigungsmodus von Claude Code,
-  weil die Insel selbst anhält. Ohne Antwort nach 10 Minuten wird nichts
-  geschrieben.
+  weil die Insel selbst anhält. Du hast dafür bis zu 10 Minuten Zeit (der Mod
+  fragt alle 20 Sekunden nach, weil Claude Code eine einzelne Anfrage nach
+  30 Sekunden abbricht). Bricht Claude ab (Esc), verschwindet die Karte; ohne
+  Antwort wird nichts geschrieben. Die Karte zeigt bei „ersetzen“ und
+  „anhängen“ die bisherige Größe und sagt deutlich, wenn die Vorschau gekürzt ist.
 - **Frei**: Claude schreibt ohne Rückfrage; das Widget zeigt, was geschrieben
   wurde.
 
 Lesen und Suchen gehen immer ohne Rückfrage.
 
 **Schutz**: Nur Pfade innerhalb des Vaults, keine `..`, keine absoluten Pfade,
-keine versteckten Ordner wie `.obsidian` und `.trash`, kein Weg über
-Verknüpfungen nach draußen; geschrieben werden nur `.md`-Dateien bis 1 MB.
+keine versteckten Ordner wie `.obsidian`, `.git` und `.trash` (auch nicht über
+Windows-Kurznamen wie `OBSIDI~1` oder Verknüpfungen), keine unter Windows
+ungültigen Namen; gelesen und geschrieben werden nur `.md`-Notizen bis 1 MB.
+Neu anlegen ist exklusiv, Anhängen hängt wirklich nur an, Ersetzen läuft über
+eine Zwischendatei. Netzlaufwerke, `subst`-Laufwerke und Laufwerkswurzeln
+(z. B. ein USB-Stick `E:\`) funktionieren.
 
 **Widget**: eigenes kleines Fenster unter der Insel. Es zeigt Vault-Name und
 Anzahl der Notizen, den Schalter, eine Suche, unter „Claude“ die letzten
@@ -256,7 +263,10 @@ nur zusammen mit `plugin/hooks/hooks.json` und `plugin/hooks/register.ts`
 
 ## Sicherheit
 
-Der Server lauscht nur auf `127.0.0.1`. Anfragen mit `Origin`-Header (also aus
+Der Server lauscht nur auf `127.0.0.1`. Für die Vault-Endpunkte braucht es
+zusätzlich einen geheimen Schlüssel aus `%APPDATA%\Claude Island\island-token`,
+den die Insel beim ersten Start anlegt und den der Mod mitschickt; so kommen
+andere Benutzer oder Programme auf demselben PC nicht an deine Notizen. Anfragen mit `Origin`-Header (also aus
 einem Browser), mit fremdem `Host` (DNS-Rebinding) oder ohne
 `application/json` werden abgewiesen. Freigeben und Ablehnen geht nur über
 das Fenster der App, nicht über HTTP.

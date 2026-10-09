@@ -12,7 +12,7 @@ const {
   commandFor,
 } = require('../src/plugin')
 
-const entry = (id, enabled, version = '0.2.0') => ({ id, version, scope: 'user', enabled })
+const entry = (id, enabled, version = '0.2.1') => ({ id, version, scope: 'user', enabled })
 const listed = (...entries) => JSON.stringify([{ id: 'other@x', enabled: true }, ...entries])
 const MARKETS = JSON.stringify([{ name: 'neo-agents', source: 'github', repo: 'xxneoenxx/Agents' }])
 
@@ -31,7 +31,7 @@ test('Plugin-Liste lesen', () => {
   assert.deepEqual(parsePluginList(listed(entry('island-bridge@neo-agents', true))), {
     state: 'active',
     id: 'island-bridge@neo-agents',
-    version: '0.2.0',
+    version: '0.2.1',
   })
   assert.equal(parsePluginList(listed(entry('island-bridge@neo-agents', false))).state, 'disabled')
   assert.equal(parsePluginList('[]').state, 'missing')
@@ -40,7 +40,7 @@ test('Plugin-Liste lesen', () => {
 
 test('ein aktiver Eintrag zählt, auch wenn ein abgeschalteter davor steht', () => {
   const text = listed(entry('island-bridge@aaa-dev', false), entry('island-bridge@neo-agents', true))
-  assert.deepEqual(parsePluginList(text), { state: 'active', id: 'island-bridge@neo-agents', version: '0.2.0' })
+  assert.deepEqual(parsePluginList(text), { state: 'active', id: 'island-bridge@neo-agents', version: '0.2.1' })
   const off = listed(entry('island-bridge@aaa-dev', false), entry('island-bridge@neo-agents', false))
   assert.equal(parsePluginList(off).id, 'island-bridge@neo-agents')
 })
@@ -116,7 +116,7 @@ test('Fehlschlag und Zeitüberschreitung bringen den Grund mit', async () => {
 test('veraltetes Plugin wird erkannt und aktualisiert', async () => {
   let version = '0.1.0'
   const { run, calls } = fakeClaude((cmd) => {
-    if (cmd.startsWith('plugin update')) version = '0.2.0'
+    if (cmd.startsWith('plugin update')) version = '0.2.1'
     return cmd === 'plugin list --json' ? { out: listed(entry('island-bridge@neo-agents', true, version)) } : {}
   })
   assert.equal((await checkPlugin(run)).outdated, true)
@@ -131,6 +131,12 @@ test('CLI wird an bekannten Orten gefunden, bevor PATH gilt', () => {
   assert.equal(resolveClaude({ env, platform: 'win32', exists: has('C:\\Users\\neo\\.local\\bin\\claude.exe') }), 'C:\\Users\\neo\\.local\\bin\\claude.exe')
   assert.equal(resolveClaude({ env, platform: 'win32', exists: has('C:\\Users\\neo\\AppData\\Roaming\\npm\\claude.cmd') }), 'C:\\Users\\neo\\AppData\\Roaming\\npm\\claude.cmd')
   assert.equal(resolveClaude({ env, platform: 'win32', exists: () => false }), 'claude')
+  const withPath = { ...env, Path: 'C:\\Windows;C:\\nvm4w\\nodejs;C:\\Tools' }
+  assert.equal(resolveClaude({ env: withPath, platform: 'win32', exists: has('C:\\nvm4w\\nodejs\\claude.cmd') }), 'C:\\nvm4w\\nodejs\\claude.cmd')
+  assert.equal(
+    resolveClaude({ env: withPath, platform: 'win32', exists: (f) => f === 'C:\\Tools\\claude.exe' || f === 'C:\\nvm4w\\nodejs\\claude.cmd' }),
+    'C:\\nvm4w\\nodejs\\claude.cmd',
+  )
 })
 
 test('.cmd läuft über cmd.exe mit gequoteten Argumenten, .exe direkt', () => {

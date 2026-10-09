@@ -29,9 +29,9 @@ function request(port, path, { method = 'POST', body, headers = {}, agent } = {}
   })
 }
 
-async function withServer(fn, { getVault = null } = {}) {
+async function withServer(fn, { getVault = null, token = null, timing = {} } = {}) {
   const store = new SessionStore({ modelIds: { opus: 'claude-opus-5-5', sonnet: 'claude-sonnet-5-5', haiku: 'claude-haiku-5-5' } })
-  const island = createIslandServer(store, { port: 0, getVault })
+  const island = createIslandServer(store, { port: 0, getVault, token, timing })
   const { port } = await island.listen()
   try {
     await fn({ store, port })
@@ -191,12 +191,13 @@ test('Vault-Endpunkte: suchen, lesen, schreiben, Fehler und Aktivität', async (
   vault.close()
 })
 
-test('Modus „Fragen“: Schreiben wartet auf die Insel, Ablehnen schreibt nichts', async () => {
+test('Modus „Fragen“: Schreibwunsch wartet über Abfragen auf die Insel', async () => {
   const fs = require('node:fs')
   const os = require('node:os')
   const path = require('node:path')
   const { Vault } = require('../src/vault')
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'island-ask-vault-'))
+  fs.writeFileSync(path.join(root, 'Alt.md'), 'x'.repeat(2048))
   const vault = new Vault(root)
   await vault.scan()
   await withServer(
@@ -204,29 +205,77 @@ test('Modus „Fragen“: Schreiben wartet auf die Insel, Ablehnen schreibt nich
       store.setVaultInfo({ name: vault.name, writeMode: 'ask' })
       const sid = { session_id: 'abc' }
 
-      const pending = request(port, '/vault/write', { body: { ...sid, path: 'Ideen/Ja', content: '# Ja\nZeile' } })
-      await waitFor(() => store.snapshot().sessions[0]?.approvals.length === 1)
+      // Antwort kommt sofort mit einer Nummer; geschrieben ist noch nichts.
+      const started = await request(port, '/vault/write', { body: { ...sid, path: 'Ideen/Ja', content: '# Ja\nZeile' } })
+      assert.equal(started.status, 202)
+      const id = started.json.pending
       const card = store.snapshot().sessions[0].approvals[0]
       assert.equal(card.tool, 'Notiz schreiben')
-      assert.equal(card.detail, 'Ideen/Ja.md (neu anlegen)\n\n# Ja\nZeile')
       assert.equal(fs.existsSync(path.join(root, 'Ideen', 'Ja.md')), false)
+
+      // Eine Abfrage ohne Entscheidung endet nach der Wartezeit mit „noch offen“.
+      const still = await request(port, '/vault/write-wait', { body: { ...sid, id } })
+      assert.deepEqual([still.status, still.json.pending], [202, id])
+      assert.equal(store.snapshot().sessions[0].approvals.length, 1)
+
+      // Entscheidung während einer laufenden Abfrage.
+      const waiting = request(port, '/vault/write-wait', { body: { ...sid, id } })
+      await new Promise((r) => setTimeout(r, 50))
       store.decide(card.id, 'allow')
-      const ok = await pending
+      const ok = await waiting
       assert.deepEqual([ok.status, ok.json.path], [200, 'Ideen/Ja.md'])
       assert.equal(fs.readFileSync(path.join(root, 'Ideen', 'Ja.md'), 'utf8'), '# Ja\nZeile')
+      // Wer die Antwort verpasst hat, bekommt sie beim Nachfragen noch einmal.
+      assert.equal((await request(port, '/vault/write-wait', { body: { ...sid, id } })).status, 200)
 
-      const pending2 = request(port, '/vault/write', { body: { ...sid, path: 'Nein.md', content: 'x' } })
-      await waitFor(() => store.snapshot().sessions[0]?.approvals.length === 1)
-      store.decide(store.snapshot().sessions[0].approvals[0].id, 'deny')
-      const no = await pending2
+      // Ablehnen schreibt nichts; die Karte zeigt, was ersetzt würde.
+      const second = await request(port, '/vault/write', { body: { ...sid, path: 'Alt.md', content: 'neu', mode: 'replace' } })
+      const card2 = store.snapshot().sessions[0].approvals[0]
+      assert.match(card2.detail, /ersetzen, bisher 2 KB/)
+      store.decide(card2.id, 'deny')
+      const no = await request(port, '/vault/write-wait', { body: { ...sid, id: second.json.pending } })
       assert.deepEqual([no.status, no.json.error], [403, 'denied'])
-      assert.equal(fs.existsSync(path.join(root, 'Nein.md')), false)
+      assert.equal(fs.readFileSync(path.join(root, 'Alt.md'), 'utf8'), 'x'.repeat(2048))
+
+      // Abbrechen (Esc in Claude Code) nimmt die Karte weg.
+      const third = await request(port, '/vault/write', { body: { ...sid, path: 'Drei.md', content: 'x' } })
+      assert.equal(store.snapshot().sessions[0].approvals.length, 1)
+      await request(port, '/vault/write-cancel', { body: { ...sid, id: third.json.pending } })
+      assert.equal(store.snapshot().sessions[0].approvals.length, 0)
+
+      // Fragt niemand mehr nach, verschwindet die Karte nach der Frist.
+      await request(port, '/vault/write', { body: { ...sid, path: 'Vier.md', content: 'x' } })
+      await waitFor(() => store.snapshot().sessions[0].approvals.length === 0)
+      assert.equal(fs.existsSync(path.join(root, 'Vier.md')), false)
+
+      // Fremde Sitzung oder unbekannte Nummer: nichts zu holen.
+      assert.equal((await request(port, '/vault/write-wait', { body: { session_id: 'fremd', id } })).status, 404)
 
       // Ungültiges wird abgelehnt, bevor jemand gefragt wird.
       const bad = await request(port, '/vault/write', { body: { ...sid, path: '../raus.md', content: 'x' } })
       assert.deepEqual([bad.status, bad.json.error], [400, 'bad-path'])
-      assert.equal(store.snapshot().sessions[0].approvals.length, 0)
     },
-    { getVault: () => vault },
+    { getVault: () => vault, timing: { waitMs: 150, graceMs: 400 } },
+  )
+})
+
+test('Vault-Endpunkte verlangen den Schlüssel, wenn einer gesetzt ist', async () => {
+  const fs = require('node:fs')
+  const os = require('node:os')
+  const path = require('node:path')
+  const { Vault } = require('../src/vault')
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'island-token-vault-'))
+  const vault = new Vault(root)
+  await vault.scan()
+  await withServer(
+    async ({ port }) => {
+      const body = { session_id: 'abc' }
+      assert.equal((await request(port, '/vault/status', { body })).status, 401)
+      assert.equal((await request(port, '/vault/status', { body, headers: { 'x-island-token': 'falsch' } })).status, 401)
+      assert.equal((await request(port, '/vault/status', { body, headers: { 'x-island-token': 'geheim-123' } })).status, 200)
+      // Hooks und Mod-Poll bleiben ohne Schlüssel erreichbar.
+      assert.equal((await request(port, '/mod/poll', { body })).status, 200)
+    },
+    { getVault: () => vault, token: 'geheim-123' },
   )
 })

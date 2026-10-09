@@ -21,6 +21,7 @@
   let found = null
   let searchSeq = 0
   let searchTimer = null
+  let searching = false
 
   const esc = (value) =>
     String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
@@ -73,10 +74,10 @@
         list.innerHTML = '<div class="w-note">Suche …</div>'
         return
       }
+      const cut = found.partial ? '<div class="w-note">Suche aus Zeitgründen abgebrochen; es kann weitere Treffer geben.</div>' : ''
       list.innerHTML = found.results.length
-        ? found.results.map((n) => noteItem(n, n.snippet || n.folder || 'Vault-Wurzel')).join('') +
-          (found.partial ? '<div class="w-note">Suche abgebrochen, es gibt evtl. mehr Treffer.</div>' : '')
-        : `<div class="w-note">Keine Treffer für „${esc(query)}“.</div>`
+        ? found.results.map((n) => noteItem(n, n.snippet || n.folder || 'Vault-Wurzel')).join('') + cut
+        : `<div class="w-note">Keine Treffer für „${esc(query)}“.</div>${cut}`
       return
     }
     const parts = []
@@ -89,11 +90,18 @@
     list.innerHTML = parts.join('')
   }
 
+  // Nur das Ergebnis der zuletzt gestellten Suche zählt.
   async function runSearch() {
     const seq = ++searchSeq
     const q = query
-    const result = q ? await api.search(q) : null
-    if (seq !== searchSeq) return
+    searching = true
+    let result = null
+    try {
+      result = q ? await api.search(q) : null
+    } finally {
+      if (seq === searchSeq) searching = false
+    }
+    if (seq !== searchSeq || q !== query) return
     found = result
     render()
   }
@@ -101,6 +109,7 @@
   byId('w-q').addEventListener('input', (event) => {
     query = event.target.value.trim()
     found = null
+    searchSeq += 1
     clearTimeout(searchTimer)
     searchTimer = setTimeout(runSearch, 160)
     render()
@@ -110,6 +119,7 @@
       event.target.value = ''
       query = ''
       found = null
+      searchSeq += 1
       render()
     }
   })
@@ -135,7 +145,11 @@
       found = null
       byId('w-q').value = ''
     }
-    if (query) runSearch()
+    // Neue Notizen können neue Treffer sein; aber nicht jede Änderung stapelt eine Suche.
+    if (query && !searching) {
+      clearTimeout(searchTimer)
+      searchTimer = setTimeout(runSearch, 400)
+    }
     render()
   }
 

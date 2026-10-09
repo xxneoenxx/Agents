@@ -76,15 +76,29 @@ function describeTool(tool, input) {
   return firstString ? clip(firstString, 90) : tool || ''
 }
 
+const kb = (bytes) => `${Math.max(1, Math.round(bytes / 1024))} KB`
+
+// Freigabekarte eines Schreibwunschs: Pfad, Modus, was es schon gibt, und
+// eine Vorschau, die deutlich sagt, wenn sie gekürzt ist.
+function vaultWriteDetail(i) {
+  const content = typeof i.content === 'string' ? i.content : ''
+  const mode = WRITE_MODE_LABEL[i.mode] || WRITE_MODE_LABEL.create
+  const before = typeof i.existingBytes === 'number' ? `, bisher ${kb(i.existingBytes)}` : ''
+  const lines = content.split('\n')
+  let preview = lines.slice(0, 12).join('\n')
+  if (preview.length > 1500) preview = preview.slice(0, 1500)
+  const shownLines = preview.split('\n').length
+  const cut = preview.length < content.length
+    ? `\n… (+${Math.max(0, lines.length - shownLines)} weitere Zeilen, ${kb(Buffer.byteLength(content))} insgesamt)`
+    : ''
+  return `${i.path} (${mode}${before})${preview ? `\n\n${preview}${cut}` : ''}`
+}
+
 // Der ausführliche Text für die Freigabekarte.
 function approvalDetail(tool, input) {
   const i = input && typeof input === 'object' ? input : {}
   if (typeof i.command === 'string') return i.command.slice(0, 2000)
-  if (toolLabel(tool) === VAULT_TOOLS.vault_write && typeof i.path === 'string') {
-    const preview = typeof i.content === 'string' ? i.content.split('\n').slice(0, 12).join('\n').slice(0, 1500) : ''
-    const mode = WRITE_MODE_LABEL[i.mode] || WRITE_MODE_LABEL.create
-    return `${i.path} (${mode})${preview ? `\n\n${preview}` : ''}`
-  }
+  if (toolLabel(tool) === VAULT_TOOLS.vault_write && typeof i.path === 'string') return vaultWriteDetail(i)
   if (typeof i.file_path === 'string') {
     const body = typeof i.new_string === 'string' ? i.new_string : typeof i.content === 'string' ? i.content : ''
     const preview = body.split('\n').slice(0, 8).join('\n')

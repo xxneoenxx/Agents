@@ -53,11 +53,13 @@ test('Index: Markdown-Notizen, versteckte Ordner bleiben draußen', async () => 
   const vault = new Vault(root)
   assert.equal(await vault.scan(), 3)
   assert.deepEqual([...vault.notes.keys()].sort(), ['Projekte/Ideen/Funke.md', 'Projekte/Insel.md', 'Start.md'])
-  const top = vault.list('')
+  const top = await vault.list('')
   assert.deepEqual(top.folders, ['Projekte'])
   assert.deepEqual(top.notes.map((n) => n.name), ['Start'])
-  assert.deepEqual(vault.list('Projekte').folders, ['Ideen'])
-  assert.throws(() => vault.list('Gibtsnicht'), /gibt es nicht/)
+  assert.deepEqual((await vault.list('Projekte')).folders, ['Ideen'])
+  await assert.rejects(vault.list('Gibtsnicht'), /gibt es nicht/)
+  // Ein Ordner nur mit Anhängen gibt es trotzdem, er ist nur leer.
+  assert.deepEqual((await vault.list('Bilder')).notes, [])
 })
 
 test('recent sortiert nach Änderung', async () => {
@@ -140,4 +142,87 @@ test('Änderungen auf der Platte kommen im Index an', async () => {
 
 test('Obsidian-Link', () => {
   assert.equal(obsidianUri('C:\\Vault\\Ideen.md'), 'obsidian://open?path=C%3A%5CVault%5CIdeen.md')
+})
+
+test('Kurznamen und Verknüpfungen führen nicht in versteckte Ordner', async () => {
+  const root = makeVault({ 'ok.md': 'ok', '.obsidian/plugins/sync/data.json': '{"token":"geheim"}', '.git/config.md': 'pat' })
+  // Unter Linux spielt ein Symlink die Rolle des Windows-Kurznamens OBSIDI~1.
+  fs.symlinkSync(path.join(root, '.obsidian'), path.join(root, 'Obsi'), 'dir')
+  fs.symlinkSync(path.join(root, '.git'), path.join(root, 'Versionen'), 'dir')
+  const vault = new Vault(root)
+  await vault.scan()
+  await assert.rejects(vault.read('OBSIDI~1/plugins/sync/data.json'), (e) => e.code === 'bad-path')
+  await assert.rejects(vault.read('Obsi/plugins/sync/data.json'), /versteckte Ordner|Markdown/i)
+  await assert.rejects(vault.read('Versionen/config.md'), /Versteckte Ordner/)
+  await assert.rejects(vault.write('Versionen/neu.md', 'x'), /Versteckte Ordner/)
+  await assert.rejects(vault.read('ok.json'), (e) => e.code === 'not-found' || e.code === 'bad-path')
+})
+
+test('nur Markdown lesbar; unter Windows ungültige Namen werden abgelehnt', async () => {
+  const root = makeVault({ 'notiz.md': 'n', 'daten.json': '{}' })
+  const vault = new Vault(root)
+  await vault.scan()
+  await assert.rejects(vault.read('daten.json'), /Nur Markdown/)
+  for (const bad of ['Kunden/Müller GmbH & Co./a.md', 'Ideen /a.md', 'CON/a.md', 'nul.md', 'a\tb.md']) {
+    await assert.rejects(vault.write(bad, 'x'), (e) => e.code === 'bad-path', `nicht abgewiesen: ${JSON.stringify(bad)}`)
+  }
+})
+
+test('Namen mit Punkten (Datum) sind Notizen', async () => {
+  const root = makeVault({ 'Tagebuch/09.10.2026.md': 'Eintrag' })
+  const vault = new Vault(root)
+  await vault.scan()
+  assert.equal((await vault.read('Tagebuch/09.10.2026')).path, 'Tagebuch/09.10.2026.md')
+  assert.equal((await vault.write('Besprechung 10.10.2026', '# Termin')).path, 'Besprechung 10.10.2026.md')
+  await assert.rejects(vault.write('Plan.canvas', '{}'), /Nur Markdown/)
+})
+
+test('gleichzeitiges Schreiben verliert nichts', async () => {
+  const root = makeVault({ 'Tag.md': '# Tag' })
+  const vault = new Vault(root)
+  await vault.scan()
+  await Promise.all(['- A', '- B', '- C'].map((line) => vault.write('Tag.md', line, 'append')))
+  const text = fs.readFileSync(path.join(root, 'Tag.md'), 'utf8')
+  for (const line of ['# Tag', '- A', '- B', '- C']) assert.ok(text.includes(line), text)
+  const created = await Promise.allSettled([vault.write('Neu.md', 'eins', 'create'), vault.write('Neu.md', 'zwei', 'create')])
+  assert.deepEqual(created.map((r) => r.status).sort(), ['fulfilled', 'rejected'])
+  await vault.write('Tag.md', 'ersetzt', 'replace')
+  assert.equal(fs.readFileSync(path.join(root, 'Tag.md'), 'utf8'), 'ersetzt')
+  assert.deepEqual(fs.readdirSync(root).filter((f) => f.endsWith('.tmp')), [])
+})
+
+test('Schreiben während eines Scans bleibt im Index', async () => {
+  const files = {}
+  for (let i = 0; i < 400; i++) files[`Ordner${i % 20}/n${i}.md`] = `n${i}`
+  const root = makeVault(files)
+  const vault = new Vault(root)
+  await vault.scan()
+  const scanning = vault.scan()
+  await vault.write('Einkauf', '# Liste')
+  await scanning
+  await vault.scan()
+  assert.ok(vault.notes.has('Einkauf.md'))
+  assert.equal(vault.notes.size, 401)
+})
+
+test('Verknüpfung auf eine Datei draußen landet nicht im Index und nicht in der Suche', async () => {
+  const outside = fs.mkdtempSync(path.join(os.tmpdir(), 'island-out-'))
+  fs.writeFileSync(path.join(outside, 'secret.txt'), 'API_KEY=supersecret123')
+  const root = makeVault({ 'a.md': 'a' })
+  const vault = new Vault(root)
+  await vault.scan()
+  vault.watch()
+  fs.symlinkSync(path.join(outside, 'secret.txt'), path.join(root, 'leak.md'))
+  await new Promise((r) => setTimeout(r, 400))
+  assert.equal(vault.notes.has('leak.md'), false)
+  assert.deepEqual((await vault.search('api_key')).results, [])
+  vault.close()
+})
+
+test('Pfadvergleich: Laufwerkswurzel und Groß-/Kleinschreibung', () => {
+  const { within } = require('../src/vault')
+  assert.equal(within(path.resolve('/'), path.resolve('/note.md')), true)
+  assert.equal(within('/vault', '/vault/a/b.md'), true)
+  assert.equal(within('/vault', '/vault-2/a.md'), false)
+  assert.equal(within('/vault', '/vault'), true)
 })

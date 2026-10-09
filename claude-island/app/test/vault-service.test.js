@@ -59,3 +59,30 @@ test('Ordner wählen, Schreibmodus umschalten, Suche und Obsidian-Link', async (
   assert.equal(service.uriFor('../raus.md'), null)
   service.close()
 })
+
+test('Vault-Wechsel während des Einlesens: der zuletzt gewählte gewinnt', async () => {
+  const big = {}
+  for (let i = 0; i < 1500; i++) big[`Ordner${i % 30}/n${i}.md`] = 'x'
+  const a = makeVault(big)
+  const b = makeVault({ 'klein.md': 'k' })
+  const { service, config, store } = setup({ find: () => [{ name: 'A', path: a }] })
+  const starting = service.init()
+  await service.choose(b)
+  await starting
+  assert.equal(service.current().root, fs.realpathSync(b))
+  assert.equal(config.vaultPath, b)
+  assert.equal(store.modPoll({ session_id: 's' }).vault.name, path.basename(fs.realpathSync(b)))
+  service.close()
+})
+
+test('Wechsel leert die Vault-Aktivität', async () => {
+  const a = makeVault({ 'a.md': 'a' })
+  const b = makeVault({ 'b.md': 'b' })
+  const { service, store } = setup()
+  await service.choose(a)
+  store.recordVaultActivity({ sessionId: 's', op: 'read', path: 'a.md' })
+  assert.equal(service.snapshot().activity.length, 1)
+  await service.choose(b)
+  assert.equal(service.snapshot().activity.length, 0)
+  service.close()
+})

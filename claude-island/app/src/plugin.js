@@ -11,7 +11,7 @@ const { spawn } = require('node:child_process')
 const PLUGIN = 'island-bridge'
 const MARKETPLACE = 'neo-agents'
 // Die Plugin-Version, zu der diese App passt; ältere bietet sie zum Aktualisieren an.
-const EXPECTED_VERSION = '0.2.0'
+const EXPECTED_VERSION = '0.2.1'
 const NOT_FOUND = /not recognized|nicht als interner|nicht gefunden|command not found|ENOENT/i
 
 // Wo die Installer die CLI ablegen, unabhängig davon, ob PATH schon stimmt
@@ -27,8 +27,23 @@ function knownLocations(env = process.env, platform = process.platform) {
   return env.HOME ? [path.posix.join(env.HOME, '.local', 'bin', 'claude')] : []
 }
 
+// Wie die Shell suchen würde: Ordner für Ordner, unter Windows .exe vor .cmd
+// (nvm-windows, eigener npm-Präfix, pnpm legen claude.cmd woanders ab).
+function onPath(env, platform, exists) {
+  const p = platform === 'win32' ? path.win32 : path.posix
+  const dirs = String(env.PATH || env.Path || '').split(platform === 'win32' ? ';' : ':').filter(Boolean)
+  const names = platform === 'win32' ? ['claude.exe', 'claude.cmd'] : ['claude']
+  for (const dir of dirs) {
+    for (const name of names) {
+      const file = p.join(dir.replace(/^"|"$/g, ''), name)
+      if (exists(file)) return file
+    }
+  }
+  return null
+}
+
 function resolveClaude({ env = process.env, platform = process.platform, exists = fs.existsSync } = {}) {
-  return knownLocations(env, platform).find((file) => exists(file)) || 'claude'
+  return knownLocations(env, platform).find((file) => exists(file)) || onPath(env, platform, exists) || 'claude'
 }
 
 // Wie spawn() die CLI startet: .exe und Unix direkt, .cmd über cmd.exe mit

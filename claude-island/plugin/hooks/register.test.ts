@@ -10,7 +10,7 @@ type VaultAnswer = (op: string, body: Json) => { status: number; body: object }
 // /vault/<op> mit `vault` (ohne: kein Vault verbunden).
 function island(on: On, answer: () => object, ok = true, vault?: VaultAnswer) {
   const polls: Poll[] = []
-  const vaultCalls: { op: string; body: Json }[] = []
+  const vaultCalls: { op: string; body: Json; token?: string }[] = []
   on('http.fetch', async ($, e) => {
     const body = JSON.parse(e.init?.body ?? '{}') as Json
     const reply = (status: number, data: object) => ({
@@ -21,9 +21,9 @@ function island(on: On, answer: () => object, ok = true, vault?: VaultAnswer) {
       if (!ok) throw new Error('ECONNREFUSED')
       return reply(200, answer())
     }
-    const op = /^http:\/\/127\.0\.0\.1:47821\/vault\/(\w+)$/.exec(e.url)?.[1]
+    const op = /^http:\/\/127\.0\.0\.1:47821\/vault\/([\w-]+)$/.exec(e.url)?.[1]
     expect(op).toBeDefined()
-    vaultCalls.push({ op: op ?? '', body })
+    vaultCalls.push({ op: op ?? '', body, token: e.init?.headers?.['x-island-token'] })
     if (!ok) throw new Error('ECONNREFUSED')
     const r = vault ? vault(op ?? '', body) : { status: 409, body: { error: 'no-vault', message: 'Kein Obsidian-Vault verbunden.' } }
     return reply(r.status, r.body)
@@ -32,11 +32,13 @@ function island(on: On, answer: () => object, ok = true, vault?: VaultAnswer) {
 }
 
 // Die Engine unter den Plugins: Sitzung, Prompts und Modellaufrufe.
-function engine(on: On) {
+function engine(on: On, { env = {}, files = {} }: { env?: Record<string, string>; files?: Record<string, string> } = {}) {
   const steps: TurnStepInput[] = []
   const prompts: { text: string; asUser: boolean }[] = []
   const tools: { name: string; isDeferred: unknown }[] = []
   on('session.id', () => ({ value: 'sitzung-1' }))
+  mock.env(on, env)
+  on('fs.read', ($, e) => (e.path in files ? { value: files[e.path] ?? '' } : { deny: 'ENOENT' }))
   on('session.start', ($, e) => ({ cwd: e.cwd }))
   on('tool.register', ($, e) => {
     tools.push({ name: e.name, isDeferred: e.isDeferred })
@@ -212,4 +214,68 @@ test('abgelehnter Schreibwunsch kommt als Ablehnung bei Claude an', async ($, on
   await $.session.start(START)
   const res = await $.tool.call({ tool: TOOL('vault_write'), path: 'a.md', content: 'x' })
   expect(res.deny).toBe('Abgelehnt in Claude Island. Nichts geschrieben.')
+})
+
+test('Modus „Fragen“: der Mod fragt nach, bis in der Insel entschieden ist', async ($, on) => {
+  mock.clock(on)
+  engine(on)
+  let waits = 0
+  const { vaultCalls } = island(on, () => ({}), true, (op) => {
+    if (op === 'write') return { status: 202, body: { pending: 'w1', message: 'Wartet auf Freigabe in Claude Island.' } }
+    if (op === 'write-wait') {
+      waits += 1
+      if (waits < 3) return { status: 202, body: { pending: 'w1' } }
+      return { status: 200, body: { path: 'Ideen/Neu.md', created: true, bytes: 5 } }
+    }
+    return { status: 404, body: {} }
+  })
+  await $.session.start(START)
+  const res = await $.tool.call({ tool: TOOL('vault_write'), path: 'Ideen/Neu', content: '# Neu' })
+  expect(res.result).toBe('Notiz angelegt: Ideen/Neu.md (5 Bytes)')
+  expect(vaultCalls.map((c) => c.op)).toEqual(['write', 'write-wait', 'write-wait', 'write-wait'])
+  expect(vaultCalls[1]?.body).toEqual({ id: 'w1', session_id: 'sitzung-1' })
+})
+
+test('Modus „Fragen“: Ablehnung in der Insel kommt als Ablehnung an', async ($, on) => {
+  mock.clock(on)
+  engine(on)
+  island(on, () => ({}), true, (op) =>
+    op === 'write'
+      ? { status: 202, body: { pending: 'w2' } }
+      : { status: 403, body: { error: 'denied', message: 'Abgelehnt in Claude Island. Nichts geschrieben.' } },
+  )
+  await $.session.start(START)
+  const res = await $.tool.call({ tool: TOOL('vault_write'), path: 'a.md', content: 'x' })
+  expect(res.deny).toBe('Abgelehnt in Claude Island. Nichts geschrieben.')
+})
+
+test('der Schlüssel aus dem Einstellungsordner der Insel geht mit', async ($, on) => {
+  mock.clock(on)
+  engine(on, {
+    env: { HOME: '/home/neo' },
+    files: { '/home/neo/.config/Claude Island/island-token': 'geheim-42\n' },
+  })
+  const { vaultCalls } = island(on, () => ({}), true, () => ({ status: 200, body: { name: 'V', count: 0 } }))
+  await $.session.start(START)
+  await $.tool.call({ tool: TOOL('vault_list') })
+  expect(vaultCalls[0]?.token).toBe('geheim-42')
+})
+
+test('leere, abgebrochene Suche sagt das auch so', async ($, on) => {
+  mock.clock(on)
+  engine(on)
+  island(on, () => ({}), true, () => ({ status: 200, body: { partial: true, results: [] } }))
+  await $.session.start(START)
+  const res = await $.tool.call({ tool: TOOL('vault_search'), query: 'alt' })
+  expect(String(res.result)).toContain('Keine Treffer für „alt“.')
+  expect(String(res.result)).toContain('aus Zeitgründen abgebrochen')
+})
+
+test('eine eigene Frage-Regel der Person bleibt bestehen', async ($, on) => {
+  mock.clock(on)
+  engine(on)
+  island(on, () => ({}))
+  on('tool.check', () => ({ decision: 'ask', rule: 'mcp__island-bridge__vault_read' }))
+  await $.session.start(START)
+  expect((await $.tool.check({ tool: TOOL('vault_read'), input: {} })).decision).toBe('ask')
 })
