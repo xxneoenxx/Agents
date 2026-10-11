@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StreetCraft Mittelsachsen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script type="importmap">
+      { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+    </script>
+  </head>
+  <body>
+    <!-- Hintergrund: Google Street View -->
+    <div id="sv"></div>
+    <!-- Nacht-Abdunkelung über dem Foto -->
+    <div id="night"></div>
+    <!-- 3D-Ebene mit Blöcken, Figur und Mobs -->
+    <canvas id="overlay"></canvas>
+
+    <div id="hud">
+      <div id="crosshair"></div>
+      <div id="place"></div>
+      <pre id="debug" class="hidden"></pre>
+      <div id="minimap"></div>
+      <div id="actionbar"></div>
+      <div id="itemname"></div>
+      <div id="stats">
+        <div id="hearts"></div>
+        <div id="food"></div>
+      </div>
+      <div id="hotbar"></div>
+      <div id="chatlog"></div>
+      <input id="chatinput" maxlength="200" autocomplete="off" spellcheck="false" />
+      <div id="hurt"></div>
+      <div id="sleepfade"></div>
+      <div id="clickhint">Klicke, um zu spielen</div>
+    </div>
+
+    <!-- Inventar / Werkbank / Ofen / Truhe -->
+    <div id="container" class="screen">
+      <div id="container-inner" class="panel"></div>
+    </div>
+    <div id="cursor-stack" class="slot"></div>
+    <div id="tooltip"></div>
+
+    <!-- Große Karte -->
+    <div id="bigmap" class="screen">
+      <div class="panel map-panel">
+        <div class="title">Karte von Mittelsachsen <button id="bigmap-close" class="mc-btn small">Schließen (M)</button></div>
+        <div id="bigmap-map"></div>
+        <div class="hint">Rote Linie = Grenze von Mittelsachsen. Im Kreativmodus: Klick auf die Karte = Teleport.</div>
+      </div>
+    </div>
+
+    <!-- Pausenmenü -->
+    <div id="pause" class="screen">
+      <div class="panel menu">
+        <div class="title">Spielmenü</div>
+        <button id="btn-resume" class="mc-btn">Zurück zum Spiel</button>
+        <label class="setting">Mausempfindlichkeit <span id="set-sens-val"></span><input type="range" id="set-sens" min="0.03" max="0.5" step="0.01" /></label>
+        <label class="setting">Sichtfeld-Abgleich mit Street View <span id="set-fov-val"></span><input type="range" id="set-fov" min="60" max="120" step="1" /></label>
+        <label class="setting">Kamerahöhe <span id="set-camh-val"></span><input type="range" id="set-camh" min="1.5" max="3.5" step="0.1" /></label>
+        <label class="setting check"><input type="checkbox" id="set-sound" /> Geräusche</label>
+        <label class="mc-btn file">Eigenen Skin laden (64×64 PNG)<input type="file" id="set-skin" accept="image/png" /></label>
+        <button id="set-skin-reset" class="mc-btn">Standard-Skin (Bergmann)</button>
+        <div class="row">
+          <button id="btn-export" class="mc-btn">Spielstand exportieren</button>
+          <label class="mc-btn file">Spielstand importieren<input type="file" id="btn-import" accept="application/json" /></label>
+        </div>
+        <button id="btn-mainmenu" class="mc-btn">Speichern &amp; Hauptmenü</button>
+        <div class="hint">Steuerung: Maus = umsehen · W/S/A/D = laufen · Links = abbauen/angreifen · Rechts = setzen/benutzen/essen · 1–9/Mausrad = Hotbar · E = Inventar · Q = wegwerfen · F5 = Perspektive · M = Karte · T = Chat · F3 = Infos</div>
+      </div>
+    </div>
+
+    <!-- Todesbildschirm -->
+    <div id="death" class="screen">
+      <div class="death-box">
+        <h1>Du bist gestorben!</h1>
+        <p id="death-msg"></p>
+        <button id="btn-respawn" class="mc-btn">Wiederbeleben</button>
+      </div>
+    </div>
+
+    <!-- Startbildschirm -->
+    <div id="start" class="screen open">
+      <div class="panel menu start">
+        <h1 class="logo">StreetCraft<span>Mittelsachsen</span></h1>
+        <p class="sub">Minecraft-Abenteuer in der echten Google-Street-View-Ansicht von Freiberg, Döbeln, Mittweida &amp; Co.</p>
+        <label class="setting">Google-Maps-API-Schlüssel
+          <input type="password" id="start-key" placeholder="AIza…" autocomplete="off" />
+        </label>
+        <label class="setting check"><input type="checkbox" id="start-remember" checked /> Schlüssel in diesem Browser merken</label>
+        <label class="setting">Startort
+          <select id="start-place"></select>
+        </label>
+        <label class="setting">Spielmodus
+          <select id="start-mode">
+            <option value="survival">Überleben</option>
+            <option value="creative">Kreativ</option>
+          </select>
+        </label>
+        <label class="mc-btn file">Eigenen Minecraft-Skin laden (optional)<input type="file" id="start-skin" accept="image/png" /></label>
+        <label class="setting check"><input type="checkbox" id="start-demo" /> Testmodus ohne Google (nur Wiese, kein Street View)</label>
+        <button id="btn-play" class="mc-btn big">Neue Welt starten</button>
+        <button id="btn-continue" class="mc-btn big">Weiterspielen</button>
+        <div id="save-info" class="hint"></div>
+        <div id="start-error"></div>
+        <div class="hint">Wie bekomme ich einen Schlüssel? Siehe <code>README.md</code> im Ordner <code>streetcraft-mittelsachsen</code>. Kein offizielles Minecraft-Produkt, nicht von Mojang oder Google.</div>
+      </div>
+    </div>
+    <div id="loading" class="screen"><div class="loading-text">Lade Mittelsachsen …</div></div>
+
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>

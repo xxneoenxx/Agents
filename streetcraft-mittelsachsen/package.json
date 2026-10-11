@@ -1,0 +1,11 @@
+{
+  "name": "streetcraft-mittelsachsen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minecraft-artiges Browserspiel in Google Street View, Region Mittelsachsen",
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
