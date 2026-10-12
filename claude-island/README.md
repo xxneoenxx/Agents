@@ -35,9 +35,19 @@ Das Plugin heißt `island-bridge`, weil Claude Code Plugin-Namen mit
 
 ## Installation
 
-### 1. App starten
+### 1. App installieren
 
-Node.js 22 oder neuer, dann:
+**Windows-Installer (empfohlen, ohne Befehle):**
+[Claude-Island-Setup.exe herunterladen](https://github.com/xxneoenxx/Agents/releases/latest/download/Claude-Island-Setup.exe)
+und doppelklicken. Die Insel installiert sich ohne Admin-Rechte und startet
+sofort. Ohne Installation geht es mit der
+[portablen Version](https://github.com/xxneoenxx/Agents/releases/latest/download/Claude-Island-Portable.exe).
+Weil die Datei nicht signiert ist, zeigt Windows evtl. „Der Computer wurde
+durch Windows geschützt“: **Weitere Informationen › Trotzdem ausführen**.
+Beide Dateien baut GitHub Actions bei jeder Änderung an der App neu
+(`.github/workflows/claude-island-windows.yml`).
+
+**Aus dem Quellcode** (zum Mitentwickeln): Node.js 22 oder neuer, dann:
 
 ```bash
 cd claude-island/app
@@ -45,8 +55,8 @@ npm install
 npm start
 ```
 
-Installer bauen (auf Windows): `npm run dist` legt unter `app/dist/` einen
-Installer und eine portable `.exe` ab. Im Rechtsklick-Menü der Insel kannst du
+Installer selbst bauen (auf Windows): `npm run dist` legt unter `app/dist/`
+`Claude-Island-Setup.exe` und `Claude-Island-Portable.exe` ab. Im Rechtsklick-Menü der Insel kannst du
 „Mit Windows starten“ einschalten.
 
 ### 2. Plugin aktivieren

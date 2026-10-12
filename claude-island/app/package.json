@@ -1,7 +1,7 @@
 {
   "name": "claude-island",
   "productName": "Claude Island",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Schwebende Insel, die Claude-Code-Sitzungen anzeigt und steuert.",
   "main": "src/main.js",
   "private": true,
@@ -32,11 +32,20 @@
       "target": [
         "nsis",
         "portable"
-      ]
+      ],
+      "icon": "build/icon.png"
     },
     "nsis": {
       "oneClick": true,
-      "perMachine": false
+      "perMachine": false,
+      "artifactName": "Claude-Island-Setup.${ext}"
+    },
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "portable": {
+      "artifactName": "Claude-Island-Portable.${ext}"
     }
   }
 }

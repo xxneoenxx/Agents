@@ -1,0 +1,77 @@
+# Baut Claude Island für Windows und stellt Installer + portable .exe als
+# GitHub-Release bereit. Fester Download-Link:
+#   https://github.com/xxneoenxx/Agents/releases/latest/download/Claude-Island-Setup.exe
+name: Claude Island – Windows-Installer
+
+on:
+  push:
+    branches: [claude/fervent-tesla-3kfm1o]
+    paths:
+      - 'claude-island/app/**'
+      - '.github/workflows/claude-island-windows.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: claude-island-windows
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: claude-island/app
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: claude-island/app/package-lock.json
+
+      - name: Abhängigkeiten
+        run: npm ci
+
+      - name: Tests
+        run: npm test
+
+      - name: Installer bauen
+        run: npx electron-builder --win --publish never
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+      - name: Release veröffentlichen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version=$(node -p "require('./package.json').version")
+          tag="claude-island-v${version}"
+          files=(dist/Claude-Island-Setup.exe dist/Claude-Island-Portable.exe)
+          ls -l "${files[@]}"
+          cat > notes.md <<NOTES
+          **Claude Island ${version}** für Windows (Commit ${GITHUB_SHA::7}).
+
+          - **Claude-Island-Setup.exe**: installieren und starten (Doppelklick, keine Admin-Rechte nötig).
+          - **Claude-Island-Portable.exe**: ohne Installation direkt starten.
+
+          Windows zeigt beim ersten Start evtl. „Der Computer wurde durch Windows geschützt“, weil die Datei nicht signiert ist: **Weitere Informationen › Trotzdem ausführen**.
+
+          Danach in der Insel **Plugin aktivieren** klicken und die Claude-App neu starten. Anleitung: https://github.com/${GITHUB_REPOSITORY}/tree/${GITHUB_REF_NAME}/claude-island
+          NOTES
+          if gh release view "$tag" >/dev/null 2>&1; then
+            # Gleiche Version neu gebaut: Tag auf diesen Commit, Dateien ersetzen.
+            git tag -f "$tag" "$GITHUB_SHA"
+            git push -f origin "refs/tags/$tag"
+            gh release upload "$tag" "${files[@]}" --clobber
+            gh release edit "$tag" --notes-file notes.md --latest
+          else
+            gh release create "$tag" "${files[@]}" --target "$GITHUB_SHA" \
+              --title "Claude Island ${version}" --notes-file notes.md --latest
+          fi

@@ -23,6 +23,9 @@ const FIGURES = [
   ['full', 'Ganzer Mini-Claude'],
 ]
 const TOP_GAP = 8
+// Die portable .exe entpackt sich bei jedem Start in einen Temp-Ordner. Für
+// „Mit Windows starten“ zählt die .exe, die man doppelklickt hat.
+const loginTarget = process.env.PORTABLE_EXECUTABLE_FILE ? { path: process.env.PORTABLE_EXECUTABLE_FILE } : {}
 const MAX_HZ = 144
 const RETRY_TEXT = 'Bitte versuche es erneut.'
 // Strg/Cmd mit diesen Tasten würde zoomen und die Größe verstellen.
@@ -315,7 +318,7 @@ function start() {
     })
   })
   ipcMain.on('island:menu', () => {
-    const login = app.getLoginItemSettings()
+    const login = app.getLoginItemSettings(loginTarget)
     const pluginItem =
       pluginState.state === 'active' && pluginState.outdated
         ? { label: 'Plugin aktualisieren', enabled: !pluginState.busy, click: () => upgradePlugin() }
@@ -351,7 +354,7 @@ function start() {
         label: 'Mit Windows starten',
         type: 'checkbox',
         checked: login.openAtLogin,
-        click: (item) => app.setLoginItemSettings({ openAtLogin: item.checked }),
+        click: (item) => app.setLoginItemSettings({ openAtLogin: item.checked, ...loginTarget }),
       },
       { label: 'Beenden', click: () => app.quit() },
     ]).popup({ window: win })
