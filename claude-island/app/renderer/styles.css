@@ -1180,6 +1180,11 @@ textarea.field {
 }
 
 /* Bleibt neben dem Kopf; weiter oben verschwände der Arm hinter dem Körper. */
+/* Jede Pose hat auch einen Ruhewert: bei „Animationen aus“ läuft keine Animation. */
+.island[data-mood='waiting'] .mascot__limb--arm-r .mascot__px {
+  transform: rotate(-50deg);
+}
+
 @keyframes m-wave {
   from { transform: rotate(-30deg); }
   to { transform: rotate(-75deg); }
@@ -1268,10 +1273,12 @@ textarea.field {
 .island[data-mood='done'] .mascot__eye--r::after { transform: translateX(calc(var(--u) * 0.4)) rotate(45deg); }
 
 .island[data-mood='done'] .mascot__limb--arm-l .mascot__px {
+  transform: rotate(52deg);
   animation: m-arm-up-l 1.3s ease-in-out infinite;
 }
 
 .island[data-mood='done'] .mascot__limb--arm-r .mascot__px {
+  transform: rotate(-52deg);
   animation: m-arm-up-r 1.3s ease-in-out infinite;
 }
 
@@ -1364,5 +1371,15 @@ textarea.field {
   *::after {
     animation-duration: 0.001s !important;
     animation-iteration-count: 1 !important;
+  }
+
+  /* Ruhende Zeichen statt Bewegung: ein z beim Schlafen, ein Funkeln bei „fertig“. */
+  .island[data-mood='idle'] .mascot__zzz span:first-child {
+    opacity: 0.9;
+  }
+
+  .island[data-mood='done'] .mascot__sparkle--l {
+    opacity: 1;
+    transform: rotate(45deg) scale(1);
   }
 }

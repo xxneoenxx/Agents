@@ -22,14 +22,25 @@ test('gespeichert wird nur Geändertes, Standardwerte bleiben austauschbar', () 
   const { save } = loadConfig(dir)
   save({ sound: false })
   const written = JSON.parse(fs.readFileSync(path.join(dir, 'config.json'), 'utf8'))
-  assert.deepEqual(written, { sound: false })
+  assert.deepEqual(written, { sound: false, sizeVersion: 2 })
   save({ scale: 0.75 })
-  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(dir, 'config.json'), 'utf8')), { sound: false, scale: 0.75 })
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(dir, 'config.json'), 'utf8')), { sound: false, sizeVersion: 2, scale: 0.75 })
   const again = loadConfig(dir).config
-  // Eine vor der Umstellung gespeicherte Größe wächst einmalig um 50 % (0.75 → 1).
-  assert.equal(again.scale, 1)
-  assert.equal(loadConfig(dir).config.scale, 1)
+  // Eine mit dieser Version gewählte Größe bleibt, wie sie ist.
+  assert.equal(again.scale, 0.75)
+  assert.equal(loadConfig(dir).config.scale, 0.75)
   assert.equal(again.pluginSource, DEFAULTS.pluginSource)
+})
+
+test('nach der Umstellung gewählte Größen wachsen beim Neustart nicht', () => {
+  for (const before of [{}, { sound: false }]) {
+    for (const pick of [0.5, 0.6, 0.75, 0.9, 1]) {
+      const dir = tempDir()
+      if (Object.keys(before).length) fs.writeFileSync(path.join(dir, 'config.json'), JSON.stringify(before))
+      loadConfig(dir).save({ scale: pick })
+      assert.equal(loadConfig(dir).config.scale, pick, `${JSON.stringify(before)} + ${pick}`)
+    }
+  }
 })
 
 test('kaputte Datei und eigene Modell-IDs', () => {

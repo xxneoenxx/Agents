@@ -64,8 +64,11 @@ function loadConfig(dir) {
     }
   }
   const upgrade = migrate(stored)
-  // Nur eine gespeicherte Größe muss umgeschrieben werden; sonst gilt der neue Standard.
+  // Nur eine gespeicherte Größe muss sofort umgeschrieben werden. Sonst merkt
+  // sich `stored` die Umstellung, damit das nächste Speichern sie mitschreibt
+  // und eine danach gewählte Größe beim Neustart nicht noch einmal wächst.
   if (upgrade && 'scale' in upgrade) save(upgrade)
+  else if (upgrade) Object.assign(stored, upgrade)
   return { config, save }
 }
 

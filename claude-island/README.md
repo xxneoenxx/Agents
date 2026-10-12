@@ -185,7 +185,7 @@ doch im Code-Tab, verschwindet die Karte aus der Insel.
 ## Einstellungen
 
 `%APPDATA%\Claude Island\config.json` (wird beim ersten Umschalten von Ton,
-Anpinnen oder Größe angelegt):
+Anpinnen, Größe oder Figur angelegt):
 
 ```json
 {
@@ -200,6 +200,9 @@ Anpinnen oder Größe angelegt):
 ```
 
 In der Datei steht nur, was du geändert hast; alles andere sind Standardwerte.
+Dazu schreibt die Insel `"sizeVersion": 2`: Es merkt sich, dass die einmalige
+Vergrößerung um 50 % gelaufen ist. Bitte stehen lassen, sonst wächst eine
+gespeicherte Größe beim nächsten Start noch einmal.
 
 `scale` ist eine der Größen 0.5, 0.6, 0.75, 0.9 oder 1. `figureMode` ist
 `"head"` (Pille zeigt den Kopf, die ganze Figur wächst beim Aufklappen heraus)
