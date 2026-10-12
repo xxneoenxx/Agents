@@ -353,6 +353,8 @@ function start() {
       {
         label: 'Mit Windows starten',
         type: 'checkbox',
+        // Aus dem Quellcode (npm start) würde nur electron.exe ohne App eingetragen.
+        enabled: app.isPackaged,
         checked: login.openAtLogin,
         click: (item) => app.setLoginItemSettings({ openAtLogin: item.checked, ...loginTarget }),
       },

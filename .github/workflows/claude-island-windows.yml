@@ -14,9 +14,10 @@ on:
 permissions:
   contents: write
 
+# Nicht abbrechen: ein halb hochgeladenes Release soll nicht liegen bleiben.
 concurrency:
   group: claude-island-windows
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -52,26 +53,27 @@ jobs:
         run: |
           set -euo pipefail
           version=$(node -p "require('./package.json').version")
-          tag="claude-island-v${version}"
+          # Jeder Build bekommt ein eigenes Release. gh veröffentlicht es erst,
+          # wenn beide Dateien hochgeladen sind, deshalb zeigt
+          # releases/latest/download/... nie auf ein halbes Release.
+          tag="claude-island-v${version}-build.${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}"
           files=(dist/Claude-Island-Setup.exe dist/Claude-Island-Portable.exe)
           ls -l "${files[@]}"
           cat > notes.md <<NOTES
-          **Claude Island ${version}** für Windows (Commit ${GITHUB_SHA::7}).
+          **Claude Island ${version}** für Windows (Build ${GITHUB_RUN_NUMBER}, Commit ${GITHUB_SHA::7}).
 
           - **Claude-Island-Setup.exe**: installieren und starten (Doppelklick, keine Admin-Rechte nötig).
           - **Claude-Island-Portable.exe**: ohne Installation direkt starten.
 
-          Windows zeigt beim ersten Start evtl. „Der Computer wurde durch Windows geschützt“, weil die Datei nicht signiert ist: **Weitere Informationen › Trotzdem ausführen**.
+          Die Dateien sind nicht signiert. Meldet der Browser „wird nicht häufig heruntergeladen“: in der Download-Liste (Strg+J) **… › Beibehalten**, dann **Mehr anzeigen › Trotzdem beibehalten**. Zeigt Windows beim Start „Der Computer wurde durch Windows geschützt“: **Weitere Informationen › Trotzdem ausführen**.
 
           Danach in der Insel **Plugin aktivieren** klicken und die Claude-App neu starten. Anleitung: https://github.com/${GITHUB_REPOSITORY}/tree/${GITHUB_REF_NAME}/claude-island
           NOTES
-          if gh release view "$tag" >/dev/null 2>&1; then
-            # Gleiche Version neu gebaut: Tag auf diesen Commit, Dateien ersetzen.
-            git tag -f "$tag" "$GITHUB_SHA"
-            git push -f origin "refs/tags/$tag"
-            gh release upload "$tag" "${files[@]}" --clobber
-            gh release edit "$tag" --notes-file notes.md --latest
-          else
-            gh release create "$tag" "${files[@]}" --target "$GITHUB_SHA" \
-              --title "Claude Island ${version}" --notes-file notes.md --latest
-          fi
+          gh release create "$tag" "${files[@]}" --target "$GITHUB_SHA" \
+            --title "Claude Island ${version} (Build ${GITHUB_RUN_NUMBER})" --notes-file notes.md --latest
+          # Ältere Builds (und liegen gebliebene Entwürfe) aufräumen; der neue ist
+          # schon veröffentlicht und „latest“.
+          gh release list --limit 100 --json tagName --jq '.[].tagName' | { grep '^claude-island-v' || true; } |
+            while read -r old; do
+              if [ "$old" != "$tag" ]; then gh release delete "$old" --yes --cleanup-tag; fi
+            done
