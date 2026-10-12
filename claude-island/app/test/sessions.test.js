@@ -124,7 +124,7 @@ test('Verworfene Freigabe verschwindet ohne Antwort', () => {
 test('Mod-Poll: Wünsche als volle Modell-ID, Hinweise genau einmal', () => {
   const { store } = clockStore()
   store.handleHook('SessionStart', { ...base, source: 'startup' })
-  assert.deepEqual(store.modPoll({ session_id: 's1', model: 'claude-sonnet-5-5', effort: 'high' }), { model: null, effort: null, hints: [], vault: null })
+  assert.deepEqual(store.modPoll({ session_id: 's1', model: 'claude-sonnet-5-5', effort: 'high' }), { model: null, effort: null, hints: [] })
   assert.equal(only(store).modelFamily, 'sonnet')
   assert.equal(only(store).effort, 'high')
   assert.equal(only(store).modConnected, true)
@@ -133,16 +133,11 @@ test('Mod-Poll: Wünsche als volle Modell-ID, Hinweise genau einmal', () => {
   store.queueHint('s1', '  Nimm die zweite Variante  ')
   store.queueHint('s1', '   ')
   assert.equal(only(store).pendingHints, 1)
-  assert.deepEqual(store.modPoll({ session_id: 's1' }), { model: 'claude-opus-5-5', effort: 'xhigh', hints: ['Nimm die zweite Variante'], vault: null })
+  assert.deepEqual(store.modPoll({ session_id: 's1' }), { model: 'claude-opus-5-5', effort: 'xhigh', hints: ['Nimm die zweite Variante'] })
   assert.deepEqual(store.modPoll({ session_id: 's1' }).hints, [])
 
   store.setDesired('s1', { model: 'gpt', effort: 'ultra' })
-  assert.deepEqual(store.modPoll({ session_id: 's1' }), { model: null, effort: null, hints: [], vault: null })
-
-  store.setVaultInfo({ name: 'Zweites Gehirn', writeMode: 'free' })
-  assert.deepEqual(store.modPoll({ session_id: 's1' }).vault, { name: 'Zweites Gehirn', writeMode: 'free' })
-  store.setVaultInfo({ name: 'X', writeMode: 'quatsch' })
-  assert.equal(store.modPoll({ session_id: 's1' }).vault.writeMode, 'ask')
+  assert.deepEqual(store.modPoll({ session_id: 's1' }), { model: null, effort: null, hints: [] })
 })
 
 test('Fertig verblasst zu Ruhig; verstummter Mod entfernt die Sitzung', () => {
@@ -182,26 +177,4 @@ test('Hilfsfunktionen', () => {
   assert.equal(describeTool('Grep', { pattern: 'TODO' }), 'TODO')
   assert.equal(describeTool('WebSearch', { query: 'electron' }), 'electron')
   assert.equal(describeTool('Mystery', {}), 'Mystery')
-})
-
-test('Vault-Werkzeuge: verständliche Namen in Freigabe und Schritten, Aktivität fürs Widget', () => {
-  const { store } = clockStore()
-  store.handleHook('UserPromptSubmit', { ...base, prompt: 'Schreib eine Notiz' })
-  store.handleHook('PostToolUse', { ...base, tool_name: 'mcp__island-bridge__vault_search', tool_input: { query: 'pasta' } })
-  assert.deepEqual(only(store).steps.map((s) => [s.tool, s.text]), [['Vault-Suche', 'pasta']])
-  store.addApproval(
-    { ...base, tool_name: 'mcp__island-bridge__vault_write', tool_input: { path: 'Ideen/Insel.md', content: '# Insel\nZeile 2', mode: 'append' } },
-    () => {},
-  )
-  const a = only(store).approvals[0]
-  assert.equal(a.tool, 'Notiz schreiben')
-  assert.equal(a.summary, 'Ideen/Insel.md')
-  assert.equal(a.detail, 'Ideen/Insel.md (anhängen)\n\n# Insel\nZeile 2')
-
-  const seen = []
-  store.on('vault-activity', (e) => seen.push(e.op))
-  store.recordVaultActivity({ sessionId: 's1', op: 'write', path: 'Ideen/Insel.md' })
-  store.recordVaultActivity({ sessionId: 'unbekannt', op: 'search', query: 'pasta' })
-  assert.deepEqual(seen, ['write', 'search'])
-  assert.deepEqual(store.vaultActivity.map((e) => [e.op, e.session]), [['search', null], ['write', 'island']])
 })

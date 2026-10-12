@@ -113,10 +113,10 @@ input:focus-visible {
   50% { opacity: 0.12; }
 }
 
-.pill__funke {
+.pill__mascot {
   flex: none;
-  font-size: 34px;
-  margin-top: -2px;
+  font-size: 44px;
+  margin: 7px 0 0 2px;
 }
 
 .pill__text {
@@ -291,6 +291,10 @@ input:focus-visible {
   fill: currentColor;
 }
 
+#btn-figure[aria-pressed='false'] .icon-btn__limbs {
+  display: none;
+}
+
 #btn-sound[aria-pressed='true'] .icon-btn__mute,
 #btn-sound[aria-pressed='false'] .icon-btn__wave {
   display: none;
@@ -320,9 +324,9 @@ input:focus-visible {
   text-align: center;
 }
 
-.stage__funke {
-  font-size: 112px;
-  margin-bottom: 14px;
+.stage__mascot {
+  font-size: 150px;
+  margin: 22px 0 18px;
 }
 
 .stage__mood {
@@ -876,413 +880,482 @@ textarea.field {
   pointer-events: none;
 }
 
-/* ---------- Funke ---------- */
+/* ---------- Mini-Claude ----------
+   Das Claude-Code-Maskottchen in Pixeln (▐▛███▜▌ / ▝▜█████▛▘ / ▘▘ ▝▝):
+   ein Pixel ist 1 u breit und 2 u hoch, die Figur 16 u × 10 u = 1 em × 0,625 em.
+   Ebenen, damit sich Animationen nicht gegenseitig überschreiben:
+   .mascot (Stimmung: Hüpfen, Zittern) > __rig (Verwandlung) > __upper/__legs
+   > __limb (Wachsen/Schrumpfen) > __px (Winken, Tippeln). Nur transform/opacity. */
 
-.funke {
-  --apricot-1: #ffd8bb;
-  --apricot-2: #ffb487;
-  --apricot-3: #ff9a62;
-  --apricot-4: #ee7f48;
+.mascot {
+  --u: 0.0625em;
+  --claude: #d97757;
+  --hide: scale(0);
+  --sit: 0em;
   position: relative;
   display: block;
   width: 1em;
-  height: 1.12em;
+  height: calc(var(--u) * 10);
   line-height: 0;
   will-change: transform;
 }
 
-.funke__antenna {
+.mascot__rig,
+.mascot__upper,
+.mascot__legs {
   position: absolute;
-  left: 50%;
-  top: 0;
-  width: 0.2em;
-  height: 0.26em;
-  transform: translateX(-50%);
+  inset: 0;
+}
+
+.mascot__rig {
   transform-origin: 50% 100%;
 }
 
-.funke__stalk {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 0.035em;
-  height: 0.17em;
-  border-radius: 0.02em;
-  background: var(--apricot-4);
-  transform: translateX(-50%);
+.mascot__upper {
+  transform: translateY(var(--sit));
+  transition: transform 0.35s var(--ease-out);
 }
 
-.funke__bulb {
+.mascot__body {
   position: absolute;
-  left: 50%;
+  left: calc(var(--u) * 2);
   top: 0;
-  width: 0.12em;
-  height: 0.12em;
-  border-radius: 50%;
-  transform: translateX(-50%);
-  background: radial-gradient(circle at 35% 30%, #fff 0 12%, var(--status) 45%);
-  box-shadow: 0 0 0.04em var(--status);
-}
-
-.funke__bulb::after {
-  content: '';
-  position: absolute;
-  inset: -0.09em;
-  border-radius: 50%;
-  /* Mitte frei, damit der Glanzpunkt der Kugel sichtbar bleibt. */
-  background: radial-gradient(
-    circle,
-    transparent 0 34%,
-    color-mix(in srgb, var(--status) 60%, transparent) 40%,
-    transparent 70%
-  );
-  animation: glow 2.4s ease-in-out infinite;
-  will-change: transform, opacity;
-}
-
-@keyframes glow {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.78); }
-}
-
-.funke__body {
-  position: absolute;
-  left: 0.05em;
-  top: 0.24em;
-  width: 0.9em;
-  height: 0.84em;
-  border-radius: 50% 50% 47% 47% / 54% 54% 46% 46%;
-  background: radial-gradient(circle at 34% 28%, var(--apricot-1) 0%, var(--apricot-2) 30%, var(--apricot-3) 66%, var(--apricot-4) 100%);
-  box-shadow:
-    inset -0.035em -0.05em 0.08em rgba(150, 60, 20, 0.35),
-    inset 0.025em 0.03em 0.06em rgba(255, 245, 235, 0.55);
+  width: calc(var(--u) * 12);
+  height: calc(var(--u) * 8);
+  background: var(--claude);
+  box-shadow: inset 0 calc(var(--u) * -0.6) 0 rgba(110, 36, 12, 0.28);
   transform-origin: 50% 100%;
-  animation: breathe 4.2s ease-in-out infinite;
+  animation: m-breathe 4.2s ease-in-out infinite;
   will-change: transform;
 }
 
-@keyframes breathe {
+@keyframes m-breathe {
   0%, 100% { transform: scale(1, 1); }
-  50% { transform: scale(1.025, 0.975); }
+  50% { transform: scale(1.015, 0.975); }
 }
 
-.funke__eye {
+.mascot__face {
   position: absolute;
-  top: 0.3em;
-  width: 0.19em;
-  height: 0.22em;
-  border-radius: 50%;
-  background: #fff8f1;
-  box-shadow: inset 0 -0.015em 0.02em rgba(120, 50, 20, 0.25);
-  overflow: hidden;
-  transition: transform 0.2s var(--ease-out), background 0.2s;
-}
-
-.funke__eye--l { left: 0.21em; }
-.funke__eye--r { right: 0.21em; }
-
-.funke__pupil {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 0.105em;
-  height: 0.115em;
-  margin: -0.0575em 0 0 -0.0525em;
-  border-radius: 50%;
-  background: var(--ink);
-  transition: opacity 0.2s;
+  inset: 0;
   will-change: transform;
 }
 
-.funke__pupil::after {
-  content: '';
+.mascot__eye {
   position: absolute;
-  top: 0.018em;
-  left: 0.022em;
-  width: 0.032em;
-  height: 0.032em;
-  border-radius: 50%;
-  background: #fff;
+  top: calc(var(--u) * 2);
+  width: var(--u);
+  height: calc(var(--u) * 2);
+  background: var(--ink);
+  transition: transform 0.2s var(--ease-out), background-color 0.2s;
 }
 
-.funke__lid {
+.mascot__eye--l { left: calc(var(--u) * 2); }
+.mascot__eye--r { left: calc(var(--u) * 9); }
+
+/* Zwei Striche je Auge für > < (Problem) und ^ ^ (fertig). */
+.mascot__eye::before,
+.mascot__eye::after {
+  content: '';
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 0.15em;
-  height: 0.075em;
-  transform: translate(-50%, -50%);
+  width: calc(var(--u) * 1.5);
+  height: calc(var(--u) * 0.55);
+  margin: calc(var(--u) * -0.275) 0 0 calc(var(--u) * -0.75);
+  background: var(--ink);
   opacity: 0;
-  border: 0 solid var(--ink);
+  transition: opacity 0.2s;
 }
 
-.funke__brow {
+.mascot__limb,
+.mascot__px {
   position: absolute;
-  top: 0.215em;
-  width: 0.15em;
-  height: 0.028em;
-  border-radius: 0.02em;
-  background: rgba(90, 36, 14, 0.75);
+  transform-origin: var(--origin);
+}
+
+.mascot__px {
+  inset: 0;
+  background: var(--claude);
+}
+
+.mascot__limb--arm-l,
+.mascot__limb--arm-r {
+  top: calc(var(--u) * 4);
+  width: calc(var(--u) * 2.6);
+  height: calc(var(--u) * 2);
+  --hide: scale(0, 0.5);
+}
+
+/* Drehpunkt knapp im Körper: die Arme wachsen aus der Seite heraus. */
+.mascot__limb--arm-l { left: 0; --origin: calc(var(--u) * 2.3) 50%; }
+.mascot__limb--arm-r { left: calc(var(--u) * 13.4); --origin: calc(var(--u) * 0.3) 50%; }
+
+.mascot__limb--leg1,
+.mascot__limb--leg2,
+.mascot__limb--leg3,
+.mascot__limb--leg4 {
+  top: calc(var(--u) * 7.4);
+  width: var(--u);
+  height: calc(var(--u) * 2.6);
+  --origin: 50% 0;
+  --hide: scale(0.6, 0);
+}
+
+.mascot__limb--leg1 { left: calc(var(--u) * 3); }
+.mascot__limb--leg2 { left: calc(var(--u) * 5); }
+.mascot__limb--leg3 { left: calc(var(--u) * 10); }
+.mascot__limb--leg4 { left: calc(var(--u) * 12); }
+
+/* Status-Pixel über dem Kopf. */
+.mascot__spark {
+  position: absolute;
+  left: calc(var(--u) * 7.35);
+  top: calc(var(--u) * -2.9);
+  width: calc(var(--u) * 1.3);
+  height: calc(var(--u) * 1.3);
+  background: var(--status);
+  box-shadow: 0 0 calc(var(--u) * 1.4) var(--status);
+  transition: background-color 0.3s, box-shadow 0.3s, opacity 0.3s;
+}
+
+.mascot__sweat {
+  position: absolute;
+  left: calc(var(--u) * 12.6);
+  top: calc(var(--u) * 0.6);
+  width: calc(var(--u) * 0.9);
+  height: calc(var(--u) * 1.3);
+  background: #bfe3ff;
   opacity: 0;
-  transition: transform 0.25s var(--ease-out), opacity 0.25s;
 }
 
-.funke__brow--l { left: 0.235em; }
-.funke__brow--r { right: 0.235em; }
-
-.funke__cheek {
+.mascot__zzz {
   position: absolute;
-  top: 0.53em;
-  width: 0.13em;
-  height: 0.065em;
-  border-radius: 50%;
-  background: rgba(255, 96, 80, 0.32);
+  left: calc(var(--u) * 13.5);
+  top: calc(var(--u) * -1);
+  opacity: 0;
 }
 
-.funke__cheek--l { left: 0.12em; }
-.funke__cheek--r { right: 0.12em; }
-
-.funke__mouth {
+.mascot__zzz span {
   position: absolute;
-  left: 50%;
-  top: 0.56em;
-  width: 0.13em;
-  height: 0.06em;
-  transform: translateX(-50%);
-  border: 0.024em solid #5a2410;
-  border-top: 0;
-  border-radius: 0 0 0.08em 0.08em;
-  transition:
-    width 0.25s var(--ease-out),
-    height 0.25s var(--ease-out),
-    top 0.25s var(--ease-out),
-    border-radius 0.25s var(--ease-out),
-    background-color 0.25s;
-}
-
-.funke__zzz {
-  position: absolute;
-  right: -0.08em;
-  top: 0.12em;
   font-family: var(--display);
   font-weight: 700;
-  color: var(--muted);
+  font-size: calc(var(--u) * 3);
   line-height: 1;
+  color: var(--muted);
   opacity: 0;
 }
 
-.funke__zzz span {
+.mascot__sparkle {
   position: absolute;
-  font-size: 0.13em;
+  top: calc(var(--u) * -1.2);
+  width: var(--u);
+  height: var(--u);
+  background: var(--done);
   opacity: 0;
+  transform: rotate(45deg) scale(0);
 }
 
-.funke.is-blinking .funke__eye {
-  transform: scaleY(0.12);
+.mascot__sparkle--l { left: calc(var(--u) * -0.4); }
+.mascot__sparkle--r { left: calc(var(--u) * 15.4); top: calc(var(--u) * 0.6); }
+
+.mascot.is-blinking .mascot__eye {
+  transform: scaleY(0.15);
 }
 
-/* Ruhig: schläft */
-.island[data-mood='idle'] .funke__eye {
-  background: transparent;
-  box-shadow: none;
+/* Ruhig: sitzt, Augen zu, schläft */
+.island[data-mood='idle'] .mascot {
+  --sit: calc(var(--u) * 1.4);
 }
 
-.island[data-mood='idle'] .funke__pupil {
-  opacity: 0;
+.island[data-mood='idle'] .mascot__upper {
+  animation: m-sleep 5.5s ease-in-out infinite;
 }
 
-.island[data-mood='idle'] .funke__lid {
-  opacity: 1;
-  border-bottom-width: 0.026em;
-  border-radius: 0 0 0.1em 0.1em;
+@keyframes m-sleep {
+  0%, 100% { transform: translateY(var(--sit)); }
+  50% { transform: translateY(calc(var(--sit) + var(--u) * 0.3)); }
 }
 
-.island[data-mood='idle'] .funke__mouth {
-  width: 0.06em;
-  height: 0.04em;
-  border-radius: 50%;
-  border: 0.02em solid #5a2410;
+.island[data-mood='idle'] .mascot__legs .mascot__px {
+  transform: scaleY(0.45);
+  transform-origin: 50% 100%;
 }
 
-.island[data-mood='idle'] .funke__zzz {
-  opacity: 1;
+.island[data-mood='idle'] .mascot .mascot__eye {
+  transform: scale(1.3, 0.25);
+  transform-origin: 50% 100%;
 }
 
-.island[data-mood='idle'] .funke__zzz span {
-  animation: zzz 3.6s ease-out infinite;
-}
-
-.island[data-mood='idle'] .funke__zzz span:nth-child(2) { animation-delay: 1.2s; }
-.island[data-mood='idle'] .funke__zzz span:nth-child(3) { animation-delay: 2.4s; }
-
-@keyframes zzz {
-  0% { opacity: 0; transform: translate(0, 0) scale(0.7); }
-  20% { opacity: 0.9; }
-  100% { opacity: 0; transform: translate(0.9em, -1.4em) scale(1.3); }
-}
-
-.island[data-mood='idle'] .funke__body {
+.island[data-mood='idle'] .mascot__body {
   animation-duration: 5.5s;
 }
 
-.island[data-mood='idle'] .funke__bulb {
-  opacity: 0.6;
+.island[data-mood='idle'] .mascot__spark {
+  opacity: 0.4;
 }
 
-.island[data-mood='idle'] .funke__bulb::after {
-  animation: none;
-  opacity: 0.25;
-}
-
-/* Fertig: ^ ^ */
-.island[data-mood='done'] .funke__eye {
-  background: transparent;
-  box-shadow: none;
-  overflow: visible;
-}
-
-.island[data-mood='done'] .funke__pupil {
-  opacity: 0;
-}
-
-.island[data-mood='done'] .funke__lid {
-  opacity: 1;
-  width: 0.13em;
-  height: 0.13em;
-  top: 70%;
-  border-top-width: 0.032em;
-  border-left-width: 0.032em;
-  border-radius: 0.02em 0 0 0;
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.island[data-mood='done'] .funke__mouth {
-  width: 0.17em;
-  height: 0.085em;
-  border-radius: 0 0 0.12em 0.12em;
-  background: #7a2c14;
-  border: 0;
-}
-
-.island[data-mood='done'] .funke__cheek {
-  background: rgba(255, 96, 80, 0.45);
-}
-
-.island[data-mood='done'] .funke__body {
-  animation: sway 2.6s ease-in-out infinite;
-}
-
-@keyframes sway {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
-}
-
-/* Arbeitet: atmet schnell */
-.island[data-mood='working'] .funke__body {
-  animation: breathe-fast 0.85s ease-in-out infinite;
-}
-
-@keyframes breathe-fast {
-  0%, 100% { transform: scale(1, 1); }
-  50% { transform: scale(1.04, 0.95); }
-}
-
-.island[data-mood='working'] .funke__bulb::after {
-  animation-duration: 0.85s;
-}
-
-.island[data-mood='working'] .funke__mouth {
-  width: 0.08em;
-  height: 0.025em;
-  border: 0;
-  border-radius: 0.02em;
-  background: #5a2410;
-}
-
-/* Hängt fest: zittert, besorgte Brauen */
-.island[data-mood='problem'] .funke {
-  animation: shake 0.9s linear infinite;
-}
-
-@keyframes shake {
-  0%, 46%, 100% { transform: translateX(0); }
-  4%, 20%, 36% { transform: translateX(-0.022em) rotate(-1deg); }
-  12%, 28%, 44% { transform: translateX(0.022em) rotate(1deg); }
-}
-
-.island[data-mood='problem'] .funke__brow {
+.island[data-mood='idle'] .mascot__zzz {
   opacity: 1;
 }
 
-.island[data-mood='problem'] .funke__brow--l {
-  transform: translateY(0.012em) rotate(-22deg);
+.island[data-mood='idle'] .mascot__zzz span {
+  animation: m-zzz 3.6s ease-out infinite;
 }
 
-.island[data-mood='problem'] .funke__brow--r {
-  transform: translateY(0.012em) rotate(22deg);
+.island[data-mood='idle'] .mascot__zzz span:nth-child(2) { animation-delay: 1.2s; }
+.island[data-mood='idle'] .mascot__zzz span:nth-child(3) { animation-delay: 2.4s; }
+
+/* em hier = Schriftgröße des z (3 u). */
+@keyframes m-zzz {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  20% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(0.8em, -1.3em) scale(1.2); }
 }
 
-.island[data-mood='problem'] .funke__mouth {
-  top: 0.6em;
-  width: 0.12em;
-  height: 0.05em;
-  border: 0.024em solid #5a2410;
-  border-bottom: 0;
-  border-radius: 0.08em 0.08em 0 0;
+/* Arbeitet: tippelt, tippt, wippt */
+.island[data-mood='working'] .mascot__upper {
+  animation: m-bob 0.5s ease-in-out infinite;
 }
 
-.island[data-mood='problem'] .funke__bulb {
-  animation: bulb-blink 0.6s steps(2, jump-none) infinite;
+@keyframes m-bob {
+  0%, 100% { transform: translateY(var(--sit)); }
+  50% { transform: translateY(calc(var(--sit) + var(--u) * 0.45)); }
 }
 
-@keyframes bulb-blink {
+.island[data-mood='working'] .mascot__legs .mascot__px {
+  animation: m-tap 0.5s ease-in-out infinite;
+}
+
+.island[data-mood='working'] .mascot__limb--leg2 .mascot__px,
+.island[data-mood='working'] .mascot__limb--leg4 .mascot__px {
+  animation-delay: -0.25s;
+}
+
+@keyframes m-tap {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(calc(var(--u) * -0.9)); }
+}
+
+.island[data-mood='working'] .mascot__limb--arm-l .mascot__px {
+  animation: m-type-l 0.26s ease-in-out infinite alternate;
+}
+
+.island[data-mood='working'] .mascot__limb--arm-r .mascot__px {
+  animation: m-type-r 0.26s ease-in-out -0.13s infinite alternate;
+}
+
+@keyframes m-type-l {
+  from { transform: rotate(-22deg); }
+  to { transform: rotate(8deg); }
+}
+
+@keyframes m-type-r {
+  from { transform: rotate(22deg); }
+  to { transform: rotate(-8deg); }
+}
+
+.island[data-mood='working'] .mascot__spark {
+  animation: m-pulse 0.9s ease-in-out infinite;
+}
+
+@keyframes m-pulse {
+  0%, 100% { opacity: 1; }
   50% { opacity: 0.35; }
 }
 
-/* Wartet auf dich: hüpft, große Augen */
-.island[data-mood='waiting'] .funke {
-  animation: hop 0.95s cubic-bezier(0.3, 0, 0.4, 1) infinite;
+/* Wartet auf dich: hüpft, winkt, große Augen */
+.island[data-mood='waiting'] .mascot {
+  animation: m-hop 0.95s cubic-bezier(0.3, 0, 0.4, 1) infinite;
 }
 
-@keyframes hop {
-  0%, 100% { transform: translateY(0); }
-  45% { transform: translateY(-0.12em); }
-  60% { transform: translateY(-0.11em); }
+@keyframes m-hop {
+  0%, 100% { transform: translateY(0) scale(1.04, 0.96); }
+  20% { transform: translateY(0) scale(0.97, 1.03); }
+  45% { transform: translateY(calc(var(--u) * -1.8)); }
+  60% { transform: translateY(calc(var(--u) * -1.6)); }
 }
 
-.island[data-mood='waiting'] .funke__body {
-  animation: squash 0.95s cubic-bezier(0.3, 0, 0.4, 1) infinite;
+.island[data-mood='waiting'] .mascot__limb--arm-r .mascot__px {
+  animation: m-wave 0.48s ease-in-out infinite alternate;
 }
 
-@keyframes squash {
-  0%, 100% { transform: scale(1.06, 0.93); }
-  20% { transform: scale(0.96, 1.05); }
-  50% { transform: scale(1, 1); }
+/* Bleibt neben dem Kopf; weiter oben verschwände der Arm hinter dem Körper. */
+@keyframes m-wave {
+  from { transform: rotate(-30deg); }
+  to { transform: rotate(-75deg); }
 }
 
-.island[data-mood='waiting'] .funke__eye {
-  transform: scale(1.28);
+.island[data-mood='waiting'] .mascot__limb--arm-l .mascot__px {
+  transform: rotate(14deg);
 }
 
-.island[data-mood='waiting'] .funke.is-blinking .funke__eye {
-  transform: scale(1.28, 0.12);
+.island[data-mood='waiting'] .mascot .mascot__eye {
+  transform: scale(1.4, 1.2);
 }
 
-.island[data-mood='waiting'] .funke__brow {
+.island[data-mood='waiting'] .mascot.is-blinking .mascot__eye {
+  transform: scale(1.4, 0.15);
+}
+
+.island[data-mood='waiting'] .mascot__spark {
+  animation: m-blink 0.95s steps(2, jump-none) infinite;
+}
+
+@keyframes m-blink {
+  50% { opacity: 0.25; }
+}
+
+/* Hängt fest: zittert, > <, Schweißtropfen, Arme hängen */
+.island[data-mood='problem'] .mascot {
+  animation: m-shake 0.9s linear infinite;
+}
+
+@keyframes m-shake {
+  0%, 46%, 100% { transform: translateX(0); }
+  4%, 20%, 36% { transform: translateX(calc(var(--u) * -0.35)) rotate(-1.5deg); }
+  12%, 28%, 44% { transform: translateX(calc(var(--u) * 0.35)) rotate(1.5deg); }
+}
+
+.island[data-mood='problem'] .mascot .mascot__eye,
+.island[data-mood='done'] .mascot .mascot__eye {
+  transform: none;
+  background-color: transparent;
+}
+
+.island[data-mood='problem'] .mascot__eye::before,
+.island[data-mood='problem'] .mascot__eye::after,
+.island[data-mood='done'] .mascot__eye::before,
+.island[data-mood='done'] .mascot__eye::after {
   opacity: 1;
-  transform: translateY(-0.045em);
 }
 
-.island[data-mood='waiting'] .funke__mouth {
-  width: 0.08em;
-  height: 0.08em;
-  border-radius: 50%;
-  border: 0;
-  background: #7a2c14;
+.island[data-mood='problem'] .mascot__eye--l::before { transform: translateY(calc(var(--u) * -0.4)) rotate(30deg); }
+.island[data-mood='problem'] .mascot__eye--l::after { transform: translateY(calc(var(--u) * 0.4)) rotate(-30deg); }
+.island[data-mood='problem'] .mascot__eye--r::before { transform: translateY(calc(var(--u) * -0.4)) rotate(-30deg); }
+.island[data-mood='problem'] .mascot__eye--r::after { transform: translateY(calc(var(--u) * 0.4)) rotate(30deg); }
+
+.island[data-mood='problem'] .mascot__limb--arm-l .mascot__px { transform: rotate(-35deg); }
+.island[data-mood='problem'] .mascot__limb--arm-r .mascot__px { transform: rotate(35deg); }
+
+.island[data-mood='problem'] .mascot__sweat {
+  animation: m-sweat 1.4s ease-in infinite;
 }
 
-.island[data-mood='waiting'] .funke__bulb::after {
-  animation-duration: 0.95s;
+@keyframes m-sweat {
+  0% { opacity: 0; transform: translateY(0); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(calc(var(--u) * 4)); }
+}
+
+.island[data-mood='problem'] .mascot__spark {
+  animation: m-blink 0.5s steps(2, jump-none) infinite;
+}
+
+/* Fertig: Arme hoch, ^ ^, federt, funkelt */
+.island[data-mood='done'] .mascot {
+  animation: m-cheer 1.3s ease-in-out infinite;
+}
+
+@keyframes m-cheer {
+  0%, 50%, 100% { transform: translateY(0); }
+  20% { transform: translateY(calc(var(--u) * -0.9)); }
+  35% { transform: translateY(0) scale(1.03, 0.97); }
+}
+
+.island[data-mood='done'] .mascot__eye--l::before,
+.island[data-mood='done'] .mascot__eye--r::before { transform: translateX(calc(var(--u) * -0.4)) rotate(-45deg); }
+.island[data-mood='done'] .mascot__eye--l::after,
+.island[data-mood='done'] .mascot__eye--r::after { transform: translateX(calc(var(--u) * 0.4)) rotate(45deg); }
+
+.island[data-mood='done'] .mascot__limb--arm-l .mascot__px {
+  animation: m-arm-up-l 1.3s ease-in-out infinite;
+}
+
+.island[data-mood='done'] .mascot__limb--arm-r .mascot__px {
+  animation: m-arm-up-r 1.3s ease-in-out infinite;
+}
+
+@keyframes m-arm-up-l {
+  0%, 50%, 100% { transform: rotate(52deg); }
+  20% { transform: rotate(72deg); }
+}
+
+@keyframes m-arm-up-r {
+  0%, 50%, 100% { transform: rotate(-52deg); }
+  20% { transform: rotate(-72deg); }
+}
+
+.island[data-mood='done'] .mascot__sparkle {
+  animation: m-twinkle 1.6s ease-in-out infinite;
+}
+
+.island[data-mood='done'] .mascot__sparkle--r {
+  animation-delay: 0.8s;
+}
+
+@keyframes m-twinkle {
+  0%, 100% { opacity: 0; transform: rotate(45deg) scale(0); }
+  40% { opacity: 1; transform: rotate(45deg) scale(1.2); }
+  70% { opacity: 0; transform: rotate(45deg) scale(0.4); }
+}
+
+/* Nur-Kopf-Modus: Die Pille zeigt den Kopf. Wird sie wieder sichtbar
+   (Zuklappen), schrumpft der ganze Mini-Claude in den Kopf zurück. */
+.island[data-figure='head'] .pill .mascot {
+  --sit: 0em;
+}
+
+.island[data-figure='head'] .pill .mascot__limb {
+  transform: var(--hide);
+}
+
+.island[data-figure='head'][data-expanded='false'] .pill .mascot__limb {
+  animation: m-retract 0.34s cubic-bezier(0.5, 0, 0.75, 0) 0.12s backwards;
+}
+
+@keyframes m-retract {
+  from { transform: none; }
+  to { transform: var(--hide); }
+}
+
+/* Beim Aufklappen wächst aus dem Kopf der ganze Mini-Claude: erst die Arme,
+   dann die Beine, dann ein Hopser. Das Panel ist zugeklappt display:none,
+   deshalb startet die Animation bei jedem Aufklappen neu. */
+.island[data-figure='head'][data-expanded='true'] .stage .mascot__limb {
+  animation: m-grow 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) 0.16s backwards;
+}
+
+.island[data-figure='head'][data-expanded='true'] .stage .mascot__limb--leg1,
+.island[data-figure='head'][data-expanded='true'] .stage .mascot__limb--leg4 { animation-delay: 0.3s; }
+.island[data-figure='head'][data-expanded='true'] .stage .mascot__limb--leg2,
+.island[data-figure='head'][data-expanded='true'] .stage .mascot__limb--leg3 { animation-delay: 0.36s; }
+
+@keyframes m-grow {
+  from { transform: var(--hide); }
+}
+
+.island[data-figure='head'][data-expanded='true'] .stage .mascot__rig {
+  animation: m-transform 0.85s var(--ease-out) backwards;
+}
+
+@keyframes m-transform {
+  0% { transform: scale(0.86); }
+  30% { transform: scale(1.04); }
+  55% { transform: translateY(0) scale(1); }
+  70% { transform: translateY(calc(var(--u) * -1.4)) scale(1); }
+  85% { transform: translateY(0) scale(1.03, 0.97); }
+  100% { transform: none; }
+}
+
+/* Ganze Figur: beim Aufklappen (und beim Umschalten) nur ein kleiner Hopser. */
+.island[data-figure='full'][data-expanded='true'] .stage .mascot__rig {
+  animation: m-pop 0.5s var(--ease-out) backwards;
+}
+
+@keyframes m-pop {
+  0% { transform: scale(0.9); }
+  45% { transform: translateY(calc(var(--u) * -1)) scale(1); }
+  100% { transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

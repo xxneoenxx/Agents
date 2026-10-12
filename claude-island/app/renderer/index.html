@@ -17,9 +17,9 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div id="island" class="island" data-mood="idle" data-expanded="false">
+    <div id="island" class="island" data-mood="idle" data-expanded="false" data-figure="head">
       <button class="pill" id="pill" type="button" aria-label="Claude Island aufklappen">
-        <span class="pill__funke" data-funke></span>
+        <span class="pill__mascot" data-mascot></span>
         <span class="pill__text">
           <span class="pill__status" id="pill-status">Ruhig</span>
           <span class="pill__name" id="pill-name">Keine Sitzung</span>
@@ -32,8 +32,11 @@
           <div class="head__brand"><span class="head__spark"></span>Claude Island</div>
           <div class="head__summary" id="summary">Keine Sitzungen</div>
           <div class="head__actions">
-            <button class="icon-btn" id="btn-vault" type="button" title="Vault-Widget" aria-pressed="false">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 9-7 9-7-9z" /><path d="M5 12h14" /></svg>
+            <button class="icon-btn" id="btn-figure" type="button" title="Figur in der Pille" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 6h10v8H7z" />
+                <path class="icon-btn__limbs" d="M3.5 10.5H7M17 10.5h3.5M9.5 14v4M14.5 14v4" />
+              </svg>
             </button>
             <button class="icon-btn" id="btn-pin" type="button" title="Anpinnen" aria-pressed="false">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 5 3 3v2h-4.2L12 20l-.8-6H7v-2l3-3z" /></svg>
@@ -53,7 +56,7 @@
 
         <div class="body">
           <aside class="stage" id="stage">
-            <span class="stage__funke" data-funke></span>
+            <span class="stage__mascot" data-mascot></span>
             <div class="stage__mood" id="stage-mood">Ruhig</div>
             <div class="stage__sub" id="stage-sub">Keine Sitzung</div>
             <div class="stage__conn" id="stage-conn"></div>
@@ -67,7 +70,7 @@
         <footer class="foot" id="foot"></footer>
       </section>
     </div>
-    <script src="funke.js"></script>
+    <script src="mascot.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

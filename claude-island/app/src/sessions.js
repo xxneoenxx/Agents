@@ -44,29 +44,12 @@ function shortPath(file) {
   return parts.length > 2 ? `…/${parts.slice(-2).join('/')}` : file
 }
 
-// Die Vault-Werkzeuge des Mods unter verständlichen Namen.
-const VAULT_TOOLS = {
-  vault_write: 'Notiz schreiben',
-  vault_read: 'Notiz lesen',
-  vault_search: 'Vault-Suche',
-  vault_list: 'Vault-Liste',
-}
-const WRITE_MODE_LABEL = { create: 'neu anlegen', replace: 'ersetzen', append: 'anhängen' }
-
-// Anzeigename eines Werkzeugs: MCP-Präfix ab, Vault-Werkzeuge auf Deutsch.
-function toolLabel(tool) {
-  if (typeof tool !== 'string' || !tool) return 'Werkzeug'
-  const short = tool.startsWith('mcp__') ? tool.split('__').slice(-1)[0] : tool
-  return VAULT_TOOLS[short] || short
-}
-
 // Eine Zeile, die beschreibt, was ein Werkzeugaufruf tut.
 function describeTool(tool, input) {
   const i = input && typeof input === 'object' ? input : {}
   if (typeof i.command === 'string') return clip(i.command, 90)
   if (typeof i.file_path === 'string') return shortPath(i.file_path)
   if (typeof i.notebook_path === 'string') return shortPath(i.notebook_path)
-  if (typeof i.path === 'string') return clip(i.path, 90)
   if (typeof i.pattern === 'string') return clip(i.pattern, 90)
   if (typeof i.url === 'string') return clip(i.url, 90)
   if (typeof i.query === 'string') return clip(i.query, 90)
@@ -76,29 +59,10 @@ function describeTool(tool, input) {
   return firstString ? clip(firstString, 90) : tool || ''
 }
 
-const kb = (bytes) => `${Math.max(1, Math.round(bytes / 1024))} KB`
-
-// Freigabekarte eines Schreibwunschs: Pfad, Modus, was es schon gibt, und
-// eine Vorschau, die deutlich sagt, wenn sie gekürzt ist.
-function vaultWriteDetail(i) {
-  const content = typeof i.content === 'string' ? i.content : ''
-  const mode = WRITE_MODE_LABEL[i.mode] || WRITE_MODE_LABEL.create
-  const before = typeof i.existingBytes === 'number' ? `, bisher ${kb(i.existingBytes)}` : ''
-  const lines = content.split('\n')
-  let preview = lines.slice(0, 12).join('\n')
-  if (preview.length > 1500) preview = preview.slice(0, 1500)
-  const shownLines = preview.split('\n').length
-  const cut = preview.length < content.length
-    ? `\n… (+${Math.max(0, lines.length - shownLines)} weitere Zeilen, ${kb(Buffer.byteLength(content))} insgesamt)`
-    : ''
-  return `${i.path} (${mode}${before})${preview ? `\n\n${preview}${cut}` : ''}`
-}
-
 // Der ausführliche Text für die Freigabekarte.
 function approvalDetail(tool, input) {
   const i = input && typeof input === 'object' ? input : {}
   if (typeof i.command === 'string') return i.command.slice(0, 2000)
-  if (toolLabel(tool) === VAULT_TOOLS.vault_write && typeof i.path === 'string') return vaultWriteDetail(i)
   if (typeof i.file_path === 'string') {
     const body = typeof i.new_string === 'string' ? i.new_string : typeof i.content === 'string' ? i.content : ''
     const preview = body.split('\n').slice(0, 8).join('\n')
@@ -115,9 +79,6 @@ function approvalDetail(tool, input) {
 class SessionStore extends EventEmitter {
   constructor({ now = Date.now, modelIds = {} } = {}) {
     super()
-    // Vom Hauptprozess gesetzt: der verbundene Vault und der Schreibmodus.
-    this.vaultInfo = null
-    this.vaultActivity = []
     this.now = now
     this.modelIds = modelIds
     this.sessions = new Map()
@@ -260,7 +221,7 @@ class SessionStore extends EventEmitter {
     const tool = typeof payload.tool_name === 'string' ? payload.tool_name : 'Werkzeug'
     s.steps.push({
       id: payload.tool_use_id || randomUUID(),
-      tool: toolLabel(tool),
+      tool: tool.startsWith('mcp__') ? tool.split('__').slice(-1)[0] : tool,
       text: describeTool(tool, payload.tool_input),
       ok,
       error: ok ? '' : clip(payload.error, 200),
@@ -278,7 +239,7 @@ class SessionStore extends EventEmitter {
     this.approvals.set(id, {
       id,
       sessionId: s.id,
-      tool: toolLabel(payload.tool_name),
+      tool: typeof payload.tool_name === 'string' ? payload.tool_name : 'Werkzeug',
       summary: typeof input?.description === 'string' ? clip(input.description, 160) : describeTool(payload.tool_name, input),
       detail: approvalDetail(payload.tool_name, input),
       agent: typeof payload.agent_type === 'string' ? payload.agent_type : null,
@@ -364,29 +325,7 @@ class SessionStore extends EventEmitter {
       model: s.desiredModel ? this.modelIds[s.desiredModel] || s.desiredModel : null,
       effort: s.desiredEffort,
       hints,
-      vault: this.vaultInfo ? { name: this.vaultInfo.name, writeMode: this.vaultInfo.writeMode } : null,
     }
-  }
-
-  setVaultInfo(info) {
-    this.vaultInfo = info ? { name: String(info.name), writeMode: info.writeMode === 'free' ? 'free' : 'ask' } : null
-  }
-
-  // Was Claude im Vault getan hat, neueste zuerst; fürs Widget.
-  recordVaultActivity({ sessionId, op, path = '', query = '' }) {
-    const s = typeof sessionId === 'string' ? this.sessions.get(sessionId) : null
-    const entry = {
-      id: randomUUID(),
-      op,
-      path: typeof path === 'string' ? path : '',
-      query: typeof query === 'string' ? clip(query, 80) : '',
-      session: s ? s.title || baseName(s.cwd) || s.id.slice(0, 8) : null,
-      at: this.now(),
-    }
-    this.vaultActivity.unshift(entry)
-    if (this.vaultActivity.length > 20) this.vaultActivity.length = 20
-    this.emit('vault-activity', entry)
-    return entry
   }
 
   // Regelmäßig aufrufen: „Fertig“ verblasst zu „Ruhig“, verschwundene Sitzungen gehen.
@@ -451,4 +390,4 @@ class SessionStore extends EventEmitter {
   }
 }
 
-module.exports = { SessionStore, modelFamily, describeTool, toolLabel, STATUS_RANK, EFFORTS, MODEL_FAMILIES }
+module.exports = { SessionStore, modelFamily, describeTool, STATUS_RANK, EFFORTS, MODEL_FAMILIES }

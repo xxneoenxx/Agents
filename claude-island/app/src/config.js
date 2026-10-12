@@ -18,15 +18,25 @@ const DEFAULTS = {
   },
   sound: true,
   pinned: false,
-  // Größe der Insel: 1 = 232×48 bzw. 720×436, 0.6 = 60 % davon.
-  scale: 0.6,
+  // Größe der Insel: 1 = 232×48 bzw. 720×436, 0.9 = 90 % davon.
+  scale: 0.9,
   // Woher „Plugin aktivieren“ das Plugin holt (GitHub owner/repo#branch).
   pluginSource: 'xxneoenxx/Agents#claude/fervent-tesla-3kfm1o',
-  // Obsidian: null = den in Obsidian zuletzt geöffneten Vault nehmen.
-  vaultPath: null,
-  vaultWidget: true,
-  // 'ask': Schreiben fragt jedes Mal; 'free': Claude schreibt ohne Rückfrage.
-  vaultWriteMode: 'ask',
+  // Mini-Claude in der Pille: 'head' = nur der Kopf (die ganze Figur wächst
+  // beim Aufklappen heraus), 'full' = überall die ganze Figur.
+  figureMode: 'head',
+}
+
+// Einmalige Umstellung: Die Insel wurde 50 % größer (Standard 60 % → 90 %).
+// Wer eine Größe gespeichert hat, bekommt sie ebenfalls 1,5-fach, höchstens 100 %.
+const SIZE_VERSION = 2
+const SIZES = [0.5, 0.6, 0.75, 0.9, 1]
+const nearestSize = (value) => SIZES.reduce((best, s) => (Math.abs(s - value) < Math.abs(best - value) ? s : best), SIZES[0])
+
+function migrate(stored) {
+  if (stored.sizeVersion === SIZE_VERSION) return null
+  if (typeof stored.scale !== 'number') return { sizeVersion: SIZE_VERSION }
+  return { scale: nearestSize(Math.min(1, stored.scale * 1.5)), sizeVersion: SIZE_VERSION }
 }
 
 function loadConfig(dir) {
@@ -43,19 +53,20 @@ function loadConfig(dir) {
     ...stored,
     models: { ...DEFAULTS.models, ...(stored.models && typeof stored.models === 'object' ? stored.models : {}) },
   }
-  return {
-    config,
-    save(patch) {
-      Object.assign(config, patch)
-      Object.assign(stored, patch)
-      try {
-        fs.mkdirSync(dir, { recursive: true })
-        fs.writeFileSync(file, JSON.stringify(stored, null, 2))
-      } catch {
-        // Nicht speicherbar: die Einstellung gilt dann nur bis zum Neustart.
-      }
-    },
+  const save = (patch) => {
+    Object.assign(config, patch)
+    Object.assign(stored, patch)
+    try {
+      fs.mkdirSync(dir, { recursive: true })
+      fs.writeFileSync(file, JSON.stringify(stored, null, 2))
+    } catch {
+      // Nicht speicherbar: die Einstellung gilt dann nur bis zum Neustart.
+    }
   }
+  const upgrade = migrate(stored)
+  // Nur eine gespeicherte Größe muss umgeschrieben werden; sonst gilt der neue Standard.
+  if (upgrade && 'scale' in upgrade) save(upgrade)
+  return { config, save }
 }
 
-module.exports = { loadConfig, DEFAULTS }
+module.exports = { loadConfig, DEFAULTS, SIZES, nearestSize }

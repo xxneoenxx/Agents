@@ -2,30 +2,32 @@
 
 Eine kleine schwebende Insel oben mittig auf dem Bildschirm, die deine
 Claude-Code-Sitzungen (Code-Tab der Claude-Desktop-App) anzeigt und steuert.
-Darauf wohnt **Funke**, eine apricotfarbene Figur, deren Stimmung zeigt, was
-gerade los ist, und deren Augen deiner Maus folgen.
+Darauf wohnt ein **Mini-Claude**, das orange Pixel-Maskottchen aus Claude
+Code. Seine Stimmung zeigt, was gerade los ist, und seine Augen folgen deiner Maus.
 
-| Stimmung | Wann | Funke |
+| Stimmung | Wann | Mini-Claude |
 | :- | :- | :- |
-| **Wartet auf dich** | eine Freigabe oder Rückfrage ist offen | hüpft, große Augen |
-| **Hängt fest** | API-Fehler (`StopFailure`) oder 3 Werkzeugfehler in Folge | zittert, besorgte Brauen |
-| **Arbeitet** | nach deinem Prompt, bei jedem Werkzeugschritt | atmet schnell |
-| **Fertig** | Claude hat geantwortet (`Stop`); nach 10 min wird es ruhig | Augen `^ ^` |
-| **Ruhig** | Sitzung offen, nichts zu tun | schläft |
+| **Wartet auf dich** | eine Freigabe oder Rückfrage ist offen | hüpft, winkt, große Augen |
+| **Hängt fest** | API-Fehler (`StopFailure`) oder 3 Werkzeugfehler in Folge | zittert, Augen `> <`, Schweißtropfen |
+| **Arbeitet** | nach deinem Prompt, bei jedem Werkzeugschritt | tippelt mit den Beinen, tippt mit den Armen |
+| **Fertig** | Claude hat geantwortet (`Stop`); nach 10 min wird es ruhig | Arme hoch, Augen `^ ^`, funkelt |
+| **Ruhig** | Sitzung offen, nichts zu tun | sitzt und schläft |
 
-Bei mehreren Sitzungen zeigt Funke die dringendste (in dieser Reihenfolge).
+Bei mehreren Sitzungen zeigt er die dringendste (in dieser Reihenfolge). Der
+Pixel über seinem Kopf leuchtet in der Farbe der Stimmung.
 
-Außerdem verbindet die Insel Claude mit deinem **Obsidian-Vault**: Claude kann
-Notizen suchen, lesen und schreiben, und ein kleines **Vault-Widget** unter der
-Insel zeigt deinen Vault und was Claude darin gerade tut (siehe
-[Obsidian](#obsidian)).
+**Kopf oder ganz**: Standardmäßig zeigt die Pille nur seinen Kopf. Beim
+Aufklappen wachsen erst die Arme, dann die Beine heraus, und der ganze
+Mini-Claude macht einen Hopser; beim Zuklappen schrumpft er in den Kopf zurück.
+Der Figur-Knopf in der Kopfzeile (oder Rechtsklick › **Figur in der Pille**)
+schaltet auf **Ganzer Mini-Claude** um: dann steht er auch in der Pille komplett.
 
 ## Aufbau
 
 ```
 claude-island/
-  app/      Electron-App (Insel + Vault-Widget, lokaler Server auf 127.0.0.1:47821)
-  plugin/   Claude-Code-Plugin „island-bridge“: HTTP-Hooks + Mod mit Vault-Werkzeugen
+  app/      Electron-App (Insel, lokaler Server auf 127.0.0.1:47821)
+  plugin/   Claude-Code-Plugin „island-bridge“: HTTP-Hooks + Mod
 ```
 
 Das Plugin heißt `island-bridge`, weil Claude Code Plugin-Namen mit
@@ -75,7 +77,7 @@ Alternativ in einer Terminal-Sitzung in einem Schritt:
 /plugin install island-bridge --marketplace xxneoenxx/Agents
 ```
 
-**Update auf 0.2.1** (bringt die Obsidian-Werkzeuge): Die Insel erkennt eine
+**Update auf 0.3.0** (entfernt die Obsidian-Werkzeuge aus 0.2.x): Die Insel erkennt eine
 ältere installierte Version und bietet **Plugin aktualisieren** an (Bühne links,
 leere Karte oder Rechtsklick-Menü). Von Hand:
 `claude plugin marketplace update neo-agents` und
@@ -88,14 +90,16 @@ Claude Code 2.1.286 oder neuer (`/status` zeigt die Version).
 
 ## Bedienung
 
-- **Größe**: Rechtsklick › **Größe**: Klein (50 %), Kompakt (60 %, Standard),
-  Mittel (75 %) oder Groß (100 %). Bei 100 % ist die Pille 232×48 und das
-  aufgeklappte Fenster 720×436 Pixel, bei 60 % 139×29 bzw. 432×262.
+- **Größe**: Rechtsklick › **Größe**: Klein (50 %), Kompakt (60 %), Mittel
+  (75 %), Groß (90 %, Standard) oder Sehr groß (100 %). Bei 100 % ist die Pille
+  232×48 und das aufgeklappte Fenster 720×436 Pixel, bei 90 % 209×43 bzw.
+  648×392. Eine früher gewählte Größe wächst beim ersten Start einmalig um
+  50 % mit (60 % → 90 %, 50 % → 75 %, 75 % → 100 %).
 - **Pille**: Figur, Stimmung, Name der dringendsten Sitzung, Anzahl
   der Sitzungen. Klick klappt auf.
 - **Aufgeklappt**: Kopfzeile mit Zusammenfassung, **Anpinnen** (bleibt
   offen, auch wenn du woanders klickst), **Ton** und **Einklappen** (auch `Esc`).
-  Links Funke mit Status, rechts die Sitzungs-Chips und eine Karte je Zustand:
+  Links der Mini-Claude mit Status, rechts die Sitzungs-Chips und eine Karte je Zustand:
   - **Freigabe**: Werkzeug und Befehl/Datei, **Freigeben** / **Ablehnen**.
     Eine neue Freigabe klappt die Insel auf, ohne dir den Fokus zu stehlen.
   - **Problem**: Fehlermeldung, **Hinweis geben** (Strg+Enter) oder
@@ -105,14 +109,15 @@ Claude Code 2.1.286 oder neuer (`/status` zeigt die Version).
   - unten **Modell** (Opus/Sonnet/Haiku) und **Aufwand** (Niedrig, Mittel,
     Hoch, Sehr hoch, Max) für die gewählte Sitzung. Ein Punkt markiert, was
     gerade tatsächlich läuft, wenn deine Wahl noch nicht angekommen ist.
-- **Kopfzeile**: der Knopf mit der Raute blendet das Vault-Widget ein und aus.
-- **Rechtsklick**: Größe, Vault-Widget, Plugin aktivieren/aktualisieren,
+- **Kopfzeile**: der Figur-Knopf schaltet die Pille zwischen **nur Kopf** und
+  **ganzem Mini-Claude** um.
+- **Rechtsklick**: Größe, Figur in der Pille, Plugin aktivieren/aktualisieren,
   „Mit Windows starten“, „Beenden“.
 
 **Animationen** laufen mit der Bildrate des Monitors, auf dem die Insel steht
 (60 Hz am Laptop, bis 144 Hz am Monitor): Alle Dauer-Animationen bewegen nur
 `transform` und `opacity`, die der Grafikchip ohne Neuzeichnen abspielt. Die
-Pupillen folgen der Maus pro Bild mit zeitbasierter Glättung, also bei jeder
+Augen folgen der Maus pro Bild mit zeitbasierter Glättung, also bei jeder
 Bildrate gleich schnell, und die Maus wird so oft abgefragt, wie der Monitor
 Bilder zeigt.
 
@@ -147,60 +152,6 @@ doch im Code-Tab, verschwindet die Karte aus der Insel.
   `$.prompt.submit({ text, asUser: true })`; sie starten einen eigenen Zug,
   sobald die Sitzung frei ist.
 - Er meldet zurück, welches Modell und welchen Aufwand er tatsächlich schickt.
-
-## Obsidian
-
-**Vault finden**: Die Insel liest Obsidians eigene Vault-Liste
-(`%APPDATA%\obsidian\obsidian.json`) und verbindet den offenen bzw. zuletzt
-benutzten Vault. Über den Wechsel-Knopf im Widget wählst du einen anderen
-Vault aus der Liste oder einen beliebigen Ordner.
-
-**Claude im Vault**: Der Mod gibt Claude vier Werkzeuge, die über die Insel
-laufen:
-
-| Werkzeug | Was es tut |
-| :- | :- |
-| `vault_search` | Notizen nach Name, Pfad und Inhalt suchen (mit Ausschnitt) |
-| `vault_read` | eine Notiz lesen (`Projekte/Insel` oder `Projekte/Insel.md`) |
-| `vault_list` | Unterordner und Notizen eines Ordners auflisten |
-| `vault_write` | Notiz anlegen (`create`), ergänzen (`append`) oder ersetzen (`replace`) |
-
-Claude schreibt Obsidian-Markdown mit `[[Wikilinks]]`, `#Tags` und optional
-Frontmatter. Sag einfach z. B. „Leg in meinem Vault eine Notiz mit den
-Ergebnissen an“ oder „Was steht in meinen Notizen zu Projekt X?“.
-
-**Schalter „Claude schreibt: Fragen | Frei“** im Widget:
-
-- **Fragen** (Standard): Jeder Schreibwunsch erscheint als Freigabe
-  „Notiz schreiben“ in der Insel, mit Pfad, Modus und Vorschau. Geschrieben
-  wird erst nach **Freigeben**; bei **Ablehnen** bleibt der Vault unverändert
-  und Claude erfährt das. Das gilt in jedem Berechtigungsmodus von Claude Code,
-  weil die Insel selbst anhält. Du hast dafür bis zu 10 Minuten Zeit (der Mod
-  fragt alle 20 Sekunden nach, weil Claude Code eine einzelne Anfrage nach
-  30 Sekunden abbricht). Bricht Claude ab (Esc), verschwindet die Karte; ohne
-  Antwort wird nichts geschrieben. Die Karte zeigt bei „ersetzen“ und
-  „anhängen“ die bisherige Größe und sagt deutlich, wenn die Vorschau gekürzt ist.
-- **Frei**: Claude schreibt ohne Rückfrage; das Widget zeigt, was geschrieben
-  wurde.
-
-Lesen und Suchen gehen immer ohne Rückfrage.
-
-**Schutz**: Nur Pfade innerhalb des Vaults, keine `..`, keine absoluten Pfade,
-keine versteckten Ordner wie `.obsidian`, `.git` und `.trash` (auch nicht über
-Windows-Kurznamen wie `OBSIDI~1` oder Verknüpfungen), keine unter Windows
-ungültigen Namen; gelesen und geschrieben werden nur `.md`-Notizen bis 1 MB.
-Neu anlegen ist exklusiv, Anhängen hängt wirklich nur an, Ersetzen läuft über
-eine Zwischendatei. Netzlaufwerke, `subst`-Laufwerke und Laufwerkswurzeln
-(z. B. ein USB-Stick `E:\`) funktionieren.
-
-**Widget**: eigenes kleines Fenster unter der Insel. Es zeigt Vault-Name und
-Anzahl der Notizen, den Schalter, eine Suche, unter „Claude“ die letzten
-Lese-, Such- und Schreibaktionen und unter „Zuletzt geändert“ die neuesten
-Notizen. Ein Klick öffnet die Notiz in Obsidian. Änderungen auf der Platte (auch
-aus Obsidian selbst) erscheinen sofort.
-
-Die Werkzeuge brauchen die laufende Insel; ohne sie sagt Claude, dass die Insel
-gestartet werden muss.
 
 ## In der Doku geprüft (Claude Code 2.1.294)
 
@@ -242,19 +193,17 @@ Anpinnen oder Größe angelegt):
   "models": { "opus": "claude-opus-5-5", "sonnet": "claude-sonnet-5-5", "haiku": "claude-haiku-5-5" },
   "sound": true,
   "pinned": false,
-  "scale": 0.6,
+  "scale": 0.9,
   "pluginSource": "xxneoenxx/Agents#claude/fervent-tesla-3kfm1o",
-  "vaultPath": null,
-  "vaultWidget": true,
-  "vaultWriteMode": "ask"
+  "figureMode": "head"
 }
 ```
 
 In der Datei steht nur, was du geändert hast; alles andere sind Standardwerte.
-`vaultPath` ist der gewählte Vault-Ordner (`null` = aus Obsidian),
-`vaultWriteMode` ist `"ask"` (Fragen) oder `"free"` (Frei).
 
-`scale` ist eine der Größen 0.5, 0.6, 0.75 oder 1. `pluginSource` ist der
+`scale` ist eine der Größen 0.5, 0.6, 0.75, 0.9 oder 1. `figureMode` ist
+`"head"` (Pille zeigt den Kopf, die ganze Figur wächst beim Aufklappen heraus)
+oder `"full"` (überall der ganze Mini-Claude). `pluginSource` ist der
 Marketplace, aus dem **Plugin aktivieren** installiert.
 
 Unter `models` stehen die IDs, die beim Umschalten geschickt werden. Den Port
@@ -263,10 +212,7 @@ nur zusammen mit `plugin/hooks/hooks.json` und `plugin/hooks/register.ts`
 
 ## Sicherheit
 
-Der Server lauscht nur auf `127.0.0.1`. Für die Vault-Endpunkte braucht es
-zusätzlich einen geheimen Schlüssel aus `%APPDATA%\Claude Island\island-token`,
-den die Insel beim ersten Start anlegt und den der Mod mitschickt; so kommen
-andere Benutzer oder Programme auf demselben PC nicht an deine Notizen. Anfragen mit `Origin`-Header (also aus
+Der Server lauscht nur auf `127.0.0.1`. Anfragen mit `Origin`-Header (also aus
 einem Browser), mit fremdem `Host` (DNS-Rebinding) oder ohne
 `application/json` werden abgewiesen. Freigeben und Ablehnen geht nur über
 das Fenster der App, nicht über HTTP.
@@ -276,5 +222,5 @@ das Fenster der App, nicht über HTTP.
 ```bash
 cd claude-island/app && npm test                 # Zustand und Server
 claude plugin validate claude-island/plugin      # Plugin, Hooks, Mod
-claude plugin test claude-island/plugin          # Mod: Modell, Aufwand, Hinweise, Vault-Werkzeuge
+claude plugin test claude-island/plugin          # Mod: Modell, Aufwand, Hinweise
 ```

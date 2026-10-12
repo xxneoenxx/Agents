@@ -31,7 +31,7 @@
     sessions: [],
     counts: {},
     overall: 'idle',
-    ui: { expanded: false, pinned: false, sound: true, scale: 1, vaultWidget: false },
+    ui: { expanded: false, pinned: false, sound: true, scale: 1, figureMode: 'head' },
     server: { listening: false, error: null, port: null },
     plugin: { state: 'checking', busy: false, message: '', outdated: false },
   }
@@ -51,6 +51,7 @@
     island.dataset.mood = state.overall
     island.dataset.expanded = String(Boolean(state.ui.expanded))
     island.dataset.closing = String(closing)
+    island.dataset.figure = state.ui.figureMode === 'full' ? 'full' : 'head'
 
     const top = state.sessions[0]
     byId('pill-status').textContent = MOOD[state.overall]
@@ -61,8 +62,9 @@
     byId('btn-pin').title = state.ui.pinned ? 'Angepinnt – bleibt offen' : 'Anpinnen'
     byId('btn-sound').setAttribute('aria-pressed', String(Boolean(state.ui.sound)))
     byId('btn-sound').title = state.ui.sound ? 'Ton an' : 'Ton aus'
-    byId('btn-vault').setAttribute('aria-pressed', String(Boolean(state.ui.vaultWidget)))
-    byId('btn-vault').title = state.ui.vaultWidget ? 'Vault-Widget ausblenden' : 'Vault-Widget zeigen'
+    const full = island.dataset.figure === 'full'
+    byId('btn-figure').setAttribute('aria-pressed', String(full))
+    byId('btn-figure').title = full ? 'Pille zeigt den ganzen Mini-Claude – umschalten auf nur Kopf' : 'Pille zeigt nur den Kopf – umschalten auf ganzen Mini-Claude'
     byId('summary').innerHTML = summary()
 
     // selectedId bleibt stehen, auch wenn die Sitzung noch nicht im Zustand ist
@@ -289,7 +291,7 @@
       parts.push('<span>Damit sich Sitzungen hier melden, muss das Plugin <code>island-bridge</code> aktiv sein.</span>')
     }
     if (p.state === 'active' && p.outdated) {
-      parts.push('<span class="empty__note">Eine neue Plugin-Version (mit Obsidian-Werkzeugen) ist bereit.</span>')
+      parts.push('<span class="empty__note">Eine neue Plugin-Version ist bereit.</span>')
     }
     if (p.message) parts.push(`<span class="empty__note">${esc(p.message)}</span>`)
     parts.push('</div>')
@@ -421,7 +423,7 @@
   byId('btn-collapse').addEventListener('click', collapse)
   byId('btn-pin').addEventListener('click', () => api.setPinned(!state.ui.pinned))
   byId('btn-sound').addEventListener('click', () => api.setSound(!state.ui.sound))
-  byId('btn-vault').addEventListener('click', () => api.setVaultWidget(!state.ui.vaultWidget))
+  byId('btn-figure').addEventListener('click', () => api.setFigureMode(state.ui.figureMode === 'full' ? 'head' : 'full'))
   byId('stage-conn').addEventListener('click', (event) => {
     if (event.target.closest('[data-act="update-plugin"]')) api.updatePlugin()
   })
@@ -477,15 +479,16 @@
     if (!next) return
     if (!next.ui.expanded) closing = false
     if (next.ui.expanded && !state.ui.expanded) closing = false
-    const moved = next.ui.expanded !== state.ui.expanded || next.overall !== state.overall
+    const moved =
+      next.ui.expanded !== state.ui.expanded || next.overall !== state.overall || next.ui.figureMode !== state.ui.figureMode
     state = next
     render()
-    if (moved) requestAnimationFrame(() => Funke.refresh())
+    if (moved) requestAnimationFrame(() => Mascot.refresh())
   }
 
-  Funke.init()
+  Mascot.init()
   api.onState(apply)
-  api.onCursor((point) => Funke.look(point))
+  api.onCursor((point) => Mascot.look(point))
   api.onSignal((signal) => chime(signal.type))
   api.onSelect((id) => {
     selectedId = id

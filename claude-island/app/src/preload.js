@@ -25,5 +25,5 @@ contextBridge.exposeInMainWorld('island', {
   openMenu: () => ipcRenderer.send('island:menu'),
   activatePlugin: () => ipcRenderer.send('island:activate-plugin'),
   updatePlugin: () => ipcRenderer.send('island:update-plugin'),
-  setVaultWidget: (value) => ipcRenderer.send('island:vault-widget', value),
+  setFigureMode: (mode) => ipcRenderer.send('island:figure-mode', mode),
 })

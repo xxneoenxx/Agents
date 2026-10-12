@@ -1,30 +1,28 @@
 'use strict'
 
-const { app, BrowserWindow, Menu, ipcMain, screen, dialog, shell } = require('electron')
-const fs = require('node:fs')
+const { app, BrowserWindow, Menu, ipcMain, screen, dialog } = require('electron')
 const path = require('node:path')
-const { randomBytes } = require('node:crypto')
-const { loadConfig } = require('./config')
+const { loadConfig, DEFAULTS } = require('./config')
 const { SessionStore } = require('./sessions')
 const { createIslandServer } = require('./server')
 const { checkPlugin, activatePlugin, updatePlugin } = require('./plugin')
-const { VaultService } = require('./vault-service')
 
-// Grundmaße bei Größe 100 %; die Fenster werden mit `scale` verkleinert und
+// Grundmaße bei Größe 100 %; das Fenster wird mit `scale` verkleinert und
 // der Inhalt per Zoom mitskaliert, sodass das Layout in CSS gleich bleibt.
 const PILL = { width: 232, height: 48 }
 const PANEL = { width: 720, height: 436 }
-const WIDGET = { width: 300, height: 360 }
 const SCALES = [
   [0.5, 'Klein (50 %)'],
   [0.6, 'Kompakt (60 %)'],
   [0.75, 'Mittel (75 %)'],
-  [1, 'Groß (100 %)'],
+  [0.9, 'Groß (90 %)'],
+  [1, 'Sehr groß (100 %)'],
 ]
-// Das Widget zeigt Notiznamen; darunter wird es unlesbar.
-const WIDGET_MIN_ZOOM = 0.75
+const FIGURES = [
+  ['head', 'Nur Kopf (wächst beim Aufklappen)'],
+  ['full', 'Ganzer Mini-Claude'],
+]
 const TOP_GAP = 8
-const WIDGET_GAP = 8
 const MAX_HZ = 144
 const RETRY_TEXT = 'Bitte versuche es erneut.'
 // Strg/Cmd mit diesen Tasten würde zoomen und die Größe verstellen.
@@ -38,19 +36,19 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 let win = null
-let widget = null
 let expanded = false
 let quitting = false
 let serverState = { listening: false, error: null, port: null }
 let pluginState = { state: 'checking', busy: false, message: '', outdated: false, version: null }
 
 const scaled = (size, scale) => ({ width: Math.round(size.width * scale), height: Math.round(size.height * scale) })
-const validScale = (value) => (SCALES.some(([s]) => s === value) ? value : 0.6)
+const validScale = (value) => (SCALES.some(([s]) => s === value) ? value : DEFAULTS.scale)
+const validFigure = (value) => (FIGURES.some(([f]) => f === value) ? value : DEFAULTS.figureMode)
 const alive = (w) => w && !w.isDestroyed()
 
 // Ein rahmenloses, durchsichtiges Fenster, das immer oben bleibt und seinen
 // Zoom (= die gewählte Größe) gegen Tastenkürzel und Mausrad verteidigt.
-function makeWindow({ bounds, preload, page, zoom }) {
+function makeWindow({ bounds, zoom }) {
   const w = new BrowserWindow({
     ...bounds,
     frame: false,
@@ -66,7 +64,7 @@ function makeWindow({ bounds, preload, page, zoom }) {
     show: false,
     title: 'Claude Island',
     webPreferences: {
-      preload: path.join(__dirname, preload),
+      preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
@@ -89,25 +87,8 @@ function makeWindow({ bounds, preload, page, zoom }) {
   })
   wc.setWindowOpenHandler(() => ({ action: 'deny' }))
   wc.on('will-navigate', (event) => event.preventDefault())
-  w.loadFile(path.join(__dirname, '..', 'renderer', page))
+  w.loadFile(path.join(__dirname, '..', 'renderer', 'index.html'))
   return w
-}
-
-// Der Schlüssel, den der Mod für Vault-Zugriffe mitschickt. Er liegt im
-// Einstellungsordner der Insel, den nur der angemeldete Benutzer lesen kann;
-// so kommen andere Benutzer oder Programme auf dem PC nicht an die Notizen.
-function loadToken(dir) {
-  const file = path.join(dir, 'island-token')
-  try {
-    const existing = fs.readFileSync(file, 'utf8').trim()
-    if (existing.length >= 32) return existing
-  } catch {
-    // Noch keiner da.
-  }
-  const token = randomBytes(32).toString('hex')
-  fs.mkdirSync(dir, { recursive: true })
-  fs.writeFileSync(file, token, { mode: 0o600 })
-  return token
 }
 
 // Ein nicht skalierbares Fenster nimmt neue Maße unter Windows nicht immer an.
@@ -122,30 +103,16 @@ function start() {
   Menu.setApplicationMenu(null)
   const { config, save } = loadConfig(app.getPath('userData'))
   const store = new SessionStore({ modelIds: config.models })
-  const vaults = new VaultService({ config, save, store })
   serverState.port = config.port
   let scale = validScale(config.scale)
+  let figureMode = validFigure(config.figureMode)
   const islandZoom = () => scale
-  const widgetZoom = () => Math.max(scale, WIDGET_MIN_ZOOM)
 
   const islandBounds = () => {
     const size = scaled(expanded ? PANEL : PILL, scale)
     return { ...size, ...topCenter(size) }
   }
-  // Unter der Insel; passt es dort nicht (großes aufgeklapptes Fenster auf
-  // einem kleinen Laptop-Bildschirm), daneben.
-  const widgetBounds = () => {
-    const size = scaled(WIDGET, widgetZoom())
-    const island = alive(win) ? win.getBounds() : islandBounds()
-    const area = screen.getDisplayMatching(island).workArea
-    const below = { ...size, x: island.x + Math.round((island.width - size.width) / 2), y: island.y + island.height + WIDGET_GAP }
-    if (below.y + size.height <= area.y + area.height) return below
-    const right = island.x + island.width + WIDGET_GAP
-    const x = right + size.width <= area.x + area.width ? right : Math.max(area.x, island.x - WIDGET_GAP - size.width)
-    return { ...size, x, y: Math.max(area.y, Math.min(island.y, area.y + area.height - size.height)) }
-  }
-
-  win = makeWindow({ bounds: islandBounds(), preload: 'preload.js', page: 'index.html', zoom: islandZoom })
+  win = makeWindow({ bounds: islandBounds(), zoom: islandZoom })
   // Die Insel ist die App: Alt+F4 schließt sie nicht, „Beenden“ und das
   // Herunterfahren schon.
   app.on('before-quit', () => (quitting = true))
@@ -155,13 +122,12 @@ function start() {
   win.once('ready-to-show', () => {
     win.showInactive()
     measureRefresh()
-    if (config.vaultWidget) showWidget(true)
   })
 
   // Zustand an die Insel schicken, gebündelt auf höchstens einen Frame.
   const fullState = () => ({
     ...store.snapshot(),
-    ui: { expanded, pinned: config.pinned, sound: config.sound, scale, vaultWidget: Boolean(config.vaultWidget) },
+    ui: { expanded, pinned: config.pinned, sound: config.sound, scale, figureMode },
     server: serverState,
     plugin: pluginState,
   })
@@ -183,23 +149,7 @@ function start() {
   })
   setInterval(() => store.tick(), 1000)
 
-  // Zustand ans Widget, ebenso gebündelt.
-  let vaultTimer = null
-  const pushVault = () => {
-    if (vaultTimer) return
-    vaultTimer = setTimeout(() => {
-      vaultTimer = null
-      if (alive(widget)) send(widget, 'vault:state', vaults.snapshot())
-    }, 30)
-  }
-  vaults.on('change', pushVault)
-  vaults.init()
-
-  const island = createIslandServer(store, {
-    port: config.port,
-    getVault: () => vaults.current(),
-    token: loadToken(app.getPath('userData')),
-  })
+  const island = createIslandServer(store, { port: config.port })
   island
     .listen()
     .then(() => {
@@ -246,7 +196,6 @@ function start() {
     setBoundsSafely(win, islandBounds())
     // Erst nach dem Verschieben messen: die Insel kann jetzt auf einem anderen Monitor stehen.
     measureRefresh()
-    if (alive(widget)) setBoundsSafely(widget, widgetBounds())
   }
   function setExpanded(next) {
     if (expanded === next) return
@@ -258,84 +207,24 @@ function start() {
   screen.on('display-added', place)
   screen.on('display-removed', place)
 
-  // Insel und Widget zählen als eine App: wer ins Widget klickt, verlässt die
-  // Insel nicht. Erst wenn beide den Fokus abgegeben haben, klappt sie zu.
-  const collapseIfAppLostFocus = () =>
-    setTimeout(() => {
-      if (!expanded || config.pinned) return
-      if ((alive(win) && win.isFocused()) || (alive(widget) && widget.isFocused())) return
-      send(win, 'island:blur')
-    }, 60)
-  win.on('blur', collapseIfAppLostFocus)
+  // Klick woandershin klappt die Insel zu, außer sie ist angepinnt.
+  win.on('blur', () => {
+    if (expanded && !config.pinned) send(win, 'island:blur')
+  })
 
   function setScale(next) {
     scale = validScale(next)
     save({ scale })
     win.webContents.setZoomFactor(islandZoom())
-    if (alive(widget)) widget.webContents.setZoomFactor(widgetZoom())
     place()
     pushState()
   }
 
-  // ---------- Vault-Widget ----------
-
-  function showWidget(show) {
-    if (Boolean(config.vaultWidget) !== show) save({ vaultWidget: show })
-    if (show) {
-      if (!alive(widget)) {
-        widget = makeWindow({ bounds: widgetBounds(), preload: 'widget-preload.js', page: 'widget.html', zoom: widgetZoom })
-        widget.once('ready-to-show', () => {
-          if (config.vaultWidget && alive(widget)) widget.showInactive()
-        })
-        // Alt+F4 im Widget heißt „ausblenden“, damit Knopf und Menü stimmen.
-        widget.on('close', (event) => {
-          if (quitting) return
-          event.preventDefault()
-          showWidget(false)
-        })
-        widget.on('blur', collapseIfAppLostFocus)
-        widget.on('closed', () => (widget = null))
-      } else {
-        setBoundsSafely(widget, widgetBounds())
-        widget.showInactive()
-      }
-    } else if (alive(widget)) {
-      widget.hide()
-    }
+  function setFigure(next) {
+    figureMode = validFigure(next)
+    save({ figureMode })
     pushState()
   }
-
-  ipcMain.handle('vault:get-state', () => vaults.snapshot())
-  ipcMain.handle('vault:search', (_e, query) => vaults.search(String(query || '').slice(0, 200)))
-  ipcMain.on('vault:open', (_e, rel) => {
-    const uri = vaults.uriFor(String(rel || ''))
-    if (uri) shell.openExternal(uri)
-  })
-  ipcMain.on('vault:write-mode', (_e, mode) => vaults.setWriteMode(mode))
-  ipcMain.on('vault:select', (_e, dir) => {
-    // Nur Vaults aus Obsidians eigener Liste; alles andere über den Ordner-Dialog.
-    if (vaults.known.some((v) => v.path === dir)) vaults.choose(dir)
-  })
-  async function chooseFolder() {
-    const result = await dialog.showOpenDialog(alive(widget) ? widget : win, {
-      title: 'Obsidian-Vault wählen',
-      properties: ['openDirectory'],
-    })
-    if (!result.canceled && result.filePaths[0]) await vaults.choose(result.filePaths[0])
-  }
-  ipcMain.on('vault:choose', () => chooseFolder())
-  // Die Vaults aus Obsidian zum Wechseln, darunter der Ordner-Dialog.
-  ipcMain.on('vault:menu', () => {
-    const current = vaults.current()?.root
-    const known = vaults.refreshKnown()
-    Menu.buildFromTemplate([
-      ...known.map((v) => ({ label: v.name, type: 'radio', checked: v.path === current, click: () => vaults.choose(v.path) })),
-      ...(known.length ? [{ type: 'separator' }] : []),
-      { label: 'Ordner wählen …', click: () => chooseFolder() },
-    ]).popup({ window: alive(widget) ? widget : win })
-  })
-  ipcMain.on('vault:hide', () => showWidget(false))
-  ipcMain.on('island:vault-widget', (_e, value) => showWidget(Boolean(value)))
 
   // ---------- Plugin ----------
 
@@ -414,6 +303,7 @@ function start() {
     save({ sound: Boolean(value) })
     pushState()
   })
+  ipcMain.on('island:figure-mode', (_e, value) => setFigure(value))
   ipcMain.on('island:decide', (_e, approvalId, behavior) => store.decide(String(approvalId), behavior))
   ipcMain.on('island:hint', (_e, sessionId, text) => store.queueHint(String(sessionId), String(text)))
   ipcMain.on('island:retry', (_e, sessionId) => store.queueHint(String(sessionId), RETRY_TEXT))
@@ -446,7 +336,15 @@ function start() {
           click: () => setScale(value),
         })),
       },
-      { label: 'Vault-Widget', type: 'checkbox', checked: Boolean(config.vaultWidget), click: (item) => showWidget(item.checked) },
+      {
+        label: 'Figur in der Pille',
+        submenu: FIGURES.map(([value, label]) => ({
+          label,
+          type: 'radio',
+          checked: value === figureMode,
+          click: () => setFigure(value),
+        })),
+      },
       pluginItem,
       { type: 'separator' },
       {
@@ -466,10 +364,7 @@ function start() {
   })
   app.on('second-instance', () => setExpanded(true))
   app.on('window-all-closed', () => app.quit())
-  app.on('before-quit', () => {
-    vaults.close()
-    island.close()
-  })
+  app.on('before-quit', () => island.close())
 }
 
 function topCenter(size) {

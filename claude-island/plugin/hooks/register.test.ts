@@ -3,47 +3,25 @@ import type { Engine } from 'claude-code/testing'
 import type { On, TurnStepInput, TurnStepResult } from 'claude-code'
 
 type Poll = { session_id: string; cwd: string; model: string | null; effort: string | number | null }
-type Json = Record<string, unknown>
-type VaultAnswer = (op: string, body: Json) => { status: number; body: object }
 
-// Die Island-App unter den Plugins: beantwortet /mod/poll mit `answer()` und
-// /vault/<op> mit `vault` (ohne: kein Vault verbunden).
-function island(on: On, answer: () => object, ok = true, vault?: VaultAnswer) {
+// Die Island-App unter den Plugins: beantwortet /mod/poll mit `answer()`.
+function island(on: On, answer: () => object, ok = true) {
   const polls: Poll[] = []
-  const vaultCalls: { op: string; body: Json; token?: string }[] = []
   on('http.fetch', async ($, e) => {
-    const body = JSON.parse(e.init?.body ?? '{}') as Json
-    const reply = (status: number, data: object) => ({
-      value: { status, ok: status < 300, headers: {}, text: JSON.stringify(data) },
-    })
-    if (e.url === 'http://127.0.0.1:47821/mod/poll') {
-      polls.push(body as Poll)
-      if (!ok) throw new Error('ECONNREFUSED')
-      return reply(200, answer())
-    }
-    const op = /^http:\/\/127\.0\.0\.1:47821\/vault\/([\w-]+)$/.exec(e.url)?.[1]
-    expect(op).toBeDefined()
-    vaultCalls.push({ op: op ?? '', body, token: e.init?.headers?.['x-island-token'] })
+    expect(e.url).toBe('http://127.0.0.1:47821/mod/poll')
+    polls.push(JSON.parse(e.init?.body ?? '{}') as Poll)
     if (!ok) throw new Error('ECONNREFUSED')
-    const r = vault ? vault(op ?? '', body) : { status: 409, body: { error: 'no-vault', message: 'Kein Obsidian-Vault verbunden.' } }
-    return reply(r.status, r.body)
+    return { value: { status: 200, ok: true, headers: {}, text: JSON.stringify(answer()) } }
   })
-  return { polls, vaultCalls }
+  return polls
 }
 
 // Die Engine unter den Plugins: Sitzung, Prompts und Modellaufrufe.
-function engine(on: On, { env = {}, files = {} }: { env?: Record<string, string>; files?: Record<string, string> } = {}) {
+function engine(on: On) {
   const steps: TurnStepInput[] = []
   const prompts: { text: string; asUser: boolean }[] = []
-  const tools: { name: string; isDeferred: unknown }[] = []
   on('session.id', () => ({ value: 'sitzung-1' }))
-  mock.env(on, env)
-  on('fs.read', ($, e) => (e.path in files ? { value: files[e.path] ?? '' } : { deny: 'ENOENT' }))
   on('session.start', ($, e) => ({ cwd: e.cwd }))
-  on('tool.register', ($, e) => {
-    tools.push({ name: e.name, isDeferred: e.isDeferred })
-    return { value: { tool: `mcp__island-bridge__${e.name}` } }
-  })
   on('prompt.submit', ($, e) => {
     prompts.push({ text: e.text, asUser: e.origin.kind === 'plugin' && e.origin.asUser === true })
     return { text: e.text }
@@ -52,7 +30,7 @@ function engine(on: On, { env = {}, files = {} }: { env?: Record<string, string>
     steps.push({ ...e })
     return { turnId: e.turnId, index: e.index, answer: '', toolUses: [], stopReason: 'end_turn', usage: null }
   })
-  return { steps, prompts, tools }
+  return { steps, prompts }
 }
 
 const STEP: TurnStepInput = { turnId: 't1', index: 0, model: 'claude-opus-5-5', effort: 'high', messageCount: 3 }
@@ -70,7 +48,7 @@ const START = { cwd: 'C:\\Users\\neo\\insel', surface: null, isInteractive: true
 test('übernimmt Modell und Aufwand aus der App in jedem Modellaufruf', async ($, on) => {
   const clock = mock.clock(on)
   const { steps } = engine(on)
-  const { polls } = island(on, () => ({ model: 'claude-haiku-5-5', effort: 'low', hints: [] }))
+  const polls = island(on, () => ({ model: 'claude-haiku-5-5', effort: 'low', hints: [] }))
 
   await $.session.start(START)
   await clock.advance(1000)
@@ -131,7 +109,7 @@ test('schickt Hinweise als Prompt der Person, jeden genau einmal', async ($, on)
 test('läuft die App nicht, geht die Sitzung einfach weiter', async ($, on) => {
   const clock = mock.clock(on)
   const { steps, prompts } = engine(on)
-  const { polls } = island(on, () => ({}), false)
+  const polls = island(on, () => ({}), false)
 
   await $.session.start(START)
   await clock.advance(3000)
@@ -139,143 +117,4 @@ test('läuft die App nicht, geht die Sitzung einfach weiter', async ($, on) => {
   await runStep($, STEP)
   expect(steps[0]).toMatchObject({ model: 'claude-opus-5-5', effort: 'high' })
   expect(prompts).toEqual([])
-})
-
-const TOOL = <N extends string>(name: N) => `mcp__island-bridge__${name}` as const
-
-test('meldet vier Vault-Werkzeuge an, sichtbar ab dem ersten Prompt', async ($, on) => {
-  mock.clock(on)
-  const { tools } = engine(on)
-  island(on, () => ({}))
-  await $.session.start(START)
-  expect(tools.map((t) => t.name)).toEqual(['vault_search', 'vault_read', 'vault_list', 'vault_write'])
-  expect(tools.every((t) => t.isDeferred === false)).toBe(true)
-})
-
-test('Vault-Werkzeuge rufen die Insel und geben Claude lesbaren Text', async ($, on) => {
-  mock.clock(on)
-  engine(on)
-  const { vaultCalls } = island(
-    on,
-    () => ({}),
-    true,
-    (op) => {
-      if (op === 'search') return { status: 200, body: { partial: false, results: [{ path: 'Rezepte/Pasta.md', snippet: 'Nudeln mit Tomaten' }] } }
-      if (op === 'read') return { status: 200, body: { path: 'Rezepte/Pasta.md', content: 'Nudeln', modified: '2026-10-09T10:00:00.000Z' } }
-      if (op === 'write') return { status: 200, body: { path: 'Ideen/Neu.md', created: true, bytes: 5 } }
-      return { status: 400, body: { error: 'bad-path', message: 'Pfade mit ".." sind nicht erlaubt.' } }
-    },
-  )
-  await $.session.start(START)
-
-  const found = await $.tool.call({ tool: TOOL('vault_search'), query: 'pasta' })
-  expect(found.result).toBe('1 Treffer:\n- Rezepte/Pasta.md — Nudeln mit Tomaten')
-  expect(vaultCalls[0]).toEqual({ op: 'search', body: { query: 'pasta', session_id: 'sitzung-1' } })
-
-  const read = await $.tool.call({ tool: TOOL('vault_read'), path: 'Rezepte/Pasta' })
-  expect(read.result).toBe('Notiz: Rezepte/Pasta.md (geändert 2026-10-09T10:00:00.000Z)\n---\nNudeln')
-
-  const written = await $.tool.call({ tool: TOOL('vault_write'), path: 'Ideen/Neu', content: '# Neu', mode: 'create' })
-  expect(written.result).toBe('Notiz angelegt: Ideen/Neu.md (5 Bytes)')
-  expect(vaultCalls[2]?.body).toEqual({ path: 'Ideen/Neu', content: '# Neu', mode: 'create', session_id: 'sitzung-1' })
-
-  const refused = await $.tool.call({ tool: TOOL('vault_list'), folder: '../raus' })
-  expect(refused.deny).toBe('Pfade mit ".." sind nicht erlaubt.')
-})
-
-test('ohne Insel sagen die Werkzeuge, was zu tun ist', async ($, on) => {
-  mock.clock(on)
-  engine(on)
-  island(on, () => ({}), false)
-  await $.session.start(START)
-  const res = await $.tool.call({ tool: TOOL('vault_read'), path: 'a.md' })
-  expect(res.deny).toBe('Claude Island läuft nicht. Starte die Insel auf diesem PC, dann klappt der Vault-Zugriff.')
-})
-
-test('Claude Code fragt nicht doppelt: Vault-Werkzeuge sind erlaubt, Ablehnung bleibt', async ($, on) => {
-  mock.clock(on)
-  engine(on)
-  island(on, () => ({ hints: [], vault: { name: 'Gehirn', writeMode: 'ask' } }))
-  let beneath: 'ask' | 'deny' | 'allow' = 'ask'
-  on('tool.check', () => ({ decision: beneath }))
-  await $.session.start(START)
-
-  const check = (name: string) => $.tool.check({ tool: TOOL(name), input: {} })
-  for (const name of ['vault_read', 'vault_search', 'vault_list', 'vault_write']) expect((await check(name)).decision).toBe('allow')
-  beneath = 'deny'
-  expect((await check('vault_write')).decision).toBe('deny')
-  expect((await check('vault_read')).decision).toBe('deny')
-})
-
-test('abgelehnter Schreibwunsch kommt als Ablehnung bei Claude an', async ($, on) => {
-  mock.clock(on)
-  engine(on)
-  island(on, () => ({}), true, () => ({ status: 403, body: { error: 'denied', message: 'Abgelehnt in Claude Island. Nichts geschrieben.' } }))
-  await $.session.start(START)
-  const res = await $.tool.call({ tool: TOOL('vault_write'), path: 'a.md', content: 'x' })
-  expect(res.deny).toBe('Abgelehnt in Claude Island. Nichts geschrieben.')
-})
-
-test('Modus „Fragen“: der Mod fragt nach, bis in der Insel entschieden ist', async ($, on) => {
-  mock.clock(on)
-  engine(on)
-  let waits = 0
-  const { vaultCalls } = island(on, () => ({}), true, (op) => {
-    if (op === 'write') return { status: 202, body: { pending: 'w1', message: 'Wartet auf Freigabe in Claude Island.' } }
-    if (op === 'write-wait') {
-      waits += 1
-      if (waits < 3) return { status: 202, body: { pending: 'w1' } }
-      return { status: 200, body: { path: 'Ideen/Neu.md', created: true, bytes: 5 } }
-    }
-    return { status: 404, body: {} }
-  })
-  await $.session.start(START)
-  const res = await $.tool.call({ tool: TOOL('vault_write'), path: 'Ideen/Neu', content: '# Neu' })
-  expect(res.result).toBe('Notiz angelegt: Ideen/Neu.md (5 Bytes)')
-  expect(vaultCalls.map((c) => c.op)).toEqual(['write', 'write-wait', 'write-wait', 'write-wait'])
-  expect(vaultCalls[1]?.body).toEqual({ id: 'w1', session_id: 'sitzung-1' })
-})
-
-test('Modus „Fragen“: Ablehnung in der Insel kommt als Ablehnung an', async ($, on) => {
-  mock.clock(on)
-  engine(on)
-  island(on, () => ({}), true, (op) =>
-    op === 'write'
-      ? { status: 202, body: { pending: 'w2' } }
-      : { status: 403, body: { error: 'denied', message: 'Abgelehnt in Claude Island. Nichts geschrieben.' } },
-  )
-  await $.session.start(START)
-  const res = await $.tool.call({ tool: TOOL('vault_write'), path: 'a.md', content: 'x' })
-  expect(res.deny).toBe('Abgelehnt in Claude Island. Nichts geschrieben.')
-})
-
-test('der Schlüssel aus dem Einstellungsordner der Insel geht mit', async ($, on) => {
-  mock.clock(on)
-  engine(on, {
-    env: { HOME: '/home/neo' },
-    files: { '/home/neo/.config/Claude Island/island-token': 'geheim-42\n' },
-  })
-  const { vaultCalls } = island(on, () => ({}), true, () => ({ status: 200, body: { name: 'V', count: 0 } }))
-  await $.session.start(START)
-  await $.tool.call({ tool: TOOL('vault_list') })
-  expect(vaultCalls[0]?.token).toBe('geheim-42')
-})
-
-test('leere, abgebrochene Suche sagt das auch so', async ($, on) => {
-  mock.clock(on)
-  engine(on)
-  island(on, () => ({}), true, () => ({ status: 200, body: { partial: true, results: [] } }))
-  await $.session.start(START)
-  const res = await $.tool.call({ tool: TOOL('vault_search'), query: 'alt' })
-  expect(String(res.result)).toContain('Keine Treffer für „alt“.')
-  expect(String(res.result)).toContain('aus Zeitgründen abgebrochen')
-})
-
-test('eine eigene Frage-Regel der Person bleibt bestehen', async ($, on) => {
-  mock.clock(on)
-  engine(on)
-  island(on, () => ({}))
-  on('tool.check', () => ({ decision: 'ask', rule: 'mcp__island-bridge__vault_read' }))
-  await $.session.start(START)
-  expect((await $.tool.check({ tool: TOOL('vault_read'), input: {} })).decision).toBe('ask')
 })

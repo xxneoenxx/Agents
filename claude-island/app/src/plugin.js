@@ -11,7 +11,7 @@ const { spawn } = require('node:child_process')
 const PLUGIN = 'island-bridge'
 const MARKETPLACE = 'neo-agents'
 // Die Plugin-Version, zu der diese App passt; ältere bietet sie zum Aktualisieren an.
-const EXPECTED_VERSION = '0.2.1'
+const EXPECTED_VERSION = '0.3.0'
 const NOT_FOUND = /not recognized|nicht als interner|nicht gefunden|command not found|ENOENT/i
 
 // Wo die Installer die CLI ablegen, unabhängig davon, ob PATH schon stimmt

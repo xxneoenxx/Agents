@@ -12,7 +12,7 @@ const {
   commandFor,
 } = require('../src/plugin')
 
-const entry = (id, enabled, version = '0.2.1') => ({ id, version, scope: 'user', enabled })
+const entry = (id, enabled, version = '0.3.0') => ({ id, version, scope: 'user', enabled })
 const listed = (...entries) => JSON.stringify([{ id: 'other@x', enabled: true }, ...entries])
 const MARKETS = JSON.stringify([{ name: 'neo-agents', source: 'github', repo: 'xxneoenxx/Agents' }])
 
@@ -31,7 +31,7 @@ test('Plugin-Liste lesen', () => {
   assert.deepEqual(parsePluginList(listed(entry('island-bridge@neo-agents', true))), {
     state: 'active',
     id: 'island-bridge@neo-agents',
-    version: '0.2.1',
+    version: '0.3.0',
   })
   assert.equal(parsePluginList(listed(entry('island-bridge@neo-agents', false))).state, 'disabled')
   assert.equal(parsePluginList('[]').state, 'missing')
@@ -40,7 +40,7 @@ test('Plugin-Liste lesen', () => {
 
 test('ein aktiver Eintrag zählt, auch wenn ein abgeschalteter davor steht', () => {
   const text = listed(entry('island-bridge@aaa-dev', false), entry('island-bridge@neo-agents', true))
-  assert.deepEqual(parsePluginList(text), { state: 'active', id: 'island-bridge@neo-agents', version: '0.2.1' })
+  assert.deepEqual(parsePluginList(text), { state: 'active', id: 'island-bridge@neo-agents', version: '0.3.0' })
   const off = listed(entry('island-bridge@aaa-dev', false), entry('island-bridge@neo-agents', false))
   assert.equal(parsePluginList(off).id, 'island-bridge@neo-agents')
 })
@@ -114,9 +114,9 @@ test('Fehlschlag und Zeitüberschreitung bringen den Grund mit', async () => {
 })
 
 test('veraltetes Plugin wird erkannt und aktualisiert', async () => {
-  let version = '0.1.0'
+  let version = '0.2.1'
   const { run, calls } = fakeClaude((cmd) => {
-    if (cmd.startsWith('plugin update')) version = '0.2.1'
+    if (cmd.startsWith('plugin update')) version = '0.3.0'
     return cmd === 'plugin list --json' ? { out: listed(entry('island-bridge@neo-agents', true, version)) } : {}
   })
   assert.equal((await checkPlugin(run)).outdated, true)

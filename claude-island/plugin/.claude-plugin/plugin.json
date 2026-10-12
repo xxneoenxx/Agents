@@ -1,6 +1,6 @@
 {
   "name": "island-bridge",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Verbindet Claude-Code-Sitzungen mit der Desktop-App Claude Island: Status, Freigaben, Hinweise, Modell und Aufwand.",
   "author": {
     "name": "xxneoenxx"
