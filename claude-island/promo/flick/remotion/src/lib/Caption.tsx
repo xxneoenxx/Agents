@@ -99,7 +99,8 @@ export const Caption: React.FC<CaptionProps> = ({text, start = 6, wordsPerSecond
         lineHeight: 1.12,
         letterSpacing: '-0.015em',
         textAlign: 'center',
-        opacity: out * (k === 0 ? 1 : 0.4 + 0.6 * enter),
+        // das erste Häppchen blendet erst mit dem ersten Wort ein (Szene 01: Loop-Bild ohne Text)
+        opacity: out * (k === 0 ? enter : 0.4 + 0.6 * enter),
       }}
     >
       {active.map((i) => {
