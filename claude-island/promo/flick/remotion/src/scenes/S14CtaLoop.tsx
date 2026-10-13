@@ -83,7 +83,7 @@ export const S14CtaLoop: React.FC = () => {
             <div style={{fontFamily: FONT.sans, fontWeight: 700, fontSize: 44, color: C.bg}}>Setup.exe herunterladen</div>
             <div style={{fontFamily: FONT.sans, fontWeight: 600, fontSize: 26, color: 'rgba(21,17,14,0.75)'}}>ohne Admin-Rechte</div>
           </div>
-          <div style={{marginTop: 30, fontFamily: FONT.mono, fontWeight: 500, fontSize: 40, color: C.text, opacity: Math.min(1, link * 1.5)}}>github.com/xxneoenxx/Agents</div>
+          <div style={{marginTop: 30, fontFamily: FONT.mono, fontWeight: 500, fontSize: 40, color: C.text, opacity: Math.min(1, link * 1.5)}}>github.com/xxneoenxx/Agents/releases</div>
           <div style={{marginTop: 34, display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'flex-start'}}>
             {STEPS.map((s, i) => (
               <React.Fragment key={s}>

@@ -1,7 +1,7 @@
 # Flick-Plan: Claude Island – „Ein Blick statt Alt-Tab“ (freigegeben)
 
 ## Format
-9:16 · 1080×1920 · **60 fps** · 14 Szenen · 7573 Frames (126,2 s). Freigegeben durch die Wahl des Nutzers (Hochformat, Sprechertext als Stimme und Text im Bild).
+9:16 · 1080×1920 · **60 fps** · 14 Szenen · 7642 Frames (127,4 s). Freigegeben durch die Wahl des Nutzers (Hochformat, Sprechertext als Stimme und Text im Bild).
 
 ## Sprecherstimme und Untertitel
 Jede Szene hat eine deutsche Sprecherstimme (SVOX Pico, offline). Sie erklärt alles, was im Bild passiert.
@@ -175,7 +175,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Correct.mp3` (auf ca. 1 s gekürzt) beim Wechsel auf Fertig, `Click.mp3` bei „Senden“
 - **Übergang:** Slide. Die Kamera schwenkt nach unten auf die Leiste mit Modell und Aufwand.
 
-### 11 · `11-modell-aufwand` · 01:20.5–01:29.8 · 564 Frames (60 fps)
+### 11 · `11-modell-aufwand` · 01:20.5–01:30.2 · 582 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Unten wählst du für jede Sitzung das Modell, also Opus, Sonnet oder Haiku, und den Aufwand von Niedrig bis Max. Das gilt ab dem nächsten Modellaufruf.“
 - **Bild:** Die Leiste nach `panel-models.png`, groß und scharf nachgebaut. Im Hochformat ist sie zweizeilig: oben „MODELL Opus · Sonnet · Haiku“, darunter „AUFWAND Niedrig · Mittel · Hoch · Sehr hoch · Max“. Darüber steht der Sitzungs-Chip „● portfolio“.
 - **Bewegung:**
@@ -187,7 +187,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Click.mp3` bei jedem der beiden Klicks
 - **Übergang:** Transform. Die Leiste fällt weg, und Mini-Claude hüpft groß in die Bildmitte.
 
-### 12 · `12-mini-claude` · 01:29.8–01:40.7 · 651 Frames (60 fps)
+### 12 · `12-mini-claude` · 01:30.2–01:41.0 · 651 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Und Mini-Claude fiebert mit: Er schläft, wenn nichts los ist, tippt, während Claude arbeitet, winkt, wenn er dich braucht, zittert bei Problemen und jubelt, wenn alles fertig ist.“
 - **Bild:** Mini-Claude groß in der Bildmitte (2×, scharfe Pixel), darunter ein weicher Schatten, über dem Kopf der Status-Pixel. Unten fünf Stimmungs-Chips (3 + 2).
 - **Bewegung:**
@@ -205,7 +205,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `energy.MP3` beim Jubel-Hopser am Ende
 - **Übergang:** Transform. Mini-Claude hüpft zurück auf die Bühne des Fertig-Panels, die Chips blenden aus.
 
-### 13 · `13-lokal-kostenlos` · 01:40.7–01:47.5 · 408 Frames (60 fps)
+### 13 · `13-lokal-kostenlos` · 01:41.0–01:47.8 · 408 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Claude Island ist kostenlos, und der Quellcode liegt offen auf GitHub. Die Insel läuft lokal auf deinem PC.“
 - **Bild:** Die linke Bühne aus `panel-done.png` als hochformatige Karte, höchstens 1,4× (ca. 550×870 px): Mini-Claude jubelt, darunter „Fertig“ und „portfolio“ (zweizeilig wie im Screenshot), und unten die echten Statuszeilen „● Server :47821“ und „● Mod verbunden“.
 - **Bewegung:**
@@ -220,21 +220,21 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Pop.mp3` bei jedem Badge (3×), `Zoomin-OR-out.mp3` beim Push-in
 - **Übergang:** Slide. Alles gleitet nach oben aus dem Bild, und die Endkarte kommt von unten.
 
-### 14 · `14-cta-loop` · 01:47.5–02:06.2 · 1123 Frames (60 fps)
-Die Stimme endet ca. bei 02:03.5. Danach stehen Endkarte und Loop-Übergang noch ca. 2,7 s.
+### 14 · `14-cta-loop` · 01:47.8–02:07.4 · 1174 Frames (60 fps)
+Die Stimme endet ca. bei 02:04.7. Danach stehen Endkarte und Loop-Übergang noch ca. 2,7 s.
 
-**VO (Stimme + Untertitel):** „So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub und klicke doppelt darauf. Warnt Windows davor, klickst du auf Weitere Informationen und dann auf Trotzdem ausführen. In der Insel klickst du auf Plugin aktivieren und startest die Claude-App neu. Fertig!“
+**VO (Stimme + Untertitel):** „So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub herunter und klicke doppelt darauf. Warnt Windows davor, klickst du auf Weitere Informationen und dann auf Trotzdem ausführen. In der Insel klickst du auf Plugin aktivieren. Dann startest du die Claude-App neu. Fertig!“
 - **Bild:** Endkarte auf #15110E:
   - oben das App-Icon, darunter groß „Claude Island“ und die Zeile „für Windows · kostenlos · Quellcode auf GitHub“
   - darunter ein Download-Knopf, der Link und drei Schritte
   - ganz unten, oberhalb der Safe Zone, das Kleingedruckte (ab Szenenbeginn sichtbar)
 - **Bewegung:**
   1. „Claude Island für Windows“ (ca. 00:47.7–00:49.3): Icon und Schriftzug federn ein, die Unterzeile folgt.
-  2. „Hol sie dir jetzt auf GitHub“ (ab ca. 00:49.6): Der Knopf „Setup.exe herunterladen“ (#FF9A62) mit der Unterzeile „ohne Admin-Rechte“ erscheint, bei ca. 00:49.9 darunter `github.com/xxneoenxx/Agents`. Bei ca. 00:50.1 klickt der Zeiger auf den Knopf, der sich eindrückt.
+  2. „Hol sie dir jetzt auf GitHub“ (ab ca. 00:49.6): Der Knopf „Setup.exe herunterladen“ (#FF9A62) mit der Unterzeile „ohne Admin-Rechte“ erscheint, bei ca. 00:49.9 darunter `github.com/xxneoenxx/Agents/releases`. Bei ca. 00:50.1 klickt der Zeiger auf den Knopf, der sich eindrückt.
   3. Die drei Schritte erscheinen bei ca. 00:50.2, 00:50.5 und 00:50.8 nacheinander: „1 · Setup.exe doppelklicken“ (darunter klein: „Windows warnt? Weitere Informationen › Trotzdem ausführen“, denn die Datei ist nicht signiert), „2 · ‚Plugin aktivieren‘ klicken“, „3 · Claude-App neu starten“. Danach steht alles ruhig bis ca. 00:53.3 (ca. 2,5 s ab dem letzten Schritt).
   4. Ab ca. 00:53.3 (ca. 1,4 s nach dem letzten gesprochenen Wort) kippt die Kamera nach oben, und alles rutscht nach unten aus dem Bild. Oben mittig leuchtet die Insel gelb (`pill-waiting.png`).
   5. Push-in auf den Kopf. Der ganze wartende Mini-Claude springt heraus (kurz `grow-1` bis `grow-4`, dann `mascot-waiting.png`) und landet **exakt** in Größe und Position des ersten Bilds von Szene 01.
-- **Text im Bild:** „Claude Island“, „für Windows · kostenlos · Quellcode auf GitHub“, „Setup.exe herunterladen“, „ohne Admin-Rechte“, „github.com/xxneoenxx/Agents“, die drei Schritte. Klein, ab Szenenbeginn: „Inoffizielles Community-Tool, nicht von Anthropic.“
+- **Text im Bild:** „Claude Island“, „für Windows · kostenlos · Quellcode auf GitHub“, „Setup.exe herunterladen“, „ohne Admin-Rechte“, „github.com/xxneoenxx/Agents/releases“, die drei Schritte. Klein, ab Szenenbeginn: „Inoffizielles Community-Tool, nicht von Anthropic.“
 - **Assets:** `icon.png`, `pill-waiting.png`, `grow-1.png` bis `grow-4.png`, `mascot-waiting.png`
 - **SFX:** `Click.mp3` beim Klick auf den Knopf, `Zoomin-OR-out.mp3` beim Push-in, `Pop.mp3` bei der Landung
 - **Übergang:** Match-Cut auf das erste Bild von `01-hook-alt-tab` (Loop). Kein Fade-out und kein Schwarzbild.

@@ -81,7 +81,7 @@ export const S13LokalKostenlos: React.FC = () => {
       </div>
 
       <div style={{position: 'absolute', left: 0, right: 0, top: 1528, textAlign: 'center', fontFamily: FONT.sans, fontWeight: 500, fontSize: 30, color: C.muted, opacity: 1 - out}}>
-        Inoffizielles Community-Tool · nicht von Anthropic
+        Inoffizielles Community-Tool, nicht von Anthropic.
       </div>
 
       <Caption text={T.text} times={T.words} highlight={['Kostenlos', 'lokal']} y={1400} size={60} outAt={D - 16} />

@@ -2,7 +2,7 @@
   "width": 1080,
   "height": 1920,
   "fps": 60,
-  "durationInFrames": 7573,
+  "durationInFrames": 7642,
   "scenes": [
     {
       "id": "01-hook-alt-tab",
@@ -209,9 +209,9 @@
       "name": "11-modell-aufwand",
       "transcript": "Unten wählst du für jede Sitzung das Modell, also Opus, Sonnet oder Haiku, und den Aufwand von Niedrig bis Max. Das gilt ab dem nächsten Modellaufruf.",
       "startMs": 80450,
-      "endMs": 89850,
+      "endMs": 90150,
       "from": 4827,
-      "durationInFrames": 564,
+      "durationInFrames": 582,
       "componentName": "S11ModellAufwand",
       "assets": [
         "panel-models.png (Nachbau)"
@@ -227,9 +227,9 @@
       "id": "12-mini-claude",
       "name": "12-mini-claude",
       "transcript": "Und Mini-Claude fiebert mit: Er schläft, wenn nichts los ist, tippt, während Claude arbeitet, winkt, wenn er dich braucht, zittert bei Problemen und jubelt, wenn alles fertig ist.",
-      "startMs": 89850,
-      "endMs": 100700,
-      "from": 5391,
+      "startMs": 90150,
+      "endMs": 101000,
+      "from": 5409,
       "durationInFrames": 651,
       "componentName": "S12MiniClaude",
       "assets": [
@@ -246,9 +246,9 @@
       "id": "13-lokal-kostenlos",
       "name": "13-lokal-kostenlos",
       "transcript": "Claude Island ist kostenlos, und der Quellcode liegt offen auf GitHub. Die Insel läuft lokal auf deinem PC.",
-      "startMs": 100700,
-      "endMs": 107500,
-      "from": 6042,
+      "startMs": 101000,
+      "endMs": 107800,
+      "from": 6060,
       "durationInFrames": 408,
       "componentName": "S13LokalKostenlos",
       "assets": [
@@ -265,11 +265,11 @@
     {
       "id": "14-cta-loop",
       "name": "14-cta-loop",
-      "transcript": "So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub und klicke doppelt darauf. Warnt Windows davor, klickst du auf Weitere Informationen und dann auf Trotzdem ausführen. In der Insel klickst du auf Plugin aktivieren und startest die Claude-App neu. Fertig!",
-      "startMs": 107500,
-      "endMs": 126217,
-      "from": 6450,
-      "durationInFrames": 1123,
+      "transcript": "So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub herunter und klicke doppelt darauf. Warnt Windows davor, klickst du auf Weitere Informationen und dann auf Trotzdem ausführen. In der Insel klickst du auf Plugin aktivieren. Dann startest du die Claude-App neu. Fertig!",
+      "startMs": 107800,
+      "endMs": 127367,
+      "from": 6468,
+      "durationInFrames": 1174,
       "componentName": "S14CtaLoop",
       "assets": [
         "icon.png",

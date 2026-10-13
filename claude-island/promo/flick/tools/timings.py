@@ -2,13 +2,14 @@
 """Szenen- und Wortzeiten (60 fps) für alle 14 Szenen → remotion/src/lib/timings.json.
 
 Ohne Sprachaufnahmen: Tempo ca. 2,5 Wörter/s. Mit Aufnahmen (public/voice/NN.wav): die
-echten Sprechpausen (ffmpeg silencedetect) werden den Satzzeichen zugeordnet; innerhalb
-der Abschnitte verteilen sich die Wörter nach Silben. Jede Szene ist mindestens
-Sprechdauer + Nachlauf lang.
+echten Sprechpausen (ffmpeg silencedetect) werden den Satzzeichen zugeordnet; weitere Pausen
+trennen innerhalb der Abschnitte. Dazwischen verteilen sich die Wörter nach ihrer Länge,
+gemessen an Pico, das jedes Wort einzeln spricht (ohne Pico: nach Silben). Jede Szene ist
+mindestens Sprechdauer + Nachlauf lang.
 """
-import json, os, re, subprocess, sys, wave
+import array, json, os, re, shutil, subprocess, sys, tempfile, wave
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from script import SCENES
+from script import SCENES, spoken
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REM = os.path.join(ROOT, 'flick-output', 'remotion')
@@ -34,8 +35,27 @@ def brk(word):
         return 1
     return 0
 
+_WEIGHT = {}
+
+def weight(word):
+    """Relative Sprechdauer eines Wortes: Pico spricht es einzeln (Stille abgeschnitten), sonst Silben."""
+    w = re.sub(r'[^\w-]', '', word)
+    if w not in _WEIGHT:
+        secs = 0.0
+        if shutil.which('pico2wave'):
+            with tempfile.TemporaryDirectory() as d:
+                path = os.path.join(d, 'w.wav')
+                subprocess.run(['pico2wave', '-l', 'de-DE', '-w', path, spoken(w)], check=True, capture_output=True)
+                with wave.open(path) as f:
+                    a = array.array('h', f.readframes(f.getnframes()))
+                    loud = [i for i, x in enumerate(a) if abs(x) > 300]
+                    if loud:
+                        secs = (loud[-1] - loud[0]) / f.getframerate()
+        _WEIGHT[w] = secs or 0.18 * syllables(w)
+    return _WEIGHT[w]
+
 def even(words, t0, t1):
-    w = [syllables(x) for x in words]
+    w = [weight(x) for x in words]
     total = sum(w) or 1
     out, t = [], t0
     for x in w:
@@ -48,7 +68,13 @@ def silences(path):
                        capture_output=True, text=True)
     starts = [float(x) for x in re.findall(r'silence_start: ([\d.]+)', r.stderr)]
     ends = [float(x) for x in re.findall(r'silence_end: ([\d.]+)', r.stderr)]
-    return list(zip(starts, ends))
+    out = []
+    for s, e in zip(starts, ends):
+        if out and s - out[-1][1] < 0.08:  # durch ein kurzes Knacken geteilte Pause zusammenfassen
+            out[-1] = (out[-1][0], e)
+        else:
+            out.append((s, e))
+    return out
 
 SKIP_BREAK = {1: 0.25, 2: 0.4, 3: 0.6}  # Kosten, wenn an einem Satzzeichen keine Pause erkannt wird
 
@@ -57,9 +83,10 @@ def aligned(words, dur, pauses):
 
     Pausen und Satzzeichen werden der Reihe nach einander zugeordnet (beide dürfen ausfallen).
     Die erwartete Zeit eines Satzzeichens rechnet ab dem vorigen Anker mit den restlichen
-    Silben, damit sich Tempoabweichungen nicht über die ganze Aufnahme aufsummieren.
+    Wortlängen, damit sich Tempoabweichungen nicht über die ganze Aufnahme aufsummieren.
+    Übrige Pausen trennen danach innerhalb der Abschnitte (spread).
     """
-    syl = [syllables(w) for w in words]
+    syl = [weight(w) for w in words]
     cum = [0]
     for x in syl:
         cum.append(cum[-1] + x)
@@ -80,7 +107,7 @@ def aligned(words, dur, pauses):
         for p2 in range(p + 1, len(pauses)):
             for b2 in range(b + 1, len(breaks)):
                 # erwartete Pausenmitte nach Silbenanteil ab dem vorigen Anker
-                exp = t0 + (dur - t0) * (cum[breaks[b2] + 1] - s0) / max(1, total - s0)
+                exp = t0 + (dur - t0) * (cum[breaks[b2] + 1] - s0) / max(1e-6, total - s0)
                 mid = sum(pauses[p2]) / 2
                 c = (cost + abs(exp - mid) - 0.1 * brk(words[breaks[b2]])
                      + sum(skip_pause[p + 1:p2]) + sum(skip_break[b + 1:b2]))
@@ -96,13 +123,36 @@ def aligned(words, dur, pauses):
         k = best[k][1]
     anchors.reverse()
     times = [0.0] * len(words)
+    used = {(s, e) for _, s, e in anchors}
+    rest = [p for p in pauses if p not in used]
     bounds = [(0, 0.0)] + [(i, e) for i, _, e in anchors]
     ends = [s for _, s, _ in anchors] + [dur]
     for k, (i0, t0) in enumerate(bounds):
         i1 = anchors[k][0] if k < len(anchors) else len(words)
-        seg = even(words[i0:i1], t0, ends[k])
-        times[i0:i1] = seg
+        spread(words, i0, i1, t0, ends[k], rest, times)
     return times, len(anchors)
+
+def spread(words, i0, i1, t0, t1, pauses, times):
+    """Wörter i0..i1 über t0..t1 verteilen; eine Pause darin trennt an der Wortgrenze, an der
+    das Wort davor nach Wortlängen enden würde (längste Pause zuerst, dann rekursiv)."""
+    inner = [(s, e) for s, e in pauses if t0 < s and e < t1]
+    if inner and i1 - i0 >= 2:
+        s, e = max(inner, key=lambda p: p[1] - p[0])
+        w = [weight(x) for x in words[i0:i1]]
+        speak = (t1 - t0) - (e - s)
+        best, acc = None, 0.0
+        for j in range(i0 + 1, i1):
+            acc += w[j - 1 - i0]
+            d = abs(t0 + speak * acc / sum(w) - s)
+            if best is None or d < best[1]:
+                best = (j, d)
+        others = [p for p in inner if p != (s, e)]
+        if best[1] <= 0.25:  # sonst liegt die Pause eher in einem Wort (z. B. „Modell|aufruf“)
+            spread(words, i0, best[0], t0, s, others, times)
+            spread(words, best[0], i1, e, t1, others, times)
+            return
+        return spread(words, i0, i1, t0, t1, others, times)
+    times[i0:i1] = even(words[i0:i1], t0, t1)
 
 def wav_seconds(path):
     with wave.open(path) as f:

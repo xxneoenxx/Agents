@@ -27,7 +27,7 @@ Eine deutsche Sprecherstimme (SVOX Pico) erklärt alles, und der gesprochene Tex
 2. Stimme erzeugen:
    - `apt install libttspico-utils` (liefert `pico2wave`)
    - dann `python3 tools/voice.py`; das legt `remotion/public/voice/NN.wav` an
-   - dann `python3 tools/timings.py`; das richtet Szenenlängen und Wortzeiten an den echten Sprechpausen aus
+   - dann `python3 tools/timings.py`; das richtet Szenenlängen und Wortzeiten an den echten Sprechpausen aus und misst dafür mit Pico die Länge jedes Wortes
    - Texte änderst du in `tools/script.py`. Danach beide Skripte erneut ausführen.
    - Die Bild-Beats hängen per `T.at('wort')` an Wörtern, ein geändertes Wort muss also auch in der Szene angepasst werden.
    - Optional die Piper-Stimme „Thorsten“: `pip install piper-tts`, dann `python3 tools/voice.py piper`. Das Skript lädt das Modell selbst von huggingface.co.
