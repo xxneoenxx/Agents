@@ -28,12 +28,14 @@ SAY = [
 ]
 
 # Für die neuronale Stimme (Piper „Thorsten“), die über espeak-ng in Laute umsetzt.
-# Geprüft mit `espeak-ng -v de -x`: z. B. „Windohs“ → v'Indo:s, „Macks.“ → m'aks, „Gitt Habb“ → g'It h'app.
+# Geprüft mit `espeak-ng -v de -x`: z. B. „Windohs“ → v'Indo:s, „Macks.“ → m'aks, „Gitt Habb“ → g'It h'app,
+# „Alt Täpp“ → t'Ep (sonst „Taab“), „Minni“ mit kurzem i, „hinterheer“ mit Betonung auf „her“.
 SAY_ESPEAK = [
-    ('Claude Code', 'Klohd Kohd'), ('Claude-App', 'Klohd-Äpp'), ('Mini-Claude', 'Mini-Klohd'), ('Claude', 'Klohd'),
+    ('Claude Code', 'Klohd Kohd'), ('Claude-App', 'Klohd-Äpp'), ('Mini-Claude', 'Minni-Klohd'), ('Claude', 'Klohd'),
     ('Island', 'Ailänd'), ('GitHub', 'Gitt Habb'), ('Setup-Datei', 'Settapp-Datei'),
     ('Plugin', 'Plaggin'), ('Windows', 'Windohs'), ('PC', 'Pe-Zeh'), (' live ', ' leif '),
-    ('Alt-Tab', 'Alt Tab'), ('Max.', 'Macks.'), ('Modellaufruf', 'Modell-Aufruf'), ('Quellcode', 'Quellkohd'),
+    ('Alt-Tab', 'Alt Täpp'), ('Max.', 'Macks.'), ('Modellaufruf', 'Modell-Aufruf'), ('Quellcode', 'Quellkohd'),
+    ('hinterher', 'hinterheer'),
 ]
 
 def spoken(text, engine='pico'):

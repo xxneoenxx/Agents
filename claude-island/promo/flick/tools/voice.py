@@ -7,9 +7,9 @@ Engines (alle offline, frei):
   von rhasspy/piper; braucht `pip install "piper-tts[alignment]"`.
 Ergebnis: remotion/public/voice/NN.wav, Stille vorn/hinten entfernt, ca. −16 LUFS, 48 kHz;
 bei Thorsten zusätzlich voice/NN-thorsten-words.json mit den exakten Wortanfängen.
-Danach tools/timings.py ausführen.  Aufruf: python3 tools/voice.py [thorsten|pico]  (Standard: thorsten)
+Danach tools/timings.py ausführen.  Aufruf: python3 tools/voice.py [thorsten|pico] [Szenennummern …]  (Standard: thorsten, alle)
 """
-import os, subprocess, sys, tarfile, urllib.request
+import os, shutil, subprocess, sys, tarfile, urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from script import SCENES, spoken
 
@@ -28,11 +28,15 @@ def fetch(url, archive, target):
     os.makedirs(dl, exist_ok=True)
     path = os.path.join(dl, target)
     if not os.path.isdir(path):
+        # erst vollständig laden und entpacken, dann umbenennen: ein Abbruch hinterlässt keinen halben Stand
         file = os.path.join(dl, archive)
         if not os.path.exists(file):
-            urllib.request.urlretrieve(url, file)
-        os.makedirs(path)
-        tarfile.open(file).extractall(path)
+            urllib.request.urlretrieve(url, file + '.part')
+            os.replace(file + '.part', file)
+        tmp = path + '.part'
+        shutil.rmtree(tmp, ignore_errors=True)
+        tarfile.open(file).extractall(tmp)
+        os.replace(tmp, path)
     return path
 
 PUNCT = set(',.;:!?—–-"„“()')
@@ -99,10 +103,13 @@ def main():
         engine = 'thorsten'
     os.makedirs(VOICE_DIR, exist_ok=True)
     os.makedirs(OUT, exist_ok=True)
-    items = [(spoken(text, engine), os.path.join(VOICE_DIR, f'{i:02d}-{engine}.wav')) for i, (_, _, text) in enumerate(SCENES, start=1)]
+    # Optional nur bestimmte Szenen (Nummern), z. B. „voice.py thorsten 01 04“; die übrigen bleiben unverändert.
+    only = {int(x) for x in sys.argv[2:]}
+    nums = [i for i in range(1, len(SCENES) + 1) if not only or i in only]
+    items = [(spoken(SCENES[i - 1][2], engine), os.path.join(VOICE_DIR, f'{i:02d}-{engine}.wav')) for i in nums]
     synth_all(engine, items)
     open(os.path.join(VOICE_DIR, 'engine.txt'), 'w').write(engine + '\n')
-    for i, (_, raw) in enumerate(items, start=1):
+    for i, (_, raw) in zip(nums, items):
         out = os.path.join(OUT, f'{i:02d}.wav')
         if engine == 'pico':
             # Stille an den Rändern weg, Sprechpausen in der Mitte kürzen, etwas flotter.
