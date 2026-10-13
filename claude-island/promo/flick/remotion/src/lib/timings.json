@@ -1,0 +1,230 @@
+{
+ "01-hook-alt-tab": {
+  "frames": 216,
+  "start": 24,
+  "speech": 168,
+  "words": [
+   24,
+   65,
+   88,
+   117,
+   158,
+   169,
+   181
+  ],
+  "voice": null
+ },
+ "02-problem-verpasst": {
+  "frames": 192,
+  "start": 8,
+  "speech": 168,
+  "words": [
+   8,
+   28,
+   75,
+   85,
+   105,
+   115,
+   146
+  ],
+  "voice": null
+ },
+ "03-reveal-island": {
+  "frames": 168,
+  "start": 8,
+  "speech": 144,
+  "words": [
+   8,
+   23,
+   77,
+   92,
+   107,
+   122
+  ],
+  "voice": null
+ },
+ "04-oben-im-vordergrund": {
+  "frames": 180,
+  "start": 8,
+  "speech": 168,
+  "words": [
+   8,
+   32,
+   57,
+   91,
+   115,
+   127,
+   152
+  ],
+  "voice": null
+ },
+ "05-ein-blick": {
+  "frames": 180,
+  "start": 8,
+  "speech": 144,
+  "words": [
+   8,
+   20,
+   31,
+   64,
+   96,
+   129
+  ],
+  "voice": null
+ },
+ "06-mehrere-sitzungen": {
+  "frames": 210,
+  "start": 8,
+  "speech": 192,
+  "words": [
+   8,
+   43,
+   96,
+   107,
+   119,
+   131,
+   154,
+   165
+  ],
+  "voice": null
+ },
+ "07-freigabe-klappt-auf": {
+  "frames": 258,
+  "start": 8,
+  "speech": 240,
+  "words": [
+   8,
+   24,
+   40,
+   73,
+   134,
+   151,
+   167,
+   199,
+   216,
+   232
+  ],
+  "voice": null
+ },
+ "08-freigeben": {
+  "frames": 186,
+  "start": 8,
+  "speech": 168,
+  "words": [
+   8,
+   34,
+   51,
+   91,
+   108,
+   124,
+   141
+  ],
+  "voice": null
+ },
+ "09-haengt-fest": {
+  "frames": 258,
+  "start": 8,
+  "speech": 240,
+  "words": [
+   8,
+   22,
+   37,
+   75,
+   89,
+   118,
+   147,
+   176,
+   205,
+   219
+  ],
+  "voice": null
+ },
+ "10-live-und-fertig": {
+  "frames": 294,
+  "start": 8,
+  "speech": 264,
+  "words": [
+   8,
+   19,
+   52,
+   75,
+   86,
+   139,
+   180,
+   192,
+   203,
+   215,
+   238
+  ],
+  "voice": null
+ },
+ "11-modell-aufwand": {
+  "frames": 210,
+  "start": 8,
+  "speech": 192,
+  "words": [
+   8,
+   43,
+   60,
+   95,
+   113,
+   130,
+   148,
+   183
+  ],
+  "voice": null
+ },
+ "12-mini-claude": {
+  "frames": 246,
+  "start": 8,
+  "speech": 216,
+  "words": [
+   8,
+   20,
+   56,
+   80,
+   102,
+   123,
+   145,
+   166,
+   200
+  ],
+  "voice": null
+ },
+ "13-lokal-kostenlos": {
+  "frames": 258,
+  "start": 8,
+  "speech": 240,
+  "words": [
+   8,
+   55,
+   80,
+   112,
+   124,
+   149,
+   161,
+   186,
+   199,
+   223
+  ],
+  "voice": null
+ },
+ "14-cta-loop": {
+  "frames": 420,
+  "start": 8,
+  "speech": 240,
+  "words": [
+   8,
+   24,
+   57,
+   74,
+   133,
+   149,
+   166,
+   182,
+   199,
+   215
+  ],
+  "voice": null
+ }
+}

@@ -1,0 +1,261 @@
+{
+  "width": 1080,
+  "height": 1920,
+  "fps": 60,
+  "durationInFrames": 3276,
+  "scenes": [
+    {
+      "id": "01-hook-alt-tab",
+      "name": "01-hook-alt-tab",
+      "transcript": "Alt-Tab. Wartet Claude? Alt-Tab. Hängt er fest?",
+      "startMs": 0,
+      "endMs": 3600,
+      "from": 0,
+      "durationInFrames": 216,
+      "componentName": "S01HookAltTab",
+      "assets": [
+        "mascot-waiting (Nachbau)"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 01-hook-alt-tab",
+      "soundEffects": [
+        "Click.mp3"
+      ]
+    },
+    {
+      "id": "02-problem-verpasst",
+      "name": "02-problem-verpasst",
+      "transcript": "Ständig nachsehen. Und trotzdem die Freigabe verpassen.",
+      "startMs": 3600,
+      "endMs": 6800,
+      "from": 216,
+      "durationInFrames": 192,
+      "componentName": "S02ProblemVerpasst",
+      "assets": [],
+      "visualDescription": "Siehe flick-plan.md, Szene 02-problem-verpasst",
+      "soundEffects": [
+        "Click.mp3",
+        "Zoomin-OR-out.mp3"
+      ]
+    },
+    {
+      "id": "03-reveal-island",
+      "name": "03-reveal-island",
+      "transcript": "Schluss damit. Das ist Claude Island.",
+      "startMs": 6800,
+      "endMs": 9600,
+      "from": 408,
+      "durationInFrames": 168,
+      "componentName": "S03RevealIsland",
+      "assets": [
+        "pill-waiting (Nachbau)",
+        "icon.png"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 03-reveal-island",
+      "soundEffects": [
+        "Pop.mp3",
+        "transitions.mp3"
+      ]
+    },
+    {
+      "id": "04-oben-im-vordergrund",
+      "name": "04-oben-im-vordergrund",
+      "transcript": "Eine kleine Insel, oben auf deinem Bildschirm.",
+      "startMs": 9600,
+      "endMs": 12600,
+      "from": 576,
+      "durationInFrames": 180,
+      "componentName": "S04ObenImVordergrund",
+      "assets": [
+        "pill-waiting (Nachbau)"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 04-oben-im-vordergrund",
+      "soundEffects": [
+        "transitions.mp3"
+      ]
+    },
+    {
+      "id": "05-ein-blick",
+      "name": "05-ein-blick",
+      "transcript": "Ein Blick genügt: Stimmung, Sitzung, Anzahl.",
+      "startMs": 12600,
+      "endMs": 15600,
+      "from": 756,
+      "durationInFrames": 180,
+      "componentName": "S05EinBlick",
+      "assets": [
+        "pill-* (Nachbau)"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 05-ein-blick",
+      "soundEffects": [
+        "Zoomin-OR-out.mp3"
+      ]
+    },
+    {
+      "id": "06-mehrere-sitzungen",
+      "name": "06-mehrere-sitzungen",
+      "transcript": "Mehrere Sitzungen? Sie zeigt dir immer die dringendste.",
+      "startMs": 15600,
+      "endMs": 19100,
+      "from": 936,
+      "durationInFrames": 210,
+      "componentName": "S06MehrereSitzungen",
+      "assets": [
+        "pill-waiting (Nachbau)",
+        "panel-approval.png (Chip-Look)"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 06-mehrere-sitzungen",
+      "soundEffects": [
+        "Pop.mp3"
+      ]
+    },
+    {
+      "id": "07-freigabe-klappt-auf",
+      "name": "07-freigabe-klappt-auf",
+      "transcript": "Braucht Claude eine Freigabe, klappt die Insel von selbst auf.",
+      "startMs": 19100,
+      "endMs": 23400,
+      "from": 1146,
+      "durationInFrames": 258,
+      "componentName": "S07FreigabeKlapptAuf",
+      "assets": [
+        "pill-waiting (Nachbau)",
+        "grow-1..4 (Nachbau)",
+        "panel-approval-empty.png"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 07-freigabe-klappt-auf",
+      "soundEffects": [
+        "Notification.mp3",
+        "Pop.mp3"
+      ]
+    },
+    {
+      "id": "08-freigeben",
+      "name": "08-freigeben",
+      "transcript": "Freigeben oder ablehnen. Direkt hier, ohne Fensterwechsel.",
+      "startMs": 23400,
+      "endMs": 26500,
+      "from": 1404,
+      "durationInFrames": 186,
+      "componentName": "S08Freigeben",
+      "assets": [
+        "panel-approval-empty.png",
+        "panel-working-empty.png"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 08-freigeben",
+      "soundEffects": [
+        "Click.mp3"
+      ]
+    },
+    {
+      "id": "09-haengt-fest",
+      "name": "09-haengt-fest",
+      "transcript": "Hängt Claude fest? Gib einen Hinweis oder versuch es erneut.",
+      "startMs": 26500,
+      "endMs": 30800,
+      "from": 1590,
+      "durationInFrames": 258,
+      "componentName": "S09HaengtFest",
+      "assets": [
+        "panel-problem-empty.png",
+        "panel-working-empty.png"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 09-haengt-fest",
+      "soundEffects": [
+        "Typing.mp3",
+        "Click.mp3"
+      ]
+    },
+    {
+      "id": "10-live-und-fertig",
+      "name": "10-live-und-fertig",
+      "transcript": "Sieh live, woran Claude arbeitet. Fertig? Schick gleich die nächste Anweisung.",
+      "startMs": 30800,
+      "endMs": 35700,
+      "from": 1848,
+      "durationInFrames": 294,
+      "componentName": "S10LiveUndFertig",
+      "assets": [
+        "panel-working-empty.png",
+        "panel-done-empty.png"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 10-live-und-fertig",
+      "soundEffects": [
+        "Correct.mp3",
+        "Click.mp3"
+      ]
+    },
+    {
+      "id": "11-modell-aufwand",
+      "name": "11-modell-aufwand",
+      "transcript": "Modell und Aufwand stellst du pro Sitzung um.",
+      "startMs": 35700,
+      "endMs": 39200,
+      "from": 2142,
+      "durationInFrames": 210,
+      "componentName": "S11ModellAufwand",
+      "assets": [
+        "panel-models.png (Nachbau)"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 11-modell-aufwand",
+      "soundEffects": [
+        "Click.mp3"
+      ]
+    },
+    {
+      "id": "12-mini-claude",
+      "name": "12-mini-claude",
+      "transcript": "Und Mini-Claude fiebert mit: schläft, tippt, winkt, zittert, jubelt.",
+      "startMs": 39200,
+      "endMs": 43300,
+      "from": 2352,
+      "durationInFrames": 246,
+      "componentName": "S12MiniClaude",
+      "assets": [
+        "mascot-* (Nachbau)"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 12-mini-claude",
+      "soundEffects": [
+        "energy.MP3"
+      ]
+    },
+    {
+      "id": "13-lokal-kostenlos",
+      "name": "13-lokal-kostenlos",
+      "transcript": "Kostenlos, Open Source. Die Insel läuft lokal auf deinem PC.",
+      "startMs": 43300,
+      "endMs": 47600,
+      "from": 2598,
+      "durationInFrames": 258,
+      "componentName": "S13LokalKostenlos",
+      "assets": [
+        "panel-done-empty.png"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 13-lokal-kostenlos",
+      "soundEffects": [
+        "Pop.mp3",
+        "Zoomin-OR-out.mp3"
+      ]
+    },
+    {
+      "id": "14-cta-loop",
+      "name": "14-cta-loop",
+      "transcript": "Claude Island für Windows. Hol sie dir jetzt auf GitHub.",
+      "startMs": 47600,
+      "endMs": 54600,
+      "from": 2856,
+      "durationInFrames": 420,
+      "componentName": "S14CtaLoop",
+      "assets": [
+        "icon.png",
+        "pill-waiting (Nachbau)",
+        "grow (Nachbau)"
+      ],
+      "visualDescription": "Siehe flick-plan.md, Szene 14-cta-loop",
+      "soundEffects": [
+        "Click.mp3",
+        "Zoomin-OR-out.mp3",
+        "Pop.mp3"
+      ]
+    }
+  ]
+}

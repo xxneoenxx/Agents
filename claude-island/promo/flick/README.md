@@ -15,15 +15,17 @@ Das Video `../claude-island-promo-1080x1920-60fps.mp4` entsteht mit dem Flick-Wo
 
 ## Ablauf
 
-1. Flick-Workspace anlegen und dieses Projekt hineinkopieren:
-   - `node <flick>/scripts/setup-workspace.mjs --project flick-output`
+1. Arbeitsordner anlegen, z. B. `promo-run/`, darin:
+   - `tools/` aus diesem Ordner hineinkopieren
+   - `node <flick>/scripts/setup-workspace.mjs --project flick-output` ausführen (`<flick>` = `flick/skills/flick` aus Creatorberry/flick)
    - `remotion/` aus diesem Ordner nach `flick-output/remotion/` kopieren und dort `npm install` ausführen
    - die Assets aus `../brand-assets/` nach `flick-output/remotion/public/brand-assets/` kopieren
-   - Flicks Sounds liegen schon in `public/sounds`, Schriften in `public/fonts`
+   - die Schriften (Bricolage Grotesque, Figtree, IBM Plex Mono als woff2) nach `flick-output/remotion/public/fonts/`
+   - Flicks Sounds liegen schon in `public/sounds`
 2. Optional mit Stimme: `pip install piper-tts`, dann `python3 tools/voice.py` und `python3 tools/timings.py`.
    Das Stimmmodell „Thorsten“ kommt von huggingface.co.
-3. Rendern: `tools/render-all.sh`. Das nutzt Flicks `render-scene.mjs`, eine MP4 pro Szene.
-4. Zusammenfügen: `tools/concat.sh`.
+3. Rendern: `FLICK_SKILL=<flick> tools/render-all.sh`. Das nutzt Flicks `render-scene.mjs`, eine MP4 pro Szene.
+4. Zusammenfügen: `tools/concat.sh`. Das Ergebnis ist framegenau, mit Limiter auf −1 dBFS.
 
 In `remotion/remotion.config.ts` steht der Pfad zum Chromium der Cloud-Umgebung. Lokal kannst du die Zeile mit
 `setBrowserExecutable` entfernen, dann lädt Remotion seinen eigenen Browser.

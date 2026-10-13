@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "transcript": "transcript.json",
+  "plan": "flick-plan.md",
+  "brief": "remotion-brief.md",
+  "sceneSpec": "scene-spec.json"
+}
