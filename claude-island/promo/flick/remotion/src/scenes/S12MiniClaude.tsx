@@ -46,7 +46,7 @@ export const S12MiniClaude: React.FC = () => {
   const ly = interpolate(land, [0, 1], [-900, 0]);
   const squash = interpolate(f, [12, 16, 26], [1, 0.86, 1], clamp);
 
-  const verbs = [4, 5, 6, 7, 8].map((i) => T.w(i) - 3);
+  const verbs = ['schläft', 'tippt', 'winkt', 'zittert', 'jubelt'].map((v) => T.at(v) - 3);
   const active = verbs.filter((v) => f >= v).length - 1;
   const mood: Mood = active < 0 ? 'idle' : ORDER[active];
 
@@ -98,7 +98,7 @@ export const S12MiniClaude: React.FC = () => {
         })}
       </div>
 
-      <Caption text="Und Mini-Claude fiebert mit: schläft, tippt, winkt, zittert, jubelt." times={T.words} highlight={['Mini-Claude']} y={1440} outAt={D - 12} />
+      <Caption text={T.text} times={T.words} highlight={['Mini-Claude']} y={1440} outAt={D - 12} />
       <Voice id={ID} />
       <Sfx at={12} src="Pop.mp3" volume={sfxVolume(ID, 12, 0.7)} />
       <Sfx at={verbs[4]} src="energy.MP3" volume={sfxVolume(ID, verbs[4], 0.7)} />

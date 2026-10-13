@@ -22,7 +22,7 @@ export const S04ObenImVordergrund: React.FC = () => {
   const heroCenter = {x: ISLAND.cx, y: hero.top + hero.height / 2};
 
   // Kamera: Start = Heldenposition (×4), Mitte = ganzer Monitor (×1), Ende = Nahaufnahme für 05.
-  const pull = tween(f, 0, T.w(2) + 12, 0, 1, Easing.inOut(Easing.cubic));
+  const pull = tween(f, 0, T.at('klein') + 12, 0, 1, Easing.inOut(Easing.cubic));
   const push = tween(f, D - 24, D, 0, 1, Easing.in(Easing.cubic));
   const c0 = ISLAND.scale / MONITOR.pillScale;
   const cEnd = CLOSEUP.scale / MONITOR.pillScale;
@@ -41,19 +41,19 @@ export const S04ObenImVordergrund: React.FC = () => {
   };
 
   // Die Pille atmet einmal bei „Insel“.
-  const breathe = interpolate(f, [T.w(2), T.w(2) + 10, T.w(2) + 24], [1, 1.1, 1], clamp);
+  const breathe = interpolate(f, [T.at('schwebt'), T.at('schwebt') + 10, T.at('schwebt') + 24], [1, 1.1, 1], clamp);
 
   // Ein Fenster gleitet von unten hoch und UNTER der Insel durch.
-  const winY = interpolate(f, [T.w(3) - 6, T.w(6) + 24], [MONITOR.y + MONITOR.h + 10, MONITOR.y - 380], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const winY = interpolate(f, [T.at('immer') - 6, T.at('fenstern') + 24], [MONITOR.y + MONITOR.h + 10, MONITOR.y - 380], {...clamp, easing: Easing.inOut(Easing.cubic)});
   const under = winY < MONITOR.pillTop + 40 && winY > MONITOR.pillTop - 380;
 
   // Mauszeiger fährt an der Insel vorbei; Mini-Claude schaut ihm nach.
-  const cx = interpolate(f, [T.w(4) - 10, T.w(6) + 30], [MONITOR.x + MONITOR.w + 40, MONITOR.x + 120], {...clamp, easing: Easing.inOut(Easing.sin)});
-  const cy = interpolate(f, [T.w(4) - 10, T.w(6) + 30], [MONITOR.y + 300, MONITOR.y + 140], clamp);
+  const cx = interpolate(f, [T.at('mini-claude') - 10, T.at('hinterher') + 30], [MONITOR.x + MONITOR.w + 40, MONITOR.x + 120], {...clamp, easing: Easing.inOut(Easing.sin)});
+  const cy = interpolate(f, [T.at('mini-claude') - 10, T.at('hinterher') + 30], [MONITOR.y + 300, MONITOR.y + 140], clamp);
   const pillLeft = 540 - (PILL_W * MONITOR.pillScale) / 2;
   const look = {x: Math.max(-1, Math.min(1, (cx - 540) / 220)), y: Math.max(-1, Math.min(1, (cy - monitorPillCenter.y) / 160))};
 
-  const label = interpolate(f, [T.w(5), T.w(5) + 12], [0, 1], clamp) * (1 - push);
+  const label = interpolate(f, [T.at('vordergrund'), T.at('vordergrund') + 12], [0, 1], clamp) * (1 - push);
 
   return (
     <Backdrop>
@@ -92,7 +92,7 @@ export const S04ObenImVordergrund: React.FC = () => {
           <Pill mood="waiting" name="portfolio" count={1} scale={MONITOR.pillScale} shadow={under} look={look} />
         </div>
 
-        <Cursor x={cx} y={cy} size={30} opacity={interpolate(f, [T.w(4) - 10, T.w(4)], [0, 1], clamp) * (1 - push)} />
+        <Cursor x={cx} y={cy} size={30} opacity={interpolate(f, [T.at('mini-claude') - 10, T.at('mini-claude')], [0, 1], clamp) * (1 - push)} />
       </div>
 
       <div
@@ -113,9 +113,9 @@ export const S04ObenImVordergrund: React.FC = () => {
         immer im Vordergrund
       </div>
 
-      <Caption text="Eine kleine Insel, oben auf deinem Bildschirm." times={T.words} highlight={['Insel']} y={1420} outAt={D - 14} />
+      <Caption text={T.text} times={T.words} highlight={['Insel']} y={1420} outAt={D - 14} />
       <Voice id={ID} />
-      <Sfx at={T.w(3)} src="transitions.mp3" volume={sfxVolume(ID, T.w(3), 0.45)} />
+      <Sfx at={T.at('immer')} src="transitions.mp3" volume={sfxVolume(ID, T.at('immer'), 0.45)} />
       <Sfx at={D - 24} src="Zoomin-OR-out.mp3" volume={sfxVolume(ID, D - 24, 0.6)} />
     </Backdrop>
   );

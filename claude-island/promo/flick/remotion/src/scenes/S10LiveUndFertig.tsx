@@ -27,15 +27,16 @@ export const S10LiveUndFertig: React.FC = () => {
   const pw = PANEL.w;
   const k = pw / PANEL_IMG.w;
 
-  const doneAt = T.w(5) - 4;
+  const doneAt = T.at('fertig') - 4;
   const done = f >= doneAt;
   const flash = interpolate(f, [doneAt, doneAt + 4, doneAt + 20], [0, 0.18, 0], clamp);
-  const typeAt = T.w(6) + 10;
+  const typeAt = T.at('schickst') + 4;
   const sendAt = Math.min(D - 34, typeAt + typeFrames(NEXT, 22) + 72);
   const slide = tween(f, D - 22, D, 0, 1, Easing.in(Easing.cubic));
 
   // Schritte nacheinander aufdecken (Read, Write, Edit, Bash), passend zu den ersten Wörtern.
-  const reveal = (i: number) => tween(f, T.w(i) - 6, T.w(i) + 8, 0, 1, Easing.out(Easing.cubic));
+  const STEP_WORDS = ['während', 'arbeitet', 'siehst', 'schritt'];
+  const reveal = (i: number) => tween(f, T.at(STEP_WORDS[i]) - 6, T.at(STEP_WORDS[i]) + 8, 0, 1, Easing.out(Easing.cubic));
 
   const compose = field('done', 'compose');
   const cc = center(compose, pw);
@@ -79,7 +80,7 @@ export const S10LiveUndFertig: React.FC = () => {
       <ClickRing x={sc.x + PANEL.left} y={sc.y + PANEL.top} progress={interpolate(f, [sendAt, sendAt + 18], [0, 1], clamp)} color={C.accent} />
       <Cursor x={cx} y={cy} pressed={Math.max(clickField, clickSend)} opacity={cursorOn} size={52} />
 
-      <Caption text="Sieh live, woran Claude arbeitet. Fertig? Schick gleich die nächste Anweisung." times={T.words} highlight={['live', 'Fertig']} highlightColor={MOOD_COLOR.done} y={1440} outAt={D - 14} />
+      <Caption text={T.text} times={T.words} highlight={['live', 'Fertig']} highlightColor={MOOD_COLOR.done} y={1440} outAt={D - 14} />
       <Voice id={ID} />
       <Sfx at={doneAt} src="Correct.mp3" volume={sfxVolume(ID, doneAt, 0.55)} durationInFrames={60} />
       <Sfx at={typeAt - 3} src="Click.mp3" volume={sfxVolume(ID, typeAt - 3, 0.5)} />

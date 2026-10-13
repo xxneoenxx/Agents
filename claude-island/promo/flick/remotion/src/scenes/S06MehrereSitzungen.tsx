@@ -82,11 +82,11 @@ export const S06MehrereSitzungen: React.FC = () => {
   };
   const before = rowX([0, 1, 2]);
   const after = rowX([2, 0, 1]);
-  const sort = tween(f, T.w(2), T.w(5), 0, 1, Easing.inOut(Easing.cubic));
+  const sort = tween(f, T.at('sortiert'), T.at('dringlichkeit') + 6, 0, 1, Easing.inOut(Easing.cubic));
   const rowY = 780;
 
   // „die dringendste“: portfolio fliegt in die Pille und rastet ein; Zähler 1 → 3.
-  const flyAt = T.w(6);
+  const flyAt = T.at('dringendste');
   const fly = tween(f, flyAt, flyAt + 16, 0, 1, Easing.in(Easing.cubic));
   const landed = f >= flyAt + 16;
   const snap = interpolate(f, [flyAt + 16, flyAt + 20, flyAt + 30], [1, 1.07, 1], clamp);
@@ -124,7 +124,7 @@ export const S06MehrereSitzungen: React.FC = () => {
         );
       })}
 
-      <Caption text="Mehrere Sitzungen? Sie zeigt dir immer die dringendste." times={T.words} highlight={['dringendste']} highlightColor={MOOD_COLOR.waiting} y={1420} outAt={D - 10} />
+      <Caption text={T.text} times={T.words} highlight={['dringendste']} highlightColor={MOOD_COLOR.waiting} y={1420} outAt={D - 10} />
       <Voice id={ID} />
       <Sfx at={flyAt + 16} src="Pop.mp3" volume={sfxVolume(ID, flyAt + 16, 0.8)} />
     </Backdrop>

@@ -19,7 +19,7 @@ export const S02ProblemVerpasst: React.FC = () => {
   const T = timing(ID);
 
   // Umschalten in immer kürzeren Abständen (×1 … ×7) bis kurz vor „Und“.
-  const flickEnd = T.w(2) - 4;
+  const flickEnd = T.at('und') - 4;
   const switches: number[] = [];
   let t = 4;
   let gap = 20;
@@ -37,12 +37,12 @@ export const S02ProblemVerpasst: React.FC = () => {
   const selected = count === 0 ? 1 : [0, 2, 1][(count - 1) % 3];
 
   // Push-in ins Terminal bei „Und trotzdem …“, dann zurück, Terminal wieder verdeckt.
-  const pushIn = tween(f, T.w(2), T.w(2) + 16, 0, 1, Easing.inOut(Easing.cubic));
-  const pullBack = tween(f, T.w(5), T.w(5) + 14, 0, 1, Easing.inOut(Easing.cubic));
+  const pushIn = tween(f, T.at('und'), T.at('und') + 16, 0, 1, Easing.inOut(Easing.cubic));
+  const pullBack = tween(f, T.at('freigabe'), T.at('freigabe') + 14, 0, 1, Easing.inOut(Easing.cubic));
   const zoom = 1 + 0.32 * pushIn * (1 - pullBack);
-  const termFront = f >= T.w(2) - 2 && f < T.w(5) + 6;
+  const termFront = f >= T.at('und') - 2 && f < T.at('freigabe') + 6;
   const tagPulse = wave(f, 0.7);
-  const ignoredGlow = f > T.w(5) + 10 ? 0.35 + 0.5 * wave(f - T.w(5), 0.55) : 0.3;
+  const ignoredGlow = f > T.at('freigabe') + 10 ? 0.35 + 0.5 * wave(f - T.at('freigabe'), 0.55) : 0.3;
 
   // Übergang: der gelbe Schimmer löst sich und fliegt oben in die Mitte (dort wird er in 03 zur Insel).
   const fly = tween(f, D - 26, D - 2, 0, 1, Easing.inOut(Easing.cubic));
@@ -77,7 +77,7 @@ export const S02ProblemVerpasst: React.FC = () => {
           position: 'absolute',
           left: 70,
           top: 150,
-          opacity: interpolate(f, [at[0], at[0] + 6, T.w(5), T.w(5) + 10], [0, 1, 1, 0], clamp),
+          opacity: interpolate(f, [at[0], at[0] + 6, T.at('freigabe'), T.at('freigabe') + 10], [0, 1, 1, 0], clamp),
           fontFamily: FONT.mono,
           fontWeight: 500,
           fontSize: 54,
@@ -107,12 +107,12 @@ export const S02ProblemVerpasst: React.FC = () => {
         />
       ) : null}
 
-      <Caption text="Ständig nachsehen. Und trotzdem die Freigabe verpassen." times={T.words} highlight={['Freigabe']} highlightColor={MOOD_COLOR.waiting} outAt={D - 14} />
+      <Caption text={T.text} times={T.words} highlight={['Freigabe']} highlightColor={MOOD_COLOR.waiting} outAt={D - 14} />
       <Voice id={ID} />
       {at.map((a, i) => (
         <Sfx key={i} at={a} src="Click.mp3" volume={sfxVolume(ID, a, 0.45)} />
       ))}
-      <Sfx at={T.w(2)} src="Zoomin-OR-out.mp3" volume={sfxVolume(ID, T.w(2), 0.7)} />
+      <Sfx at={T.at('und')} src="Zoomin-OR-out.mp3" volume={sfxVolume(ID, T.at('und'), 0.7)} />
     </Backdrop>
   );
 };

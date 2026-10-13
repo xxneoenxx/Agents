@@ -23,7 +23,7 @@ export const S07FreigabeKlapptAuf: React.FC = () => {
   const {durationInFrames: D} = useVideoConfig();
   const T = timing(ID);
   const hero = islandBox();
-  const open = T.w(4) - 4;
+  const open = T.at('klappt') - 4;
 
   // Morph Pille → Panel.
   const m = pop(f, open, {damping: 17, stiffness: 120});
@@ -57,7 +57,7 @@ export const S07FreigabeKlapptAuf: React.FC = () => {
   const nudge = interpolate(f, [T.w(1), T.w(1) + 6, T.w(1) + 14], [0, -10, 0], clamp);
 
   const editorFade = interpolate(f, [0, 20], [0, 1], clamp) * (1 - zoom);
-  const typed = 'const form = useKontakt(';
+  const typed = 'const form = useKontakt({ name, email, nachricht })';
 
   return (
     <Backdrop glow={{x: 540, y: 600, strength: 0.6}}>
@@ -65,7 +65,7 @@ export const S07FreigabeKlapptAuf: React.FC = () => {
       <div style={{position: 'absolute', left: 90, top: 1010, width: 900, height: 290, borderRadius: 18, background: '#1E1915', border: `2px solid ${C.lineStrong}`, opacity: editorFade * 0.9, overflow: 'hidden'}}>
         <div style={{height: 50, borderBottom: `2px solid ${C.line}`, display: 'flex', alignItems: 'center', padding: '0 22px', fontFamily: FONT.sans, fontWeight: 600, fontSize: 24, color: C.muted}}>kontakt.ts – Editor</div>
         <div style={{padding: '26px 30px', fontFamily: FONT.mono, fontSize: 32, color: C.text}}>
-          <TypeOn text={typed} start={12} cps={7} style={{color: C.text}} />
+          <TypeOn text={typed} start={12} cps={5.5} style={{color: C.text}} />
         </div>
       </div>
 
@@ -92,11 +92,11 @@ export const S07FreigabeKlapptAuf: React.FC = () => {
         </div>
       </div>
 
-      <div style={{position: 'absolute', left: 0, right: 0, top: 930, textAlign: 'center', fontFamily: FONT.sans, fontWeight: 500, fontSize: 40, color: C.muted, opacity: interpolate(f, [T.w(6), T.w(6) + 12], [0, 1], clamp) * (1 - zoom)}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 930, textAlign: 'center', fontFamily: FONT.sans, fontWeight: 500, fontSize: 40, color: C.muted, opacity: interpolate(f, [T.at('ohne'), T.at('ohne') + 12], [0, 1], clamp) * (1 - zoom)}}>
         klappt auf, ohne den Fokus zu stehlen
       </div>
 
-      <Caption text="Braucht Claude eine Freigabe, klappt die Insel von selbst auf." times={T.words} highlight={['Freigabe']} highlightColor={MOOD_COLOR.waiting} y={1440} outAt={D - 12} />
+      <Caption text={T.text} times={T.words} highlight={['Freigabe']} highlightColor={MOOD_COLOR.waiting} y={1440} outAt={D - 12} />
       <Voice id={ID} />
       <Sfx at={open} src="Notification.mp3" volume={sfxVolume(ID, open, 0.6)} />
       <Sfx at={open + 46} src="Pop.mp3" volume={sfxVolume(ID, open + 46, 0.7)} />

@@ -96,7 +96,7 @@ export const S03RevealIsland: React.FC = () => {
         <div style={{fontFamily: FONT.display, fontWeight: 700, fontSize: 112, letterSpacing: '-0.02em', color: C.text}}>Claude Island</div>
       </div>
 
-      <Caption text="Schluss damit. Das ist Claude Island." times={T.words} highlight={['Claude', 'Island']} y={1420} outAt={D - 16} />
+      <Caption text={T.text} times={T.words} highlight={['Claude', 'Island']} y={1420} outAt={D - 16} />
       <Voice id={ID} />
       <Sfx at={2} src="Pop.mp3" volume={sfxVolume(ID, 2, 0.8)} />
       <Sfx at={T.w(0)} src="transitions.mp3" volume={sfxVolume(ID, T.w(0), 0.7)} />

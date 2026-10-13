@@ -29,7 +29,7 @@ Create the approved short-form scene animations from the timestamped transcript.
 - Available sound effects: `remotion/public/sounds/`
 
 ## Creative Direction
-- User direction: Hochformat 1080×1920 bei 60 fps; der Sprechertext erscheint als Text im Bild, weil Flick keine Stimme erzeugt.
+- User direction: Hochformat 1080×1920 bei 60 fps. Eine deutsche Sprecherstimme (SVOX Pico, offline) erklärt alles, was im Bild passiert; der gesprochene Text läuft als Untertitel mit. Szenenlängen und Wortzeiten kommen aus `remotion/src/lib/timings.json`.
 - Interpretation: Scene direction exactly as in flick-plan.md (sections C and D of FLICK-SKRIPT.md); every scene adds an animated caption line with its transcript.
 - Avoid: generic filler visuals, unapproved assets, background music, Anthropic/Windows logos, invented features
 

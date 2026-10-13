@@ -34,7 +34,7 @@ export const S05EinBlick: React.FC = () => {
 
   // Callouts kurz vor ihrem Wort, danach stehen alle drei bis kurz vor Szenenende.
   const fadeOut = tween(f, D - 12, D - 2, 1, 0);
-  const c = (i: number) => tween(f, T.w(i) - 8, T.w(i) + 8, 0, 1) * fadeOut;
+  const c = (word: string) => tween(f, T.at(word) - 8, T.at(word) + 8, 0, 1) * fadeOut;
   const status = at(110, 13);
   const name = at(95, 41);
   const count = at(209, 11);
@@ -45,11 +45,11 @@ export const S05EinBlick: React.FC = () => {
         <Pill mood={mood} name="portfolio" count={1} scale={s} />
       </div>
 
-      <Callout x1={300} y1={470} x2={status.x} y2={status.y} label="Stimmung" t={c(3)} />
-      <Callout x1={330} y1={1080} x2={name.x} y2={name.y} label="dringendste Sitzung" t={c(4)} align="center" />
-      <Callout x1={880} y1={470} x2={count.x} y2={count.y} label="Anzahl" t={c(5)} />
+      <Callout x1={300} y1={470} x2={status.x} y2={status.y} label="Stimmung" t={c('stimmung')} />
+      <Callout x1={330} y1={1080} x2={name.x} y2={name.y} label="dringendste Sitzung" t={c('dringendste')} align="center" />
+      <Callout x1={880} y1={470} x2={count.x} y2={count.y} label="Anzahl" t={c('viele')} />
 
-      <Caption text="Ein Blick genügt: Stimmung, Sitzung, Anzahl." times={T.words} highlight={['Blick']} y={1420} outAt={D - 12} />
+      <Caption text={T.text} times={T.words} highlight={['Blick']} y={1420} outAt={D - 12} />
       <Voice id={ID} />
       {flips.map((x, i) => (
         <Sfx key={i} at={x} src="Click.mp3" volume={sfxVolume(ID, x, i === 4 ? 0.6 : 0.3)} />

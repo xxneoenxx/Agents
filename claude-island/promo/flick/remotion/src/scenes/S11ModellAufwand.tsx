@@ -50,8 +50,8 @@ export const S11ModellAufwand: React.FC = () => {
 
   const enter = pop(f, 0, {damping: 18, stiffness: 140});
   const leave = tween(f, D - 18, D, 0, 1, Easing.in(Easing.cubic));
-  const modelClick = T.w(0) + 4;
-  const effortClick = T.w(2) + 4;
+  const modelClick = T.at('sonnet') + 2;
+  const effortClick = T.at('niedrig') + 2;
   const model = interpolate(f, [modelClick, modelClick + 14], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
   const effort = interpolate(f, [effortClick, effortClick + 14], [2, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
 
@@ -69,8 +69,8 @@ export const S11ModellAufwand: React.FC = () => {
   const cx = interpolate(f, [4, modelClick - 3, effortClick - 3], [980, sonnet.x, mittel.x], {...clamp, easing: ease});
   const cy = interpolate(f, [4, modelClick - 3, effortClick - 3], [1300, sonnet.y, mittel.y], {...clamp, easing: ease});
   const press = Math.max(...[modelClick, effortClick].map((a) => interpolate(f, [a - 3, a, a + 7], [0, 1, 0], clamp)));
-  const chipGlow = interpolate(f, [T.w(5) - 4, T.w(5) + 6, T.w(7) + 10, T.w(7) + 24], [0, 1, 1, 0.4], clamp);
-  const note = interpolate(f, [T.w(6), T.w(6) + 12], [0, 1], clamp);
+  const chipGlow = interpolate(f, [T.at('jede') - 4, T.at('jede') + 6, T.at('modell') + 10, T.at('modell') + 24], [0, 1, 1, 0.4], clamp);
+  const note = interpolate(f, [T.at('gilt'), T.at('gilt') + 12], [0, 1], clamp);
   const label: React.CSSProperties = {fontFamily: FONT.mono, fontWeight: 500, fontSize: 30, letterSpacing: '0.12em', color: C.muted, marginBottom: 18};
 
   return (
@@ -98,10 +98,10 @@ export const S11ModellAufwand: React.FC = () => {
         <div style={{position: 'absolute', left: 0, right: 0, top: 1130, textAlign: 'center', fontFamily: FONT.sans, fontWeight: 500, fontSize: 40, color: C.muted, opacity: note}}>wirkt ab dem nächsten Modellaufruf</div>
         <ClickRing x={sonnet.x} y={sonnet.y} progress={interpolate(f, [modelClick, modelClick + 18], [0, 1], clamp)} />
         <ClickRing x={mittel.x} y={mittel.y} progress={interpolate(f, [effortClick, effortClick + 18], [0, 1], clamp)} />
-        <Cursor x={cx} y={cy} pressed={press} size={52} opacity={tween(f, T.w(5), T.w(5) + 12, 1, 0)} />
+        <Cursor x={cx} y={cy} pressed={press} size={52} opacity={tween(f, effortClick + 30, effortClick + 42, 1, 0)} />
       </div>
 
-      <Caption text="Modell und Aufwand stellst du pro Sitzung um." times={T.words} highlight={['Modell', 'Aufwand']} y={1440} outAt={D - 12} />
+      <Caption text={T.text} times={T.words} highlight={['Modell', 'Aufwand']} y={1440} outAt={D - 12} />
       <Voice id={ID} />
       <Sfx at={modelClick} src="Click.mp3" volume={sfxVolume(ID, modelClick, 0.9)} />
       <Sfx at={effortClick} src="Click.mp3" volume={sfxVolume(ID, effortClick, 0.9)} />

@@ -23,13 +23,13 @@ export const S14CtaLoop: React.FC = () => {
   const {durationInFrames: D} = useVideoConfig();
   const T = timing(ID);
 
-  const title = pop(f, Math.max(4, T.w(0) - 6), {damping: 15, stiffness: 140});
-  const sub = pop(f, T.w(2), {damping: 18, stiffness: 150});
-  const btnIn = pop(f, T.w(4) - 4, {damping: 14, stiffness: 160});
-  const link = pop(f, T.w(4) + 14, {damping: 18, stiffness: 150});
-  const clickAt = T.w(6) + 4;
+  const title = pop(f, Math.max(4, T.at('claude') - 6), {damping: 15, stiffness: 140});
+  const sub = pop(f, T.at('windows'), {damping: 18, stiffness: 150});
+  const btnIn = pop(f, T.at('setup-datei') - 4, {damping: 14, stiffness: 160});
+  const link = pop(f, T.at('github') - 4, {damping: 18, stiffness: 150});
+  const clickAt = T.at('doppelt') + 2;
   const press = interpolate(f, [clickAt - 3, clickAt, clickAt + 8], [0, 1, 0], clamp);
-  const steps = STEPS.map((_, i) => pop(f, T.w(7) + i * 16, {damping: 18, stiffness: 160}));
+  const steps = ['doppelt', 'plugin', 'startest'].map((w) => pop(f, T.at(w) - 4, {damping: 18, stiffness: 160}));
 
   // Outro: ab ~1,4 s nach dem letzten Wort.
   const outroAt = Math.max(T.speechEnd + 84, clickAt + 90);
@@ -49,9 +49,9 @@ export const S14CtaLoop: React.FC = () => {
   const landed = f >= D - 14;
 
   const card: React.CSSProperties = {position: 'absolute', inset: 0, transform: `translateY(${tilt * 1900}px)`};
-  const cursorOn = interpolate(f, [T.w(5), T.w(5) + 8], [0, 1], clamp) * tween(f, clickAt + 16, clickAt + 28, 1, 0);
-  const cx = interpolate(f, [T.w(5), clickAt - 3], [960, 640], {...clamp, easing: Easing.inOut(Easing.cubic)});
-  const cy = interpolate(f, [T.w(5), clickAt - 3], [1250, 880], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const cursorOn = interpolate(f, [T.at('github'), T.at('github') + 8], [0, 1], clamp) * tween(f, clickAt + 16, clickAt + 28, 1, 0);
+  const cx = interpolate(f, [T.at('github'), clickAt - 3], [960, 640], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const cy = interpolate(f, [T.at('github'), clickAt - 3], [1250, 880], {...clamp, easing: Easing.inOut(Easing.cubic)});
 
   return (
     <Backdrop glow={{x: 540, y: 560, strength: 1 - tilt}}>
@@ -108,7 +108,7 @@ export const S14CtaLoop: React.FC = () => {
       ) : null}
       {landed ? <LoopHero frame={0} /> : null}
 
-      <Caption text="Claude Island für Windows. Hol sie dir jetzt auf GitHub." times={T.words} highlight={['GitHub']} y={1420} size={60} outAt={outroAt - 10} />
+      <Caption text={T.text} times={T.words} highlight={['GitHub']} y={1420} size={60} outAt={outroAt - 10} />
       <Voice id={ID} />
       <Sfx at={clickAt} src="Click.mp3" volume={sfxVolume(ID, clickAt, 0.9)} />
       <Sfx at={jumpAt - 6} src="Zoomin-OR-out.mp3" volume={sfxVolume(ID, jumpAt - 6, 0.6)} />

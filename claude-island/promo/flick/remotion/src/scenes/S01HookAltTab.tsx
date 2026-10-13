@@ -72,7 +72,7 @@ export const S01HookAltTab: React.FC = () => {
         <Keycap label="Tab" size={150} press={pressNow} />
       </div>
 
-      <Caption text="Alt-Tab. Wartet Claude? Alt-Tab. Hängt er fest?" times={T.words} highlight={['Wartet', 'fest']} highlightColor="#FFC857" y={1420} />
+      <Caption text={T.text} times={T.words} highlight={['Wartet', 'fest']} highlightColor="#FFC857" y={1420} />
       <Voice id={ID} />
       <Sfx at={alt1} src="Click.mp3" volume={sfxVolume(ID, alt1, 0.8)} />
       <Sfx at={alt2} src="Click.mp3" volume={sfxVolume(ID, alt2, 0.8)} />

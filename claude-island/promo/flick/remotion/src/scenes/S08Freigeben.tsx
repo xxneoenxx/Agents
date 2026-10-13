@@ -20,7 +20,7 @@ export const S08Freigeben: React.FC = () => {
   const f = useCurrentFrame();
   const {durationInFrames: D} = useVideoConfig();
   const T = timing(ID);
-  const click = T.w(3) + 6;
+  const click = T.at('klick') + 6;
 
   // Kamera: Karte (wie Ende 07) → nach dem Klick zurück aufs ganze Panel.
   const back = tween(f, click + 20, click + 50, 0, 1, Easing.inOut(Easing.cubic));
@@ -32,9 +32,9 @@ export const S08Freigeben: React.FC = () => {
   const allow = center(btn('approval', 'allow'), pw);
   const ease = Easing.inOut(Easing.cubic);
   // Mauszeiger: von unten rechts über „Ablehnen“ zu „Freigeben“.
-  const cx = interpolate(f, [0, T.w(1), T.w(2) + 10, click - 4], [980, deny.x + pl, deny.x + pl + 10, allow.x + pl], {...clamp, easing: ease});
-  const cy = interpolate(f, [0, T.w(1), T.w(2) + 10, click - 4], [1300, deny.y + pt, deny.y + pt + 4, allow.y + pt], {...clamp, easing: ease});
-  const hoverDeny = interpolate(f, [T.w(1) - 4, T.w(1) + 4, T.w(2) + 8, T.w(2) + 16], [0, 1, 1, 0], clamp);
+  const cx = interpolate(f, [T.at('direkt') - 20, T.at('ablehnen'), T.at('ablehnen') + 24, click - 4], [980, deny.x + pl, deny.x + pl + 10, allow.x + pl], {...clamp, easing: ease});
+  const cy = interpolate(f, [T.at('direkt') - 20, T.at('ablehnen'), T.at('ablehnen') + 24, click - 4], [1300, deny.y + pt, deny.y + pt + 4, allow.y + pt], {...clamp, easing: ease});
+  const hoverDeny = interpolate(f, [T.at('ablehnen') - 4, T.at('ablehnen') + 4, T.at('ablehnen') + 22, T.at('ablehnen') + 30], [0, 1, 1, 0], clamp);
   const pressed = interpolate(f, [click - 3, click, click + 7], [0, 1, 0], clamp);
   const cursorOut = tween(f, click + 24, click + 40, 1, 0);
 
@@ -68,7 +68,7 @@ export const S08Freigeben: React.FC = () => {
       <ClickRing x={allow.x + pl} y={allow.y + pt} progress={interpolate(f, [click, click + 18], [0, 1], clamp)} color={MOOD_COLOR.done} />
       <Cursor x={cx} y={cy} pressed={pressed} opacity={cursorOut} size={52} />
 
-      <Caption text="Freigeben oder ablehnen. Direkt hier, ohne Fensterwechsel." times={T.words} highlight={['Freigeben']} highlightColor={MOOD_COLOR.done} y={1440} outAt={D - 10} />
+      <Caption text={T.text} times={T.words} highlight={['Freigeben']} highlightColor={MOOD_COLOR.done} y={1440} outAt={D - 10} />
       <Voice id={ID} />
       <Sfx at={click} src="Click.mp3" volume={sfxVolume(ID, click, 0.9)} />
     </Backdrop>

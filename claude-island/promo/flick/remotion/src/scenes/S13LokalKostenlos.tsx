@@ -27,17 +27,17 @@ export const S13LokalKostenlos: React.FC = () => {
   const connC = {x: conn.x + conn.w / 2, y: conn.y + conn.h / 2};
 
   // Push-in ab „Die Insel läuft lokal“, mit scharfem Nachbau der Zeilen.
-  const push = tween(f, T.w(3) - 4, T.w(3) + 18, 0, 1, Easing.inOut(Easing.cubic));
+  const push = tween(f, T.at('läuft') - 10, T.at('läuft') + 12, 0, 1, Easing.inOut(Easing.cubic));
   const zoom = 1 + 0.5 * push;
   // Die Statuszeilen wandern dabei in die Bildmitte (y ≈ 980).
   const shiftY = (980 - connC.y) * push;
-  const badgesOut = 1 - tween(f, T.w(3) - 6, T.w(3) + 6, 0, 1);
+  const badgesOut = 1 - tween(f, T.at('läuft') - 12, T.at('läuft'), 0, 1);
   const out = tween(f, D - 22, D, 0, 1, Easing.in(Easing.cubic));
 
-  const b1 = pop(f, T.w(0) - 6);
-  const b2 = pop(f, T.w(1) - 6);
-  const b3 = pop(f, T.w(8) - 4);
-  const typeAt = T.w(6) - 4;
+  const b1 = pop(f, T.at('kostenlos') - 6);
+  const b2 = pop(f, T.at('open') - 6);
+  const b3 = pop(f, T.at('pc') - 4);
+  const typeAt = T.at('lokal') - 4;
   const m = stageMascot();
 
   return (
@@ -84,12 +84,12 @@ export const S13LokalKostenlos: React.FC = () => {
         Inoffizielles Community-Tool · nicht von Anthropic
       </div>
 
-      <Caption text="Kostenlos, Open Source. Die Insel läuft lokal auf deinem PC." times={T.words} highlight={['Kostenlos', 'lokal']} y={1400} size={60} outAt={D - 16} />
+      <Caption text={T.text} times={T.words} highlight={['Kostenlos', 'lokal']} y={1400} size={60} outAt={D - 16} />
       <Voice id={ID} />
-      <Sfx at={T.w(0) - 6} src="Pop.mp3" volume={sfxVolume(ID, T.w(0) - 6, 0.7)} />
-      <Sfx at={T.w(1) - 6} src="Pop.mp3" volume={sfxVolume(ID, T.w(1) - 6, 0.7)} />
-      <Sfx at={T.w(3) - 4} src="Zoomin-OR-out.mp3" volume={sfxVolume(ID, T.w(3) - 4, 0.6)} />
-      <Sfx at={T.w(8) - 4} src="Pop.mp3" volume={sfxVolume(ID, T.w(8) - 4, 0.7)} />
+      <Sfx at={T.at('kostenlos') - 6} src="Pop.mp3" volume={sfxVolume(ID, T.at('kostenlos') - 6, 0.7)} />
+      <Sfx at={T.at('open') - 6} src="Pop.mp3" volume={sfxVolume(ID, T.at('open') - 6, 0.7)} />
+      <Sfx at={T.at('läuft') - 10} src="Zoomin-OR-out.mp3" volume={sfxVolume(ID, T.at('läuft') - 10, 0.6)} />
+      <Sfx at={T.at('pc') - 4} src="Pop.mp3" volume={sfxVolume(ID, T.at('pc') - 4, 0.7)} />
       <Sfx at={D - 22} src="transitions.mp3" volume={sfxVolume(ID, D - 22, 0.6)} />
     </Backdrop>
   );
