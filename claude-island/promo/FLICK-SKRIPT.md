@@ -65,30 +65,30 @@ Die Zeitmarken rechnen mit ca. 2,5 Wörtern/s plus kurzer Atempause und werden *
 ## B2) Langfassung mit Stimme (das gerenderte MP4)
 
 Das MP4 `claude-island-promo-1080x1920-60fps.mp4` ist die **Langfassung**. Eine deutsche Sprecherstimme erklärt darin alles, was im Bild passiert, und der gesprochene Text läuft als Untertitel mit.
-- **Stimme:** SVOX Pico, offline
-- **Format:** 1080×1920 bei 60 fps, 7642 Frames (127,4 s)
+- **Stimme:** Piper „Thorsten“ (deutsche Männerstimme, neuronal, offline, Datensatz CC0)
+- **Format:** 1080×1920 bei 60 fps, 7594 Frames (126,6 s)
 - **Quelle der Texte:** `flick/tools/script.py`
 
 Die Szenen-Regie aus Abschnitt C gilt weiter. Die Bild-Beats hängen an den gesprochenen Wörtern.
 
 | # | Szene | Zeit | Frames (60 fps) | Sprechertext |
 | :- | :- | :- | :- | :- |
-| 01 | `01-hook-alt-tab` | 00:00.0–00:06.9 | 416 | Alt-Tab. Wartet Claude? Alt-Tab. Hängt er fest? Wer mit Claude Code arbeitet, kennt das. |
-| 02 | `02-problem-verpasst` | 00:06.9–00:14.4 | 449 | Du schaust ständig nach, ob Claude etwas von dir braucht. Und trotzdem verpasst du die Freigabe, und Claude wartet einfach. |
-| 03 | `03-reveal-island` | 00:14.4–00:20.2 | 350 | Schluss damit. Das ist Claude Island. Sie zeigt dir jederzeit, was Claude gerade macht. |
-| 04 | `04-oben-im-vordergrund` | 00:20.2–00:29.0 | 527 | Die Insel schwebt klein oben auf deinem Bildschirm und bleibt immer im Vordergrund, auch über anderen Fenstern. Und Mini-Claude schaut deiner Maus hinterher. |
-| 05 | `05-ein-blick` | 00:29.0–00:37.3 | 495 | Ein Blick genügt: Farbe und Text zeigen die Stimmung, darunter steht die dringendste Sitzung, und rechts siehst du, wie viele Sitzungen offen sind. |
-| 06 | `06-mehrere-sitzungen` | 00:37.3–00:45.2 | 473 | Mehrere Sitzungen gleichzeitig? Kein Problem. Die Insel sortiert sie nach Dringlichkeit und zeigt dir immer die dringendste zuerst. |
-| 07 | `07-freigabe-klappt-auf` | 00:45.2–00:54.3 | 548 | Braucht Claude deine Freigabe, zum Beispiel für einen Befehl, klappt die Insel von selbst auf. Ohne dir den Fokus zu stehlen: Du tippst einfach weiter. |
-| 08 | `08-freigeben` | 00:54.3–01:02.9 | 517 | Du siehst genau, was Claude ausführen will, und entscheidest direkt hier: freigeben oder ablehnen. Ein Klick genügt, ohne Fensterwechsel. |
-| 09 | `09-haengt-fest` | 01:02.9–01:12.3 | 563 | Hängt Claude fest, etwa wegen eines Fehlers, zeigt die Insel das sofort. Gib Claude einen Hinweis, wie es weitergehen soll, oder versuch es einfach erneut. |
-| 10 | `10-live-und-fertig` | 01:12.3–01:20.5 | 489 | Während Claude arbeitet, siehst du live jeden Schritt. Ist Claude fertig, liest du die letzte Antwort und schickst gleich die nächste Anweisung. |
-| 11 | `11-modell-aufwand` | 01:20.5–01:30.2 | 582 | Unten wählst du für jede Sitzung das Modell, also Opus, Sonnet oder Haiku, und den Aufwand von Niedrig bis Max. Das gilt ab dem nächsten Modellaufruf. |
-| 12 | `12-mini-claude` | 01:30.2–01:41.0 | 651 | Und Mini-Claude fiebert mit: Er schläft, wenn nichts los ist, tippt, während Claude arbeitet, winkt, wenn er dich braucht, zittert bei Problemen und jubelt, wenn alles fertig ist. |
-| 13 | `13-lokal-kostenlos` | 01:41.0–01:47.8 | 408 | Claude Island ist kostenlos, und der Quellcode liegt offen auf GitHub. Die Insel läuft lokal auf deinem PC. |
-| 14 | `14-cta-loop` | 01:47.8–02:07.4 | 1174 | So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub herunter und klicke doppelt darauf. Warnt Windows davor, klickst du auf Weitere Informationen und dann auf Trotzdem ausführen. In der Insel klickst du auf Plugin aktivieren. Dann startest du die Claude-App neu. Fertig! |
+| 01 | `01-hook-alt-tab` | 00:00.0–00:08.5 | 508 | Alt-Tab. Wartet Claude? Alt-Tab. Hängt er fest? Wer mit Claude Code arbeitet, kennt das. |
+| 02 | `02-problem-verpasst` | 00:08.5–00:15.7 | 433 | Du schaust ständig nach, ob Claude etwas von dir braucht. Und trotzdem verpasst du die Freigabe, und Claude wartet einfach. |
+| 03 | `03-reveal-island` | 00:15.7–00:21.6 | 352 | Schluss damit. Das ist Claude Island. Sie zeigt dir jederzeit, was Claude gerade macht. |
+| 04 | `04-oben-im-vordergrund` | 00:21.6–00:30.3 | 526 | Die Insel schwebt klein oben auf deinem Bildschirm und bleibt immer im Vordergrund, auch über anderen Fenstern. Und Mini-Claude schaut deiner Maus hinterher. |
+| 05 | `05-ein-blick` | 00:30.3–00:38.1 | 469 | Ein Blick genügt: Farbe und Text zeigen die Stimmung, darunter steht die dringendste Sitzung, und rechts siehst du, wie viele Sitzungen offen sind. |
+| 06 | `06-mehrere-sitzungen` | 00:38.1–00:46.0 | 475 | Mehrere Sitzungen gleichzeitig? Kein Problem. Die Insel sortiert sie nach Dringlichkeit und zeigt dir immer die dringendste zuerst. |
+| 07 | `07-freigabe-klappt-auf` | 00:46.0–00:54.9 | 533 | Braucht Claude deine Freigabe, zum Beispiel für einen Befehl, klappt die Insel von selbst auf. Ohne dir den Fokus zu stehlen: Du tippst einfach weiter. |
+| 08 | `08-freigeben` | 00:54.9–01:03.3 | 500 | Du siehst genau, was Claude ausführen will, und entscheidest direkt hier: freigeben oder ablehnen. Ein Klick genügt, ohne Fensterwechsel. |
+| 09 | `09-haengt-fest` | 01:03.3–01:12.8 | 574 | Hängt Claude fest, etwa wegen eines Fehlers, zeigt die Insel das sofort. Gib Claude einen Hinweis, wie es weitergehen soll, oder versuch es einfach erneut. |
+| 10 | `10-live-und-fertig` | 01:12.8–01:20.5 | 459 | Während Claude arbeitet, siehst du live jeden Schritt. Ist Claude fertig, liest du die letzte Antwort und schickst gleich die nächste Anweisung. |
+| 11 | `11-modell-aufwand` | 01:20.5–01:29.8 | 559 | Unten wählst du für jede Sitzung das Modell, also Opus, Sonnet oder Haiku, und den Aufwand von Niedrig bis Max. Das gilt ab dem nächsten Modellaufruf. |
+| 12 | `12-mini-claude` | 01:29.8–01:39.5 | 583 | Und Mini-Claude fiebert mit: Er schläft, wenn nichts los ist, tippt, während Claude arbeitet, winkt, wenn er dich braucht, zittert bei Problemen und jubelt, wenn alles fertig ist. |
+| 13 | `13-lokal-kostenlos` | 01:39.5–01:46.7 | 428 | Claude Island ist kostenlos, und der Quellcode liegt offen auf GitHub. Die Insel läuft lokal auf deinem PC. |
+| 14 | `14-cta-loop` | 01:46.7–02:06.6 | 1195 | So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub herunter und klicke doppelt darauf. Warnt Windows davor, klickst du auf Weitere Informationen und dann auf Trotzdem ausführen. In der Insel klickst du auf Plugin aktivieren. Dann startest du die Claude-App neu. Fertig! |
 
-Für die Sprachsynthese werden englische Wörter in Lautschrift geschrieben, etwa „Klohd“ für „Claude“ oder „Gitt-Habb“ für „GitHub“. Die Untertitel zeigen die richtige Schreibweise.
+Für die Sprachsynthese werden englische Wörter in Lautschrift geschrieben, etwa „Klohd“ für „Claude“ oder „Gitt Habb“ für „GitHub“. Die Untertitel zeigen die richtige Schreibweise.
 
 ---
 

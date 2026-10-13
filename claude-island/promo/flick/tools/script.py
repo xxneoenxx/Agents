@@ -27,7 +27,16 @@ SAY = [
     ('Alt-Tab', 'Alt Tab'), ('Max.', 'Max!'),
 ]
 
-def spoken(text):
-    for a, b in SAY:
+# Für die neuronale Stimme (Piper „Thorsten“), die über espeak-ng in Laute umsetzt.
+# Geprüft mit `espeak-ng -v de -x`: z. B. „Windohs“ → v'Indo:s, „Macks.“ → m'aks, „Gitt Habb“ → g'It h'app.
+SAY_ESPEAK = [
+    ('Claude Code', 'Klohd Kohd'), ('Claude-App', 'Klohd-Äpp'), ('Mini-Claude', 'Mini-Klohd'), ('Claude', 'Klohd'),
+    ('Island', 'Ailänd'), ('GitHub', 'Gitt Habb'), ('Setup-Datei', 'Settapp-Datei'),
+    ('Plugin', 'Plaggin'), ('Windows', 'Windohs'), ('PC', 'Pe-Zeh'), (' live ', ' leif '),
+    ('Alt-Tab', 'Alt Tab'), ('Max.', 'Macks.'), ('Modellaufruf', 'Modell-Aufruf'), ('Quellcode', 'Quellkohd'),
+]
+
+def spoken(text, engine='pico'):
+    for a, b in (SAY if engine == 'pico' else SAY_ESPEAK):
         text = text.replace(a, b)
     return text

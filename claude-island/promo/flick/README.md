@@ -2,7 +2,7 @@
 
 Das Video `../claude-island-promo-1080x1920-60fps.mp4` entsteht mit dem Flick-Workflow
 (Creatorberry/flick) und Remotion. Format: 1080×1920, 60 fps, 14 Szenen, ca. 2 Minuten.
-Eine deutsche Sprecherstimme (SVOX Pico) erklärt alles, und der gesprochene Text läuft als Untertitel mit.
+Eine deutsche Männerstimme (Piper „Thorsten“, neuronal, offline) erklärt alles, und der gesprochene Text läuft als Untertitel mit.
 
 ## Inhalt
 
@@ -25,12 +25,13 @@ Eine deutsche Sprecherstimme (SVOX Pico) erklärt alles, und der gesprochene Tex
    - die Schriften (Bricolage Grotesque, Figtree, IBM Plex Mono als woff2) nach `flick-output/remotion/public/fonts/`
    - Flicks Sounds liegen schon in `public/sounds`
 2. Stimme erzeugen:
-   - `apt install libttspico-utils` (liefert `pico2wave`)
-   - dann `python3 tools/voice.py`; das legt `remotion/public/voice/NN.wav` an
-   - dann `python3 tools/timings.py`; das richtet Szenenlängen und Wortzeiten an den echten Sprechpausen aus und misst dafür mit Pico die Länge jedes Wortes
+   - `pip install "piper-tts[alignment]"`
+   - dann `python3 tools/voice.py`; das lädt die Stimme „Thorsten“ einmal aus dem GitHub-Release von rhasspy/piper und legt `remotion/public/voice/NN.wav` an
+   - dann `python3 tools/timings.py`; das setzt die Szenenlängen und nimmt die Wortanfänge exakt aus Pipers Phonem-Ausrichtung
+   - Piper klingt bei jedem Lauf minimal anders. WAV und Wortzeiten passen aber immer zusammen, weil sie aus demselben Lauf stammen.
    - Texte änderst du in `tools/script.py`. Danach beide Skripte erneut ausführen.
    - Die Bild-Beats hängen per `T.at('wort')` an Wörtern, ein geändertes Wort muss also auch in der Szene angepasst werden.
-   - Optional die Piper-Stimme „Thorsten“: `pip install piper-tts`, dann `python3 tools/voice.py piper`. Das Skript lädt das Modell selbst von huggingface.co.
+   - Andere Stimmen: `python3 tools/voice.py pico` (SVOX Pico, `apt install libttspico-utils`). Für eine eigene Aufnahme siehe `../AUFNAHME.md`.
 3. Rendern: `FLICK_SKILL=<flick> tools/render-all.sh` für alle Szenen oder mit Szenen-IDs als Argumente nur für diese. Das nutzt Flicks `render-scene.mjs`, eine MP4 pro Szene.
 4. Zusammenfügen: `tools/concat.sh`. Das Ergebnis ist framegenau, mit Limiter auf −1 dBFS.
 

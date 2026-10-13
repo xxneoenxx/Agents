@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Szenen- und Wortzeiten (60 fps) für alle 14 Szenen → remotion/src/lib/timings.json.
 
-Ohne Sprachaufnahmen: Tempo ca. 2,5 Wörter/s. Mit Aufnahmen (public/voice/NN.wav): die
+Bei der Piper-Stimme kommen die Wortanfänge exakt aus deren Phonem-Ausrichtung (tools/voice.py).
+Ohne Sprachaufnahmen: Tempo ca. 2,5 Wörter/s. Sonst (Pico, eigene Aufnahmen): die
 echten Sprechpausen (ffmpeg silencedetect) werden den Satzzeichen zugeordnet; weitere Pausen
 trennen innerhalb der Abschnitte. Dazwischen verteilen sich die Wörter nach ihrer Länge,
 gemessen an Pico, das jedes Wort einzeln spricht (ohne Pico: nach Silben). Jede Szene ist
@@ -158,8 +159,32 @@ def wav_seconds(path):
     with wave.open(path) as f:
         return f.getnframes() / f.getframerate()
 
+def engine():
+    """Welche Stimme tools/voice.py zuletzt erzeugt hat (voice/engine.txt), sonst „pico“."""
+    try:
+        return open(os.path.join(ROOT, 'voice', 'engine.txt')).read().strip() or 'pico'
+    except OSError:
+        return 'pico'
+
+def piper_words(n, words, eng):
+    """Exakte Wortanfänge aus Pipers Phonem-Ausrichtung (voice/NN-<engine>-words.json), auf die Wörter
+    des Untertitels umgelegt; None, wenn es die Datei nicht gibt oder die Wortzahl nicht passt."""
+    path = os.path.join(ROOT, 'voice', f'{n:02d}-{eng}-words.json')
+    if eng == 'pico' or not os.path.exists(path):
+        return None
+    onsets = json.load(open(path))
+    counts = [len(spoken(w, eng).split()) for w in words]
+    if sum(counts) != len(onsets):
+        return None
+    out, k = [], 0
+    for c in counts:
+        out.append(onsets[k])
+        k += c
+    return out
+
 def main():
     data, total = {}, 0
+    eng = engine()
     for n, (sid, planned, text) in enumerate(SCENES, start=1):
         words = text.split()
         start = 24 if sid.startswith('01') else 8
@@ -167,7 +192,10 @@ def main():
         voice = os.path.join(REM, 'public', 'voice', f'{n:02d}.wav')
         if os.path.exists(voice):
             dur = wav_seconds(voice)
-            secs, anchored = aligned(words, dur, silences(voice))
+            secs = piper_words(n, words, eng)
+            anchored = 'piper'
+            if secs is None:
+                secs, anchored = aligned(words, dur, silences(voice))
             speech = round(dur * FPS)
             frames = max(planned, start + speech + tail)
             data[sid] = {'frames': frames, 'start': start, 'speech': speech, 'words': [start + round(t * FPS) for t in secs],

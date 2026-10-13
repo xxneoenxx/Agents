@@ -1,16 +1,16 @@
 # Flick-Plan: Claude Island – „Ein Blick statt Alt-Tab“ (freigegeben)
 
 ## Format
-9:16 · 1080×1920 · **60 fps** · 14 Szenen · 7642 Frames (127,4 s). Freigegeben durch die Wahl des Nutzers (Hochformat, Sprechertext als Stimme und Text im Bild).
+9:16 · 1080×1920 · **60 fps** · 14 Szenen · 7594 Frames (126,6 s). Freigegeben durch die Wahl des Nutzers (Hochformat, Sprechertext als Stimme und Text im Bild).
 
 ## Sprecherstimme und Untertitel
-Jede Szene hat eine deutsche Sprecherstimme (SVOX Pico, offline). Sie erklärt alles, was im Bild passiert.
-- Der Text steht in `tools/script.py`. Nur die Eingabe für die Sprachsynthese bekommt eine Lautschrift für englische Wörter, z. B. „Klohd“ für „Claude“.
+Jede Szene hat eine deutsche Männerstimme: die neuronale Piper-Stimme „Thorsten“ (offline, Datensatz CC0). Sie erklärt alles, was im Bild passiert.
+- Der Text steht in `tools/script.py`. Nur die Eingabe für die Sprachsynthese bekommt eine Lautschrift für englische Wörter, z. B. „Klohd“ für „Claude“. Die Schreibungen sind mit `espeak-ng -v de -x` geprüft.
 - `tools/voice.py` erzeugt pro Szene eine WAV:
-  - Stille an den Rändern schneiden, Pausen auf 0,2 s kürzen
-  - Tempo 1,16
-  - −16 LUFS, 48 kHz
-- `tools/timings.py` richtet die Wortzeiten an den echten Sprechpausen aus. Die Szenenlänge ist die Sprechdauer plus Nachlauf. Ergebnis ist `remotion/src/lib/timings.json`.
+  - Satz für Satz gesprochen, dazwischen 0,35 s Pause
+  - Ränder geschnitten, −16 LUFS, 48 kHz
+  - kein Eingriff ins Tempo
+- `tools/timings.py` nimmt die Wortanfänge exakt aus Pipers Phonem-Ausrichtung. Die Szenenlänge ist die Sprechdauer plus Nachlauf. Ergebnis ist `remotion/src/lib/timings.json`.
 - Die Bild-Beats hängen an Wörtern (`T.at('wort')` in den Szenen). Die Zeitangaben unten in „Bewegung“ beschreiben die Reihenfolge, die genauen Frames kommen aus den Wortzeiten.
 - Die Untertitel zeigen den gesprochenen Text in Häppchen von höchstens zwei Zeilen und markieren Wort für Wort synchron zur Stimme (Bricolage Grotesque 700, y ≈ 1420, oberhalb der Safe Zone).
 - Soundeffekte werden unter der Stimme auf 55 % abgesenkt. Am Ende begrenzt ein Limiter auf −1 dBFS.
@@ -43,7 +43,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 
 **Szenenbild vom ersten Frame:** Mini-Claude (`mascot-waiting.png`) in 2× (736×600 px), horizontal zentriert, Bildmitte bei y ≈ 860 px, auf #15110E. Der Status-Pixel leuchtet gelb (#FFC857), sonst ist nichts im Bild. Szene 14 endet exakt auf diesem Bild.
 
-### 01 · `01-hook-alt-tab` · 00:00.0–00:06.9 · 416 Frames (60 fps)
+### 01 · `01-hook-alt-tab` · 00:00.0–00:08.5 · 508 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Alt-Tab. Wartet Claude? Alt-Tab. Hängt er fest? Wer mit Claude Code arbeitet, kennt das.“
 - **Bild:** Zuerst das Szenenbild vom ersten Frame, dann ein dunkler, neutraler Windows-Desktop ohne Logos mit Editor, Browser und einem Terminal „Terminal · portfolio“. Im unteren Drittel, oberhalb der Safe Zone, stehen zwei große Tastenkappen „Alt“ und „Tab“.
 - **Bewegung (Reihenfolge):**
@@ -57,7 +57,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Click.mp3` bei jedem Tastendruck (2×)
 - **Übergang:** harter Schnitt
 
-### 02 · `02-problem-verpasst` · 00:06.9–00:14.4 · 449 Frames (60 fps)
+### 02 · `02-problem-verpasst` · 00:08.5–00:15.7 · 433 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Du schaust ständig nach, ob Claude etwas von dir braucht. Und trotzdem verpasst du die Freigabe, und Claude wartet einfach.“
 - **Bild:** Derselbe Desktop. Im Editor steht ein halb geschriebener Funktionsname.
 - **Bewegung:**
@@ -69,7 +69,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Click.mp3` leise bei jedem Wechsel, `Zoomin-OR-out.mp3` beim Push-in
 - **Übergang:** Transform. Der gelbe Schimmer löst sich, fliegt nach oben in die Mitte und wird zur Insel.
 
-### 03 · `03-reveal-island` · 00:14.4–00:20.2 · 350 Frames (60 fps)
+### 03 · `03-reveal-island` · 00:15.7–00:21.6 · 352 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Schluss damit. Das ist Claude Island. Sie zeigt dir jederzeit, was Claude gerade macht.“
 - **Bild:** Die zugeklappte Insel sitzt oben mittig (ca. 18–22 % unter der Oberkante). Darunter erscheinen später App-Icon und Name.
 - **Bewegung:**
@@ -82,7 +82,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Pop.mp3` beim Aufploppen, `transitions.mp3` beim Wegwischen
 - **Übergang:** Slide. Icon und Schriftzug gleiten hinaus, die Oberkante eines Monitors gleitet unter die Insel.
 
-### 04 · `04-oben-im-vordergrund` · 00:20.2–00:29.0 · 527 Frames (60 fps)
+### 04 · `04-oben-im-vordergrund` · 00:21.6–00:30.3 · 526 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Die Insel schwebt klein oben auf deinem Bildschirm und bleibt immer im Vordergrund, auch über anderen Fenstern. Und Mini-Claude schaut deiner Maus hinterher.“
 - **Bild:** Ausschnitt eines Monitors mit sichtbarer, abgerundeter Oberkante (dünne Linie #A99C90) und dunklem Desktop. Die Insel schwebt rahmenlos oben mittig.
 - **Bewegung:**
@@ -94,7 +94,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `transitions.mp3` leise, wenn das Fenster unter der Insel durchgleitet
 - **Übergang:** Zoom (Push-in auf die Pille)
 
-### 05 · `05-ein-blick` · 00:29.0–00:37.3 · 495 Frames (60 fps)
+### 05 · `05-ein-blick` · 00:30.3–00:38.1 · 469 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Ein Blick genügt: Farbe und Text zeigen die Stimmung, darunter steht die dringendste Sitzung, und rechts siehst du, wie viele Sitzungen offen sind.“
 - **Bild:** Nahaufnahme der Pille, ca. 1000 px breit. Weil das über 1,4× liegt, wird sie nach `pill-*.png` und BRAND.md scharf nachgebaut (232×48, Radius 24, hochskaliert).
 - **Bewegung:**
@@ -109,7 +109,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Zoomin-OR-out.mp3` beim Push-in
 - **Übergang:** Transform. Die Callouts blenden aus, die Pille bleibt stehen, und von unten gleiten Sitzungs-Chips ein.
 
-### 06 · `06-mehrere-sitzungen` · 00:37.3–00:45.2 · 473 Frames (60 fps)
+### 06 · `06-mehrere-sitzungen` · 00:38.1–00:46.0 · 475 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Mehrere Sitzungen gleichzeitig? Kein Problem. Die Insel sortiert sie nach Dringlichkeit und zeigt dir immer die dringendste zuerst.“
 - **Bild:** Unter der Pille liegen drei Sitzungs-Chips: „api“ (blau, Arbeitet), „docs“ (grün, Fertig) und „portfolio“ (gelb, Wartet auf dich). **Das ist eine Visualisierung, kein echter App-Bildschirm.** In der App sitzen die Chips im aufgeklappten Panel. Der Look ist der des Chips „● portfolio“ aus den Panel-Screenshots, ohne Fensterrahmen und ohne Panel drumherum.
 - **Bewegung:**
@@ -121,7 +121,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Pop.mp3`, wenn der gelbe Chip in der Pille einrastet
 - **Übergang:** Transform. Die Pille bleibt stehen und geht nahtlos in Szene 07 über.
 
-### 07 · `07-freigabe-klappt-auf` · 00:45.2–00:54.3 · 548 Frames (60 fps)
+### 07 · `07-freigabe-klappt-auf` · 00:46.0–00:54.9 · 533 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Braucht Claude deine Freigabe, zum Beispiel für einen Befehl, klappt die Insel von selbst auf. Ohne dir den Fokus zu stehlen: Du tippst einfach weiter.“
 - **Bild:** Im Hintergrund ein Editor, in dem weiter getippt wird, mit durchgehend blinkendem Text-Cursor. Oben die gelbe Pille im Modus „Nur Kopf“.
 - **Bewegung:**
@@ -138,7 +138,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Notification.mp3` beim Aufklappen (steht für den Freigabe-Ton der App), `Pop.mp3` beim Hopser
 - **Übergang:** Zoom auf die Freigabe-Karte
 
-### 08 · `08-freigeben` · 00:54.3–01:02.9 · 517 Frames (60 fps)
+### 08 · `08-freigeben` · 00:54.9–01:03.3 · 500 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Du siehst genau, was Claude ausführen will, und entscheidest direkt hier: freigeben oder ablehnen. Ein Klick genügt, ohne Fensterwechsel.“
 - **Bild:** Nahaufnahme der Freigabe-Karte mit dem Tag „Freigabe“ und „Bash“, darunter „Seite bauen und veröffentlichen“, `npm run build && npm run deploy` und die Knöpfe „Ablehnen“ und „Freigeben“. Der Ausschnitt ist höchstens 1,4× vergrößert.
 - **Bewegung:**
@@ -150,7 +150,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Click.mp3` beim Klick auf „Freigeben“
 - **Übergang:** Transform im Panel. Die Stimmung kippt auf Hängt fest (rot), und Mini-Claude beginnt zu zittern.
 
-### 09 · `09-haengt-fest` · 01:02.9–01:12.3 · 563 Frames (60 fps)
+### 09 · `09-haengt-fest` · 01:03.3–01:12.8 · 574 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Hängt Claude fest, etwa wegen eines Fehlers, zeigt die Insel das sofort. Gib Claude einen Hinweis, wie es weitergehen soll, oder versuch es einfach erneut.“
 - **Bild:** Das Panel im Zustand Hängt fest: der Tag „Problem“ mit „API-Fehler: rate_limit“, die Fehlermeldung, das Hinweisfeld und die Knöpfe „Erneut versuchen“ und „Hinweis geben“.
 - **Bewegung:**
@@ -163,7 +163,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Typing.mp3` (auf ca. 1,2 s gekürzt), `Click.mp3` beim Klick auf „Hinweis geben“
 - **Übergang:** Transform im Panel, weiter im Zustand Arbeitet
 
-### 10 · `10-live-und-fertig` · 01:12.3–01:20.5 · 489 Frames (60 fps)
+### 10 · `10-live-und-fertig` · 01:12.8–01:20.5 · 459 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Während Claude arbeitet, siehst du live jeden Schritt. Ist Claude fertig, liest du die letzte Antwort und schickst gleich die nächste Anweisung.“
 - **Bild:** Das Panel im Zustand Arbeitet mit dem Prompt „Baue die Kontaktseite mit Formular und Validier…“ und den Werkzeugschritten darunter.
 - **Bewegung:**
@@ -175,7 +175,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Correct.mp3` (auf ca. 1 s gekürzt) beim Wechsel auf Fertig, `Click.mp3` bei „Senden“
 - **Übergang:** Slide. Die Kamera schwenkt nach unten auf die Leiste mit Modell und Aufwand.
 
-### 11 · `11-modell-aufwand` · 01:20.5–01:30.2 · 582 Frames (60 fps)
+### 11 · `11-modell-aufwand` · 01:20.5–01:29.8 · 559 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Unten wählst du für jede Sitzung das Modell, also Opus, Sonnet oder Haiku, und den Aufwand von Niedrig bis Max. Das gilt ab dem nächsten Modellaufruf.“
 - **Bild:** Die Leiste nach `panel-models.png`, groß und scharf nachgebaut. Im Hochformat ist sie zweizeilig: oben „MODELL Opus · Sonnet · Haiku“, darunter „AUFWAND Niedrig · Mittel · Hoch · Sehr hoch · Max“. Darüber steht der Sitzungs-Chip „● portfolio“.
 - **Bewegung:**
@@ -187,7 +187,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Click.mp3` bei jedem der beiden Klicks
 - **Übergang:** Transform. Die Leiste fällt weg, und Mini-Claude hüpft groß in die Bildmitte.
 
-### 12 · `12-mini-claude` · 01:30.2–01:41.0 · 651 Frames (60 fps)
+### 12 · `12-mini-claude` · 01:29.8–01:39.5 · 583 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Und Mini-Claude fiebert mit: Er schläft, wenn nichts los ist, tippt, während Claude arbeitet, winkt, wenn er dich braucht, zittert bei Problemen und jubelt, wenn alles fertig ist.“
 - **Bild:** Mini-Claude groß in der Bildmitte (2×, scharfe Pixel), darunter ein weicher Schatten, über dem Kopf der Status-Pixel. Unten fünf Stimmungs-Chips (3 + 2).
 - **Bewegung:**
@@ -205,7 +205,7 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `energy.MP3` beim Jubel-Hopser am Ende
 - **Übergang:** Transform. Mini-Claude hüpft zurück auf die Bühne des Fertig-Panels, die Chips blenden aus.
 
-### 13 · `13-lokal-kostenlos` · 01:41.0–01:47.8 · 408 Frames (60 fps)
+### 13 · `13-lokal-kostenlos` · 01:39.5–01:46.7 · 428 Frames (60 fps)
 **VO (Stimme + Untertitel):** „Claude Island ist kostenlos, und der Quellcode liegt offen auf GitHub. Die Insel läuft lokal auf deinem PC.“
 - **Bild:** Die linke Bühne aus `panel-done.png` als hochformatige Karte, höchstens 1,4× (ca. 550×870 px): Mini-Claude jubelt, darunter „Fertig“ und „portfolio“ (zweizeilig wie im Screenshot), und unten die echten Statuszeilen „● Server :47821“ und „● Mod verbunden“.
 - **Bewegung:**
@@ -220,8 +220,8 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `Pop.mp3` bei jedem Badge (3×), `Zoomin-OR-out.mp3` beim Push-in
 - **Übergang:** Slide. Alles gleitet nach oben aus dem Bild, und die Endkarte kommt von unten.
 
-### 14 · `14-cta-loop` · 01:47.8–02:07.4 · 1174 Frames (60 fps)
-Die Stimme endet ca. bei 02:04.7. Danach stehen Endkarte und Loop-Übergang noch ca. 2,7 s.
+### 14 · `14-cta-loop` · 01:46.7–02:06.6 · 1195 Frames (60 fps)
+Die Stimme endet ca. bei 02:03.9. Danach stehen Endkarte und Loop-Übergang noch ca. 2,7 s.
 
 **VO (Stimme + Untertitel):** „So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub herunter und klicke doppelt darauf. Warnt Windows davor, klickst du auf Weitere Informationen und dann auf Trotzdem ausführen. In der Insel klickst du auf Plugin aktivieren. Dann startest du die Claude-App neu. Fertig!“
 - **Bild:** Endkarte auf #15110E:
