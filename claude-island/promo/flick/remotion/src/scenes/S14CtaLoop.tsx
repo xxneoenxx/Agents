@@ -17,6 +17,8 @@ const ID = '14-cta-loop';
 const STEPS = ['1 · Setup.exe doppelklicken', '2 · ‚Plugin aktivieren‘ klicken', '3 · Claude-App neu starten'];
 // Die Setup-Datei ist nicht signiert: SmartScreen warnt beim ersten Start.
 const WARN = ['Windows warnt?', 'Weitere Informationen', 'Trotzdem ausführen'];
+// Klickpunkt auf dem Download-Knopf (Knopf im Bild ca. x 222–857, y 651–768).
+const BTN = {x: 600, y: 722};
 
 // Endkarte mit Download, Link, drei Schritten und dem Hinweis zur Windows-Warnung. Danach kippt die Kamera hoch zur
 // wartenden Insel, Mini-Claude springt heraus und landet exakt im ersten Bild von 01.
@@ -54,8 +56,8 @@ export const S14CtaLoop: React.FC = () => {
 
   const card: React.CSSProperties = {position: 'absolute', inset: 0, transform: `translateY(${tilt * 1900}px)`};
   const cursorOn = interpolate(f, [T.at('github'), T.at('github') + 8], [0, 1], clamp) * tween(f, clickAt + 16, clickAt + 28, 1, 0);
-  const cx = interpolate(f, [T.at('github'), clickAt - 3], [960, 640], {...clamp, easing: Easing.inOut(Easing.cubic)});
-  const cy = interpolate(f, [T.at('github'), clickAt - 3], [1250, 880], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const cx = interpolate(f, [T.at('github'), clickAt - 3], [960, BTN.x], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const cy = interpolate(f, [T.at('github'), clickAt - 3], [1250, BTN.y], {...clamp, easing: Easing.inOut(Easing.cubic)});
 
   return (
     <Backdrop glow={{x: 540, y: 560, strength: 1 - tilt}}>
@@ -100,7 +102,7 @@ export const S14CtaLoop: React.FC = () => {
             ))}
           </div>
         </div>
-        <ClickRing x={640} y={880} progress={interpolate(f, [clickAt, clickAt + 18], [0, 1], clamp)} color={C.text} />
+        <ClickRing x={BTN.x} y={BTN.y} progress={interpolate(f, [clickAt, clickAt + 18], [0, 1], clamp)} color={C.text} />
         <Cursor x={cx} y={cy} pressed={press} opacity={cursorOn} size={52} />
         <div style={{position: 'absolute', left: 0, right: 0, top: 1528, textAlign: 'center', fontFamily: FONT.sans, fontWeight: 500, fontSize: 30, color: C.muted}}>
           Inoffizielles Community-Tool, nicht von Anthropic.

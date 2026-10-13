@@ -11,6 +11,7 @@ import {timing} from '../lib/timing';
 import {Backdrop} from '../lib/ui';
 import {Voice, sfxVolume} from '../lib/Voice';
 import {Overlay, btn, center} from './panel.parts';
+import {HEAD_SUMMARY} from './S07FreigabeKlapptAuf';
 
 const ID = '08-freigeben';
 
@@ -44,7 +45,7 @@ export const S08Freigeben: React.FC = () => {
 
   const shot = (variant: 'approval' | 'working' | 'problem', opacity: number) => (
     <div style={{position: 'absolute', left: pl, top: pt, opacity}}>
-      <PanelShot variant={variant} width={pw}>
+      <PanelShot variant={variant} width={pw} summary={variant === 'approval' ? HEAD_SUMMARY : undefined}>
         {variant === 'approval' ? (
           <>
             <Overlay box={btn('approval', 'deny')} width={pw} color="#F6EFE8" opacity={0.1 * hoverDeny} />

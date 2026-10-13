@@ -91,11 +91,13 @@ export const S06MehrereSitzungen: React.FC = () => {
   const landed = f >= flyAt + 16;
   const snap = interpolate(f, [flyAt + 16, flyAt + 20, flyAt + 30], [1, 1.07, 1], clamp);
   const othersOut = tween(f, flyAt + 10, flyAt + 30, 1, 0);
+  // Zähler zählt mit, sobald die Sitzungen erscheinen (1 → 2 → 3).
+  const count = Math.max(1, CHIPS.filter((_, i) => f >= T.w(0) - 10 + i * 7 + 6).length);
 
   return (
     <Backdrop glow={{x: ISLAND.cx, y: cy, strength: 0.7}}>
       <div style={{position: 'absolute', left: pillLeft, top: pillTop, transformOrigin: '50% 50%', transform: `scale(${snap})`}}>
-        <Pill mood="waiting" name="portfolio" count={landed ? 3 : 1} scale={scale} />
+        <Pill mood="waiting" name="portfolio" count={count} scale={scale} />
       </div>
 
       {CHIPS.map((c, i) => {

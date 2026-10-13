@@ -14,6 +14,8 @@ import {Voice, sfxVolume} from '../lib/Voice';
 import {CARD_BG} from './panel.parts';
 
 const ID = '07-freigabe-klappt-auf';
+// Kopfzeile passend zu den drei Sitzungen aus 06 (api arbeitet, docs fertig, portfolio wartet), Format wie in app.js.
+export const HEAD_SUMMARY = {count: 3, parts: ['1 wartet', '1 arbeitet', '1 fertig']};
 
 // SIGNATURE: Freigabe → die Pille klappt von selbst zum Panel auf, und aus dem Kopf
 // wachsen erst die Arme, dann die Beine – der ganze Mini-Claude hüpft und winkt.
@@ -79,6 +81,7 @@ export const S07FreigabeKlapptAuf: React.FC = () => {
         <div style={{position: 'absolute', left: 0, top: 0, opacity: panelFade}}>
           <PanelShot
             variant="approval"
+            summary={HEAD_SUMMARY}
             width={zoom > 0 ? pw : Math.max(Wd, 10)}
             mascot={
               <div style={{transform: `translateY(${hop * mb.size}px)`}}>

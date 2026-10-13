@@ -6,8 +6,12 @@ export type SoundName =
   | 'Click.mp3' | 'Correct.mp3' | 'Impact.mp3' | 'Notification.mp3' | 'Pop.mp3' | 'Popups.mp3' | 'Suspense.mp3'
   | 'Typing.mp3' | 'Zoomin-OR-out.mp3' | 'aha-moment.MP3' | 'energy.MP3' | 'riser.mp3' | 'transitions.mp3';
 
+// Einige Dateien beginnen mit Stille (gemessen: Einsatz ca. 30 dB unter der Spitze, in Frames bei
+// 60 fps). Die wird übersprungen, damit der Klang genau auf dem Bild-Ereignis einsetzt.
+const LEAD: Partial<Record<SoundName, number>> = {'Pop.mp3': 17, 'Typing.mp3': 25, 'Correct.mp3': 62, 'Notification.mp3': 65};
+
 export const Sfx: React.FC<{at: number; src: SoundName; volume?: number; durationInFrames?: number}> = ({at, src, volume = 0.7, durationInFrames}) => (
   <Sequence from={Math.round(at)} durationInFrames={durationInFrames} layout="none">
-    <Audio src={staticFile(`sounds/${src}`)} volume={volume} />
+    <Audio src={staticFile(`sounds/${src}`)} volume={volume} trimBefore={LEAD[src]} />
   </Sequence>
 );
