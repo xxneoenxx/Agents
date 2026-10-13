@@ -1,7 +1,7 @@
 # Flick-Plan: Claude Island – „Ein Blick statt Alt-Tab“ (freigegeben)
 
 ## Format
-9:16 · 1080×1920 · **60 fps** · 14 Szenen · 7184 Frames (119,7 s). Freigegeben durch die Wahl des Nutzers (Hochformat, Sprechertext als Stimme und Text im Bild).
+9:16 · 1080×1920 · **60 fps** · 14 Szenen · 7573 Frames (126,2 s). Freigegeben durch die Wahl des Nutzers (Hochformat, Sprechertext als Stimme und Text im Bild).
 
 ## Sprecherstimme und Untertitel
 Jede Szene hat eine deutsche Sprecherstimme (SVOX Pico, offline). Sie erklärt alles, was im Bild passiert.
@@ -205,36 +205,36 @@ Mini-Claude wird als Pixel-Nachbau der App (gleiche Geometrie und Stimmungs-Keyf
 - **SFX:** `energy.MP3` beim Jubel-Hopser am Ende
 - **Übergang:** Transform. Mini-Claude hüpft zurück auf die Bühne des Fertig-Panels, die Chips blenden aus.
 
-### 13 · `13-lokal-kostenlos` · 01:40.7–01:46.1 · 325 Frames (60 fps)
-**VO (Stimme + Untertitel):** „Claude Island ist kostenlos und Open Source. Die Insel läuft lokal auf deinem PC.“
+### 13 · `13-lokal-kostenlos` · 01:40.7–01:47.5 · 408 Frames (60 fps)
+**VO (Stimme + Untertitel):** „Claude Island ist kostenlos, und der Quellcode liegt offen auf GitHub. Die Insel läuft lokal auf deinem PC.“
 - **Bild:** Die linke Bühne aus `panel-done.png` als hochformatige Karte, höchstens 1,4× (ca. 550×870 px): Mini-Claude jubelt, darunter „Fertig“ und „portfolio“ (zweizeilig wie im Screenshot), und unten die echten Statuszeilen „● Server :47821“ und „● Mod verbunden“.
 - **Bewegung:**
   1. „Kostenlos“: Das Badge „Kostenlos“ ploppt über der Karte auf.
-  2. „Open Source“: Das Badge „Open Source · MIT“ ploppt auf.
+  2. „Quellcode“: Das Badge „Quellcode auf GitHub“ ploppt auf.
   3. „Die Insel läuft lokal“: Push-in auf die echten Statuszeilen. Ab 1,4× wird nahtlos in einen scharfen Nachbau überblendet (IBM Plex Mono, Punkte in #7ED6A8), der groß genug zum Lesen ist.
   4. „auf deinem PC“: Daneben tippt sich `127.0.0.1:47821` ein, und das Badge „läuft lokal“ ploppt auf. Keine Wolke und keine Pfeile nach draußen zeigen.
 - **Text im Bild:**
-  - „Kostenlos“ · „Open Source · MIT“ · „läuft lokal“ · „127.0.0.1:47821“
+  - „Kostenlos“ · „Quellcode auf GitHub“ · „läuft lokal“ · „127.0.0.1:47821“
   - Fußzeile klein in #A99C90, ab Szenenbeginn sichtbar: „Inoffizielles Community-Tool · nicht von Anthropic“
 - **Assets:** `panel-done.png` (Ausschnitt der Bühne links). Dieselben Statuszeilen stehen auch in den anderen Panel-Screenshots (nicht in `panel-models.png`).
 - **SFX:** `Pop.mp3` bei jedem Badge (3×), `Zoomin-OR-out.mp3` beim Push-in
 - **Übergang:** Slide. Alles gleitet nach oben aus dem Bild, und die Endkarte kommt von unten.
 
-### 14 · `14-cta-loop` · 01:46.1–01:59.7 · 817 Frames (60 fps)
-Die Stimme endet ca. bei 01:57.0. Danach stehen Endkarte und Loop-Übergang noch ca. 2,7 s.
+### 14 · `14-cta-loop` · 01:47.5–02:06.2 · 1123 Frames (60 fps)
+Die Stimme endet ca. bei 02:03.5. Danach stehen Endkarte und Loop-Übergang noch ca. 2,7 s.
 
-**VO (Stimme + Untertitel):** „So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub und klicke doppelt darauf. Dann klickst du in der Insel auf Plugin aktivieren und startest die Claude-App neu. Fertig!“
+**VO (Stimme + Untertitel):** „So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub und klicke doppelt darauf. Warnt Windows davor, klickst du auf Weitere Informationen und dann auf Trotzdem ausführen. In der Insel klickst du auf Plugin aktivieren und startest die Claude-App neu. Fertig!“
 - **Bild:** Endkarte auf #15110E:
-  - oben das App-Icon, darunter groß „Claude Island“ und die Zeile „für Windows · kostenlos · Open Source“
+  - oben das App-Icon, darunter groß „Claude Island“ und die Zeile „für Windows · kostenlos · Quellcode auf GitHub“
   - darunter ein Download-Knopf, der Link und drei Schritte
   - ganz unten, oberhalb der Safe Zone, das Kleingedruckte (ab Szenenbeginn sichtbar)
 - **Bewegung:**
   1. „Claude Island für Windows“ (ca. 00:47.7–00:49.3): Icon und Schriftzug federn ein, die Unterzeile folgt.
   2. „Hol sie dir jetzt auf GitHub“ (ab ca. 00:49.6): Der Knopf „Setup.exe herunterladen“ (#FF9A62) mit der Unterzeile „ohne Admin-Rechte“ erscheint, bei ca. 00:49.9 darunter `github.com/xxneoenxx/Agents`. Bei ca. 00:50.1 klickt der Zeiger auf den Knopf, der sich eindrückt.
-  3. Die drei Schritte erscheinen bei ca. 00:50.2, 00:50.5 und 00:50.8 nacheinander: „1 · Setup.exe doppelklicken“, „2 · ‚Plugin aktivieren‘ klicken“, „3 · Claude-App neu starten“. Danach steht alles ruhig bis ca. 00:53.3 (ca. 2,5 s ab dem letzten Schritt).
+  3. Die drei Schritte erscheinen bei ca. 00:50.2, 00:50.5 und 00:50.8 nacheinander: „1 · Setup.exe doppelklicken“ (darunter klein: „Windows warnt? Weitere Informationen › Trotzdem ausführen“, denn die Datei ist nicht signiert), „2 · ‚Plugin aktivieren‘ klicken“, „3 · Claude-App neu starten“. Danach steht alles ruhig bis ca. 00:53.3 (ca. 2,5 s ab dem letzten Schritt).
   4. Ab ca. 00:53.3 (ca. 1,4 s nach dem letzten gesprochenen Wort) kippt die Kamera nach oben, und alles rutscht nach unten aus dem Bild. Oben mittig leuchtet die Insel gelb (`pill-waiting.png`).
   5. Push-in auf den Kopf. Der ganze wartende Mini-Claude springt heraus (kurz `grow-1` bis `grow-4`, dann `mascot-waiting.png`) und landet **exakt** in Größe und Position des ersten Bilds von Szene 01.
-- **Text im Bild:** „Claude Island“, „für Windows · kostenlos · Open Source“, „Setup.exe herunterladen“, „ohne Admin-Rechte“, „github.com/xxneoenxx/Agents“, die drei Schritte. Klein, ab Szenenbeginn: „Inoffizielles Community-Tool, nicht von Anthropic.“
+- **Text im Bild:** „Claude Island“, „für Windows · kostenlos · Quellcode auf GitHub“, „Setup.exe herunterladen“, „ohne Admin-Rechte“, „github.com/xxneoenxx/Agents“, die drei Schritte. Klein, ab Szenenbeginn: „Inoffizielles Community-Tool, nicht von Anthropic.“
 - **Assets:** `icon.png`, `pill-waiting.png`, `grow-1.png` bis `grow-4.png`, `mascot-waiting.png`
 - **SFX:** `Click.mp3` beim Klick auf den Knopf, `Zoomin-OR-out.mp3` beim Push-in, `Pop.mp3` bei der Landung
 - **Übergang:** Match-Cut auf das erste Bild von `01-hook-alt-tab` (Loop). Kein Fade-out und kein Schwarzbild.

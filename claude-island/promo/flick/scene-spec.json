@@ -2,7 +2,7 @@
   "width": 1080,
   "height": 1920,
   "fps": 60,
-  "durationInFrames": 7184,
+  "durationInFrames": 7573,
   "scenes": [
     {
       "id": "01-hook-alt-tab",
@@ -245,11 +245,11 @@
     {
       "id": "13-lokal-kostenlos",
       "name": "13-lokal-kostenlos",
-      "transcript": "Claude Island ist kostenlos und Open Source. Die Insel läuft lokal auf deinem PC.",
+      "transcript": "Claude Island ist kostenlos, und der Quellcode liegt offen auf GitHub. Die Insel läuft lokal auf deinem PC.",
       "startMs": 100700,
-      "endMs": 106117,
+      "endMs": 107500,
       "from": 6042,
-      "durationInFrames": 325,
+      "durationInFrames": 408,
       "componentName": "S13LokalKostenlos",
       "assets": [
         "panel-done-empty.png"
@@ -265,11 +265,11 @@
     {
       "id": "14-cta-loop",
       "name": "14-cta-loop",
-      "transcript": "So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub und klicke doppelt darauf. Dann klickst du in der Insel auf Plugin aktivieren und startest die Claude-App neu. Fertig!",
-      "startMs": 106117,
-      "endMs": 119733,
-      "from": 6367,
-      "durationInFrames": 817,
+      "transcript": "So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub und klicke doppelt darauf. Warnt Windows davor, klickst du auf Weitere Informationen und dann auf Trotzdem ausführen. In der Insel klickst du auf Plugin aktivieren und startest die Claude-App neu. Fertig!",
+      "startMs": 107500,
+      "endMs": 126217,
+      "from": 6450,
+      "durationInFrames": 1123,
       "componentName": "S14CtaLoop",
       "assets": [
         "icon.png",

@@ -14,7 +14,7 @@ import {StageCard, stageMascot} from './S12MiniClaude';
 
 const ID = '13-lokal-kostenlos';
 
-// Bühnenkarte (Fertig): Badges „Kostenlos“ und „Open Source · MIT“, dann Push-in auf die
+// Bühnenkarte (Fertig): Badges „Kostenlos“ und „Quellcode auf GitHub“, dann Push-in auf die
 // echten Statuszeilen und 127.0.0.1:47821 – die Insel läuft lokal.
 export const S13LokalKostenlos: React.FC = () => {
   const f = useCurrentFrame();
@@ -35,7 +35,7 @@ export const S13LokalKostenlos: React.FC = () => {
   const out = tween(f, D - 22, D, 0, 1, Easing.in(Easing.cubic));
 
   const b1 = pop(f, T.at('kostenlos') - 6);
-  const b2 = pop(f, T.at('open') - 6);
+  const b2 = pop(f, T.at('quellcode') - 6);
   const b3 = pop(f, T.at('pc') - 4);
   const typeAt = T.at('lokal') - 4;
   const m = stageMascot();
@@ -65,7 +65,7 @@ export const S13LokalKostenlos: React.FC = () => {
             <Badge label="Kostenlos" color={C.accent} size={44} />
           </div>
           <div style={{transform: `scale(${b2})`, opacity: Math.min(1, b2 * 2)}}>
-            <Badge label="Open Source · MIT" color={MOOD_COLOR.working} size={44} />
+            <Badge label="Quellcode auf GitHub" color={MOOD_COLOR.working} size={44} />
           </div>
         </div>
 
@@ -87,7 +87,7 @@ export const S13LokalKostenlos: React.FC = () => {
       <Caption text={T.text} times={T.words} highlight={['Kostenlos', 'lokal']} y={1400} size={60} outAt={D - 16} />
       <Voice id={ID} />
       <Sfx at={T.at('kostenlos') - 6} src="Pop.mp3" volume={sfxVolume(ID, T.at('kostenlos') - 6, 0.7)} />
-      <Sfx at={T.at('open') - 6} src="Pop.mp3" volume={sfxVolume(ID, T.at('open') - 6, 0.7)} />
+      <Sfx at={T.at('quellcode') - 6} src="Pop.mp3" volume={sfxVolume(ID, T.at('quellcode') - 6, 0.7)} />
       <Sfx at={T.at('läuft') - 10} src="Zoomin-OR-out.mp3" volume={sfxVolume(ID, T.at('läuft') - 10, 0.6)} />
       <Sfx at={T.at('pc') - 4} src="Pop.mp3" volume={sfxVolume(ID, T.at('pc') - 4, 0.7)} />
       <Sfx at={D - 22} src="transitions.mp3" volume={sfxVolume(ID, D - 22, 0.6)} />

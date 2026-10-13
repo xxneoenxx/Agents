@@ -42,7 +42,7 @@ Die Zeitmarken rechnen mit ca. 2,5 Wörtern/s plus kurzer Atempause und werden *
 | 10 | `10-live-und-fertig` | 00:30.8–00:35.7 | 147 | Sieh live, woran Claude arbeitet. Fertig? Schick gleich die nächste Anweisung. |
 | 11 | `11-modell-aufwand` | 00:35.7–00:39.2 | 105 | Modell und Aufwand stellst du pro Sitzung um. |
 | 12 | `12-mini-claude` | 00:39.2–00:43.3 | 123 | Und Mini-Claude fiebert mit: schläft, tippt, winkt, zittert, jubelt. |
-| 13 | `13-lokal-kostenlos` | 00:43.3–00:47.6 | 129 | Kostenlos, Open Source. Die Insel läuft lokal auf deinem PC. |
+| 13 | `13-lokal-kostenlos` | 00:43.3–00:47.6 | 129 | Kostenlos, Quellcode auf GitHub. Die Insel läuft lokal auf deinem PC. |
 | 14 | `14-cta-loop` | 00:47.6–00:54.6 | 210 | Claude Island für Windows. Hol sie dir jetzt auf GitHub. |
 
 **Der ganze Text zum Einsprechen:**
@@ -53,7 +53,7 @@ Die Zeitmarken rechnen mit ca. 2,5 Wörtern/s plus kurzer Atempause und werden *
 > Braucht Claude eine Freigabe, klappt die Insel von selbst auf. Freigeben oder ablehnen. Direkt hier, ohne Fensterwechsel.
 > Hängt Claude fest? Gib einen Hinweis oder versuch es erneut. Sieh live, woran Claude arbeitet. Fertig? Schick gleich die nächste Anweisung.
 > Modell und Aufwand stellst du pro Sitzung um. Und Mini-Claude fiebert mit: schläft, tippt, winkt, zittert, jubelt.
-> Kostenlos, Open Source. Die Insel läuft lokal auf deinem PC. Claude Island für Windows. Hol sie dir jetzt auf GitHub.
+> Kostenlos, Quellcode auf GitHub. Die Insel läuft lokal auf deinem PC. Claude Island für Windows. Hol sie dir jetzt auf GitHub.
 
 **Betonung:**
 - „Alt-Tab“ kurz und genervt.
@@ -66,7 +66,7 @@ Die Zeitmarken rechnen mit ca. 2,5 Wörtern/s plus kurzer Atempause und werden *
 
 Das MP4 `claude-island-promo-1080x1920-60fps.mp4` ist die **Langfassung**. Eine deutsche Sprecherstimme erklärt darin alles, was im Bild passiert, und der gesprochene Text läuft als Untertitel mit.
 - **Stimme:** SVOX Pico, offline
-- **Format:** 1080×1920 bei 60 fps, 7184 Frames (119,7 s)
+- **Format:** 1080×1920 bei 60 fps, 7573 Frames (126,2 s)
 - **Quelle der Texte:** `flick/tools/script.py`
 
 Die Szenen-Regie aus Abschnitt C gilt weiter. Die Bild-Beats hängen an den gesprochenen Wörtern.
@@ -85,8 +85,8 @@ Die Szenen-Regie aus Abschnitt C gilt weiter. Die Bild-Beats hängen an den gesp
 | 10 | `10-live-und-fertig` | 01:12.3–01:20.5 | 489 | Während Claude arbeitet, siehst du live jeden Schritt. Ist Claude fertig, liest du die letzte Antwort und schickst gleich die nächste Anweisung. |
 | 11 | `11-modell-aufwand` | 01:20.5–01:29.8 | 564 | Unten wählst du für jede Sitzung das Modell, also Opus, Sonnet oder Haiku, und den Aufwand von Niedrig bis Max. Das gilt ab dem nächsten Modellaufruf. |
 | 12 | `12-mini-claude` | 01:29.8–01:40.7 | 651 | Und Mini-Claude fiebert mit: Er schläft, wenn nichts los ist, tippt, während Claude arbeitet, winkt, wenn er dich braucht, zittert bei Problemen und jubelt, wenn alles fertig ist. |
-| 13 | `13-lokal-kostenlos` | 01:40.7–01:46.1 | 325 | Claude Island ist kostenlos und Open Source. Die Insel läuft lokal auf deinem PC. |
-| 14 | `14-cta-loop` | 01:46.1–01:59.7 | 817 | So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub und klicke doppelt darauf. Dann klickst du in der Insel auf Plugin aktivieren und startest die Claude-App neu. Fertig! |
+| 13 | `13-lokal-kostenlos` | 01:40.7–01:47.5 | 408 | Claude Island ist kostenlos, und der Quellcode liegt offen auf GitHub. Die Insel läuft lokal auf deinem PC. |
+| 14 | `14-cta-loop` | 01:47.5–02:06.2 | 1123 | So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub und klicke doppelt darauf. Warnt Windows davor, klickst du auf Weitere Informationen und dann auf Trotzdem ausführen. In der Insel klickst du auf Plugin aktivieren und startest die Claude-App neu. Fertig! |
 
 Für die Sprachsynthese werden englische Wörter in Lautschrift geschrieben, etwa „Klohd“ für „Claude“ oder „Gitt-Habb“ für „GitHub“. Die Untertitel zeigen die richtige Schreibweise.
 
@@ -280,15 +280,15 @@ Für die Sprachsynthese werden englische Wörter in Lautschrift geschrieben, etw
 - **Übergang:** Transform. Mini-Claude hüpft zurück auf die Bühne des Fertig-Panels, die Chips blenden aus.
 
 ### 13 · `13-lokal-kostenlos` · 00:43.3–00:47.6 · 129 Frames
-**VO:** „Kostenlos, Open Source. Die Insel läuft lokal auf deinem PC.“
+**VO:** „Kostenlos, Quellcode auf GitHub. Die Insel läuft lokal auf deinem PC.“
 - **Bild:** Die linke Bühne aus `panel-done.png` als hochformatige Karte, höchstens 1,4× (ca. 550×870 px): Mini-Claude jubelt, darunter „Fertig“ und „portfolio“ (zweizeilig wie im Screenshot), und unten die echten Statuszeilen „● Server :47821“ und „● Mod verbunden“.
 - **Bewegung:**
   1. „Kostenlos“: Das Badge „Kostenlos“ ploppt über der Karte auf.
-  2. „Open Source“: Das Badge „Open Source · MIT“ ploppt auf.
+  2. „Quellcode“: Das Badge „Quellcode auf GitHub“ ploppt auf.
   3. „Die Insel läuft lokal“: Push-in auf die echten Statuszeilen. Ab 1,4× wird nahtlos in einen scharfen Nachbau überblendet (IBM Plex Mono, Punkte in #7ED6A8), der groß genug zum Lesen ist.
   4. „auf deinem PC“: Daneben tippt sich `127.0.0.1:47821` ein, und das Badge „läuft lokal“ ploppt auf. Keine Wolke und keine Pfeile nach draußen zeigen.
 - **Text im Bild:**
-  - „Kostenlos“ · „Open Source · MIT“ · „läuft lokal“ · „127.0.0.1:47821“
+  - „Kostenlos“ · „Quellcode auf GitHub“ · „läuft lokal“ · „127.0.0.1:47821“
   - Fußzeile klein in #A99C90, ab Szenenbeginn sichtbar: „Inoffizielles Community-Tool · nicht von Anthropic“
 - **Assets:** `panel-done.png` (Ausschnitt der Bühne links). Dieselben Statuszeilen stehen auch in den anderen Panel-Screenshots (nicht in `panel-models.png`).
 - **SFX:** `Pop.mp3` bei jedem Badge (3×), `Zoomin-OR-out.mp3` beim Push-in
@@ -299,16 +299,16 @@ Der Sprechertext endet ca. bei 00:51.9. Danach steht die Endkarte noch ca. 1,4 s
 
 **VO:** „Claude Island für Windows. Hol sie dir jetzt auf GitHub.“
 - **Bild:** Endkarte auf #15110E:
-  - oben das App-Icon, darunter groß „Claude Island“ und die Zeile „für Windows · kostenlos · Open Source“
+  - oben das App-Icon, darunter groß „Claude Island“ und die Zeile „für Windows · kostenlos · Quellcode auf GitHub“
   - darunter ein Download-Knopf, der Link und drei Schritte
   - ganz unten, oberhalb der Safe Zone, das Kleingedruckte (ab Szenenbeginn sichtbar)
 - **Bewegung:**
   1. „Claude Island für Windows“ (ca. 00:47.7–00:49.3): Icon und Schriftzug federn ein, die Unterzeile folgt.
   2. „Hol sie dir jetzt auf GitHub“ (ab ca. 00:49.6): Der Knopf „Setup.exe herunterladen“ (#FF9A62) mit der Unterzeile „ohne Admin-Rechte“ erscheint, bei ca. 00:49.9 darunter `github.com/xxneoenxx/Agents`. Bei ca. 00:50.1 klickt der Zeiger auf den Knopf, der sich eindrückt.
-  3. Die drei Schritte erscheinen bei ca. 00:50.2, 00:50.5 und 00:50.8 nacheinander: „1 · Setup.exe doppelklicken“, „2 · ‚Plugin aktivieren‘ klicken“, „3 · Claude-App neu starten“. Danach steht alles ruhig bis ca. 00:53.3 (ca. 2,5 s ab dem letzten Schritt).
+  3. Die drei Schritte erscheinen bei ca. 00:50.2, 00:50.5 und 00:50.8 nacheinander: „1 · Setup.exe doppelklicken“ (darunter klein: „Windows warnt? Weitere Informationen › Trotzdem ausführen“, denn die Datei ist nicht signiert), „2 · ‚Plugin aktivieren‘ klicken“, „3 · Claude-App neu starten“. Danach steht alles ruhig bis ca. 00:53.3 (ca. 2,5 s ab dem letzten Schritt).
   4. Ab ca. 00:53.3 (ca. 1,4 s nach dem letzten gesprochenen Wort) kippt die Kamera nach oben, und alles rutscht nach unten aus dem Bild. Oben mittig leuchtet die Insel gelb (`pill-waiting.png`).
   5. Push-in auf den Kopf. Der ganze wartende Mini-Claude springt heraus (kurz `grow-1` bis `grow-4`, dann `mascot-waiting.png`) und landet **exakt** in Größe und Position des ersten Bilds von Szene 01.
-- **Text im Bild:** „Claude Island“, „für Windows · kostenlos · Open Source“, „Setup.exe herunterladen“, „ohne Admin-Rechte“, „github.com/xxneoenxx/Agents“, die drei Schritte. Klein, ab Szenenbeginn: „Inoffizielles Community-Tool, nicht von Anthropic.“
+- **Text im Bild:** „Claude Island“, „für Windows · kostenlos · Quellcode auf GitHub“, „Setup.exe herunterladen“, „ohne Admin-Rechte“, „github.com/xxneoenxx/Agents“, die drei Schritte. Klein, ab Szenenbeginn: „Inoffizielles Community-Tool, nicht von Anthropic.“
 - **Assets:** `icon.png`, `pill-waiting.png`, `grow-1.png` bis `grow-4.png`, `mascot-waiting.png`
 - **SFX:** `Click.mp3` beim Klick auf den Knopf, `Zoomin-OR-out.mp3` beim Push-in, `Pop.mp3` bei der Landung
 - **Übergang:** Match-Cut auf das erste Bild von `01-hook-alt-tab` (Loop). Kein Fade-out und kein Schwarzbild.
@@ -427,7 +427,7 @@ Antworte bitte auf Deutsch. Ich gebe dir das Transkript und alle drei Antworten 
 [00:30.8–00:35.7] Sieh live, woran Claude arbeitet. Fertig? Schick gleich die nächste Anweisung.
 [00:35.7–00:39.2] Modell und Aufwand stellst du pro Sitzung um.
 [00:39.2–00:43.3] Und Mini-Claude fiebert mit: schläft, tippt, winkt, zittert, jubelt.
-[00:43.3–00:47.6] Kostenlos, Open Source. Die Insel läuft lokal auf deinem PC.
+[00:43.3–00:47.6] Kostenlos, Quellcode auf GitHub. Die Insel läuft lokal auf deinem PC.
 [00:47.6–00:54.6] Claude Island für Windows. Hol sie dir jetzt auf GitHub.   (Sprecher endet ca. 00:51.9, danach Endkarte und Loop)
 
 Szenennamen, bitte genau so (eine Szene pro Zeile oben):
@@ -471,8 +471,8 @@ PRO SZENE (Bild/Bewegung in genau dieser Reihenfolge | Text im Bild | Assets | S
 10-live-und-fertig: Panel Arbeitet, Prompt "Baue die Kontaktseite …". Die Schritte erscheinen nacheinander: Read …/pages/index.astro, Write …/pages/kontakt.astro, Edit …/lib/validate.ts, Bash npm test (aktiv, pulsiert). Bei "Fertig?" Wechsel auf Fertig (grün): Arme hoch, ^ ^, Funkeln, die letzte Antwort erscheint. Der Cursor klickt ins Feld "Nächste Anweisung …", "Jetzt noch ein Impressum." tippt sich zügig ein und steht ca. 1,2 s; erst kurz vor Szenenende (ca. 00:35.5) Klick auf "Senden". | UI-Text + getippte Anweisung | panel-working.png, panel-done.png, mascot-working.png, mascot-done.png | Correct.mp3 (auf ca. 1 s gekürzt) bei Fertig, Click.mp3 bei Senden | Slide: Schwenk nach unten zur Modell-Leiste
 11-modell-aufwand: Die Leiste nach panel-models.png scharf nachgebaut, im Hochformat zweizeilig (MODELL Opus/Sonnet/Haiku, AUFWAND Niedrig/Mittel/Hoch/Sehr hoch/Max), darüber der Chip "● portfolio". Klick auf "Sonnet": die orange Markierung gleitet von Opus zu Sonnet. Klick auf "Mittel": sie gleitet von Hoch zu Mittel. Bei "pro Sitzung" leuchtet der Chip auf, der Hinweis blendet ein. | "wirkt ab dem nächsten Modellaufruf" (klein, mindestens 1,5 s) | panel-models.png | Click.mp3 je Klick | Transform: die Leiste fällt weg, Mini-Claude hüpft groß in die Mitte
 12-mini-claude: Bei "Und Mini-Claude fiebert mit" landet Mini-Claude groß (2x) mit Hopser in der Mitte und setzt sich (mascot-idle.png), unten gleiten nacheinander 5 Stimmungs-Chips (3 + 2) gedämpft in #A99C90 ein. Dann synchron zu den Verben: schläft (zzz, grau) -> tippt (tippelt/tippt, blau) -> winkt (hüpft, große Augen, gelb) -> zittert (> <, Schweiß, rot) -> jubelt (Arme hoch, ^ ^, Funkeln, grün). Der Status-Pixel wechselt jeweils die Farbe, und der passende Chip leuchtet in seiner Stimmungsfarbe auf und bleibt an. Am Ende leuchten alle fünf. | "Ruhig" "Arbeitet" "Wartet auf dich" "Hängt fest" "Fertig" | mascot-idle/-working/-waiting/-problem/-done.png | energy.MP3 beim Jubel-Hopser | Transform: Mini-Claude hüpft zurück auf die Bühne des Fertig-Panels
-13-lokal-kostenlos: Die linke Bühne aus panel-done.png als Hochformat-Karte (max. 1,4x), darauf "Fertig" und darunter "portfolio". Die Badges "Kostenlos" und "Open Source · MIT" ploppen nacheinander auf. Bei "Die Insel läuft lokal" Push-in auf die ECHTEN Statuszeilen "● Server :47821" / "● Mod verbunden" unten auf der Bühne. Ab 1,4x nahtlos in einen scharfen Nachbau überblenden (IBM Plex Mono, Punkte #7ED6A8). Bei "auf deinem PC" tippt sich daneben "127.0.0.1:47821" ein, das Badge "läuft lokal" ploppt auf. Keine Wolke, keine Pfeile nach draußen. | die Badges + "127.0.0.1:47821", Fußzeile klein #A99C90 ab Szenenbeginn: "Inoffizielles Community-Tool · nicht von Anthropic" | panel-done.png (Ausschnitt der Bühne) | Pop.mp3 je Badge (3x), Zoomin-OR-out.mp3 beim Push-in | Slide: alles nach oben raus, die Endkarte kommt von unten
-14-cta-loop: Endkarte, das Kleingedruckte steht ab Szenenbeginn. Icon und "Claude Island" federn ein, dann "für Windows · kostenlos · Open Source". Ab ca. 00:49.6 erscheint der Knopf "Setup.exe herunterladen" (#FF9A62) mit "ohne Admin-Rechte", bei ca. 00:49.9 darunter "github.com/xxneoenxx/Agents". Bei ca. 00:50.1 klickt der Cursor den Knopf. Dann bei ca. 00:50.2 / 00:50.5 / 00:50.8 nacheinander: "1 · Setup.exe doppelklicken", "2 · 'Plugin aktivieren' klicken", "3 · Claude-App neu starten". Danach ruhig stehen bis ca. 00:53.3 (ca. 1,4 s nach dem letzten gesprochenen Wort). Dann kippt die Kamera nach oben, alles rutscht nach unten raus, oben mittig leuchtet pill-waiting.png gelb. Push-in auf den Kopf: der ganze wartende Mini-Claude springt heraus (grow-1..4 schnell, dann mascot-waiting.png) und landet EXAKT im Loop-Bild von 01. Kein Fade-out. | wie beschrieben + klein "Inoffizielles Community-Tool, nicht von Anthropic." | icon.png, pill-waiting.png, grow-1..4.png, mascot-waiting.png | Click.mp3 beim Klick, Zoomin-OR-out.mp3 beim Push-in, Pop.mp3 bei der Landung | Match-Cut auf das erste Bild von 01-hook-alt-tab (Loop)
+13-lokal-kostenlos: Die linke Bühne aus panel-done.png als Hochformat-Karte (max. 1,4x), darauf "Fertig" und darunter "portfolio". Die Badges "Kostenlos" und "Quellcode auf GitHub" ploppen nacheinander auf. Bei "Die Insel läuft lokal" Push-in auf die ECHTEN Statuszeilen "● Server :47821" / "● Mod verbunden" unten auf der Bühne. Ab 1,4x nahtlos in einen scharfen Nachbau überblenden (IBM Plex Mono, Punkte #7ED6A8). Bei "auf deinem PC" tippt sich daneben "127.0.0.1:47821" ein, das Badge "läuft lokal" ploppt auf. Keine Wolke, keine Pfeile nach draußen. | die Badges + "127.0.0.1:47821", Fußzeile klein #A99C90 ab Szenenbeginn: "Inoffizielles Community-Tool · nicht von Anthropic" | panel-done.png (Ausschnitt der Bühne) | Pop.mp3 je Badge (3x), Zoomin-OR-out.mp3 beim Push-in | Slide: alles nach oben raus, die Endkarte kommt von unten
+14-cta-loop: Endkarte, das Kleingedruckte steht ab Szenenbeginn. Icon und "Claude Island" federn ein, dann "für Windows · kostenlos · Quellcode auf GitHub". Ab ca. 00:49.6 erscheint der Knopf "Setup.exe herunterladen" (#FF9A62) mit "ohne Admin-Rechte", bei ca. 00:49.9 darunter "github.com/xxneoenxx/Agents". Bei ca. 00:50.1 klickt der Cursor den Knopf. Dann bei ca. 00:50.2 / 00:50.5 / 00:50.8 nacheinander: "1 · Setup.exe doppelklicken" (darunter klein: "Windows warnt? Weitere Informationen › Trotzdem ausführen"), "2 · 'Plugin aktivieren' klicken", "3 · Claude-App neu starten". Danach ruhig stehen bis ca. 00:53.3 (ca. 1,4 s nach dem letzten gesprochenen Wort). Dann kippt die Kamera nach oben, alles rutscht nach unten raus, oben mittig leuchtet pill-waiting.png gelb. Push-in auf den Kopf: der ganze wartende Mini-Claude springt heraus (grow-1..4 schnell, dann mascot-waiting.png) und landet EXAKT im Loop-Bild von 01. Kein Fade-out. | wie beschrieben + klein "Inoffizielles Community-Tool, nicht von Anthropic." | icon.png, pill-waiting.png, grow-1..4.png, mascot-waiting.png | Click.mp3 beim Klick, Zoomin-OR-out.mp3 beim Push-in, Pop.mp3 bei der Landung | Match-Cut auf das erste Bild von 01-hook-alt-tab (Loop)
 
 VERMEIDEN
 Anthropic-Logo oder -Sunburst (auch als Sternchen-Symbol aus den Vorlagen), Windows-Logos und Nachbildungen der offiziellen Claude-Oberfläche. Erfundene Funktionen oder UI (keine Cloud-Sitzungen, kein macOS/Linux, keine Menüleiste, kein iPhone-/Dynamic-Island-Look, keine Benachrichtigungen außerhalb der Insel, kein Installer-Assistent). Zahlen zur Zeitersparnis, Statistiken, Testimonials, Preise außer "kostenlos". Keine Aussage, dass Claude Code selbst lokal bleibt. Generische Titelkarten, abstrakte Muster, Farbflächen, Stock-Verläufe. Lange Sätze im Bild, Emojis. Weichgezeichnete Pixel-Art, unscharf hochgezoomte Screenshots. 3D-Effekte, die die UI unlesbar machen. Musik. Sounds ohne sichtbare Aktion.
@@ -538,7 +538,7 @@ Danach folgen die 14 Sätze aus B ohne Zeitmarken. Die Szenennamen-Zeile bleibt 
 - Die 9:16-Fassung ist für Reels, TikTok und Shorts.
 
 **7. Beschreibung/Caption (Vorschlag)**
-> Ein Blick statt Alt-Tab: Claude Island zeigt dir oben auf dem Bildschirm, ob Claude Code arbeitet, auf dich wartet, festhängt oder fertig ist. Freigaben gibst du direkt in der Insel. Kostenlos, Open Source (MIT) und für Windows. Die Insel läuft lokal auf deinem PC. Für lokale Claude-Code-Sitzungen (Code-Tab der Claude-Desktop-App oder Terminal).
+> Ein Blick statt Alt-Tab: Claude Island zeigt dir oben auf dem Bildschirm, ob Claude Code arbeitet, auf dich wartet, festhängt oder fertig ist. Freigaben gibst du direkt in der Insel. Kostenlos, mit offenem Quellcode auf GitHub, für Windows. Die Insel läuft lokal auf deinem PC. Für lokale Claude-Code-Sitzungen (Code-Tab der Claude-Desktop-App oder Terminal).
 > Download: https://github.com/xxneoenxx/Agents/releases/latest/download/Claude-Island-Setup.exe
 > Inoffizielles Community-Tool, nicht von Anthropic. Claude und Claude Code sind Marken von Anthropic.
 

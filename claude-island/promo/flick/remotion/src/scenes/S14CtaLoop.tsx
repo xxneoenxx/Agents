@@ -15,8 +15,10 @@ import {Voice, sfxVolume} from '../lib/Voice';
 
 const ID = '14-cta-loop';
 const STEPS = ['1 · Setup.exe doppelklicken', '2 · ‚Plugin aktivieren‘ klicken', '3 · Claude-App neu starten'];
+// Die Setup-Datei ist nicht signiert: SmartScreen warnt beim ersten Start.
+const WARN = ['Windows warnt?', 'Weitere Informationen', 'Trotzdem ausführen'];
 
-// Endkarte mit Download, Link und drei Schritten. Danach kippt die Kamera hoch zur
+// Endkarte mit Download, Link, drei Schritten und dem Hinweis zur Windows-Warnung. Danach kippt die Kamera hoch zur
 // wartenden Insel, Mini-Claude springt heraus und landet exakt im ersten Bild von 01.
 export const S14CtaLoop: React.FC = () => {
   const f = useCurrentFrame();
@@ -30,6 +32,8 @@ export const S14CtaLoop: React.FC = () => {
   const clickAt = T.at('doppelt') + 2;
   const press = interpolate(f, [clickAt - 3, clickAt, clickAt + 8], [0, 1, 0], clamp);
   const steps = ['doppelt', 'plugin', 'startest'].map((w) => pop(f, T.at(w) - 4, {damping: 18, stiffness: 160}));
+  const warn = pop(f, T.at('warnt') - 4, {damping: 18, stiffness: 160});
+  const warnHl = [T.at('weitere'), T.at('trotzdem')].map((at) => interpolate(f, [at - 4, at + 6], [0, 1], clamp));
 
   // Outro: ab ~1,4 s nach dem letzten Wort.
   const outroAt = Math.max(T.speechEnd + 84, clickAt + 90);
@@ -59,7 +63,7 @@ export const S14CtaLoop: React.FC = () => {
         <div style={{position: 'absolute', left: 0, right: 0, top: 210, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <Img src={staticFile('brand-assets/icon.png')} style={{width: 190, height: 190, opacity: Math.min(1, title * 1.5), transform: `scale(${0.6 + 0.4 * title})`}} />
           <div style={{marginTop: 26, fontFamily: FONT.display, fontWeight: 700, fontSize: 104, letterSpacing: '-0.02em', color: C.text, opacity: Math.min(1, title * 1.5), transform: `translateY(${(1 - title) * 40}px)`}}>Claude Island</div>
-          <div style={{marginTop: 8, fontFamily: FONT.sans, fontWeight: 500, fontSize: 40, color: C.muted, opacity: Math.min(1, sub * 1.5)}}>für Windows · kostenlos · Open Source</div>
+          <div style={{marginTop: 8, fontFamily: FONT.sans, fontWeight: 500, fontSize: 40, color: C.muted, opacity: Math.min(1, sub * 1.5)}}>für Windows · kostenlos · Quellcode auf GitHub</div>
           <div
             style={{
               marginTop: 44,
@@ -82,9 +86,17 @@ export const S14CtaLoop: React.FC = () => {
           <div style={{marginTop: 30, fontFamily: FONT.mono, fontWeight: 500, fontSize: 40, color: C.text, opacity: Math.min(1, link * 1.5)}}>github.com/xxneoenxx/Agents</div>
           <div style={{marginTop: 34, display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'flex-start'}}>
             {STEPS.map((s, i) => (
-              <div key={s} style={{fontFamily: FONT.sans, fontWeight: 600, fontSize: 38, color: C.text, opacity: Math.min(1, steps[i] * 1.5), transform: `translateX(${(1 - steps[i]) * 40}px)`}}>
-                {s}
-              </div>
+              <React.Fragment key={s}>
+                <div style={{fontFamily: FONT.sans, fontWeight: 600, fontSize: 38, color: C.text, opacity: Math.min(1, steps[i] * 1.5), transform: `translateX(${(1 - steps[i]) * 40}px)`}}>
+                  {s}
+                </div>
+                {i === 0 ? (
+                  <div style={{marginLeft: 50, fontFamily: FONT.sans, fontWeight: 500, fontSize: 30, color: C.muted, opacity: Math.min(1, warn * 1.5), transform: `translateX(${(1 - warn) * 40}px)`}}>
+                    {WARN[0]} <span style={{color: warnHl[0] > 0.1 ? C.text : C.muted}}>{WARN[1]}</span> ›{' '}
+                    <span style={{color: warnHl[1] > 0.1 ? C.text : C.muted}}>{WARN[2]}</span>
+                  </div>
+                ) : null}
+              </React.Fragment>
             ))}
           </div>
         </div>

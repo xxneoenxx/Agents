@@ -14,8 +14,8 @@ SCENES = [
     ('10-live-und-fertig', 294, 'Während Claude arbeitet, siehst du live jeden Schritt. Ist Claude fertig, liest du die letzte Antwort und schickst gleich die nächste Anweisung.'),
     ('11-modell-aufwand', 210, 'Unten wählst du für jede Sitzung das Modell, also Opus, Sonnet oder Haiku, und den Aufwand von Niedrig bis Max. Das gilt ab dem nächsten Modellaufruf.'),
     ('12-mini-claude', 246, 'Und Mini-Claude fiebert mit: Er schläft, wenn nichts los ist, tippt, während Claude arbeitet, winkt, wenn er dich braucht, zittert bei Problemen und jubelt, wenn alles fertig ist.'),
-    ('13-lokal-kostenlos', 258, 'Claude Island ist kostenlos und Open Source. Die Insel läuft lokal auf deinem PC.'),
-    ('14-cta-loop', 420, 'So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub und klicke doppelt darauf. Dann klickst du in der Insel auf Plugin aktivieren und startest die Claude-App neu. Fertig!'),
+    ('13-lokal-kostenlos', 258, 'Claude Island ist kostenlos, und der Quellcode liegt offen auf GitHub. Die Insel läuft lokal auf deinem PC.'),
+    ('14-cta-loop', 420, 'So bekommst du Claude Island für Windows: Lade die Setup-Datei von GitHub und klicke doppelt darauf. Warnt Windows davor, klickst du auf Weitere Informationen und dann auf Trotzdem ausführen. In der Insel klickst du auf Plugin aktivieren und startest die Claude-App neu. Fertig!'),
 ]
 
 # Nur für die Sprachsynthese: englische Wörter so geschrieben, wie man sie spricht.

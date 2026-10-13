@@ -31,7 +31,7 @@ Eine deutsche Sprecherstimme (SVOX Pico) erklärt alles, und der gesprochene Tex
    - Texte änderst du in `tools/script.py`. Danach beide Skripte erneut ausführen.
    - Die Bild-Beats hängen per `T.at('wort')` an Wörtern, ein geändertes Wort muss also auch in der Szene angepasst werden.
    - Optional die Piper-Stimme „Thorsten“: `pip install piper-tts`, dann `python3 tools/voice.py piper`. Das Skript lädt das Modell selbst von huggingface.co.
-3. Rendern: `FLICK_SKILL=<flick> tools/render-all.sh`. Das nutzt Flicks `render-scene.mjs`, eine MP4 pro Szene.
+3. Rendern: `FLICK_SKILL=<flick> tools/render-all.sh` für alle Szenen oder mit Szenen-IDs als Argumente nur für diese. Das nutzt Flicks `render-scene.mjs`, eine MP4 pro Szene.
 4. Zusammenfügen: `tools/concat.sh`. Das Ergebnis ist framegenau, mit Limiter auf −1 dBFS.
 
 In `remotion/remotion.config.ts` steht der Pfad zum Chromium der Cloud-Umgebung. Lokal kannst du die Zeile mit

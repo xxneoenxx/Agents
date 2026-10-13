@@ -50,26 +50,51 @@ def silences(path):
     ends = [float(x) for x in re.findall(r'silence_end: ([\d.]+)', r.stderr)]
     return list(zip(starts, ends))
 
+SKIP_BREAK = {1: 0.25, 2: 0.4, 3: 0.6}  # Kosten, wenn an einem Satzzeichen keine Pause erkannt wird
+
 def aligned(words, dur, pauses):
-    """Wortanfänge in Sekunden: Pausen an Satzzeichen ausrichten, dazwischen nach Silben."""
-    # erwartete Zeit jeder Bruchstelle nach Silbenanteil
+    """Wortanfänge in Sekunden: Pausen an Satzzeichen ausrichten, dazwischen nach Silben.
+
+    Pausen und Satzzeichen werden der Reihe nach einander zugeordnet (beide dürfen ausfallen).
+    Die erwartete Zeit eines Satzzeichens rechnet ab dem vorigen Anker mit den restlichen
+    Silben, damit sich Tempoabweichungen nicht über die ganze Aufnahme aufsummieren.
+    """
     syl = [syllables(w) for w in words]
-    total = sum(syl)
-    acc, expected = 0, {}
-    for i, w in enumerate(words[:-1]):
-        acc += syl[i]
-        if brk(w):
-            expected[i] = dur * acc / total
-    anchors = []  # (Index des ersten Wortes danach, Pausenanfang, Pausenende)
-    used = -1
-    for s, e in pauses:
-        mid = (s + e) / 2
-        cands = [i for i in expected if i > used and abs(expected[i] - mid) < 0.9]
-        if not cands:
+    cum = [0]
+    for x in syl:
+        cum.append(cum[-1] + x)
+    total = cum[-1]
+    breaks = [i for i, w in enumerate(words[:-1]) if brk(w)]  # Pause nach words[i]
+    pauses = [(s, e) for s, e in pauses if 0 < s and e < dur]  # Ränder sind schon beschnitten
+    skip_pause = [0.15 + 1.5 * (e - s) for s, e in pauses]
+    skip_break = [SKIP_BREAK[brk(words[i])] for i in breaks]
+    # Zustand (p, b): Pause p wurde Satzzeichen b zugeordnet; (-1, -1) = Anfang
+    best = {(-1, -1): (0.0, None)}
+    order = [(-1, -1)] + [(p, b) for p in range(len(pauses)) for b in range(len(breaks))]
+    for p, b in order:
+        if (p, b) not in best:
             continue
-        i = min(cands, key=lambda i: (abs(expected[i] - mid) - 0.15 * brk(words[i])))
-        anchors.append((i + 1, s, e))
-        used = i
+        cost = best[(p, b)][0]
+        t0 = pauses[p][1] if p >= 0 else 0.0
+        s0 = cum[breaks[b] + 1] if b >= 0 else 0
+        for p2 in range(p + 1, len(pauses)):
+            for b2 in range(b + 1, len(breaks)):
+                # erwartete Pausenmitte nach Silbenanteil ab dem vorigen Anker
+                exp = t0 + (dur - t0) * (cum[breaks[b2] + 1] - s0) / max(1, total - s0)
+                mid = sum(pauses[p2]) / 2
+                c = (cost + abs(exp - mid) - 0.1 * brk(words[breaks[b2]])
+                     + sum(skip_pause[p + 1:p2]) + sum(skip_break[b + 1:b2]))
+                if (p2, b2) not in best or c < best[(p2, b2)][0]:
+                    best[(p2, b2)] = (c, (p, b))
+    # Ende: nicht zugeordnete Pausen und Satzzeichen danach kosten ebenfalls
+    end = min(best, key=lambda k: best[k][0] + sum(skip_pause[k[0] + 1:]) + sum(skip_break[k[1] + 1:]))
+    anchors = []  # (Index des ersten Wortes danach, Pausenanfang, Pausenende)
+    k = end
+    while k != (-1, -1):
+        p, b = k
+        anchors.append((breaks[b] + 1, pauses[p][0], pauses[p][1]))
+        k = best[k][1]
+    anchors.reverse()
     times = [0.0] * len(words)
     bounds = [(0, 0.0)] + [(i, e) for i, _, e in anchors]
     ends = [s for _, s, _ in anchors] + [dur]
