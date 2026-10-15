@@ -57,25 +57,28 @@ function createUpdater({ app, mode, onChange, fetchText }) {
     updater.on('update-downloaded', (info) => set({ phase: 'ready', version: info.version, percent: 100 }))
     updater.on('error', (err) => {
       // Ein fertig geladenes Update bleibt bereit, auch wenn eine spätere Prüfung scheitert.
-      if (state.phase === 'ready') return
+      if (state.phase === 'ready' || state.phase === 'installing') return
       set({ phase: 'error', error: String((err && err.message) || err).split('\n')[0].slice(0, 200) })
     })
   }
 
   async function checkPortable() {
+    const before = state
     set({ phase: 'checking', error: null })
     try {
       const latest = feedVersion(await fetchText(FEED_URL))
       if (!latest) throw new Error('latest.yml ohne Version')
       set(isNewer(latest, state.current) ? { phase: 'available', version: latest } : { phase: 'current', version: null })
     } catch (err) {
-      set({ phase: 'error', error: String((err && err.message) || err).slice(0, 200) })
+      const error = String((err && err.message) || err).slice(0, 200)
+      // Offline beim nächsten Prüfen: die schon gefundene neue Version bleibt angezeigt.
+      set(before.phase === 'available' ? { phase: 'available', version: before.version, error } : { phase: 'error', error })
     }
   }
 
   function check() {
     if (mode === 'dev') return
-    if (state.phase === 'checking' || state.phase === 'downloading' || state.phase === 'ready') return
+    if (['checking', 'downloading', 'ready', 'installing'].includes(state.phase)) return
     if (mode === 'portable') {
       checkPortable()
       return
@@ -106,7 +109,8 @@ function createUpdater({ app, mode, onChange, fetchText }) {
     },
     install() {
       if (mode !== 'installed' || state.phase !== 'ready') return false
-      // still installieren und danach wieder starten
+      // Nur einmal: still installieren und danach wieder starten.
+      set({ phase: 'installing' })
       updater.quitAndInstall(true, true)
       return true
     },

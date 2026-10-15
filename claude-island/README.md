@@ -55,8 +55,10 @@ Beide Dateien baut GitHub Actions bei jeder Änderung an der App neu
 
 **Updates:** Die installierte Insel (Setup.exe, ab 0.4) prüft beim Start und
 alle 6 Stunden, ob es ein neueres Release gibt, und lädt es im Hintergrund.
-Dann steht links **Update · Neu starten**: Klick installiert und startet neu,
-sonst wird beim Beenden installiert. Rechtsklick › **Nach Updates suchen**
+Dann steht links **Update · Neu starten**: Klick installiert und startet neu.
+Ist gerade keine Sitzung offen (etwa nach dem Anmelden, bevor die Claude-App
+läuft), installiert sich das Update von selbst und die Insel startet neu;
+sonst auch beim Beenden über das Rechtsklick-Menü. Rechtsklick › **Nach Updates suchen**
 prüft sofort. Wer noch 0.3 hat, lädt die Setup.exe einmal von Hand und
 doppelklickt; sie installiert über die alte Version. Die portable .exe kann sich
 nicht selbst ersetzen und zeigt nur **Neue Version** mit Link zur Download-Seite.

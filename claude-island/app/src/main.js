@@ -141,7 +141,10 @@ function start() {
   const updater = createUpdater({
     app,
     mode: updateMode,
-    onChange: () => pushState(),
+    onChange: () => {
+      pushState()
+      autoInstall()
+    },
     fetchText: async (url) => {
       const res = await net.fetch(url, { cache: 'no-store' })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
@@ -167,6 +170,7 @@ function start() {
     }, 8)
   }
   store.on('change', pushState)
+  store.on('change', () => autoInstall())
   store.on('signal', (signal) => {
     send(win, 'island:signal', signal)
     if (signal.type === 'approval') {
@@ -262,12 +266,29 @@ function start() {
   // ---------- Updates ----------
 
   const installUpdate = () => updater.install()
+  // Ein fertig geladenes Update installiert sich von selbst, solange nichts
+  // offen ist (etwa beim Anmelden, bevor die Claude-App läuft, oder wenn sie
+  // geschlossen ist). Sonst wartet es auf „Update · Neu starten“ oder aufs Beenden.
+  function autoInstall() {
+    if (updater.state.phase !== 'ready' || expanded || store.sessions.size) return
+    installUpdate()
+  }
   const openReleases = () => shell.openExternal(updater.releasesUrl)
   async function checkForUpdates() {
     const result = await updater.checkNow()
     if (!alive(win)) return
+    // Esc und das Schließen-Kreuz wählen den zweiten Knopf („Später“), nie die Aktion.
     const box = (message, detail, buttons = ['OK']) =>
-      dialog.showMessageBox(win, { type: 'info', title: 'Claude Island', message, detail, buttons, noLink: true })
+      dialog.showMessageBox(win, {
+        type: 'info',
+        title: 'Claude Island',
+        message,
+        detail,
+        buttons,
+        noLink: true,
+        defaultId: 0,
+        cancelId: buttons.length - 1,
+      })
     if (result.mode === 'dev') {
       box('Updates gibt es nur in der installierten Version.', 'Aus dem Quellcode gestartet (npm start).')
     } else if (result.phase === 'current') {

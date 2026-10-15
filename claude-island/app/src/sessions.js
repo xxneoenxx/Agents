@@ -47,6 +47,11 @@ function clip(text, max) {
   return flat.length > max ? `${flat.slice(0, max - 1)}…` : flat
 }
 
+// Prompts, die nicht von der Person kommen: ein fertiger Hintergrund-Agent,
+// eine Nachricht aus einer anderen Sitzung. Claude Code meldet sie ebenfalls
+// als UserPromptSubmit, eingepackt in diese Tags.
+const SYSTEM_PROMPT = /^\s*<(task-notification|cross-session-message|system-reminder)\b/
+
 const sameText = (a, b) => a.replace(/\s+/g, ' ').trim() === b.replace(/\s+/g, ' ').trim()
 
 function shortPath(file) {
@@ -166,9 +171,12 @@ class SessionStore extends EventEmitter {
           this.setStatus(s, 'idle')
         }
         break
-      case 'UserPromptSubmit':
-        s.prompt = clip(payload.prompt, 240)
-        if (typeof payload.prompt === 'string' && payload.prompt.trim()) {
+      case 'UserPromptSubmit': {
+        const system = typeof payload.prompt === 'string' && SYSTEM_PROMPT.test(payload.prompt)
+        s.prompt = system ? 'Meldung an Claude' : clip(payload.prompt, 240)
+        if (system) {
+          this.remember(s, 'event', payload.prompt)
+        } else if (typeof payload.prompt === 'string' && payload.prompt.trim()) {
           const sent = s.outbox.findIndex((o) => sameText(o.text, payload.prompt))
           if (sent >= 0) s.outbox.splice(sent, 1)
           this.remember(s, 'user', payload.prompt)
@@ -179,6 +187,7 @@ class SessionStore extends EventEmitter {
         s.notice = ''
         this.setStatus(s, 'working')
         break
+      }
       case 'PostToolUse':
         this.pushStep(s, payload, true)
         s.failStreak = 0
@@ -375,6 +384,10 @@ class SessionStore extends EventEmitter {
         dirty = true
         continue
       }
+      // Solange Claude beschäftigt ist, wartet die Nachricht zu Recht; die Stunde
+      // zählt erst ab dann, wenn Claude frei ist und sie trotzdem nicht ankommt.
+      const status = this.statusOf(s)
+      if (status === 'working' || status === 'waiting') for (const o of s.outbox) o.at = now
       const fresh = s.outbox.filter((o) => now - o.at <= OUTBOX_MS)
       if (fresh.length !== s.outbox.length) {
         s.outbox = fresh

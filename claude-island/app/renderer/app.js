@@ -80,8 +80,9 @@
     const currentId = current ? current.id : null
     paint('stage', byId('stage'), stageModel(current), renderStage)
     paint('chips', byId('chips'), state.sessions.map((s) => [s.id, s.name, s.status, s.id === currentId]), renderChips)
-    paint('card', byId('card-body'), cardModel(current), renderCard)
+    // Erst das Eingabefeld: die Karte misst ihre Scrollboxen mit seiner Höhe.
     paint('compose', byId('card-compose'), composeModel(current), renderCompose)
+    paint('card', byId('card-body'), cardModel(current), renderCard)
     paint('foot', byId('foot'), footModel(current), renderFoot)
   }
 
@@ -141,14 +142,13 @@
       ? `<button class="conn conn--action" type="button" data-act="update-plugin" data-ok="false"${m.busy ? ' disabled' : ''}>${m.busy ? 'Aktualisiere …' : 'Plugin aktualisieren'}</button>`
       : ''
     const u = m.update
-    const app =
-      u.phase === 'ready'
-        ? `<button class="conn conn--action" type="button" data-act="install-update" data-ok="true" title="Version ${esc(u.version)} ist geladen. Klicken: installieren und neu starten.">Update · Neu starten</button>`
-        : u.phase === 'downloading'
-          ? `<div class="conn" data-ok="true" title="Version ${esc(u.version)}">Update lädt … ${esc(u.percent)} %</div>`
-          : u.phase === 'available'
-            ? `<button class="conn conn--action" type="button" data-act="open-releases" data-ok="true" title="Zur Download-Seite">Neue Version ${esc(u.version)}</button>`
-            : ''
+    const v = esc(u.version)
+    const app = {
+      ready: `<button class="conn conn--action" type="button" data-act="install-update" data-ok="true" title="Version ${v} ist geladen. Klicken: installieren und neu starten.">Update · Neu starten</button>`,
+      installing: '<div class="conn" data-ok="true">Update wird installiert …</div>',
+      downloading: `<div class="conn" data-ok="true" title="Version ${v}">Update lädt … ${esc(u.percent)} %</div>`,
+      available: `<button class="conn conn--action" type="button" data-act="open-releases" data-ok="true" title="Zur Download-Seite">Neue Version ${v}</button>`,
+    }[u.phase] || ''
     byId('stage-conn').innerHTML = app + server + plugin + update + mod
   }
 
@@ -251,8 +251,9 @@
 
   const clock = (at) => new Date(at).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
 
-  function bubble({ mine, who, when, text, anchor = false, pending = false }) {
-    const cls = ['bubble', mine ? 'bubble--user' : 'bubble--claude', pending ? 'is-pending' : ''].filter(Boolean).join(' ')
+  function bubble({ mine, who, when, text, anchor = false, pending = false, event = false }) {
+    const kind = event ? 'bubble--event' : mine ? 'bubble--user' : 'bubble--claude'
+    const cls = ['bubble', kind, pending ? 'is-pending' : ''].filter(Boolean).join(' ')
     return (
       `<div class="${cls}"${anchor ? ' data-anchor' : ''}>` +
       `<div class="bubble__who">${esc(who)}${when ? ` · ${esc(when)}` : ''}</div>` +
@@ -268,13 +269,15 @@
     if (!entries.length && !m.queued.length) return ''
     const lastClaude = entries.map((e) => e.role).lastIndexOf('assistant')
     const html = entries.map((e, i) =>
-      bubble({
-        mine: e.role === 'user',
-        who: e.role === 'user' ? 'Du' : 'Claude',
-        when: e.at ? clock(e.at) : '',
-        text: e.text,
-        anchor: i === lastClaude,
-      }),
+      e.role === 'event'
+        ? bubble({ mine: false, event: true, who: 'Meldung an Claude', when: e.at ? clock(e.at) : '', text: e.text })
+        : bubble({
+            mine: e.role === 'user',
+            who: e.role === 'user' ? 'Du' : 'Claude',
+            when: e.at ? clock(e.at) : '',
+            text: e.text,
+            anchor: i === lastClaude,
+          }),
     )
     for (const q of m.queued) {
       const when = q.sent ? 'geht raus, sobald Claude frei ist' : m.mod ? 'wird gesendet …' : 'wartet – der Mod meldet sich nicht'
@@ -572,7 +575,12 @@
     const field = event.target
     if (field.dataset.draft) {
       drafts.set(field.dataset.draft, field.value)
+      // Wächst das Feld, wird der Verlauf kleiner: wer unten war, bleibt unten.
+      const atEnd = [...byId('card').querySelectorAll('[data-scroll]')].filter(
+        (box) => box.scrollHeight - box.scrollTop - box.clientHeight < 24,
+      )
       fit(field)
+      atEnd.forEach((box) => (box.scrollTop = box.scrollHeight))
     }
   })
 
@@ -616,12 +624,14 @@
     event.preventDefault()
     const field = event.target.closest('textarea, input')
     const block = event.target.closest('.bubble__text, .message, .code, .card__lead, .empty__cmd')
-    const selected = String(window.getSelection() || '')
+    // Eine Auswahl zählt nur, wenn der Klick auf ihr liegt; sonst bliebe das App-Menü unerreichbar.
+    const selection = window.getSelection()
+    const selected = Boolean(String(selection || '')) && selection.containsNode(event.target, true)
     if (field) {
       api.openEditMenu({ editable: true, selected: field.selectionStart !== field.selectionEnd })
     } else if (block || selected) {
       menuBlock = block
-      api.openEditMenu({ editable: false, selected: Boolean(selected), block: block ? block.textContent : '' })
+      api.openEditMenu({ editable: false, selected, block: block ? block.textContent : '' })
     } else {
       api.openMenu()
     }
@@ -690,7 +700,11 @@
       next.ui.tall !== state.ui.tall
     state = next
     render()
-    if (opened) resetScroll()
+    if (opened) {
+      // Zugeklappt hatte das Feld keine Höhe; erst einpassen, dann scrollen.
+      byId('card').querySelectorAll('[data-grow]').forEach(fit)
+      resetScroll()
+    }
     if (moved) requestAnimationFrame(() => Mascot.refresh())
   }
 

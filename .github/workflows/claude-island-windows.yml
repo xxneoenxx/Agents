@@ -68,6 +68,14 @@ jobs:
         run: |
           set -euo pipefail
           version=$(node -p "require('./package.json').version")
+          # Ein nachträglich wiederholter älterer Lauf darf kein neueres Release
+          # ersetzen (sonst bekämen alle die ältere Version).
+          newest=$(gh release list --limit 100 --json tagName --jq '.[].tagName' |
+            sed -n 's/^claude-island-v0\.4\.\([0-9]*\)$/\1/p' | sort -n | tail -1)
+          if [ -n "$newest" ] && [ "$newest" -gt "$GITHUB_RUN_NUMBER" ]; then
+            echo "::notice::Neueres Release 0.4.${newest} existiert; dieser Lauf veröffentlicht nichts."
+            exit 0
+          fi
           # Jeder Build bekommt ein eigenes Release. gh veröffentlicht es erst,
           # wenn alle Dateien hochgeladen sind, deshalb zeigt
           # releases/latest/download/... nie auf ein halbes Release.

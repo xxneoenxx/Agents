@@ -799,6 +799,23 @@ textarea.compose__field {
   border-top-right-radius: 4px;
 }
 
+.bubble--event {
+  align-self: stretch;
+  max-width: none;
+}
+
+/* Hintergrund-Meldungen (fertiger Agent, andere Sitzung): klein und gedämpft. */
+.bubble--event .bubble__text {
+  max-height: 64px;
+  overflow-y: auto;
+  padding: 6px 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  border: 1px dashed var(--line-strong);
+  scrollbar-width: thin;
+}
+
 .bubble.is-pending .bubble__text {
   border-style: dashed;
   opacity: 0.75;

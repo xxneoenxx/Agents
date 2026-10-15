@@ -61,3 +61,16 @@ test('Aus dem Quellcode: keine Prüfung, kein Netz', async () => {
   assert.equal((await u.checkNow()).phase, 'idle')
   assert.equal(u.install(), false)
 })
+
+test('Portable: offline beim nächsten Prüfen behält die gefundene Version', async () => {
+  let reply = async () => 'version: 0.4.9\n'
+  const u = createUpdater({ app: fakeApp('0.4.3'), mode: 'portable', onChange: () => {}, fetchText: (url) => reply(url) })
+  assert.equal((await u.checkNow()).phase, 'available')
+  reply = async () => {
+    throw new Error('offline')
+  }
+  const again = await u.checkNow()
+  assert.equal(again.phase, 'available')
+  assert.equal(again.version, '0.4.9')
+  assert.equal(u.state.error, 'offline')
+})

@@ -233,7 +233,21 @@ test('Nachricht aus der Insel: wartet, ist unterwegs, landet als Prompt im Verla
     ['user', 'Und dann noch Tests'],
   ])
 
-  // Kommt der Prompt nie an (Mod abgestürzt), verschwindet die Nachricht nach einer Stunde
+  // Arbeitet Claude länger als eine Stunde, wartet die Nachricht so lange mit
+  store.queueHint('s1', 'Lange Schleife')
+  store.modPoll({ session_id: 's1' })
+  for (let i = 0; i < 90; i++) {
+    advance(60 * 1000)
+    store.modPoll({ session_id: 's1' })
+    store.tick()
+  }
+  assert.deepEqual(only(store).queued, [{ text: 'Lange Schleife', sent: true }])
+  store.handleHook('Stop', { ...base, last_assistant_message: 'Fertig nach 90 min.' })
+  store.handleHook('UserPromptSubmit', { ...base, prompt: 'Lange Schleife' })
+  assert.deepEqual(only(store).queued, [])
+  store.handleHook('Stop', { ...base, last_assistant_message: 'Ok.' })
+
+  // Kommt der Prompt nie an, obwohl Claude frei ist, verschwindet die Nachricht nach einer Stunde
   store.queueHint('s1', 'Verloren')
   store.modPoll({ session_id: 's1' })
   advance(30 * 60 * 1000)
@@ -244,6 +258,23 @@ test('Nachricht aus der Insel: wartet, ist unterwegs, landet als Prompt im Verla
   store.modPoll({ session_id: 's1' })
   store.tick()
   assert.deepEqual(only(store).queued, [])
+})
+
+test('Meldungen an Claude (Hintergrund-Agent, andere Sitzung) sind nicht „Du“', () => {
+  const { store } = clockStore()
+  store.handleHook('UserPromptSubmit', { ...base, prompt: 'Starte den Agenten' })
+  store.handleHook('Stop', { ...base, last_assistant_message: 'Läuft im Hintergrund.' })
+  store.handleHook('UserPromptSubmit', { ...base, prompt: '<task-notification>\n<task-id>a1</task-id>\n<status>completed</status>\n</task-notification>' })
+  assert.equal(only(store).status, 'working')
+  assert.equal(only(store).prompt, 'Meldung an Claude')
+  store.handleHook('UserPromptSubmit', { ...base, prompt: '  <cross-session-message from="x">Hallo</cross-session-message>' })
+  assert.deepEqual(
+    only(store).history.map((e) => e.role),
+    ['user', 'assistant', 'event', 'event'],
+  )
+  // Normale Prompts mit spitzen Klammern bleiben deine
+  store.handleHook('UserPromptSubmit', { ...base, prompt: '<div> zentrieren' })
+  assert.equal(only(store).history.at(-1).role, 'user')
 })
 
 test('Hilfsfunktionen', () => {
