@@ -15,6 +15,7 @@ contextBridge.exposeInMainWorld('island', {
   onSignal: listen('island:signal'),
   onSelect: listen('island:select'),
   onBlur: listen('island:blur'),
+  onEdit: listen('island:edit'),
   setExpanded: (value) => ipcRenderer.send('island:expand', value),
   setPinned: (value) => ipcRenderer.send('island:pin', value),
   setSound: (value) => ipcRenderer.send('island:sound', value),
@@ -26,4 +27,8 @@ contextBridge.exposeInMainWorld('island', {
   activatePlugin: () => ipcRenderer.send('island:activate-plugin'),
   updatePlugin: () => ipcRenderer.send('island:update-plugin'),
   setFigureMode: (mode) => ipcRenderer.send('island:figure-mode', mode),
+  setTall: (value) => ipcRenderer.send('island:tall', value),
+  openEditMenu: (info) => ipcRenderer.send('island:edit-menu', info),
+  installUpdate: () => ipcRenderer.send('island:install-update'),
+  openReleases: () => ipcRenderer.send('island:open-releases'),
 })

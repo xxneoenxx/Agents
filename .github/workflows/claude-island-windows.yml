@@ -1,6 +1,8 @@
 # Baut Claude Island für Windows und stellt Installer + portable .exe als
 # GitHub-Release bereit. Fester Download-Link:
 #   https://github.com/xxneoenxx/Agents/releases/latest/download/Claude-Island-Setup.exe
+# Jeder Build bekommt die Version 0.4.<Laufnummer>. Die installierte App liest
+# latest.yml aus dem neuesten Release und aktualisiert sich damit selbst.
 name: Claude Island – Windows-Installer
 
 on:
@@ -42,10 +44,23 @@ jobs:
       - name: Tests
         run: npm test
 
+      # Jede Version muss größer sein als die vorige, sonst sieht die App kein Update.
+      - name: Version setzen
+        run: npm version "0.4.${GITHUB_RUN_NUMBER}" --no-git-tag-version --allow-same-version
+
       - name: Installer bauen
         run: npx electron-builder --win --publish never
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+      - name: Update-Dateien prüfen
+        run: |
+          set -euo pipefail
+          version=$(node -p "require('./package.json').version")
+          cat dist/latest.yml
+          grep -qx "version: ${version}" dist/latest.yml
+          grep -q "path: Claude-Island-Setup.exe" dist/latest.yml
+          grep -q "provider: github" dist/win-unpacked/resources/app-update.yml
 
       - name: Release veröffentlichen
         env:
@@ -54,10 +69,10 @@ jobs:
           set -euo pipefail
           version=$(node -p "require('./package.json').version")
           # Jeder Build bekommt ein eigenes Release. gh veröffentlicht es erst,
-          # wenn beide Dateien hochgeladen sind, deshalb zeigt
+          # wenn alle Dateien hochgeladen sind, deshalb zeigt
           # releases/latest/download/... nie auf ein halbes Release.
-          tag="claude-island-v${version}-build.${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}"
-          files=(dist/Claude-Island-Setup.exe dist/Claude-Island-Portable.exe)
+          tag="claude-island-v${version}"
+          files=(dist/Claude-Island-Setup.exe dist/Claude-Island-Portable.exe dist/latest.yml)
           ls -l "${files[@]}"
           cat > notes.md <<NOTES
           **Claude Island ${version}** für Windows (Build ${GITHUB_RUN_NUMBER}, Commit ${GITHUB_SHA::7}).
@@ -68,7 +83,11 @@ jobs:
           Die Dateien sind nicht signiert. Meldet der Browser „wird nicht häufig heruntergeladen“: in der Download-Liste (Strg+J) **… › Beibehalten**, dann **Mehr anzeigen › Trotzdem beibehalten**. Zeigt Windows beim Start „Der Computer wurde durch Windows geschützt“: **Weitere Informationen › Trotzdem ausführen**.
 
           Danach in der Insel **Plugin aktivieren** klicken und die Claude-App neu starten. Anleitung: https://github.com/${GITHUB_REPOSITORY}/tree/${GITHUB_REF_NAME}/claude-island
+
+          Ab Version 0.4 aktualisiert sich die installierte Insel selbst: Sie lädt neue Versionen im Hintergrund und zeigt dann **Update · Neu starten** (sonst wird beim Beenden installiert). Wer noch 0.3 hat, installiert diese Setup.exe einmal von Hand. Die portable .exe zeigt nur an, dass es eine neue Version gibt.
           NOTES
+          # Ein wiederholter Lauf (gleiche Laufnummer) ersetzt sein eigenes Release.
+          if gh release view "$tag" > /dev/null 2>&1; then gh release delete "$tag" --yes --cleanup-tag; fi
           gh release create "$tag" "${files[@]}" --target "$GITHUB_SHA" \
             --title "Claude Island ${version} (Build ${GITHUB_RUN_NUMBER})" --notes-file notes.md --latest
           # Ältere Builds (und liegen gebliebene Entwürfe) aufräumen; der neue ist

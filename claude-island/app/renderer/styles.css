@@ -305,6 +305,9 @@ input:focus-visible {
   min-height: 0;
   display: grid;
   grid-template-columns: 196px 1fr;
+  /* Die Zeile ist so hoch wie das Panel erlaubt, nicht so hoch wie der Inhalt:
+     sonst wächst die Karte mit einer langen Antwort aus dem Fenster, statt zu scrollen. */
+  grid-template-rows: minmax(0, 1fr);
   gap: 12px;
 }
 
@@ -312,6 +315,8 @@ input:focus-visible {
 
 .stage {
   position: relative;
+  min-height: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -393,6 +398,7 @@ input:focus-visible {
 
 .detail {
   min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -478,6 +484,7 @@ input:focus-visible {
 .card {
   flex: 1;
   min-height: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -486,6 +493,40 @@ input:focus-visible {
   background: var(--raise);
   border: 1px solid var(--line);
   animation: card-in 0.2s var(--ease-out);
+}
+
+/* Inhalt der Karte; das Eingabefeld darunter wird getrennt gezeichnet, damit
+   neue Schritte beim Tippen nichts stören. */
+.card__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Kopf, Hinweise und Knöpfe behalten ihre Höhe; scrollen dürfen nur Verlauf,
+   Antwort, Befehl und Schritte (die setzen flex: 1 weiter unten). */
+.card__body > * {
+  flex-shrink: 0;
+}
+
+.card__compose {
+  flex: none;
+}
+
+.card__compose:empty {
+  display: none;
+}
+
+.thread,
+.message,
+.code,
+.steps,
+.empty {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(246, 239, 232, 0.22) transparent;
+  overscroll-behavior: contain;
 }
 
 @keyframes card-in {
@@ -528,6 +569,27 @@ input:focus-visible {
   font-family: var(--mono);
   font-size: 11px;
   color: var(--muted);
+}
+
+.card__switch {
+  flex: none;
+  margin-left: auto;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--raise-2);
+  transition: background 0.15s;
+}
+
+.card__meta + .card__switch {
+  margin-left: 0;
+}
+
+.card__switch:hover {
+  background: rgba(246, 239, 232, 0.1);
 }
 
 .card__lead {
@@ -657,11 +719,94 @@ textarea.field {
 .compose {
   flex: none;
   display: flex;
+  align-items: flex-end;
   gap: 8px;
 }
 
-.compose .field {
+textarea.compose__field {
   flex: 1;
+  min-height: 36px;
+  height: 36px;
+  max-height: 120px;
+  padding: 8px 12px;
+  line-height: 1.4;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.compose .btn {
+  flex: none;
+  height: 36px;
+}
+
+/* ---------- Verlauf ---------- */
+
+.thread {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-right: -8px;
+  padding-right: 8px;
+  outline: none;
+}
+
+.bubble {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-width: 94%;
+}
+
+.bubble--user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.bubble--claude {
+  align-self: flex-start;
+}
+
+.bubble__who {
+  padding: 0 4px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+.bubble__text {
+  padding: 8px 12px;
+  border-radius: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+  cursor: text;
+}
+
+.bubble--claude .bubble__text {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--line);
+  border-top-left-radius: 4px;
+}
+
+.bubble--user .bubble__text {
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  border-top-right-radius: 4px;
+}
+
+.bubble.is-pending .bubble__text {
+  border-style: dashed;
+  opacity: 0.75;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--text);
 }
 
 .steps {
@@ -760,6 +905,8 @@ textarea.field {
 
 .empty {
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -31,14 +31,19 @@
     sessions: [],
     counts: {},
     overall: 'idle',
-    ui: { expanded: false, pinned: false, sound: true, scale: 1, figureMode: 'head' },
+    ui: { expanded: false, pinned: false, sound: true, scale: 1, figureMode: 'head', tall: false },
     server: { listening: false, error: null, port: null },
     plugin: { state: 'checking', busy: false, message: '', outdated: false },
+    update: { mode: 'dev', phase: 'idle', version: null, percent: 0 },
   }
   let selectedId = null
   let closing = false
   const drafts = new Map()
-  const painted = { chips: '', card: '', foot: '', stage: '' }
+  // Was die Karte bei „Arbeitet“ zeigt: die Schritte oder den Verlauf (je Sitzung).
+  const views = new Map()
+  // Der Textblock unter dem letzten Rechtsklick (für „Ganze Nachricht markieren“).
+  let menuBlock = null
+  const painted = { chips: '', card: '', compose: '', foot: '', stage: '' }
 
   const esc = (value) =>
     String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
@@ -65,6 +70,8 @@
     const full = island.dataset.figure === 'full'
     byId('btn-figure').setAttribute('aria-pressed', String(full))
     byId('btn-figure').title = full ? 'Pille zeigt den ganzen Mini-Claude – umschalten auf nur Kopf' : 'Pille zeigt nur den Kopf – umschalten auf ganzen Mini-Claude'
+    byId('btn-tall').setAttribute('aria-pressed', String(Boolean(state.ui.tall)))
+    byId('btn-tall').title = state.ui.tall ? 'Wieder normal hoch' : 'Größer – mehr Platz zum Lesen'
     byId('summary').innerHTML = summary()
 
     // selectedId bleibt stehen, auch wenn die Sitzung noch nicht im Zustand ist
@@ -73,7 +80,8 @@
     const currentId = current ? current.id : null
     paint('stage', byId('stage'), stageModel(current), renderStage)
     paint('chips', byId('chips'), state.sessions.map((s) => [s.id, s.name, s.status, s.id === currentId]), renderChips)
-    paint('card', byId('card'), cardModel(current), renderCard)
+    paint('card', byId('card-body'), cardModel(current), renderCard)
+    paint('compose', byId('card-compose'), composeModel(current), renderCompose)
     paint('foot', byId('foot'), footModel(current), renderFoot)
   }
 
@@ -113,6 +121,7 @@
       outdated: state.plugin.state === 'active' && Boolean(state.plugin.outdated),
       busy: Boolean(state.plugin.busy),
       mod: current ? current.modConnected : null,
+      update: { phase: state.update.phase, version: state.update.version, percent: state.update.percent },
     }
   }
 
@@ -131,7 +140,16 @@
     const update = m.outdated
       ? `<button class="conn conn--action" type="button" data-act="update-plugin" data-ok="false"${m.busy ? ' disabled' : ''}>${m.busy ? 'Aktualisiere …' : 'Plugin aktualisieren'}</button>`
       : ''
-    byId('stage-conn').innerHTML = server + plugin + update + mod
+    const u = m.update
+    const app =
+      u.phase === 'ready'
+        ? `<button class="conn conn--action" type="button" data-act="install-update" data-ok="true" title="Version ${esc(u.version)} ist geladen. Klicken: installieren und neu starten.">Update · Neu starten</button>`
+        : u.phase === 'downloading'
+          ? `<div class="conn" data-ok="true" title="Version ${esc(u.version)}">Update lädt … ${esc(u.percent)} %</div>`
+          : u.phase === 'available'
+            ? `<button class="conn conn--action" type="button" data-act="open-releases" data-ok="true" title="Zur Download-Seite">Neue Version ${esc(u.version)}</button>`
+            : ''
+    byId('stage-conn').innerHTML = app + server + plugin + update + mod
   }
 
   function renderChips(el, rows) {
@@ -147,7 +165,8 @@
 
   function cardModel(s) {
     if (!s) return { kind: 'empty', server: state.server, plugin: state.plugin }
-    const base = { id: s.id, notice: s.notice, pendingHints: s.pendingHints, mod: s.modConnected }
+    const base = { id: s.id, notice: s.notice, pendingHints: s.pendingHints, mod: s.modConnected, queued: s.queued || [] }
+    const talk = { history: s.history || [], lastMessage: s.lastMessage }
     if (s.approvals.length) {
       const a = s.approvals[0]
       return { ...base, kind: 'approval', approval: a, total: s.approvals.length }
@@ -155,43 +174,137 @@
     switch (s.status) {
       case 'problem':
         return { ...base, kind: 'problem', problem: s.problem }
-      case 'working':
-        return { ...base, kind: 'working', prompt: s.prompt, steps: s.steps }
+      case 'working': {
+        // Nur in das Modell, was gerade zu sehen ist: neue Schritte zeichnen den
+        // Verlauf nicht neu (und heben keine Textauswahl darin auf).
+        const view = views.get(s.id) === 'thread' ? 'thread' : 'steps'
+        return view === 'thread'
+          ? { ...base, ...talk, kind: 'working', view, prompt: s.prompt }
+          : { ...base, kind: 'working', view, prompt: s.prompt, steps: s.steps }
+      }
       case 'waiting':
-        return { ...base, kind: 'waiting' }
+        return { ...base, ...talk, kind: 'waiting' }
       case 'done':
-        return { ...base, kind: 'done', prompt: s.prompt, message: s.lastMessage }
+        return { ...base, ...talk, kind: 'done', prompt: s.prompt }
       default:
-        return { ...base, kind: 'idle' }
+        return { ...base, ...talk, kind: 'idle' }
     }
   }
 
-  function head(status, title, meta = '', tag = TAG[status]) {
+  function head(status, title, meta = '', tag = TAG[status], extra = '') {
     return (
       `<div class="card__head" data-status="${status}"><span class="tag">${esc(tag)}</span>` +
-      (title ? `<span class="card__title">${esc(title)}</span>` : '') +
+      (title ? `<span class="card__title" title="${esc(title)}">${esc(title)}</span>` : '') +
       (meta ? `<span class="card__meta">${esc(meta)}</span>` : '') +
+      extra +
       '</div>'
     )
   }
 
-  function notice(m) {
+  // inThread: der Verlauf zeigt wartende Nachrichten schon als Blasen.
+  function notice(m, inThread = false) {
     if (m.pendingHints) {
+      if (inThread) return ''
       const text = m.mod ? 'Hinweis wird gesendet …' : 'Hinweis wartet – der Mod dieser Sitzung meldet sich nicht'
       return `<div class="card__notice">${esc(text)}</div>`
+    }
+    if (!inThread && m.queued.some((q) => q.sent)) {
+      return '<div class="card__notice">Deine Nachricht geht raus, sobald Claude fertig ist.</div>'
     }
     return m.notice ? `<div class="card__notice">${esc(m.notice)}</div>` : ''
   }
 
-  function compose(m, placeholder, label) {
+  // Das Eingabefeld unter der Karte: bei Fertig, Ruhig, Rückfrage und Arbeitet.
+  const PLACEHOLDER = {
+    done: 'Antworten … (Enter sendet, Umschalt+Enter: neue Zeile)',
+    idle: 'Anweisung an Claude … (Enter sendet)',
+    waiting: 'Nachricht – geht raus, sobald Claude wieder frei ist',
+    working: 'Nachricht – geht raus, sobald Claude fertig ist',
+  }
+
+  function composeModel(s) {
+    if (!s || s.approvals.length || !PLACEHOLDER[s.status]) return null
+    return { id: s.id, placeholder: PLACEHOLDER[s.status] }
+  }
+
+  // Mehrzeiliges Eingabefeld: Enter sendet, Umschalt+Enter macht eine neue Zeile.
+  // Gleiche Sitzung: nur den Platzhalter tauschen, damit Text, Fokus, Rückgängig
+  // und Eingabemethoden beim Tippen unberührt bleiben.
+  function renderCompose(el, m) {
+    const field = el.querySelector('.compose__field')
+    if (m && field && field.dataset.draft === `${m.id}:compose`) {
+      field.placeholder = m.placeholder
+      return
+    }
+    const focus = rememberFocus(el)
+    el.innerHTML = m
+      ? '<div class="compose">' +
+        `<textarea class="field compose__field" rows="1" data-grow data-draft="${esc(m.id)}:compose" placeholder="${esc(m.placeholder)}" maxlength="8000"></textarea>` +
+        '<button class="btn btn--primary" type="button" data-act="send" title="Senden (Enter)">Senden</button></div>'
+      : ''
+    el.querySelectorAll('[data-draft]').forEach((f) => {
+      f.value = drafts.get(f.dataset.draft) || ''
+      fit(f)
+    })
+    restoreFocus(el, focus)
+  }
+
+  const clock = (at) => new Date(at).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
+
+  function bubble({ mine, who, when, text, anchor = false, pending = false }) {
+    const cls = ['bubble', mine ? 'bubble--user' : 'bubble--claude', pending ? 'is-pending' : ''].filter(Boolean).join(' ')
     return (
-      `<div class="compose"><input class="field" data-draft="${esc(m.id)}:compose" placeholder="${esc(placeholder)}" maxlength="8000" />` +
-      `<button class="btn btn--primary" type="button" data-act="send">${esc(label)}</button></div>`
+      `<div class="${cls}"${anchor ? ' data-anchor' : ''}>` +
+      `<div class="bubble__who">${esc(who)}${when ? ` · ${esc(when)}` : ''}</div>` +
+      `<div class="bubble__text">${esc(text)}</div></div>`
+    )
+  }
+
+  // Der Gesprächsverlauf: deine Prompts rechts, Claudes Antworten links, Neuestes unten.
+  function thread(m) {
+    let entries = m.history
+    // Sitzungen, die vor dem Start der Insel liefen, kennen nur die letzte Antwort.
+    if (!entries.length && m.lastMessage) entries = [{ role: 'assistant', text: m.lastMessage, at: 0 }]
+    if (!entries.length && !m.queued.length) return ''
+    const lastClaude = entries.map((e) => e.role).lastIndexOf('assistant')
+    const html = entries.map((e, i) =>
+      bubble({
+        mine: e.role === 'user',
+        who: e.role === 'user' ? 'Du' : 'Claude',
+        when: e.at ? clock(e.at) : '',
+        text: e.text,
+        anchor: i === lastClaude,
+      }),
+    )
+    for (const q of m.queued) {
+      const when = q.sent ? 'geht raus, sobald Claude frei ist' : m.mod ? 'wird gesendet …' : 'wartet – der Mod meldet sich nicht'
+      html.push(bubble({ mine: true, who: 'Du', when, text: q.text, pending: true }))
+    }
+    const last = entries[entries.length - 1]
+    const sig = `${entries.length}:${last ? last.at : 0}:${m.queued.length}`
+    return `<div class="thread" data-scroll="thread" data-sig="${sig}" tabindex="-1">${html.join('')}</div>`
+  }
+
+  function stepsList(steps) {
+    if (!steps.length) return '<div class="thinking"><span></span><span></span><span></span>Denkt nach …</div>'
+    return (
+      '<ol class="steps" data-scroll="steps">' +
+      steps
+        .map((step, i) => {
+          const cls = ['step', step.ok ? '' : 'is-failed', i === steps.length - 1 && step.ok ? 'is-current' : '']
+            .filter(Boolean)
+            .join(' ')
+          const title = step.ok ? step.text : `${step.text}\n${step.error}`
+          return `<li class="${cls}" title="${esc(title)}"><span class="step__dot"></span><span class="step__tool">${esc(step.tool)}</span><span class="step__text">${esc(step.text)}</span></li>`
+        })
+        .join('') +
+      '</ol>'
     )
   }
 
   function renderCard(el, m) {
     const focus = rememberFocus(el)
+    const scroll = rememberScroll(el)
     let html = ''
     switch (m.kind) {
       case 'empty':
@@ -203,7 +316,7 @@
         html =
           head('waiting', a.tool, meta) +
           (a.summary && a.summary !== a.detail ? `<p class="card__lead">${esc(a.summary)}</p>` : '') +
-          `<pre class="code">${esc(a.detail)}</pre>` +
+          `<pre class="code" data-scroll="code:${esc(a.id)}">${esc(a.detail)}</pre>` +
           '<div class="actions">' +
           `<button class="btn btn--ghost btn--danger" type="button" data-act="deny" data-approval="${esc(a.id)}">Ablehnen</button>` +
           `<button class="btn btn--primary" type="button" data-act="allow" data-approval="${esc(a.id)}">Freigeben</button>` +
@@ -215,7 +328,7 @@
         html =
           head('problem', p.title) +
           (p.detail ? `<pre class="code code--error">${esc(p.detail)}</pre>` : '') +
-          `<textarea class="field" data-draft="${esc(m.id)}:hint" placeholder="Hinweis an Claude, z. B. „Nimm npm ci statt npm install“ (Strg+Enter)" maxlength="8000"></textarea>` +
+          `<textarea class="field" data-draft="${esc(m.id)}:hint" placeholder="Hinweis an Claude, z. B. „Nimm npm ci statt npm install“ (Enter sendet)" maxlength="8000"></textarea>` +
           notice(m) +
           '<div class="actions">' +
           '<button class="btn btn--ghost" type="button" data-act="retry">Erneut versuchen</button>' +
@@ -224,50 +337,110 @@
         break
       }
       case 'working': {
-        const steps = m.steps
-        const list = steps.length
-          ? '<ol class="steps">' +
-            steps
-              .map((step, i) => {
-                const cls = ['step', step.ok ? '' : 'is-failed', i === steps.length - 1 && step.ok ? 'is-current' : '']
-                  .filter(Boolean)
-                  .join(' ')
-                const title = step.ok ? step.text : `${step.text}\n${step.error}`
-                return `<li class="${cls}" title="${esc(title)}"><span class="step__dot"></span><span class="step__tool">${esc(step.tool)}</span><span class="step__text">${esc(step.text)}</span></li>`
-              })
-              .join('') +
-            '</ol>'
-          : '<div class="thinking"><span></span><span></span><span></span>Denkt nach …</div>'
-        html = head('working', m.prompt || 'Arbeitet', steps.length ? `${steps.length} ${steps.length === 1 ? 'Schritt' : 'Schritte'}` : '') + list + notice(m)
+        const inThread = m.view === 'thread'
+        const count = inThread ? 0 : m.steps.length
+        const toggle = `<button class="card__switch" type="button" data-act="view">${inThread ? 'Schritte' : 'Verlauf'}</button>`
+        html =
+          head('working', m.prompt || 'Arbeitet', count ? `${count} ${count === 1 ? 'Schritt' : 'Schritte'}` : '', TAG.working, toggle) +
+          (inThread ? thread(m) || '<div class="empty"><span>Noch kein Verlauf.</span></div>' : stepsList(m.steps)) +
+          notice(m, inThread)
         break
       }
-      case 'waiting':
+      case 'waiting': {
+        const talk = thread(m)
         html =
           head('waiting', 'Claude braucht dich', '', 'Rückfrage') +
           `<p class="card__lead">${esc(m.notice || 'Eine Rückfrage wartet auf deine Antwort.')}</p>` +
-          '<p class="card__muted">Antworte im Code-Tab der Claude-App.</p>'
+          '<p class="card__muted">Die Rückfrage selbst beantwortest du im Code-Tab der Claude-App.</p>' +
+          talk +
+          notice({ ...m, notice: '' }, Boolean(talk))
         break
-      case 'done':
+      }
+      case 'done': {
+        const talk = thread(m)
         html =
           head('done', m.prompt) +
-          `<div class="message">${esc(m.message || 'Fertig. Bereit für die nächste Anweisung.')}</div>` +
-          notice(m) +
-          compose(m, 'Nächste Anweisung …', 'Senden')
+          (talk || '<div class="message">Fertig. Bereit für die nächste Anweisung.</div>') +
+          notice(m, Boolean(talk))
         break
-      default:
+      }
+      default: {
+        const talk = thread(m)
         html =
           head('idle', '') +
-          '<div class="empty"><span>Schläft. Schick eine Anweisung, um die Sitzung zu wecken.</span></div>' +
-          notice(m) +
-          compose(m, 'Anweisung an Claude …', 'Senden')
+          (talk || '<div class="empty"><span>Schläft. Schick eine Anweisung, um die Sitzung zu wecken.</span></div>') +
+          notice(m, Boolean(talk))
+      }
     }
     el.innerHTML = html
     el.querySelectorAll('[data-draft]').forEach((field) => {
       field.value = drafts.get(field.dataset.draft) || ''
+      fit(field)
     })
     restoreFocus(el, focus)
-    const list = el.querySelector('.steps')
-    if (list) list.scrollTop = list.scrollHeight
+    restoreScroll(el, scroll, m.id)
+  }
+
+  // Scrollpositionen überleben das Neuzeichnen. Neue Nachrichten und Schritte
+  // scrollen mit, außer man liest gerade weiter oben.
+  function rememberScroll(el) {
+    const boxes = {}
+    el.querySelectorAll('[data-scroll]').forEach((box) => {
+      boxes[box.dataset.scroll] = {
+        top: box.scrollTop,
+        atEnd: box.scrollHeight - box.scrollTop - box.clientHeight < 24,
+        sig: box.dataset.sig,
+        pending: box.querySelectorAll('.is-pending').length,
+      }
+    })
+    return { session: el.dataset.session, boxes }
+  }
+
+  function restoreScroll(el, saved, session) {
+    el.dataset.session = session || ''
+    const same = saved.session === el.dataset.session
+    el.querySelectorAll('[data-scroll]').forEach((box) => {
+      const key = box.dataset.scroll
+      const prev = same ? saved.boxes[key] : null
+      if (!prev) box.scrollTop = initialScroll(box)
+      else if (key === 'thread' && prev.sig !== box.dataset.sig) {
+        // Selbst geschrieben: die eigene Nachricht zeigen. Sonst nur mitgehen, wer unten war.
+        if (box.querySelectorAll('.is-pending').length > prev.pending) box.scrollTop = box.scrollHeight
+        else box.scrollTop = prev.atEnd ? threadStart(box) : prev.top
+      } else if (key === 'steps' && prev.atEnd) box.scrollTop = box.scrollHeight
+      else box.scrollTop = prev.top
+    })
+  }
+
+  // Frisch geöffnet: Verlauf am Anfang der neuesten Antwort, Schritte unten, sonst oben.
+  function initialScroll(box) {
+    const key = box.dataset.scroll
+    if (key === 'thread') return threadStart(box)
+    if (key === 'steps') return box.scrollHeight
+    return 0
+  }
+
+  // Zugeklappt hat nichts eine Höhe; beim Aufklappen deshalb neu ausrichten.
+  function resetScroll() {
+    byId('card').querySelectorAll('[data-scroll]').forEach((box) => {
+      box.scrollTop = initialScroll(box)
+    })
+  }
+
+  // Wohin der Verlauf beim Öffnen scrollt: an den Anfang der neuesten Antwort,
+  // damit man sie von oben lesen kann; ist sie kurz (oder folgt noch etwas), ganz nach unten.
+  function threadStart(box) {
+    const end = box.scrollHeight - box.clientHeight
+    const anchor = box.querySelector('[data-anchor]')
+    if (!anchor || anchor.nextElementSibling) return end
+    return Math.max(0, Math.min(end, anchor.offsetTop - 8))
+  }
+
+  // Das Eingabefeld wächst mit dem Text, bis etwa fünf Zeilen.
+  function fit(field) {
+    if (!field.hasAttribute('data-grow')) return
+    field.style.height = 'auto'
+    field.style.height = `${Math.min(field.scrollHeight + 2, 120)}px`
   }
 
   // Ohne Sitzung: sagen, warum nichts ankommt, und das Plugin aktivieren lassen.
@@ -368,6 +541,7 @@
     api.hint(s.id, text)
     drafts.delete(field.dataset.draft)
     field.value = ''
+    fit(field)
   }
 
   byId('card').addEventListener('click', (event) => {
@@ -381,25 +555,31 @@
     } else if (act === 'retry' && s) {
       api.retry(s.id)
     } else if (act === 'hint') {
-      sendHint(byId('card').querySelector('textarea[data-draft]'))
+      sendHint(byId('card').querySelector('textarea[data-draft$=":hint"]'))
     } else if (act === 'activate') {
       api.activatePlugin()
     } else if (act === 'update-plugin') {
       api.updatePlugin()
     } else if (act === 'send') {
-      sendHint(byId('card').querySelector('input[data-draft]'))
+      sendHint(byId('card').querySelector('.compose__field'))
+    } else if (act === 'view' && s) {
+      views.set(s.id, views.get(s.id) === 'thread' ? 'steps' : 'thread')
+      render()
     }
   })
 
   byId('card').addEventListener('input', (event) => {
     const field = event.target
-    if (field.dataset.draft) drafts.set(field.dataset.draft, field.value)
+    if (field.dataset.draft) {
+      drafts.set(field.dataset.draft, field.value)
+      fit(field)
+    }
   })
 
+  // Enter sendet, Umschalt+Enter macht eine neue Zeile (auch beim Hinweis-Feld).
   byId('card').addEventListener('keydown', (event) => {
     const field = event.target
-    if (!field.dataset || !field.dataset.draft || event.key !== 'Enter') return
-    if (field.tagName === 'TEXTAREA' && !(event.ctrlKey || event.metaKey)) return
+    if (!field.dataset || !field.dataset.draft || event.key !== 'Enter' || event.isComposing || event.shiftKey) return
     event.preventDefault()
     sendHint(field)
   })
@@ -424,12 +604,35 @@
   byId('btn-pin').addEventListener('click', () => api.setPinned(!state.ui.pinned))
   byId('btn-sound').addEventListener('click', () => api.setSound(!state.ui.sound))
   byId('btn-figure').addEventListener('click', () => api.setFigureMode(state.ui.figureMode === 'full' ? 'head' : 'full'))
+  byId('btn-tall').addEventListener('click', () => api.setTall(!state.ui.tall))
   byId('stage-conn').addEventListener('click', (event) => {
-    if (event.target.closest('[data-act="update-plugin"]')) api.updatePlugin()
+    const act = event.target.closest('[data-act]')?.dataset.act
+    if (act === 'update-plugin') api.updatePlugin()
+    if (act === 'install-update') api.installUpdate()
+    if (act === 'open-releases') api.openReleases()
   })
+  // Rechtsklick auf Text oder ins Eingabefeld: Kopieren/Einfügen. Sonst das App-Menü.
   window.addEventListener('contextmenu', (event) => {
     event.preventDefault()
-    api.openMenu()
+    const field = event.target.closest('textarea, input')
+    const block = event.target.closest('.bubble__text, .message, .code, .card__lead, .empty__cmd')
+    const selected = String(window.getSelection() || '')
+    if (field) {
+      api.openEditMenu({ editable: true, selected: field.selectionStart !== field.selectionEnd })
+    } else if (block || selected) {
+      menuBlock = block
+      api.openEditMenu({ editable: false, selected: Boolean(selected), block: block ? block.textContent : '' })
+    } else {
+      api.openMenu()
+    }
+  })
+  api.onEdit((command) => {
+    if (command !== 'select-block' || !menuBlock || !menuBlock.isConnected) return
+    const range = document.createRange()
+    range.selectNodeContents(menuBlock)
+    const selection = window.getSelection()
+    selection.removeAllRanges()
+    selection.addRange(range)
   })
   window.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && state.ui.expanded) collapse()
@@ -479,10 +682,15 @@
     if (!next) return
     if (!next.ui.expanded) closing = false
     if (next.ui.expanded && !state.ui.expanded) closing = false
+    const opened = next.ui.expanded && !state.ui.expanded
     const moved =
-      next.ui.expanded !== state.ui.expanded || next.overall !== state.overall || next.ui.figureMode !== state.ui.figureMode
+      next.ui.expanded !== state.ui.expanded ||
+      next.overall !== state.overall ||
+      next.ui.figureMode !== state.ui.figureMode ||
+      next.ui.tall !== state.ui.tall
     state = next
     render()
+    if (opened) resetScroll()
     if (moved) requestAnimationFrame(() => Mascot.refresh())
   }
 

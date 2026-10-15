@@ -50,7 +50,16 @@ ausführen**. Ist auf dem PC die **Intelligente App-Steuerung** (Smart App
 Control) eingeschaltet, blockiert sie unsignierte Apps ohne diese Option;
 dann geht nur der Weg über den Quellcode.
 Beide Dateien baut GitHub Actions bei jeder Änderung an der App neu
-(`.github/workflows/claude-island-windows.yml`).
+(`.github/workflows/claude-island-windows.yml`), jeweils mit der Version
+`0.4.<Build-Nummer>`.
+
+**Updates:** Die installierte Insel (Setup.exe, ab 0.4) prüft beim Start und
+alle 6 Stunden, ob es ein neueres Release gibt, und lädt es im Hintergrund.
+Dann steht links **Update · Neu starten**: Klick installiert und startet neu,
+sonst wird beim Beenden installiert. Rechtsklick › **Nach Updates suchen**
+prüft sofort. Wer noch 0.3 hat, lädt die Setup.exe einmal von Hand und
+doppelklickt; sie installiert über die alte Version. Die portable .exe kann sich
+nicht selbst ersetzen und zeigt nur **Neue Version** mit Link zur Download-Seite.
 
 **Aus dem Quellcode** (zum Mitentwickeln): Node.js 22 oder neuer, dann:
 
@@ -119,17 +128,28 @@ Claude Code 2.1.286 oder neuer (`/status` zeigt die Version).
   Links der Mini-Claude mit Status, rechts die Sitzungs-Chips und eine Karte je Zustand:
   - **Freigabe**: Werkzeug und Befehl/Datei, **Freigeben** / **Ablehnen**.
     Eine neue Freigabe klappt die Insel auf, ohne dir den Fokus zu stehlen.
-  - **Problem**: Fehlermeldung, **Hinweis geben** (Strg+Enter) oder
+  - **Problem**: Fehlermeldung, **Hinweis geben** (Enter) oder
     **Erneut versuchen**.
-  - **Arbeitet**: dein Prompt und die letzten Schritte.
-  - **Fertig**: Claudes letzte Antwort und ein Feld für die nächste Anweisung.
+  - **Arbeitet**: dein Prompt und die letzten Schritte; **Verlauf** schaltet auf
+    das bisherige Gespräch um.
+  - **Fertig** und **Ruhig**: der Gesprächsverlauf der Sitzung (die letzten 30
+    Prompts und Antworten, ungekürzt), scrollbar, Text markier- und kopierbar.
+    Beim Aufklappen steht der Anfang der neuesten Antwort oben.
+  - **Antworten**: das Feld unten (bei Fertig, Ruhig, Arbeitet und Rückfrage).
+    Enter sendet, Umschalt+Enter macht eine neue Zeile. Arbeitet Claude noch,
+    geht die Nachricht raus, sobald Claude fertig ist; bis dahin steht sie
+    gestrichelt im Verlauf.
   - unten **Modell** (Opus/Sonnet/Haiku) und **Aufwand** (Niedrig, Mittel,
     Hoch, Sehr hoch, Max) für die gewählte Sitzung. Ein Punkt markiert, was
     gerade tatsächlich läuft, wenn deine Wahl noch nicht angekommen ist.
 - **Kopfzeile**: der Figur-Knopf schaltet die Pille zwischen **nur Kopf** und
-  **ganzem Mini-Claude** um.
-- **Rechtsklick**: Größe, Figur in der Pille, Plugin aktivieren/aktualisieren,
-  „Mit Windows starten“, „Beenden“.
+  **ganzem Mini-Claude** um; der Pfeil-Knopf macht das Panel **größer** (bis
+  760 Pixel hoch, höchstens bis zum Bildschirmrand) für lange Antworten.
+- **Rechtsklick** auf Text oder ins Eingabefeld: Kopieren, Einfügen,
+  Ausschneiden, **Ganze Nachricht kopieren**. Strg+C/Strg+V gehen auch.
+- **Rechtsklick** sonst: Version, Größe, Figur in der Pille, Panel größer,
+  Plugin aktivieren/aktualisieren, Nach Updates suchen, „Mit Windows starten“,
+  „Beenden“.
 
 **Animationen** laufen mit der Bildrate des Monitors, auf dem die Insel steht
 (60 Hz am Laptop, bis 144 Hz am Monitor): Alle Dauer-Animationen bewegen nur

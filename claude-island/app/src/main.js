@@ -1,16 +1,19 @@
 'use strict'
 
-const { app, BrowserWindow, Menu, ipcMain, screen, dialog } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain, screen, dialog, clipboard, shell, net } = require('electron')
 const path = require('node:path')
 const { loadConfig, DEFAULTS } = require('./config')
 const { SessionStore } = require('./sessions')
 const { createIslandServer } = require('./server')
 const { checkPlugin, activatePlugin, updatePlugin } = require('./plugin')
+const { createUpdater } = require('./updater')
 
 // Grundmaße bei Größe 100 %; das Fenster wird mit `scale` verkleinert und
 // der Inhalt per Zoom mitskaliert, sodass das Layout in CSS gleich bleibt.
 const PILL = { width: 232, height: 48 }
 const PANEL = { width: 720, height: 436 }
+// „Größer“: so hoch, höchstens aber bis kurz über den unteren Bildschirmrand.
+const PANEL_TALL = 760
 const SCALES = [
   [0.5, 'Klein (50 %)'],
   [0.6, 'Kompakt (60 %)'],
@@ -111,8 +114,14 @@ function start() {
   let figureMode = validFigure(config.figureMode)
   const islandZoom = () => scale
 
+  const panelSize = () => {
+    if (!config.tall) return PANEL
+    const { workArea } = screen.getPrimaryDisplay()
+    const room = Math.floor((workArea.height - TOP_GAP * 3) / scale)
+    return { width: PANEL.width, height: Math.max(PANEL.height, Math.min(PANEL_TALL, room)) }
+  }
   const islandBounds = () => {
-    const size = scaled(expanded ? PANEL : PILL, scale)
+    const size = scaled(expanded ? panelSize() : PILL, scale)
     return { ...size, ...topCenter(size) }
   }
   win = makeWindow({ bounds: islandBounds(), zoom: islandZoom })
@@ -127,12 +136,27 @@ function start() {
     measureRefresh()
   })
 
+  // Updates: nur die installierte Version ersetzt sich selbst.
+  const updateMode = !app.isPackaged || process.platform !== 'win32' ? 'dev' : process.env.PORTABLE_EXECUTABLE_FILE ? 'portable' : 'installed'
+  const updater = createUpdater({
+    app,
+    mode: updateMode,
+    onChange: () => pushState(),
+    fetchText: async (url) => {
+      const res = await net.fetch(url, { cache: 'no-store' })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      return res.text()
+    },
+  })
+  updater.start()
+
   // Zustand an die Insel schicken, gebündelt auf höchstens einen Frame.
   const fullState = () => ({
     ...store.snapshot(),
-    ui: { expanded, pinned: config.pinned, sound: config.sound, scale, figureMode },
+    ui: { expanded, pinned: config.pinned, sound: config.sound, scale, figureMode, tall: Boolean(config.tall) },
     server: serverState,
     plugin: pluginState,
+    update: updater.state,
   })
   let pushTimer = null
   const pushState = () => {
@@ -229,6 +253,42 @@ function start() {
     pushState()
   }
 
+  function setTall(next) {
+    save({ tall: Boolean(next) })
+    place()
+    pushState()
+  }
+
+  // ---------- Updates ----------
+
+  const installUpdate = () => updater.install()
+  const openReleases = () => shell.openExternal(updater.releasesUrl)
+  async function checkForUpdates() {
+    const result = await updater.checkNow()
+    if (!alive(win)) return
+    const box = (message, detail, buttons = ['OK']) =>
+      dialog.showMessageBox(win, { type: 'info', title: 'Claude Island', message, detail, buttons, noLink: true })
+    if (result.mode === 'dev') {
+      box('Updates gibt es nur in der installierten Version.', 'Aus dem Quellcode gestartet (npm start).')
+    } else if (result.phase === 'current') {
+      box(`Claude Island ist aktuell (Version ${result.current}).`)
+    } else if (result.phase === 'error') {
+      box('Konnte nicht nach Updates suchen.', result.error || '')
+    } else if (result.phase === 'available') {
+      const { response } = await box(
+        `Version ${result.version} ist da (du hast ${result.current}).`,
+        'Die portable Version kann sich nicht selbst ersetzen. Lade die neue .exe herunter, oder installiere einmal die Setup.exe – die aktualisiert sich danach von selbst.',
+        ['Zur Download-Seite', 'Später'],
+      )
+      if (response === 0) openReleases()
+    } else if (result.phase === 'downloading') {
+      box(`Version ${result.version} wird geladen.`, 'Die Insel zeigt „Neu starten“, sobald sie bereit ist.')
+    } else if (result.phase === 'ready') {
+      const { response } = await box(`Version ${result.version} ist bereit.`, '', ['Jetzt neu starten', 'Beim Beenden'])
+      if (response === 0) installUpdate()
+    }
+  }
+
   // ---------- Plugin ----------
 
   let pluginCheck = null
@@ -307,6 +367,29 @@ function start() {
     pushState()
   })
   ipcMain.on('island:figure-mode', (_e, value) => setFigure(value))
+  ipcMain.on('island:tall', (_e, value) => setTall(value))
+  ipcMain.on('island:install-update', () => installUpdate())
+  ipcMain.on('island:open-releases', () => openReleases())
+  // Rechtsklick auf Text oder in ein Eingabefeld: Kopieren/Einfügen statt App-Menü.
+  ipcMain.on('island:edit-menu', (_e, info) => {
+    const editable = Boolean(info && info.editable)
+    const selected = Boolean(info && info.selected)
+    const block = info && typeof info.block === 'string' ? info.block.slice(0, 200_000) : ''
+    const items = editable
+      ? [
+          { role: 'cut', label: 'Ausschneiden', enabled: selected },
+          { role: 'copy', label: 'Kopieren', enabled: selected },
+          { role: 'paste', label: 'Einfügen' },
+          { type: 'separator' },
+          { role: 'selectAll', label: 'Alles markieren' },
+        ]
+      : [
+          { role: 'copy', label: 'Kopieren', enabled: selected },
+          { label: 'Ganze Nachricht kopieren', enabled: Boolean(block), click: () => clipboard.writeText(block) },
+          { label: 'Ganze Nachricht markieren', enabled: Boolean(block), click: () => send(win, 'island:edit', 'select-block') },
+        ]
+    Menu.buildFromTemplate(items).popup({ window: win })
+  })
   ipcMain.on('island:decide', (_e, approvalId, behavior) => store.decide(String(approvalId), behavior))
   ipcMain.on('island:hint', (_e, sessionId, text) => store.queueHint(String(sessionId), String(text)))
   ipcMain.on('island:retry', (_e, sessionId) => store.queueHint(String(sessionId), RETRY_TEXT))
@@ -327,8 +410,17 @@ function start() {
             enabled: pluginState.state !== 'active' && !pluginState.busy,
             click: () => enablePlugin(),
           }
+    const u = updater.state
+    const updateItem =
+      u.phase === 'ready'
+        ? { label: `Update ${u.version} installieren und neu starten`, click: () => installUpdate() }
+        : u.phase === 'available'
+          ? { label: `Neue Version ${u.version} herunterladen …`, click: () => openReleases() }
+          : u.phase === 'downloading'
+            ? { label: `Update ${u.version} wird geladen (${u.percent} %)`, enabled: false }
+            : { label: 'Nach Updates suchen', enabled: u.mode !== 'dev' && u.phase !== 'checking', click: () => checkForUpdates() }
     Menu.buildFromTemplate([
-      { label: 'Claude Island', enabled: false },
+      { label: `Claude Island ${app.getVersion()}`, enabled: false },
       { type: 'separator' },
       {
         label: 'Größe',
@@ -348,7 +440,14 @@ function start() {
           click: () => setFigure(value),
         })),
       },
+      {
+        label: 'Panel größer (mehr Platz zum Lesen)',
+        type: 'checkbox',
+        checked: Boolean(config.tall),
+        click: (item) => setTall(item.checked),
+      },
       pluginItem,
+      updateItem,
       { type: 'separator' },
       {
         label: 'Mit Windows starten',

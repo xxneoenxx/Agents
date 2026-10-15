@@ -2,7 +2,7 @@
 
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const { SessionStore, describeTool, modelFamily } = require('../src/sessions')
+const { SessionStore, describeTool, modelFamily, MAX_HISTORY, MAX_ENTRY_CHARS, MAX_HISTORY_CHARS } = require('../src/sessions')
 
 function clockStore() {
   let t = 1_000_000
@@ -168,6 +168,82 @@ test('Gesamtstimmung nach Priorität: wartet > Problem > arbeitet > fertig > ruh
   assert.equal(snap.overall, 'waiting')
   assert.deepEqual(snap.sessions.map((s) => s.status), ['waiting', 'problem', 'working'])
   assert.deepEqual(snap.counts, { waiting: 1, problem: 1, working: 1, done: 0, idle: 0 })
+})
+
+test('Verlauf: Prompts und Antworten der Reihe nach, ungekürzt, bei /clear leer', () => {
+  const { store, advance } = clockStore()
+  const long = 'Zeile\n'.repeat(3000)
+  store.handleHook('UserPromptSubmit', { ...base, prompt: 'Erkläre mir\n\ndie Insel' })
+  advance(1000)
+  store.handleHook('Stop', { ...base, last_assistant_message: long })
+  // Stop nach einem Stop-Hook liefert dieselbe Antwort noch einmal
+  store.handleHook('Stop', { ...base, last_assistant_message: long })
+  const h = only(store).history
+  assert.deepEqual(h.map((e) => e.role), ['user', 'assistant'])
+  assert.equal(h[0].text, 'Erkläre mir\n\ndie Insel')
+  assert.equal(h[1].text, long.trim())
+  assert.equal(h[1].at - h[0].at, 1000)
+  assert.equal(only(store).lastMessage, long)
+
+  store.handleHook('UserPromptSubmit', { ...base, prompt: 'x'.repeat(MAX_ENTRY_CHARS + 500) })
+  assert.equal(only(store).history[2].text.length, MAX_ENTRY_CHARS)
+  // Kopf der Karte bleibt einzeilig und kurz
+  assert.ok(only(store).prompt.length <= 240)
+
+  store.handleHook('SessionStart', { ...base, source: 'resume' })
+  assert.equal(only(store).history.length, 3)
+  store.handleHook('SessionStart', { ...base, source: 'clear' })
+  assert.deepEqual(only(store).history, [])
+})
+
+test('Verlauf ist begrenzt: höchstens MAX_HISTORY Einträge und MAX_HISTORY_CHARS Zeichen', () => {
+  const { store } = clockStore()
+  for (let i = 0; i < MAX_HISTORY + 7; i++) {
+    store.handleHook('UserPromptSubmit', { ...base, prompt: `Frage ${i}` })
+    store.handleHook('Stop', { ...base, last_assistant_message: `Antwort ${i}` })
+  }
+  const h = only(store).history
+  assert.equal(h.length, MAX_HISTORY)
+  assert.equal(h[h.length - 1].text, `Antwort ${MAX_HISTORY + 6}`)
+
+  for (let i = 0; i < 10; i++) store.handleHook('Stop', { ...base, last_assistant_message: `${i}`.repeat(MAX_ENTRY_CHARS) })
+  const chars = only(store).history.reduce((sum, e) => sum + e.text.length, 0)
+  assert.ok(chars <= MAX_HISTORY_CHARS, `${chars} Zeichen`)
+  assert.equal(only(store).history.at(-1).text, '9'.repeat(MAX_ENTRY_CHARS))
+})
+
+test('Nachricht aus der Insel: wartet, ist unterwegs, landet als Prompt im Verlauf', () => {
+  const { store, advance } = clockStore()
+  store.handleHook('UserPromptSubmit', { ...base, prompt: 'Baue' })
+  store.queueHint('s1', '  Und  dann\nnoch Tests ')
+  assert.deepEqual(only(store).queued, [{ text: 'Und  dann\nnoch Tests', sent: false }])
+  assert.equal(only(store).pendingHints, 1)
+
+  // Der Mod holt sie ab; Claude arbeitet noch, der Prompt kommt erst später
+  assert.deepEqual(store.modPoll({ session_id: 's1' }).hints, ['Und  dann\nnoch Tests'])
+  assert.deepEqual(only(store).queued, [{ text: 'Und  dann\nnoch Tests', sent: true }])
+  assert.equal(only(store).pendingHints, 0)
+
+  store.handleHook('Stop', { ...base, last_assistant_message: 'Gebaut.' })
+  store.handleHook('UserPromptSubmit', { ...base, prompt: 'Und dann noch Tests' })
+  assert.deepEqual(only(store).queued, [])
+  assert.deepEqual(only(store).history.map((e) => [e.role, e.text]), [
+    ['user', 'Baue'],
+    ['assistant', 'Gebaut.'],
+    ['user', 'Und dann noch Tests'],
+  ])
+
+  // Kommt der Prompt nie an (Mod abgestürzt), verschwindet die Nachricht nach einer Stunde
+  store.queueHint('s1', 'Verloren')
+  store.modPoll({ session_id: 's1' })
+  advance(30 * 60 * 1000)
+  store.modPoll({ session_id: 's1' })
+  store.tick()
+  assert.equal(only(store).queued.length, 1)
+  advance(31 * 60 * 1000)
+  store.modPoll({ session_id: 's1' })
+  store.tick()
+  assert.deepEqual(only(store).queued, [])
 })
 
 test('Hilfsfunktionen', () => {

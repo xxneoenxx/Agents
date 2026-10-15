@@ -25,6 +25,8 @@ const DEFAULTS = {
   // Mini-Claude in der Pille: 'head' = nur der Kopf (die ganze Figur wächst
   // beim Aufklappen heraus), 'full' = überall die ganze Figur.
   figureMode: 'head',
+  // Aufgeklapptes Panel höher (mehr Platz zum Lesen), höchstens so hoch wie der Bildschirm.
+  tall: false,
 }
 
 // Einmalige Umstellung: Die Insel wurde 50 % größer (Standard 60 % → 90 %).

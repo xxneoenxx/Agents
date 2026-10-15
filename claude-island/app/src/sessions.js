@@ -8,6 +8,15 @@ const { randomUUID } = require('node:crypto')
 
 const STATUS_RANK = { waiting: 4, problem: 3, working: 2, done: 1, idle: 0 }
 const MAX_STEPS = 8
+// Gesprächsverlauf je Sitzung: die letzten Prompts und Antworten, damit man sie
+// in der Insel nachlesen kann. Begrenzt, weil der Zustand bei jeder Änderung
+// an die Insel geht.
+const MAX_HISTORY = 30
+const MAX_ENTRY_CHARS = 20_000
+const MAX_HISTORY_CHARS = 120_000
+// Vom Mod abgeholte Nachrichten, die Claude Code noch nicht als Prompt gemeldet
+// hat (der Mod schickt sie erst, wenn die Sitzung frei ist).
+const OUTBOX_MS = 60 * 60 * 1000
 const FAIL_STREAK_PROBLEM = 3
 const DONE_DECAY_MS = 10 * 60 * 1000
 const MOD_ONLINE_MS = 5000
@@ -37,6 +46,8 @@ function clip(text, max) {
   const flat = text.replace(/\s+/g, ' ').trim()
   return flat.length > max ? `${flat.slice(0, max - 1)}…` : flat
 }
+
+const sameText = (a, b) => a.replace(/\s+/g, ' ').trim() === b.replace(/\s+/g, ' ').trim()
 
 function shortPath(file) {
   if (typeof file !== 'string') return ''
@@ -104,6 +115,8 @@ class SessionStore extends EventEmitter {
         desiredModel: null,
         desiredEffort: null,
         hints: [],
+        outbox: [],
+        history: [],
         lastPollAt: 0,
         createdAt: this.now(),
         updatedAt: this.now(),
@@ -147,6 +160,7 @@ class SessionStore extends EventEmitter {
           s.steps = []
           s.prompt = ''
           s.lastMessage = ''
+          s.history = []
           s.problem = null
           s.failStreak = 0
           this.setStatus(s, 'idle')
@@ -154,6 +168,11 @@ class SessionStore extends EventEmitter {
         break
       case 'UserPromptSubmit':
         s.prompt = clip(payload.prompt, 240)
+        if (typeof payload.prompt === 'string' && payload.prompt.trim()) {
+          const sent = s.outbox.findIndex((o) => sameText(o.text, payload.prompt))
+          if (sent >= 0) s.outbox.splice(sent, 1)
+          this.remember(s, 'user', payload.prompt)
+        }
         s.steps = []
         s.problem = null
         s.failStreak = 0
@@ -194,7 +213,10 @@ class SessionStore extends EventEmitter {
         break
       }
       case 'Stop':
-        s.lastMessage = typeof payload.last_assistant_message === 'string' ? payload.last_assistant_message.slice(0, 2000) : s.lastMessage
+        if (typeof payload.last_assistant_message === 'string' && payload.last_assistant_message.trim()) {
+          s.lastMessage = payload.last_assistant_message.slice(0, MAX_ENTRY_CHARS)
+          this.remember(s, 'assistant', payload.last_assistant_message)
+        }
         s.notice = ''
         if (s.status !== 'problem' || (s.problem && s.problem.kind === 'tools')) {
           s.problem = null
@@ -215,6 +237,19 @@ class SessionStore extends EventEmitter {
     }
     this.changed()
     return true
+  }
+
+  // Ein Eintrag im Verlauf; dieselbe Antwort zweimal hintereinander (Stop nach
+  // einem Stop-Hook) zählt einmal.
+  remember(s, role, text) {
+    const last = s.history[s.history.length - 1]
+    const clean = text.trim().slice(0, MAX_ENTRY_CHARS)
+    if (last && last.role === role && last.text === clean) return
+    s.history.push({ role, text: clean, at: this.now() })
+    let chars = s.history.reduce((sum, e) => sum + e.text.length, 0)
+    while (s.history.length > MAX_HISTORY || (s.history.length > 1 && chars > MAX_HISTORY_CHARS)) {
+      chars -= s.history.shift().text.length
+    }
   }
 
   pushStep(s, payload, ok) {
@@ -317,6 +352,7 @@ class SessionStore extends EventEmitter {
     }
     const hints = s.hints.splice(0)
     if (hints.length) {
+      for (const text of hints) s.outbox.push({ text, at: this.now() })
       s.notice = ''
       dirty = true
     }
@@ -338,6 +374,11 @@ class SessionStore extends EventEmitter {
         this.sessions.delete(s.id)
         dirty = true
         continue
+      }
+      const fresh = s.outbox.filter((o) => now - o.at <= OUTBOX_MS)
+      if (fresh.length !== s.outbox.length) {
+        s.outbox = fresh
+        dirty = true
       }
       if (s.status === 'done' && now - s.statusAt > DONE_DECAY_MS) {
         this.setStatus(s, 'idle')
@@ -370,6 +411,9 @@ class SessionStore extends EventEmitter {
         approvals,
         problem: s.problem ? { ...s.problem } : null,
         lastMessage: s.lastMessage,
+        history: s.history.map((e) => ({ ...e })),
+        // Noch nicht bei Claude angekommen: wartet auf den Mod bzw. darauf, dass Claude frei ist.
+        queued: [...s.hints.map((text) => ({ text, sent: false })), ...s.outbox.map((o) => ({ text: o.text, sent: true }))],
         notice: s.notice,
         model: s.model,
         modelFamily: modelFamily(s.model),
@@ -390,4 +434,14 @@ class SessionStore extends EventEmitter {
   }
 }
 
-module.exports = { SessionStore, modelFamily, describeTool, STATUS_RANK, EFFORTS, MODEL_FAMILIES }
+module.exports = {
+  SessionStore,
+  modelFamily,
+  describeTool,
+  STATUS_RANK,
+  EFFORTS,
+  MODEL_FAMILIES,
+  MAX_HISTORY,
+  MAX_ENTRY_CHARS,
+  MAX_HISTORY_CHARS,
+}
