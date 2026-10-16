@@ -624,14 +624,22 @@
     event.preventDefault()
     const field = event.target.closest('textarea, input')
     const block = event.target.closest('.bubble__text, .message, .code, .card__lead, .empty__cmd')
-    // Eine Auswahl zählt nur, wenn der Klick auf ihr liegt; sonst bliebe das App-Menü unerreichbar.
+    // Eine Auswahl zählt nur, wenn der Klick auf dem markierten Text liegt;
+    // sonst bliebe das App-Menü überall unerreichbar, solange etwas markiert ist.
     const selection = window.getSelection()
-    const selected = Boolean(String(selection || '')) && selection.containsNode(event.target, true)
+    const range = selection && selection.rangeCount && !selection.isCollapsed ? selection.getRangeAt(0) : null
+    const onSelection = Boolean(
+      range &&
+        [...range.getClientRects()].some(
+          (r) => event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom,
+        ),
+    )
+    const selectedHere = onSelection || Boolean(block && range && selection.containsNode(block, true))
     if (field) {
       api.openEditMenu({ editable: true, selected: field.selectionStart !== field.selectionEnd })
-    } else if (block || selected) {
+    } else if (block || onSelection) {
       menuBlock = block
-      api.openEditMenu({ editable: false, selected, block: block ? block.textContent : '' })
+      api.openEditMenu({ editable: false, selected: selectedHere, block: block ? block.textContent : '' })
     } else {
       api.openMenu()
     }

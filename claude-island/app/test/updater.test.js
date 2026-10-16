@@ -2,7 +2,7 @@
 
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const { createUpdater, isNewer, feedVersion, FEED_URL } = require('../src/updater')
+const { createUpdater, createIdleGate, isNewer, feedVersion, FEED_URL, IDLE_INSTALL_MS } = require('../src/updater')
 
 const fakeApp = (version) => ({ getVersion: () => version })
 
@@ -73,4 +73,38 @@ test('Portable: offline beim nächsten Prüfen behält die gefundene Version', a
   assert.equal(again.phase, 'available')
   assert.equal(again.version, '0.4.9')
   assert.equal(u.state.error, 'offline')
+})
+
+test('Update installiert sich nur nach einer Weile ohne Sitzung und bei zugeklapptem Panel', () => {
+  let t = 0
+  const gate = createIdleGate({ now: () => t })
+  const step = (ms, state) => {
+    t += ms
+    return gate(state)
+  }
+  // Sitzungen offen: nie
+  assert.equal(step(1000, { sessions: 1, expanded: false, ready: true }), false)
+  // /clear: die Liste ist eine Sekunde leer, dann meldet sich die neue Sitzung
+  assert.equal(step(1000, { sessions: 0, expanded: false, ready: true }), false)
+  assert.equal(step(1000, { sessions: 1, expanded: false, ready: true }), false)
+  // Aufwachen aus dem Standby: erst leer (verstummte Sitzungen entfernt), dann pollt der Mod wieder
+  assert.equal(step(3 * 60 * 60 * 1000, { sessions: 0, expanded: false, ready: true }), false)
+  assert.equal(step(1000, { sessions: 2, expanded: false, ready: true }), false)
+  // Claude-App geschlossen: nach der Wartezeit ja, aber nicht bei offenem Panel
+  assert.equal(step(1000, { sessions: 0, expanded: false, ready: true }), false)
+  assert.equal(step(IDLE_INSTALL_MS - 2000, { sessions: 0, expanded: false, ready: true }), false)
+  assert.equal(step(2000, { sessions: 0, expanded: true, ready: true }), false)
+  // Panel zugeklappt: jetzt
+  assert.equal(step(1000, { sessions: 0, expanded: false, ready: true }), true)
+  // Ohne fertiges Update nie
+  assert.equal(createIdleGate({ now: () => t })({ sessions: 0, expanded: false, ready: false }), false)
+})
+
+test('Nach dem Start ohne Sitzung: Wartezeit zählt ab dem Start', () => {
+  let t = 1000
+  const gate = createIdleGate({ now: () => t })
+  t += IDLE_INSTALL_MS - 1
+  assert.equal(gate({ sessions: 0, expanded: false, ready: true }), false)
+  t += 1
+  assert.equal(gate({ sessions: 0, expanded: false, ready: true }), true)
 })

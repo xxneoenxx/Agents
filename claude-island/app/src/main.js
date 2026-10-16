@@ -6,7 +6,7 @@ const { loadConfig, DEFAULTS } = require('./config')
 const { SessionStore } = require('./sessions')
 const { createIslandServer } = require('./server')
 const { checkPlugin, activatePlugin, updatePlugin } = require('./plugin')
-const { createUpdater } = require('./updater')
+const { createUpdater, createIdleGate } = require('./updater')
 
 // Grundmaße bei Größe 100 %; das Fenster wird mit `scale` verkleinert und
 // der Inhalt per Zoom mitskaliert, sodass das Layout in CSS gleich bleibt.
@@ -141,10 +141,7 @@ function start() {
   const updater = createUpdater({
     app,
     mode: updateMode,
-    onChange: () => {
-      pushState()
-      autoInstall()
-    },
+    onChange: () => pushState(),
     fetchText: async (url) => {
       const res = await net.fetch(url, { cache: 'no-store' })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
@@ -170,7 +167,6 @@ function start() {
     }, 8)
   }
   store.on('change', pushState)
-  store.on('change', () => autoInstall())
   store.on('signal', (signal) => {
     send(win, 'island:signal', signal)
     if (signal.type === 'approval') {
@@ -178,7 +174,14 @@ function start() {
       setExpanded(true)
     }
   })
-  setInterval(() => store.tick(), 1000)
+  // Ein fertig geladenes Update installiert sich von selbst, wenn eine Weile
+  // nichts offen ist (etwa nach dem Anmelden, bevor die Claude-App läuft, oder
+  // nachdem sie geschlossen wurde). Sonst wartet es auf „Update · Neu starten“.
+  const idleForUpdate = createIdleGate()
+  setInterval(() => {
+    store.tick()
+    if (idleForUpdate({ sessions: store.sessions.size, expanded, ready: updater.state.phase === 'ready' })) installUpdate()
+  }, 1000)
 
   const island = createIslandServer(store, { port: config.port })
   island
@@ -266,13 +269,6 @@ function start() {
   // ---------- Updates ----------
 
   const installUpdate = () => updater.install()
-  // Ein fertig geladenes Update installiert sich von selbst, solange nichts
-  // offen ist (etwa beim Anmelden, bevor die Claude-App läuft, oder wenn sie
-  // geschlossen ist). Sonst wartet es auf „Update · Neu starten“ oder aufs Beenden.
-  function autoInstall() {
-    if (updater.state.phase !== 'ready' || expanded || store.sessions.size) return
-    installUpdate()
-  }
   const openReleases = () => shell.openExternal(updater.releasesUrl)
   async function checkForUpdates() {
     const result = await updater.checkNow()

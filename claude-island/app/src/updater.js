@@ -9,6 +9,10 @@ const RELEASES_URL = 'https://github.com/xxneoenxx/Agents/releases/latest'
 const FEED_URL = `${RELEASES_URL}/download/latest.yml`
 const FIRST_CHECK_MS = 15 * 1000
 const CHECK_EVERY_MS = 6 * 60 * 60 * 1000
+// So lange darf keine Sitzung offen sein, bevor ein fertiges Update sich von
+// selbst installiert. Länger als die 2 min, nach denen eine verstummte Sitzung
+// verschwindet: ein /clear oder das Aufwachen aus dem Standby leeren die Liste nur kurz.
+const IDLE_INSTALL_MS = 3 * 60 * 1000
 
 // Ist Version a neuer als b? Nur Major.Minor.Patch, wie in den Releases.
 function isNewer(a, b) {
@@ -22,6 +26,20 @@ function isNewer(a, b) {
 function feedVersion(text) {
   const match = /^version:\s*['"]?(\d+\.\d+\.\d+)/m.exec(String(text || ''))
   return match ? match[1] : null
+}
+
+// Entscheidet jede Sekunde, ob ein fertiges Update jetzt still installiert
+// werden darf: Panel zu und seit graceMs keine Sitzung offen.
+function createIdleGate({ graceMs = IDLE_INSTALL_MS, now = Date.now } = {}) {
+  let emptySince = now()
+  return ({ sessions, expanded, ready }) => {
+    if (sessions > 0) {
+      emptySince = null
+      return false
+    }
+    if (emptySince === null) emptySince = now()
+    return Boolean(ready) && !expanded && now() - emptySince >= graceMs
+  }
 }
 
 // mode: 'installed' (Setup.exe), 'portable' oder 'dev' (npm start, kein Update).
@@ -117,4 +135,4 @@ function createUpdater({ app, mode, onChange, fetchText }) {
   }
 }
 
-module.exports = { createUpdater, isNewer, feedVersion, RELEASES_URL, FEED_URL }
+module.exports = { createUpdater, createIdleGate, isNewer, feedVersion, RELEASES_URL, FEED_URL, IDLE_INSTALL_MS }
