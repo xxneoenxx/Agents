@@ -1,3 +1,3 @@
-"""FOMO bot: tracks new pump.fun memecoins and signals when many buyers pile in."""
+"""FOMO bot: records pump.fun launches and trades, later signals when strategy rules hold."""
 
-__version__ = "0.1.0"
+__version__ = "0.2.0a1"

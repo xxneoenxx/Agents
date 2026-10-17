@@ -59,7 +59,43 @@ class OutputConfig:
 
 
 @dataclass
+class SolanaConfig:
+    ws_url: str = "wss://api.mainnet-beta.solana.com"
+    rpc_url: str = "https://api.mainnet-beta.solana.com"
+    commitment: str = "confirmed"
+
+
+@dataclass
+class RecorderConfig:
+    dir: str = "data/tape"
+    keep_days: float = 30.0
+    min_free_gb: float = 2.0
+    compress: bool = True
+
+
+@dataclass
+class DexScreenerConfig:
+    enabled: bool = True
+    base_url: str = "https://api.dexscreener.com"
+    track_hours: float = 24.0
+    interval_s: float = 30.0
+    max_requests_per_min: int = 120
+
+
+@dataclass
+class OpsConfig:
+    healthcheck_url: str = ""
+    heartbeat_time: str = "09:00"
+    timezone: str = "Europe/Berlin"
+    alarm_after_s: float = 120.0
+
+
+@dataclass
 class Config:
+    solana: SolanaConfig = field(default_factory=SolanaConfig)
+    recorder: RecorderConfig = field(default_factory=RecorderConfig)
+    dexscreener: DexScreenerConfig = field(default_factory=DexScreenerConfig)
+    ops: OpsConfig = field(default_factory=OpsConfig)
     source: SourceConfig = field(default_factory=SourceConfig)
     tracking: TrackingConfig = field(default_factory=TrackingConfig)
     signal: SignalConfig = field(default_factory=SignalConfig)
@@ -77,7 +113,32 @@ ENV_OVERRIDES = {
     "TELEGRAM_BOT_TOKEN": ("telegram", "bot_token"),
     "TELEGRAM_CHAT_ID": ("telegram", "chat_id"),
     "DISCORD_WEBHOOK_URL": ("discord", "webhook_url"),
+    "SOLANA_RPC_URL": ("solana", "rpc_url"),
+    "SOLANA_WS_URL": ("solana", "ws_url"),
+    "HEALTHCHECK_URL": ("ops", "healthcheck_url"),
 }
+# Any setting can also be given as MEMECOIN_BOT__<SECTION>__<KEY>, e.g.
+# MEMECOIN_BOT__RECORDER__KEEP_DAYS=21
+ENV_PREFIX = "MEMECOIN_BOT__"
+_TRUE = {"1", "true", "yes", "ja", "on"}
+_FALSE = {"0", "false", "no", "nein", "off"}
+
+
+def _parse_env_value(current: object, raw: str, name: str) -> object:
+    """Convert an environment string to the type of the setting it overrides."""
+    text = raw.strip()
+    if isinstance(current, bool):
+        if text.lower() in _TRUE:
+            return True
+        if text.lower() in _FALSE:
+            return False
+        raise ConfigError(f"{name} muss true oder false sein")
+    if isinstance(current, (int, float)):
+        try:
+            return float(text) if isinstance(current, float) else int(text)
+        except ValueError:
+            raise ConfigError(f"{name} muss eine Zahl sein") from None
+    return raw
 
 
 def _apply_section(target: object, section: str, values: dict) -> None:
@@ -114,10 +175,24 @@ def load_config(path: str | os.PathLike | None) -> Config:
                 raise ConfigError(f"Unbekannter Abschnitt [{section}]")
             _apply_section(getattr(cfg, section), section, values)
 
+    overrides: list[tuple[str, str, str, str]] = []
     for env, (section, key) in ENV_OVERRIDES.items():
-        value = os.environ.get(env)
-        if value:
-            setattr(getattr(cfg, section), key, value)
+        if os.environ.get(env):
+            overrides.append((env, section, key, os.environ[env]))
+    for env, value in sorted(os.environ.items()):
+        if env.startswith(ENV_PREFIX) and value != "":
+            parts = env[len(ENV_PREFIX):].lower().split("__")
+            if len(parts) != 2:
+                raise ConfigError(f"{env}: erwartet {ENV_PREFIX}<ABSCHNITT>__<NAME>")
+            overrides.append((env, parts[0], parts[1], value))
+    sections = {f.name for f in fields(cfg)}
+    for env, section, key, value in overrides:
+        if section not in sections:
+            raise ConfigError(f"{env}: unbekannter Abschnitt [{section}]")
+        target = getattr(cfg, section)
+        if key not in {f.name for f in fields(target)}:
+            raise ConfigError(f"{env}: unbekannte Einstellung [{section}] {key}")
+        _apply_section(target, section, {key: _parse_env_value(getattr(target, key), value, env)})
     return cfg
 
 

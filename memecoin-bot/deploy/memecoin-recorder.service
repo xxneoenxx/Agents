@@ -1,0 +1,42 @@
+[Unit]
+Description=Memecoin-Bot Recorder (zeichnet alle pump.fun-Ereignisse auf)
+Documentation=https://github.com/xxneoenxx/Agents/tree/claude/memecoin-fomo-bot/memecoin-bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=memecoin
+Group=memecoin
+WorkingDirectory=/opt/memecoin-bot/src/memecoin-bot
+EnvironmentFile=/etc/memecoin-bot.env
+Environment=PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
+Environment=MEMECOIN_BOT__RECORDER__DIR=/var/lib/memecoin-bot/tape
+ExecStart=/opt/memecoin-bot/venv/bin/python -m memecoin_bot record
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+StateDirectory=memecoin-bot
+StateDirectoryMode=0750
+
+# Absicherung: nur der Datenordner ist beschreibbar, keine Rechteausweitung.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+RestrictNamespaces=true
+LockPersonality=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+MemoryMax=600M
+
+[Install]
+WantedBy=multi-user.target

@@ -9,7 +9,7 @@ import sys
 from . import app
 from .config import ConfigError, default_config_path, load_config
 
-COMMANDS = ("run", "demo", "replay", "test-alert")
+COMMANDS = ("record", "doctor", "idl-check", "run", "demo", "replay", "test-alert")
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -22,7 +22,14 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         description="Beobachtet neue pump.fun-Memecoins und meldet, wenn viele Käufer einsteigen.",
     )
     sub = parser.add_subparsers(dest="command")
-    run = sub.add_parser("run", parents=[common], help="live laufen lassen (Standard)")
+    sub.add_parser("record", parents=[common], help="v2: alle pump.fun-Ereignisse kostenlos aufzeichnen")
+    doctor = sub.add_parser("doctor", parents=[common], help="Selbsttest aller Datenquellen")
+    doctor.add_argument("--probe-seconds", type=float, default=20.0, metavar="S",
+                        help="so lange den Solana-Datenstrom testen (Standard 20)")
+    doctor.add_argument("--save-fixtures", metavar="ORDNER", help="Beispiel-Logs und Statistik speichern")
+    sub.add_parser("idl-check", parents=[common], help="prüfen, ob pump.fun sein Event-Format geändert hat")
+    run = sub.add_parser("run", parents=[common],
+                         help="v1-Live-Modus (braucht seit 05/2026 einen kostenpflichtigen PumpPortal-Key)")
     run.add_argument("--record", metavar="DATEI", help="alle Rohdaten als JSONL aufzeichnen (für replay)")
     sub.add_parser("demo", parents=[common], help="Demo mit simulierten Coins, ohne Internet")
     replay = sub.add_parser("replay", parents=[common], help="aufgezeichnete Daten erneut auswerten")
@@ -30,7 +37,9 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     replay.add_argument("--notify", action="store_true", help="Signale auch an Telegram/Discord senden")
     sub.add_parser("test-alert", parents=[common], help="Test-Nachricht an Telegram/Discord schicken")
 
-    if not argv or argv[0] not in COMMANDS + ("-h", "--help"):
+    if not argv:
+        argv = ["--help"]
+    elif argv[0] not in COMMANDS + ("-h", "--help"):
         argv = ["run", *argv]
     return parser.parse_args(argv)
 
@@ -60,7 +69,14 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     try:
-        if args.command == "demo":
+        if args.command == "record":
+            from .recorder import run_recorder
+            asyncio.run(run_recorder(cfg))
+        elif args.command == "doctor":
+            return asyncio.run(_doctor(cfg, args))
+        elif args.command == "idl-check":
+            return asyncio.run(_idl_check())
+        elif args.command == "demo":
             asyncio.run(app.run_demo(cfg))
         elif args.command == "replay":
             asyncio.run(app.run_replay(cfg, args.file, notify=args.notify))
@@ -74,6 +90,30 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Datei nicht gefunden: {exc.filename}", file=sys.stderr)
         return 2
     return 0
+
+
+async def _doctor(cfg, args) -> int:
+    from pathlib import Path
+
+    from .doctor import format_checks, run_doctor
+    print(f"Selbsttest läuft (Datenstrom-Probe {args.probe_seconds:.0f} s) …\n")
+    checks = await run_doctor(cfg, args.probe_seconds, Path(args.save_fixtures) if args.save_fixtures else None)
+    print(format_checks(checks))
+    return 1 if any(c.status == "fail" for c in checks) else 0
+
+
+async def _idl_check() -> int:
+    import aiohttp
+
+    from .doctor import idl_check
+    async with aiohttp.ClientSession(trust_env=True) as session:
+        try:
+            changed, report = await idl_check(session)
+        except (aiohttp.ClientError, asyncio.TimeoutError) as exc:
+            print(f"IDL nicht abrufbar: {exc!r}", file=sys.stderr)
+            return 2
+    print(report)
+    return 1 if changed else 0
 
 
 if __name__ == "__main__":

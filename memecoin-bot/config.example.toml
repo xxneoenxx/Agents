@@ -1,7 +1,37 @@
 # Kopiere diese Datei nach config.toml und passe sie an.
 # Alle Werte sind optional – was fehlt, nimmt den Standardwert unten.
 # Geheimnisse kannst du statt hier auch als Umgebungsvariable setzen:
-#   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, DISCORD_WEBHOOK_URL, PUMPPORTAL_API_KEY
+#   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, SOLANA_RPC_URL, SOLANA_WS_URL, HEALTHCHECK_URL,
+#   DISCORD_WEBHOOK_URL, PUMPPORTAL_API_KEY
+# Jede andere Einstellung: MEMECOIN_BOT__<ABSCHNITT>__<NAME>, z. B. MEMECOIN_BOT__RECORDER__KEEP_DAYS=14
+
+# --- Recorder (v2.0a): zeichnet alle pump.fun-Ereignisse kostenlos auf ---
+
+[solana]
+ws_url = "wss://api.mainnet-beta.solana.com"     # kostenloser öffentlicher Solana-Knoten
+rpc_url = "https://api.mainnet-beta.solana.com"
+commitment = "confirmed"
+
+[recorder]
+dir = "data/tape"     # hier landen die Aufnahmen (eine Datei pro Stunde)
+keep_days = 30        # ältere Aufnahmen werden gelöscht
+min_free_gb = 2.0     # wird der Platz knapper, fliegen die ältesten Stunden zuerst
+compress = true
+
+[dexscreener]
+enabled = true        # Preise nach der Migration (PumpSwap) mitschreiben
+base_url = "https://api.dexscreener.com"
+track_hours = 24
+interval_s = 30
+max_requests_per_min = 120
+
+[ops]
+healthcheck_url = ""        # optional, z. B. https://hc-ping.com/<id> (Totmannschalter)
+heartbeat_time = "09:00"    # tägliche Lebenszeichen-Nachricht per Telegram
+timezone = "Europe/Berlin"
+alarm_after_s = 120         # so lange darf der Datenstrom stocken, bevor Alarm kommt
+
+# --- Benachrichtigung ---
 
 [telegram]
 bot_token = ""        # von @BotFather
@@ -9,6 +39,8 @@ chat_id = ""          # deine Chat-ID (siehe README)
 
 [discord]
 webhook_url = ""      # optional: Kanal-Einstellungen -> Integrationen -> Webhooks
+
+# --- v1 (alt): Live-Modus mit PumpPortal-Trade-Daten, seit 05/2026 kostenpflichtig ---
 
 [source]
 ws_url = "wss://pumpportal.fun/api/data"
