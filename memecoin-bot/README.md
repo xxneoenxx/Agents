@@ -5,13 +5,19 @@ und schickt dir ein Signal (Konsole, Telegram, Discord), sobald **viele verschie
 kurzer Zeit einsteigen** – und filtert dabei die typischen Fallen (Dev verkauft, ein Wal kauft
 alles, Bot-Spam mit Mini-Käufen).
 
+> 🚧 **Wichtig (Stand 17.10.2026): Diese Version (v1) braucht kostenpflichtige Daten.** Seit dem
+> 01.05.2026 verlangt PumpPortal für Trade-Daten (`subscribeTokenTrade`) einen API-Key mit
+> verknüpfter Wallet und berechnet 0,01 SOL pro 10.000 Nachrichten. Kostenlos sind nur noch Launch-
+> und Migrations-Events. Eine v2 mit ausschließlich kostenlosen Datenquellen ist geplant; die
+> Hintergründe stehen in [`docs/STRATEGIE.md`](docs/STRATEGIE.md).
+
 > ⚠️ **Kein Finanzrat.** Die allermeisten Memecoins gehen auf null, viele sind Rugs. Ein Signal
 > heißt nur „gerade kaufen viele" – nicht „das steigt weiter". Wer FOMO-Signale kauft, ist oft der
 > Exit für andere. Nur mit Geld spielen, das du komplett verlieren kannst.
 
 ## So funktioniert's
 
-1. Der Bot verbindet sich mit dem kostenlosen [PumpPortal](https://pumpportal.fun)-WebSocket und
+1. Der Bot verbindet sich mit dem [PumpPortal](https://pumpportal.fun)-WebSocket und
    bekommt jeden neuen Launch (`subscribeNewToken`).
 2. Für jeden neuen Coin abonniert er sofort alle Trades und beobachtet ihn bis zu 30 Minuten
    (bzw. bis 5 Minuten lang nichts mehr passiert).
@@ -130,9 +136,10 @@ Achtung: Aufzeichnungen werden schnell groß (je nach Marktlage zig MB pro Stund
   auf, wenn sie später handeln.
 - **Wash-Trading mit vielen Wallets** (ein Akteur, viele Wallets) lässt sich so nicht sicher
   erkennen. Der Mindestkauf und der Wal-Filter helfen, sind aber kein Schutz.
-- Für Trade-Daten nach der Migration zu PumpSwap kann PumpPortal einen API-Key verlangen
-  (`[source] api_key`, siehe pumpportal.fun). Die frühe Phase auf der Bonding Curve, um die es
-  dem Bot geht, ist kostenlos.
+- Für die Trade-Daten, auf denen v1 aufbaut, verlangt PumpPortal seit dem 01.05.2026 einen
+  API-Key (`[source] api_key`) und eine Wallet mit mindestens 0,02 SOL; die Nachrichten werden
+  einzeln abgerechnet (0,01 SOL pro 10.000). Ohne Key kommen nur Launch-Events an, und der Bot
+  signalisiert nichts.
 - Bitte nur **eine** Bot-Instanz gleichzeitig laufen lassen – PumpPortal sperrt sonst ggf. deine IP.
 
 ## Tests
