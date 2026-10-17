@@ -1,0 +1,47 @@
+# Kopiere diese Datei nach config.toml und passe sie an.
+# Alle Werte sind optional – was fehlt, nimmt den Standardwert unten.
+# Geheimnisse kannst du statt hier auch als Umgebungsvariable setzen:
+#   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, DISCORD_WEBHOOK_URL, PUMPPORTAL_API_KEY
+
+[telegram]
+bot_token = ""        # von @BotFather
+chat_id = ""          # deine Chat-ID (siehe README)
+
+[discord]
+webhook_url = ""      # optional: Kanal-Einstellungen -> Integrationen -> Webhooks
+
+[source]
+ws_url = "wss://pumpportal.fun/api/data"
+api_key = ""          # nur nötig für PumpSwap-Daten nach der Migration
+
+[tracking]
+max_age_minutes = 30          # so lange wird jeder neue Coin maximal beobachtet
+inactive_minutes = 5          # ohne Trades so lange -> Coin wird verworfen
+max_tracked = 1500            # max. gleichzeitig beobachtete Coins
+max_dev_initial_buy_pct = 25  # Coins, bei denen der Dev beim Launch mehr % kauft, werden ignoriert (0 = aus)
+
+[signal]
+window_seconds = 60           # Zeitfenster für die Auswertung
+min_buy_sol = 0.05            # kleinere Käufe zählen nicht als echter Käufer (gegen Bot-Spam)
+
+# Harte Bedingungen – ALLE müssen erfüllt sein:
+min_unique_buyers = 15        # verschiedene Wallets, die im Fenster gekauft haben
+min_net_flow_sol = 3.0        # Kauf-SOL minus Verkauf-SOL im Fenster
+min_buy_ratio = 0.65          # Anteil Buys an allen Trades
+max_top_buyer_share = 0.4     # ein einzelner Käufer darf max. 40% des Kaufvolumens machen (0 = aus)
+max_top_holder_pct = 15.0     # größter Holder max. 15% vom Supply (0 = aus)
+block_if_dev_sold = true      # kein Signal, wenn der Dev verkauft hat
+min_market_cap_sol = 0        # 0 = keine Grenze
+max_market_cap_sol = 0        # 0 = keine Grenze
+
+# Score (0-100) – Signal ab min_score, stärkere Stufen ab 75 und 90:
+min_score = 60
+target_unique_buyers = 40     # so viele Käufer = volle Punkte
+target_net_flow_sol = 15.0    # so viel Netto-Flow = volle Punkte
+target_mc_growth_pct = 100.0  # so viel MC-Wachstum im Fenster = volle Punkte
+
+[output]
+signal_log = "data/signals.jsonl"   # jedes Signal als JSON-Zeile ("" = aus)
+log_new_tokens = false              # jeden neuen Coin im Log anzeigen
+fetch_metadata = true               # Socials (X, Telegram, Website) im Alert anzeigen
+sol_price = true                    # USD-Werte über CoinGecko anzeigen
