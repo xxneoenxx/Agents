@@ -47,8 +47,8 @@ python -m sachsencraft.fetch --ziel daten/lunzenau --bbox 12.675 50.930 12.825 5
 python -m sachsencraft.generate --data daten/lunzenau --out "Lunzenau 1zu1" \
     --gebiet Lunzenau --nur-gemeinde --rand 300
 
-# 3) Modpack-Datei mit der Welt bauen
-python modpack/build_mrpack.py --welt "Lunzenau 1zu1" --aus Lunzenau-1zu1.mrpack
+# 3) Modpack-Datei mit der Welt bauen (und optional die Welt allein als ZIP zum Entpacken nach `saves`)
+python modpack/build_mrpack.py --welt "Lunzenau 1zu1" --aus Lunzenau-1zu1.mrpack --welt-zip Lunzenau-1zu1-Welt.zip
 ```
 
 Wichtige Optionen von `generate`:

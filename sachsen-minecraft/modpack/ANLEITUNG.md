@@ -16,10 +16,17 @@ Dauer: etwa 10 Minuten.
 
 ## 2. Modpack mit der Welt importieren
 
-1. Ziehe `Lunzenau-1zu1.mrpack` einfach in das Fenster der Modrinth App.
-   Alternativ geht es über **„+“ → „Import from file“ / „Aus Datei importieren“**.
-2. Die App legt die Instanz **„Lunzenau 1:1 – Sachsen in Minecraft“** an (Minecraft 26.3 + Fabric Loader 0.19.5).
+1. Klicke in der Modrinth App links unten auf das **„+“** („Create instance“ / „Instanz erstellen“).
+2. Wähle oben den Reiter **„From File“ / „Aus Datei“** und dann **„Import from file“ / „Datei importieren“**.
+3. Wähle `Lunzenau-1zu1.mrpack` aus.
+4. Die App legt die Instanz **„Lunzenau 1:1 – Sachsen in Minecraft“** an (Minecraft 26.3 + Fabric Loader 0.19.5).
    Die Welt liegt schon im Ordner `saves`.
+
+> **Wichtig:** Die `.mrpack`-Datei **nicht** in eine geöffnete Instanz ziehen und **nicht** unter „Content“ → „Add content“
+> auswählen. Dort erwartet die App Mods oder Resourcepacks und meldet:
+> *„Invalid input: unable to infer project type for input file“*. Das ist **kein** Fehler der Datei. Importiere sie
+> einfach über das **„+“** wie oben. Klappt das nicht, nimm die Methode unten
+> **„Wenn der Import nicht klappt“** mit `Lunzenau-1zu1-Welt.zip`.
 
 ## 3. Mods hinzufügen (je ein Klick)
 
@@ -91,11 +98,24 @@ Distant Horizons braucht für die Fernsicht etwas mehr Speicher.
 Umrechnung für eigene Ziele: **x = Ostwert − 342000**, **z = 5648000 − Nordwert** (UTM 33N, z. B. aus dem Geoportal Sachsen),
 **Y = Höhe − 100**.
 
+## Wenn der Import nicht klappt (Welt von Hand einsetzen)
+
+Das geht immer und braucht die zweite Datei **`Lunzenau-1zu1-Welt.zip`** (nur die Welt, ohne Modpack):
+
+1. Lege in der Modrinth App eine **leere Instanz** an: **„+“ → „Custom“** → Name z. B. „Lunzenau“ →
+   Spielversion **26.3** → Mod-Loader **Fabric** → **Create**.
+2. Öffne die Instanz und klicke oben auf das **Ordner-Symbol („Open folder“ / „Ordner öffnen“)**. Dort liegt der Ordner `saves`.
+3. Entpacke `Lunzenau-1zu1-Welt.zip` **in den Ordner `saves`**. Danach muss es genau diese Datei geben:
+   `saves/Lunzenau 1zu1/level.dat`. Es darf **kein** zweiter Ordner dazwischen liegen
+   (also nicht `saves/Lunzenau-1zu1-Welt/Lunzenau 1zu1/...`).
+4. Weiter mit **Schritt 3** (Mods hinzufügen) und **Schritt 4** (Shader). Danach **Play** → Einzelspieler →
+   *Lunzenau 1:1 (echte Geodaten)*.
+
 ## Ohne Modrinth App (offizieller Launcher)
 
 1. Fabric-Installer von <https://fabricmc.net/use/installer/> ausführen → Minecraft **26.3** wählen → installieren.
 2. Die Mods aus der Tabelle oben von <https://modrinth.com> (Version **26.3**, Loader **Fabric**) in den Ordner
    `%APPDATA%\.minecraft\mods` legen. Den Shader legst du in `%APPDATA%\.minecraft\shaderpacks`.
-3. Die `.mrpack`-Datei in `.zip` umbenennen, entpacken und den Ordner `overrides/saves/Lunzenau 1zu1`
-   nach `%APPDATA%\.minecraft\saves` kopieren.
+3. `Lunzenau-1zu1-Welt.zip` in den Ordner `%APPDATA%\.minecraft\saves` entpacken, sodass
+   `saves\Lunzenau 1zu1\level.dat` existiert.
 4. Im Launcher das Profil **„fabric-loader-26.3“** starten.

@@ -56,11 +56,25 @@ def build(world_dir: str, out: str, name: str, version: str = "1.0.0") -> None:
                 z.write(p, f"overrides/saves/{world_name}/{rel}", compress_type=ctype)
 
 
+def build_world_zip(world_dir: str, out: str) -> None:
+    """Nur die Welt als ZIP (Ordner `<Weltname>/level.dat` ...), zum Entpacken in den Ordner `saves`."""
+    world_name = os.path.basename(os.path.normpath(world_dir))
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as z:
+        for root, _, files in os.walk(world_dir):
+            for f in sorted(files):
+                p = os.path.join(root, f)
+                z.write(p, f"{world_name}/{os.path.relpath(p, world_dir)}")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--welt", required=True, help="Ordner der Minecraft-Welt")
     ap.add_argument("--aus", required=True, help="Ziel-.mrpack")
     ap.add_argument("--name", default="Lunzenau 1:1 – Sachsen in Minecraft")
+    ap.add_argument("--welt-zip", default=None, help="zusätzlich: nur die Welt als ZIP (zum Entpacken nach saves)")
     a = ap.parse_args()
     build(a.welt, a.aus, a.name)
     print("geschrieben:", a.aus, os.path.getsize(a.aus) // (1024 * 1024), "MB")
+    if a.welt_zip:
+        build_world_zip(a.welt, a.welt_zip)
+        print("geschrieben:", a.welt_zip, os.path.getsize(a.welt_zip) // (1024 * 1024), "MB")
