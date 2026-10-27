@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+daten/
+data/
+worlds/
+*.mrpack
+*.zip
