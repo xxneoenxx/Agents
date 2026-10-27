@@ -74,6 +74,23 @@ Distant Horizons braucht für die Fernsicht etwas mehr Speicher.
 - Die Häuser sind innen leer, haben aber Etagen, Fenster, Türen und Leitern. Du kannst sie einrichten.
 - Außerhalb der Gemeinde Lunzenau ist die Welt leer (Leere). Am Rand also nicht hinunterfallen.
 
+## Schnellreise (im Chat eintippen)
+
+| Ort | Befehl |
+|---|---|
+| Markt Lunzenau (Startpunkt) | `/tp @s 399 81 -13` |
+| Kirche St. Jakobus | `/tp @s 387 90 42` |
+| Schloss Rochsburg – oben auf dem Bergfried | `/tp @s 963 187 2016` |
+| Rochsburg | `/tp @s 586 140 1700` |
+| Cossen | `/tp @s 1407 112 -1510` |
+| Göritzhain | `/tp @s 2851 143 -327` |
+| Berthelsdorf | `/tp @s 1789 151 910` |
+| Elsdorf | `/tp @s -2298 157 -454` |
+| Himmelhartha | `/tp @s -831 180 -2582` |
+
+Umrechnung für eigene Ziele: **x = Ostwert − 342000**, **z = 5648000 − Nordwert** (UTM 33N, z. B. aus dem Geoportal Sachsen),
+**Y = Höhe − 100**.
+
 ## Ohne Modrinth App (offizieller Launcher)
 
 1. Fabric-Installer von <https://fabricmc.net/use/installer/> ausführen → Minecraft **26.3** wählen → installieren.

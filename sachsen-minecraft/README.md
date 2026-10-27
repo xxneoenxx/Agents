@@ -6,6 +6,12 @@ Lunzenau, Cossen, Göritzhain, Elsdorf, Himmelhartha, Rochsburg (mit Schloss) un
 
 Installation der fertigen Welt mit Mods und Shader: siehe [`modpack/ANLEITUNG.md`](modpack/ANLEITUNG.md).
 
+![Lunzenau-Zentrum mit Muldebrücke](docs/vorschau-zentrum.jpg)
+![Schloss Rochsburg](docs/vorschau-rochsburg.jpg)
+![Übersichtskarte der erzeugten Welt](docs/karte-lunzenau.jpg)
+
+*(Vorschau ohne Shader, aus den fertigen Weltdateien gerendert)*
+
 ## Was in der Welt steckt
 
 | Was | Woher | Wie in Minecraft |
