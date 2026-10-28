@@ -68,8 +68,8 @@ def _choice(h, options):
 SURFACE = {
     lc.FOREST: [(bk.GRASS, 55), (bk.PODZOL, 25), (bk.COARSE_DIRT, 8), (bk.MOSS, 12)],
     lc.SCRUB: [(bk.GRASS, 80), (bk.COARSE_DIRT, 20)],
-    lc.INDUSTRIAL: [(bk.GRAVEL, 45), (bk.ASPHALT, 35), (bk.ANDESITE, 20)],
-    lc.COMMERCIAL: [(bk.ASPHALT, 65), (bk.POLISHED_ANDESITE, 35)],
+    lc.INDUSTRIAL: [(bk.ASPHALT, 62), (bk.SIDEWALK, 24), (bk.GRAVEL, 14)],
+    lc.COMMERCIAL: [(bk.ASPHALT, 70), (bk.SIDEWALK, 30)],
     lc.QUARRY: [(bk.GRANITE, 50), (bk.ANDESITE, 30), (bk.GRAVEL, 20)],
     lc.ROCK: [(bk.STONE, 40), (bk.ANDESITE, 35), (bk.GRANITE, 25)],
     lc.PLAZA: [(bk.PAVING, 70), (bk.POLISHED_ANDESITE, 30)],
@@ -130,13 +130,15 @@ def build_chunk(W: World, cx: int, cz: int):
     X = np.broadcast_to(xs, (16, 16))
     Z = np.broadcast_to(zs, (16, 16))
     h100 = (_hash(X, Z, W.seed + 11) % 100).astype(np.int32)
+    # Flächenmaterial in 5×5-m-Flecken mit etwas Einzelblock-Rauschen (sieht natürlicher aus als reines Rauschen)
+    hs = np.where(h100 < 15, (_hash(X, Z, W.seed + 13) % 100).astype(np.int32), (_hash(X // 5, Z // 5, W.seed + 12) % 100).astype(np.int32))
 
     # --- Oberfläche ---
     surf = np.full((16, 16), bk.GRASS, dtype=np.int32)
     for c, opts in SURFACE.items():
         m = cover == c
         if m.any():
-            surf[m] = _choice(h100[m], opts)
+            surf[m] = _choice(hs[m], opts)
     # Felder: Feldfrucht je Feldnummer
     crop = np.zeros((16, 16), dtype=np.int32)
     fm = (cover == lc.FARMLAND) & (fid > 0)

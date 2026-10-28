@@ -27,6 +27,7 @@ from . import buildings as bld
 from . import chunkgen
 from . import details as dt
 from . import landcover as lc
+from . import overrides
 from . import roads as rd
 from . import terrain, water
 from .anvil import RegionWriter
@@ -82,6 +83,7 @@ def main(argv=None):
     ap.add_argument("--ausschnitt", type=float, nargs=4, default=None, metavar=("E_MIN", "N_MIN", "E_MAX", "N_MAX"), help="Nur dieses UTM-Rechteck (zum Testen)")
     ap.add_argument("--prozesse", type=int, default=max(1, (os.cpu_count() or 2)))
     ap.add_argument("--modus", choices=["kreativ", "ueberleben"], default="kreativ")
+    ap.add_argument("--anpassungen", default=None, help="JSON mit Einzelanpassungen (Standard: anpassungen/<gebiet>.json)")
     args = ap.parse_args(argv)
 
     t0 = time.time()
@@ -104,6 +106,15 @@ def main(argv=None):
     waters, segments, infra, places = L("water"), L("segment"), L("infrastructure"), L("place")
     buildings, parts = L("building"), L("building_part")
     log(f"Daten: {len(buildings)} Gebäude, {len(parts)} Gebäudeteile, {len(segments)} Wege, {len(waters)} Gewässer, {len(land) + len(land_use)} Flächen, {len(infra)} Kleinobjekte")
+
+    # Einzelanpassungen (Farben, Dachformen ... einzelner Gebäude)
+    rules_path = args.anpassungen or overrides.default_path(args.gebiet)
+    rules = overrides.load_rules(rules_path)
+    if rules:
+        n_ov, warns = overrides.apply_rules(rules, buildings, places)
+        log(f"Einzelanpassungen: {len(rules)} Regeln aus {os.path.basename(rules_path)} -> {n_ov} Gebäude")
+        for w in warns:
+            log("  Warnung:", w)
 
     # 1) Gelände
     dems = sorted(glob.glob(os.path.join(data, "dem", "*.tif")))
@@ -158,6 +169,9 @@ def main(argv=None):
                 props.setdefault(k, parent.props.get(k))
                 if props.get(k) is None:
                     props[k] = parent.props.get(k)
+            for k, v in parent.props.items():  # Einzelanpassungen gelten auch für die Gebäudeteile
+                if k.startswith("_") and k not in props:
+                    props[k] = v
         r = bld.voxelize(props, p.geom, grid, ground, rres.mask)
         if r is not None:
             vox.append(r[0])
@@ -199,6 +213,14 @@ def main(argv=None):
     I = np.concatenate([v[3] for v in allv]).astype(np.uint16)
     keep = (Y >= -63) & (Y <= 318)
     X, Y, Z, I = X[keep], Y[keep], Z[keep], I[keep]
+    # Mehrfach belegte Positionen (z. B. Tür in der Wand): der zuletzt gesetzte Block gewinnt – eindeutig und
+    # unabhängig davon, in welcher Reihenfolge NumPy später schreibt.
+    pk = ((X.astype(np.int64) + (1 << 21)) << 32) | ((Z.astype(np.int64) + (1 << 21)) << 10) | (Y.astype(np.int64) + 64)
+    _, first_rev = np.unique(pk[::-1], return_index=True)
+    sel = np.sort(len(pk) - 1 - first_rev)
+    log(f"Blöcke: {len(sel) / 1e6:.1f} Mio. ({len(pk) - len(sel)} doppelt belegte Positionen aufgelöst)")
+    X, Y, Z, I = X[sel], Y[sel], Z[sel], I[sel]
+    del pk
     key = (np.floor_divide(Z, 16).astype(np.int64) << 32) + (np.floor_divide(X, 16).astype(np.int64) & 0xFFFFFFFF)
     order = np.argsort(key, kind="stable")
     X, Y, Z, I, key = X[order], Y[order], Z[order], I[order], key[order]

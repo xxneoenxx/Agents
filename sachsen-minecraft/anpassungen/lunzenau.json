@@ -1,0 +1,13 @@
+{
+  "_hinweis": "Einzelanpassungen für Lunzenau. Was hier steht, überschreibt die Karten-Daten. Beschreibung der Felder: sachsencraft/overrides.py. Neue Regel = ein weiterer Block in „gebaeude“. Danach die Welt neu erzeugen.",
+  "gebaeude": [
+    {
+      "bezeichnung": "Niemeier Fahrzeugwerke GmbH, Cossener Str. 2 (Produktionshalle)",
+      "finde": {"poi": "Niemeier Fahrzeugwerke"},
+      "wand": "red_concrete",
+      "dach": "flat_red",
+      "dachform": "flat",
+      "hinweis": "Nach Hinweis des Nutzers: Das Werk ist rot, nicht grau. Ob nur das Dach oder auch die Wände rot sind, ist noch zu klären."
+    }
+  ]
+}

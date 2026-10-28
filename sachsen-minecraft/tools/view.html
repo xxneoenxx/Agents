@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>SachsenCraft – 3D-Vorschau</title>
+<style>html,body{margin:0;background:#9cc3e6;font-family:sans-serif}#info{position:fixed;left:8px;top:6px;color:#123;font-size:13px;text-shadow:0 0 3px #fff}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+</head>
+<body>
+<div id="info"></div>
+<script type="module">
+// Zeigt einen mit `python -m sachsencraft.render3d` exportierten Ausschnitt mit richtigen Blockformen
+// (Treppen, Platten, Scheiben, Türen, Leitern ...). Maus: ziehen = drehen, Rad = Zoomen.
+// Adresse: view.html?f=ausschnitt.json&az=35&el=30&d=150&tx=..&ty=..&tz=..
+import * as THREE from 'three';
+const q = new URLSearchParams(location.search);
+const data = await (await fetch(q.get('f') || 'ausschnitt.json')).json();
+const W = innerWidth, H = innerHeight;
+const renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
+renderer.setSize(W, H); document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x9cc3e6);
+scene.fog = new THREE.Fog(0x9cc3e6, 300, 900);
+
+const box = (x0, y0, z0, x1, y1, z1) => [x0, y0, z0, x1, y1, z1];
+function geometryFrom(boxes) {
+  const pos = [], nor = [], idx = [];
+  const faces = [[1,0,0,[[1,0,0],[1,1,0],[1,1,1],[1,0,1]]], [-1,0,0,[[0,0,1],[0,1,1],[0,1,0],[0,0,0]]],
+                 [0,1,0,[[0,1,0],[0,1,1],[1,1,1],[1,1,0]]], [0,-1,0,[[0,0,1],[0,0,0],[1,0,0],[1,0,1]]],
+                 [0,0,1,[[1,0,1],[1,1,1],[0,1,1],[0,0,1]]], [0,0,-1,[[0,0,0],[0,1,0],[1,1,0],[1,0,0]]]];
+  for (const b of boxes) for (const [nx, ny, nz, vs] of faces) {
+    const base = pos.length / 3;
+    for (const v of vs) { pos.push(v[0] ? b[3] : b[0], v[1] ? b[4] : b[1], v[2] ? b[5] : b[2]); nor.push(nx, ny, nz); }
+    idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3));
+  g.setIndex(idx);
+  return g;
+}
+const T = 3 / 16;
+function boxesFor(name, p) {
+  if (name.endsWith('_stairs')) {
+    const top = p.half === 'top';
+    const out = [box(0, top ? .5 : 0, 0, 1, top ? 1 : .5, 1)];
+    const y0 = top ? 0 : .5, y1 = top ? .5 : 1;
+    out.push({north: box(0, y0, 0, 1, y1, .5), south: box(0, y0, .5, 1, y1, 1), east: box(.5, y0, 0, 1, y1, 1), west: box(0, y0, 0, .5, y1, 1)}[p.facing] || box(0, y0, 0, 1, y1, 1));
+    return out;
+  }
+  if (name.endsWith('_slab')) return [p.type === 'top' ? box(0, .5, 0, 1, 1, 1) : p.type === 'double' ? box(0, 0, 0, 1, 1, 1) : box(0, 0, 0, 1, .5, 1)];
+  if (name.endsWith('_door')) return [{east: box(0, 0, 0, T, 1, 1), west: box(1 - T, 0, 0, 1, 1, 1), south: box(0, 0, 0, 1, 1, T), north: box(0, 0, 1 - T, 1, 1, 1)}[p.facing]];
+  if (name === 'ladder') return [{east: box(0, 0, 0, 1 / 8, 1, 1), west: box(7 / 8, 0, 0, 1, 1, 1), south: box(0, 0, 0, 1, 1, 1 / 8), north: box(0, 0, 7 / 8, 1, 1, 1)}[p.facing]];
+  if (name.endsWith('_trapdoor')) return [p.open === 'true' ? {east: box(0, 0, 0, T, 1, 1), west: box(1 - T, 0, 0, 1, 1, 1), south: box(0, 0, 0, 1, 1, T), north: box(0, 0, 1 - T, 1, 1, 1)}[p.facing] : (p.half === 'top' ? box(0, 1 - T, 0, 1, 1, 1) : box(0, 0, 0, 1, T, 1))];
+  if (name.endsWith('_pane') || name === 'iron_bars') {
+    const out = [];
+    if (p.north === 'true' || p.south === 'true') out.push(box(.4375, 0, p.north === 'true' ? 0 : .4375, .5625, 1, p.south === 'true' ? 1 : .5625));
+    if (p.east === 'true' || p.west === 'true') out.push(box(p.west === 'true' ? 0 : .4375, 0, .4375, p.east === 'true' ? 1 : .5625, 1, .5625));
+    return out.length ? out : [box(.4375, 0, .4375, .5625, 1, .5625)];
+  }
+  if (name.endsWith('_fence') || name.endsWith('_wall')) {
+    const h = name.endsWith('_wall') ? .8 : 1, out = [box(.375, 0, .375, .625, h, .625)];
+    for (const [d, b] of [['north', box(.4375, 0, 0, .5625, h * .9, .5)], ['south', box(.4375, 0, .5, .5625, h * .9, 1)], ['east', box(.5, 0, .4375, 1, h * .9, .5625)], ['west', box(0, 0, .4375, .5, h * .9, .5625)]])
+      if (p[d] && p[d] !== 'false' && p[d] !== 'none') out.push(b);
+    return out;
+  }
+  if (name === 'rail') return [box(0, 0, 0, 1, .08, 1)];
+  if (name === 'lantern') return [box(.3125, 0, .3125, .6875, .5, .6875)];
+  if (name === 'torch') return [box(.4375, 0, .4375, .5625, .6, .5625)];
+  if (name.endsWith('_sign')) return [box(.45, 0, .45, .55, .6, .55), box(.1, .6, .45, .9, 1, .55)];
+  if (name === 'lily_pad') return [box(0, 0, 0, 1, .03, 1)];
+  if (name === 'farmland') return [box(0, 0, 0, 1, 15 / 16, 1)];
+  return [box(0, 0, 0, 1, 1, 1)];
+}
+const transparent = (n) => n.endsWith('_pane') || n === 'glass' || n === 'water' || n === 'iron_bars' || n.endsWith('_leaves');
+
+const lists = data.palette.map(() => []);
+const v = data.vox; let ymin = 1e9, ymax = -1e9;
+for (let i = 0; i < v.length; i += 4) { lists[v[i + 3]].push(v[i], v[i + 1], v[i + 2]); ymin = Math.min(ymin, v[i + 1]); ymax = Math.max(ymax, v[i + 1]); }
+const m = new THREE.Matrix4();
+data.palette.forEach((e, k) => {
+  const L = lists[k]; if (!L.length) return;
+  const mat = new THREE.MeshLambertMaterial({color: new THREE.Color().setRGB(e.color[0] / 255, e.color[1] / 255, e.color[2] / 255, THREE.SRGBColorSpace)});
+  if (transparent(e.name)) { mat.transparent = true; mat.opacity = e.name === 'water' ? .75 : e.name.endsWith('_leaves') ? .95 : .55; }
+  const mesh = new THREE.InstancedMesh(geometryFrom(boxesFor(e.name, e.props)), mat, L.length / 3);
+  for (let i = 0; i < L.length / 3; i++) { m.makeTranslation(L[i * 3], L[i * 3 + 1], L[i * 3 + 2]); mesh.setMatrixAt(i, m); }
+  scene.add(mesh);
+});
+scene.add(new THREE.HemisphereLight(0xdfefff, 0x6b5a3a, 1.5));
+const sun = new THREE.DirectionalLight(0xfff2dd, 2.3); sun.position.set(-0.6, 1, 0.35); scene.add(sun);
+const cam = new THREE.PerspectiveCamera(parseFloat(q.get('fov') || 45), W / H, 0.5, 3000);
+let tx = parseFloat(q.get('tx') || data.size[0] / 2), tz = parseFloat(q.get('tz') || data.size[1] / 2), ty = parseFloat(q.get('ty') || ((ymin + ymax) / 2));
+let d = parseFloat(q.get('d') || 180), az = parseFloat(q.get('az') || 35) * Math.PI / 180, el = parseFloat(q.get('el') || 35) * Math.PI / 180;
+function place() { cam.position.set(tx + d * Math.cos(el) * Math.sin(az), ty + d * Math.sin(el), tz + d * Math.cos(el) * Math.cos(az)); cam.lookAt(tx, ty, tz); renderer.render(scene, cam); }
+place();
+let drag = null;
+addEventListener('pointerdown', (e) => drag = [e.clientX, e.clientY]);
+addEventListener('pointerup', () => drag = null);
+addEventListener('pointermove', (e) => { if (!drag) return; az -= (e.clientX - drag[0]) * .006; el = Math.min(1.5, Math.max(.05, el + (e.clientY - drag[1]) * .006)); drag = [e.clientX, e.clientY]; place(); });
+addEventListener('wheel', (e) => { d *= e.deltaY > 0 ? 1.1 : .9; place(); });
+document.getElementById('info').textContent = `${v.length / 4} sichtbare Blöcke`;
+window.done = true;
+</script>
+</body>
+</html>

@@ -8,6 +8,8 @@ Installation der fertigen Welt mit Mods und Shader: siehe [`modpack/ANLEITUNG.md
 
 ![Lunzenau-Zentrum mit Muldebrücke](docs/vorschau-zentrum.jpg)
 ![Schloss Rochsburg](docs/vorschau-rochsburg.jpg)
+![Niemeier Fahrzeugwerke (per Einzelanpassung rot)](docs/vorschau-niemeier.jpg)
+![Lunzenau, Marktbereich](docs/vorschau-markt.jpg)
 ![Übersichtskarte der erzeugten Welt](docs/karte-lunzenau.jpg)
 
 *(Vorschau ohne Shader, aus den fertigen Weltdateien gerendert)*
@@ -17,8 +19,8 @@ Installation der fertigen Welt mit Mods und Shader: siehe [`modpack/ANLEITUNG.md
 | Was | Woher | Wie in Minecraft |
 |---|---|---|
 | Gelände | Copernicus-Höhenmodell GLO-30 (30-m-Raster) | Echte Höhen, **Y + 100 = Meter über NHN**. Waldkronen (≈10 m) und Dächer sind aus dem Oberflächenmodell herausgerechnet |
-| Gebäude (6.600) | Overture Maps: OpenStreetMap-Grundrisse, Höhen u. a. von Microsoft | Echte Grundrisse und Höhen. Sattel-, Walm-, Zelt-, Pult-, Flach- und Kuppeldächer, Fenster je Etage, Haustür zur Straße, Etagenböden, Leitern, Schornsteine |
-| Schloss Rochsburg | OpenStreetMap-Gebäudeteile | Bergfried (46 m) und Wendelstein mit Kupferhauben |
+| Gebäude (6.600) | Overture Maps: OpenStreetMap-Grundrisse, Höhen u. a. von Microsoft | Echte Grundrisse und (soweit bekannt) Höhen. Sattel-, Walm-, Zelt-, Pult-, Flach- und Kuppeldächer, Fenster je Etage, Haustür zur Straße (verschiedene Holzarten), Eckquader, Gesimsbänder, Giebelverkleidung, Etagenböden, Leitern, Schornsteine. Hallen mit Pilastern, Fensterband, Rolltor und Dachrand |
+| Schloss Rochsburg | OpenStreetMap-Gebäudeteile (grob) | Bergfried (46 m) und Wendelstein mit Kupferhauben, Steinstruktur, Eckquader; die Hauptgebäude sind in den Karten nur als einfache Blöcke erfasst |
 | Straßen und Wege | Overture Maps (OSM) | Breite und Belag (Asphalt mit Mittellinie, Pflaster, Schotter, Feldweg, Gehweg), ebene Querprofile, Brücken mit Geländer und Pfeilern |
 | Gewässer | Overture Maps (OSM) | Zwickauer Mulde, Chemnitz, Bäche mit Gefälle, Teiche mit Seerosen, Schwimmbecken |
 | Landnutzung | Overture Maps (OSM + Satellitenklassen) | Felder mit Weizen, Kartoffeln, Karotten, Rüben oder Brache, Wiesen mit Blumen, Wald, Gärten, Friedhöfe, Steinbrüche (roter Porphyr) |
@@ -32,6 +34,44 @@ Installation der fertigen Welt mit Mods und Shader: siehe [`modpack/ANLEITUNG.md
 > Noch genauer wären die amtlichen Daten des Landes Sachsen (GeoSN: DGM1 mit 1-m-Gelände und LoD2-Gebäude mit
 > echten Dachformen). Sie sind ebenfalls kostenlos. DGM-GeoTIFFs nimmt der Generator schon jetzt an
 > (Dateiname mit `dgm` in `dem/`).
+
+## Wie genau ist „1:1“? (ehrlich)
+
+Aus den Karten-Daten stammen sicher: **Grundriss und Lage** jedes Gebäudes, bei etwa einem Drittel die **Höhe**, bei ~1 % die
+**Dachform**. **Farben, Fensteranordnung und Dachformen der übrigen Häuser stehen in keiner offenen Karte.** Sie werden aus Art und
+Kennung des Gebäudes abgeleitet (dasselbe Haus sieht immer gleich aus), sind also glaubhaft, aber nicht überall wie in Wirklichkeit.
+Ein Block ist außerdem 1 m groß: Fenster, Türen und Dachkanten sind entsprechend grob.
+
+Echte Genauigkeit für jedes Haus kommt aus amtlichen offenen Daten des Landes Sachsen (GeoSN, kostenlos, Namensnennung):
+**3D-Stadtmodell LoD2** (Dachformen und Höhen jedes Gebäudes), **DGM1** (Gelände im 1-m-Raster) und **DOP20** (Luftbilder mit 20 cm
+Auflösung, daraus lassen sich Dachfarben ablesen). Google Maps und Street View dürfen nicht ausgelesen werden (Nutzungsbedingungen).
+
+## Einzelanpassungen: ein Gebäude genau so bauen, wie es ist
+
+Wer ein Gebäude kennt, trägt es in `anpassungen/lunzenau.json` ein. Beim nächsten Erzeugen wird es genau so gebaut. Beispiel
+(Niemeier Fahrzeugwerke, rot):
+
+```json
+{ "finde": {"poi": "Niemeier Fahrzeugwerke"}, "wand": "red_concrete", "dach": "flat_red", "dachform": "flat" }
+```
+
+Gefunden wird ein Gebäude über den Betriebsnamen (`poi`), den Gebäudenamen (`name`), die Kennung (`id`) oder einen Punkt
+(`lonlat`: Länge, Breite, z. B. aus Google Maps kopiert). Alle Eigenschaften (Wand, Dach, Dachform, Höhe, Stockwerke, Ecken,
+Gesimsband, Giebel, Fenster, Tür) stehen in `sachsencraft/overrides.py`.
+
+Die **Prüfliste** `anpassungen/liste-lunzenau.md` enthält die 45 auffälligsten Gebäude mit Links zu Google Maps (Satellit) und
+Street View. Man schaut selbst nach, trägt Wand- und Dachfarbe ein, und daraus werden Einzelanpassungen:
+
+```bash
+python -m sachsencraft.liste --data daten/lunzenau --gebiet Lunzenau --aus anpassungen/liste-lunzenau.md
+```
+
+Zum Prüfen gibt es eine 3D-Vorschau mit richtigen Blockformen (Treppen, Platten, Scheiben, Türen):
+
+```bash
+python -m sachsencraft.render3d "Lunzenau 1zu1" 300 -130 470 60 ausschnitt.json   # x0 z0 x1 z1
+# dann tools/view.html über einen lokalen Webserver öffnen: view.html?f=ausschnitt.json
+```
 
 ## Selbst erzeugen (z. B. weitere Orte in Sachsen)
 

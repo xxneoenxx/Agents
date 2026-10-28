@@ -68,6 +68,13 @@ def decode_states(bs) -> list[str] | np.ndarray:
     return idx, names
 
 
+def decode_states_props(bs):
+    """Wie decode_states, gibt zusätzlich die Eigenschaften je Paletteneintrag zurück: (idx, namen, props)."""
+    idx, names = decode_states(bs)
+    props = [{str(k): str(v) for k, v in dict(p.get("Properties", {})).items()} for p in bs["palette"]]
+    return idx, names, props
+
+
 def chunk_columns(nbt):
     """Für jede Säule: Name und Höhe des obersten Nicht-Luft-Blocks."""
     top_name = np.full((16, 16), "", dtype=object)
