@@ -1,6 +1,6 @@
 ---
 name: stream-clipper
-description: Turn a YouTube, Twitch or Kick stream (live or finished) or a local recording into finished vertical clips (1080×1920, 60 fps) with a hook heading, word-by-word captions, zoom on the reaction, no black bars, and a post caption with the streamer's credit. Finds the moments from screams, loudness, chat explosions and the transcript; you read the game screen from the frames. Use when the user pastes a stream/VOD link or file and wants clips, highlights, Shorts/Reels/TikToks from it, or says "clip this" or "/stream-clipper".
+description: Turn a YouTube, Twitch or Kick stream (live or finished) or a local recording into finished vertical clips (1080×1920, 60 fps) with a hook heading, word-by-word captions, zoom on the reaction, no black bars, and a post caption with the streamer's credit. Finds the moments from screams, loudness, chat explosions and the transcript; you read the game screen from the frames. Also runs as a live autopilot that watches a stream, clips funny moments by itself and uploads them to TikTok (drafts or direct posts). Use when the user pastes a stream/VOD link or file and wants clips, highlights, Shorts/Reels/TikToks from it, wants live/GTA streams clipped and posted automatically, or says "clip this" or "/stream-clipper".
 ---
 
 # Stream Clipper
@@ -45,6 +45,19 @@ Check every clip against `rules` before you hand it over; a clip that misses the
 
 ## Live mode (be first in the feed)
 `CLI live <url> --every 12` starts a background recorder that saves the live stream in 12-minute pieces. Then check for new moments every 10-15 minutes: `CLI live-check clips/<dir>` analyses each finished piece and makes strips for new moments. Run it on a schedule with the loop command, e.g. `/loop 12m node reel-loop/bin/loop.js clip live-check clips/<dir>` and tell the user about new moments with your headings; cut the ones they want right away. Stop with `CLI live-stop clips/<dir>`.
+
+## Live autopilot: watch, clip and upload by itself
+When the user wants a live stream watched and funny moments clipped and uploaded to TikTok without doing it by hand:
+
+1. **Check:** `node reel-loop/bin/loop.js doctor`. Recording needs `yt-dlp` (or `streamlink`, recommended for Twitch because it skips ad breaks). Optional: `ANTHROPIC_API_KEY` (Claude judges each moment and writes the heading), `OPENAI_API_KEY` (word captions), a TikTok connection.
+2. **TikTok, once:** the user needs their own TikTok developer app (free). `CLI tiktok setup` prints the steps; then `CLI tiktok setup --key … --secret …` and `CLI tiktok login` (opens the browser, PKCE, tokens stay in `~/.reel-loop`). Explain the two modes honestly: **draft** (default) lands in their TikTok inbox and they tap Post; **direct** posts by itself, but until TikTok has audited their app it is visible only to them and the account must be private (`unaudited_client_can_only_post_to_private_accounts`). TikTok also caps posts per account per day (around 15).
+3. **Config:** `CLI auto --init` writes `autopilot.json`. Fill in `url`, `permission` (required: where their right to clip comes from, e.g. a clipping campaign; the autopilot refuses to start without it), `post.streamer`, `language`, `clip.layout`. For layouts A, C, D get one frame with `CLI auto-frame <url>`, look at it, and set `clip.cam` to the facecam rectangle `x,y,w,h` in fractions.
+4. **Test first:** if they have a past recording (and its chat replay), run `CLI auto --simulate rec.mp4 --sim-chat chat.json --speed 4 --dry-run --foreground` and look at `out/` and `frames/` together; tune `detect.threshold` (higher = fewer clips), `detect.minLaughs`, `detect.chatLagSeconds`, `judge.minScore`.
+5. **Start:** `CLI auto` (background; reads `autopilot.json`). It records in 30 s pieces, reads the chat (Twitch: anonymous IRC; YouTube: live chat via yt-dlp; Kick: no chat, audio and Claude only), and scores every half second: laugh floods (KEKW, LUL, OMEGALUL, 😂, 💀 …), chat speed, "clip it" calls, loudness spikes and screams. Each moment: four frames + chat + words go to Claude (or the score alone decides), the clip is cut with heading, zoom and captions, and uploaded within the daily limit (`upload.maxPerDay`, `upload.minGapMinutes`).
+6. **Watch it:** `CLI auto-status <dir>` (moments, verdicts, uploads), `autopilot.log`, a Discord/Slack webhook in `notify.webhook`. Stop with `CLI auto-stop <dir>`.
+7. **Safer start:** `--review` keeps finished clips waiting; approve with `CLI auto-approve <dir> m003`. Without an API key, Claude Code itself can be the reviewer: run with `--judge heuristic --review` and `/loop 15m` to check `CLI auto-status <dir>`, look at `frames/<id>.jpg` and the clip, and approve only the good ones.
+
+Recommend drafts plus review until the user trusts the picks. Never set it up for a channel they have no permission for.
 
 ## 25 kinds of viral moments
 1 crash-out / rage · 2 epic fail · 3 clutch escape (5-star chase) · 4 WASTED/BUSTED moment · 5 funny NPC · 6 glitch / physics bug · 7 "the game has THIS?" feature · 8 jump scare / scream · 9 laugh flood · 10 plot twist / story reveal · 11 big win / heist done · 12 insane stunt or jump · 13 near miss · 14 rage quit · 15 roasting chat or reading chat · 16 wholesome moment · 17 IRL moment (pet, family, food) · 18 hot take · 19 collab banter · 20 skill shot / perfect timing · 21 prank / trolling · 22 chase highlight · 23 roleplay character bit · 24 reaction to news or a trailer · 25 unexpected music / dance.

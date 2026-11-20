@@ -192,6 +192,71 @@ async function cropDetect(file, ss) {
 }
 function zoomExpr(a, b, amount) { return `zoompan=z='1+${amount}*if(between(it,${a.toFixed(2)},${b.toFixed(2)}),sin((it-${a.toFixed(2)})/${(b - a).toFixed(2)}*PI),0)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:fps=60`; }
 
+/* Text for the post: heading or caption, the streamer credit, hashtags and the ad label. */
+function postText(src, camp, heading, caption) {
+  const streamer = camp.streamer || (src.meta && (src.meta.uploader || src.meta.channel)) || 'the streamer';
+  const plat = camp.platform || platformOf(src.meta);
+  let credit = camp.credit || '🎥 @{streamer} on {platform}';
+  if (plat === 'file' || plat === 'stream') credit = credit.replace(/\s*on \{platform\}/, '');
+  credit = credit.replace('{streamer}', String(streamer).replace(/^@/, '')).replace('{platform}', plat);
+  const tags = (camp.hashtags || []).map((h) => (h.startsWith('#') ? h : '#' + h)).join(' ');
+  return [caption || heading, '', credit, [tags, camp.adLabel || ''].filter(Boolean).join(' ')].join('\n').trim() + '\n';
+}
+
+/* Render one vertical clip (1080x1920, 60 fps) from a source file.
+   o = { id, file, ss, to, peak (seconds in the file), layout A-E, cam [x,y,w,h] or null, focus 0-1,
+         heading, headingStyle, words, wordsOffset (time in the words' clock that equals ss), out, workDir, zoom } */
+async function renderClip(o) {
+  const wdir = U.ensureDir(o.workDir);
+  const dur = o.to - o.ss;
+  const layout = String(o.layout || 'E').toUpperCase();
+  const cam = o.cam;
+  if (['A', 'C', 'D'].includes(layout) && !cam) U.fail(`Layout ${layout} needs the facecam position (cam x,y,w,h)`);
+  const crop = await cropDetect(o.file, o.ss);
+  const info = await U.probe(o.file);
+  const vs = info.streams.find((x) => x.codec_type === 'video');
+  const useCrop = crop && vs && (crop.w < vs.width * 0.97 || crop.h < vs.height * 0.97) && crop.w > vs.width * 0.4 && crop.h > vs.height * 0.4;
+  const bars = useCrop ? `crop=${crop.w}:${crop.h}:${crop.x}:${crop.y},` : '';
+  const pre = `${bars}fps=60,setsar=1`;
+  // the facecam is located on the original frame (as seen in the pick-list strips), so it is cut before the black bars go
+  const split = `[0:v]fps=60,setsar=1,split[g0][c0];[g0]${bars}null[g]`;
+  const pk = Math.max(0.3, Math.min(dur - 0.3, (o.peak != null ? o.peak : o.ss + dur / 2) - o.ss));
+  const za = Math.max(0, pk - 1.3), zb = Math.min(dur, pk + 1.3);
+  const zoom = o.zoom === false ? null : zoomExpr(za, zb, 0.14);
+  const focus = o.focus != null ? o.focus : 0.5;
+  const gameCrop = (ar) => `crop=w='min(iw,ih*${ar})':h='min(ih,iw/${ar})':x='(iw-ow)*${focus}':y='(ih-oh)/2'`;
+  const camCrop = cam ? `crop=iw*${cam[2]}:ih*${cam[3]}:iw*${cam[0]}:ih*${cam[1]}` : '';
+  const z = (size) => (zoom ? ',' + zoom.replace('fps=60', `s=${size}:fps=60`) : '');
+  let fc, headY;
+  switch (layout) {
+    case 'A': fc = `${split};[c0]${camCrop},scale=1080:700:force_original_aspect_ratio=increase,crop=1080:700[cv];[g]${gameCrop(1080 / 1220)},scale=1080:1220${z('1080x1220')}[gv];[cv][gv]vstack=inputs=2[base]`; headY = 700; break;
+    case 'C': fc = `${split};[c0]${camCrop},scale=1080:700:force_original_aspect_ratio=increase,crop=1080:700[cv];[g]${gameCrop(1080 / 1220)},scale=1080:1220${z('1080x1220')}[gv];[gv][cv]vstack=inputs=2[base]`; headY = 1220; break;
+    case 'D': fc = `${split};[c0]${camCrop},scale=420:-2,pad=iw+16:ih+16:8:8:white[cv];[g]${gameCrop(9 / 16)},scale=1080:1920${z('1080x1920')}[gv];[gv][cv]overlay=W-w-40:430[base]`; headY = 0; break;
+    case 'B': fc = `[0:v]${pre},split[a][b];[a]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=24:2,eq=brightness=-0.12[bg];[b]scale=1080:-2[fg];[bg][fg]overlay=0:(H-h)/2-60[base]`; headY = 0; break;
+    default: fc = `[0:v]${pre},${gameCrop(9 / 16)},scale=1080:1920${z('1080x1920')}[base]`; headY = 0;
+  }
+  let last = 'base';
+  const inputs = ['-ss', String(o.ss), '-to', String(o.to), '-i', path.resolve(o.file)];
+  if (o.heading) {
+    const hp = (await renderHeadings([{ id: o.id, text: o.heading }], wdir, o.headingStyle || 'box'))[o.id];
+    if (hp) {
+      inputs.push('-i', path.resolve(hp.file));
+      const y = headY ? Math.round(headY - hp.h / 2) : 190;
+      fc += `;[${last}][1:v]overlay=0:${y}[hd]`; last = 'hd';
+    }
+  }
+  if (o.words && o.words.length) {
+    const n = buildAss(o.words, o.wordsOffset != null ? o.wordsOffset : o.ss, dur, path.join(wdir, `${o.id}.ass`));
+    if (n) { fc += `;[${last}]subtitles=${o.id}.ass[cap]`; last = 'cap'; }
+  }
+  fc += ';[0:a]loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000[aout]';
+  U.ensureDir(path.dirname(o.out));
+  await U.run('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', ...inputs, '-filter_complex', fc, '-map', `[${last}]`, '-map', '[aout]', '-t', String(dur),
+    '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p', '-r', '60', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', path.resolve(o.out)], { cwd: wdir });
+  const pi = await U.probe(o.out); const v = pi.streams.find((x) => x.codec_type === 'video');
+  return { out: o.out, seconds: +parseFloat(pi.format.duration).toFixed(1), size: v ? `${v.width}×${v.height}` : '?', fps: v ? v.r_frame_rate : '?' };
+}
+
 async function cut(dir, opts = {}) {
   const src = U.readJSON(path.join(dir, 'source.json'));
   const cj = U.readJSON(path.join(dir, 'candidates.json'), { candidates: [] });
@@ -218,62 +283,17 @@ async function cut(dir, opts = {}) {
     return { id, start, end, peak: h.peak != null ? U.parseTime(h.peak) : c.peak != null ? c.peak : (start + end) / 2, heading: h.heading || '', layout: String(h.layout || layoutDefault).toUpperCase(), focus: h.focus != null ? +h.focus : 0.5, caption: h.caption };
   });
   if (items.some((it) => ['A', 'C', 'D'].includes(it.layout)) && !cam) U.fail('Layouts A, C and D need the facecam position: --cam x,y,w,h (fractions, e.g. 0.72,0.04,0.26,0.30). Look at frames/<id>.jpg to find it.');
-  const headPngs = await renderHeadings(items.filter((i) => i.heading).map((i) => ({ id: i.id, text: i.heading })), wdir, headingStyle);
   const results = [];
   for (const it of items) {
     U.step(`Cutting ${it.id} (${U.fmtTime(it.start)}–${U.fmtTime(it.end)}, layout ${it.layout})`);
     const s = await sectionFile(dir, src, { id: it.id, start: it.start, end: it.end }, 'hq');
-    const dur = it.end - it.start;
-    const inArgs = s.base ? ['-i', s.file] : ['-ss', String(s.ss), '-to', String(s.to), '-i', s.file];
-    const crop = await cropDetect(s.file, s.base ? 0 : s.ss);
-    const info = await U.probe(s.file);
-    const vs = info.streams.find((x) => x.codec_type === 'video');
-    const useCrop = crop && vs && (crop.w < vs.width * 0.97 || crop.h < vs.height * 0.97) && crop.w > vs.width * 0.4 && crop.h > vs.height * 0.4;
-    const bars = useCrop ? `crop=${crop.w}:${crop.h}:${crop.x}:${crop.y},` : '';
-    const pre = `${bars}fps=60,setsar=1`;
-    // the facecam is located on the original frame (as seen in the pick-list strips), so it is cut before the black bars go
-    const split = `[0:v]fps=60,setsar=1,split[g0][c0];[g0]${bars}null[g]`;
-    const pk = Math.max(0.3, Math.min(dur - 0.3, it.peak - it.start));
-    const za = Math.max(0, pk - 1.3), zb = Math.min(dur, pk + 1.3);
-    const zoom = opts.zoom === 'off' ? null : zoomExpr(za, zb, 0.14);
-    const gameCrop = (ar) => `crop=w='min(iw,ih*${ar})':h='min(ih,iw/${ar})':x='(iw-ow)*${it.focus}':y='(ih-oh)/2'`;
-    const camCrop = cam ? `crop=iw*${cam[2]}:ih*${cam[3]}:iw*${cam[0]}:ih*${cam[1]}` : '';
-    let fc, headY;
-    switch (it.layout) {
-      case 'A': fc = `${split};[c0]${camCrop},scale=1080:700:force_original_aspect_ratio=increase,crop=1080:700[cv];[g]${gameCrop(1080 / 1220)},scale=1080:1220${zoom ? ',' + zoom.replace('fps=60', 's=1080x1220:fps=60') : ''}[gv];[cv][gv]vstack=inputs=2[base]`; headY = 700; break;
-      case 'C': fc = `${split};[c0]${camCrop},scale=1080:700:force_original_aspect_ratio=increase,crop=1080:700[cv];[g]${gameCrop(1080 / 1220)},scale=1080:1220${zoom ? ',' + zoom.replace('fps=60', 's=1080x1220:fps=60') : ''}[gv];[gv][cv]vstack=inputs=2[base]`; headY = 1220; break;
-      case 'D': fc = `${split};[c0]${camCrop},scale=420:-2,pad=iw+16:ih+16:8:8:white[cv];[g]${gameCrop(9 / 16)},scale=1080:1920${zoom ? ',' + zoom.replace('fps=60', 's=1080x1920:fps=60') : ''}[gv];[gv][cv]overlay=W-w-40:430[base]`; headY = 0; break;
-      case 'B': fc = `[0:v]${pre},split[a][b];[a]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=24:2,eq=brightness=-0.12[bg];[b]scale=1080:-2[fg];[bg][fg]overlay=0:(H-h)/2-60[base]`; headY = 0; break;
-      default: fc = `[0:v]${pre},${gameCrop(9 / 16)},scale=1080:1920${zoom ? ',' + zoom.replace('fps=60', 's=1080x1920:fps=60') : ''}[base]`; headY = 0;
-    }
-    let last = 'base'; const inputs = [...inArgs];
-    const hp = headPngs[it.id];
-    if (hp) {
-      inputs.push('-i', hp.file);
-      const y = headY ? Math.round(headY - hp.h / 2) : 190;
-      fc += `;[${last}][1:v]overlay=0:${y}[hd]`; last = 'hd';
-    }
-    if (capsOn) {
-      const n = buildAss(words, it.start, dur, path.join(wdir, `${it.id}.ass`));
-      if (n) { fc += `;[${last}]subtitles=${it.id}.ass[cap]`; last = 'cap'; }
-    }
-    fc += `;[0:a]loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000[aout]`;
-    const base = U.slugify(it.heading || it.id).slice(0, 40);
-    const out = path.join(odir, `${it.id}-${base}.mp4`);
-    await U.run('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', ...inputs.map((x) => (x === s.file || x.endsWith('.png') ? path.resolve(x) : x)), '-filter_complex', fc, '-map', `[${last}]`, '-map', '[aout]', '-t', String(dur),
-      '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p', '-r', '60', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', path.resolve(out)], { cwd: wdir });
-    // post caption with credit
-    const streamer = camp.streamer || (src.meta && (src.meta.uploader || src.meta.channel)) || 'the streamer';
-    const plat = camp.platform || platformOf(src.meta);
-    let credit = camp.credit || '🎥 @{streamer} on {platform}';
-    if (plat === 'file') credit = credit.replace(/\s*on \{platform\}/, '');
-    credit = credit.replace('{streamer}', String(streamer).replace(/^@/, '')).replace('{platform}', plat);
-    const tags = (camp.hashtags || []).map((h) => (h.startsWith('#') ? h : '#' + h)).join(' ');
-    const text = [it.caption || it.heading, '', credit, [tags, camp.adLabel || ''].filter(Boolean).join(' ')].join('\n').trim() + '\n';
-    fs.writeFileSync(out.replace(/\.mp4$/, '.txt'), text);
-    const pi = await U.probe(out); const v = pi.streams.find((x) => x.codec_type === 'video');
-    results.push({ id: it.id, out, seconds: +parseFloat(pi.format.duration).toFixed(1), size: v ? `${v.width}×${v.height}` : '?', fps: v ? v.r_frame_rate : '?' });
-    U.ok(`${path.relative(process.cwd(), out)}  ${v.width}×${v.height} · ${parseFloat(pi.format.duration).toFixed(1)}s`);
+    const ss = s.base ? 0 : s.ss, to = s.base ? it.end - it.start : s.to;
+    const out = path.join(odir, `${it.id}-${U.slugify(it.heading || it.id).slice(0, 40)}.mp4`);
+    const r = await renderClip({ id: it.id, file: s.file, ss, to, peak: ss + (it.peak - it.start), layout: it.layout, cam, focus: it.focus, heading: it.heading, headingStyle,
+      words: capsOn ? words : null, wordsOffset: it.start, out, workDir: wdir, zoom: opts.zoom !== 'off' });
+    fs.writeFileSync(out.replace(/\.mp4$/, '.txt'), postText(src, camp, it.heading, it.caption));
+    results.push(Object.assign({ id: it.id }, r));
+    U.ok(`${path.relative(process.cwd(), out)}  ${r.size} · ${r.seconds}s`);
   }
   return results;
 }
@@ -350,6 +370,69 @@ function liveStop(dir) {
   fs.rmSync(pidf, { force: true });
 }
 
+
+/* ---------- live autopilot (start / status) ---------- */
+const AUTO_TEMPLATE = {
+  url: 'https://www.twitch.tv/<channel>',
+  permission: 'Who allowed you to clip this channel, e.g. "Clipping campaign of <channel>, Discord, 2026-11-21"',
+  language: 'de',
+  title: 'GTA 6',
+  detect: { threshold: 6, minLaughs: 5, chatLagSeconds: 4, pre: 12, post: 8, minSeconds: 15, maxSeconds: 40, cooldownSeconds: 45 },
+  judge: { mode: 'auto', model: 'claude-opus-5-5', minScore: 7 },
+  clip: { layout: 'E', cam: '', focus: 0.5, heading: 'box', captions: 'auto' },
+  post: { streamer: '<channel>', platform: 'Twitch', hashtags: ['gta6', 'gta', 'gaming'], credit: '🎥 @{streamer} on {platform}', adLabel: '' },
+  upload: { mode: 'draft', privacy: 'SELF_ONLY', review: false, maxPerDay: 8, minGapMinutes: 20 },
+  record: { tool: 'auto', segmentSeconds: 30, keepMinutes: 60 },
+  notify: { webhook: '' },
+};
+function dirArgAuto(a) {
+  const d = a._[1]; if (!d) U.fail(`clip ${a._[0]} <dir>`);
+  const p = U.exists(path.resolve(d)) ? path.resolve(d) : path.join(clipsRoot(), d);
+  if (!U.exists(path.join(p, 'autopilot.json'))) U.fail(`No autopilot folder at ${p}`);
+  return p;
+}
+async function autoStart(a) {
+  const AP = require('./autopilot');
+  if (a.init) {
+    const f = path.resolve(typeof a.init === 'string' ? a.init : 'autopilot.json');
+    if (U.exists(f)) U.fail(`${f} exists already`);
+    U.writeJSON(f, AUTO_TEMPLATE); U.ok(`Wrote ${path.relative(process.cwd(), f)} — fill in url, permission, streamer, layout (and cam for A/C/D)`); return;
+  }
+  const cfgFile = a.config ? path.resolve(a.config) : U.exists(path.resolve('autopilot.json')) ? path.resolve('autopilot.json') : null;
+  const cfg = cfgFile ? U.readJSON(cfgFile) : {};
+  const url = a._[1] || cfg.url;
+  if (a.simulate) cfg.simulate = { file: path.resolve(a.simulate), chat: a['sim-chat'] ? path.resolve(a['sim-chat']) : null, speed: Number(a.speed || 1) };
+  else if (!url || url.includes('<channel>')) U.fail('Which stream? clip auto <url>  (or put "url" in autopilot.json; template: clip auto --init)');
+  if (url && !a.simulate) cfg.url = url;
+  if (a.permission) cfg.permission = a.permission;
+  if (!a.simulate && (!cfg.permission || /^Who allowed/.test(cfg.permission))) U.fail('Only clip streamers who allow it. Put where your permission comes from into autopilot.json as "permission" (e.g. a clipping campaign), or pass --permission "…"');
+  const set = (k1, k2, v) => { if (v == null) return; cfg[k1] = Object.assign({}, cfg[k1] || {}, { [k2]: v }); };
+  set('clip', 'layout', a.layout); set('clip', 'cam', a.cam); set('clip', 'heading', a.heading); set('upload', 'mode', a.mode);
+  if (a.review) set('upload', 'review', true);
+  if (a['dry-run']) set('upload', 'mode', 'none');
+  if (a.judge) set('judge', 'mode', a.judge);
+  if (a.lang) cfg.language = a.lang;
+  const name = a.simulate ? 'sim-' + U.slugify(path.basename(a.simulate, path.extname(a.simulate))) : 'auto-' + (require('./chat').twitchChannel(url) || U.slugify(url).slice(-30));
+  const dir = U.ensureDir(path.resolve(a.out || path.join(clipsRoot(), `${name}-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-')}`)));
+  U.writeJSON(path.join(dir, 'autopilot.json'), cfg);
+  const eff = AP.loadConfig(dir);
+  if ((eff.upload.mode === 'draft' || eff.upload.mode === 'direct') && !require('./tiktok').loggedIn()) U.warn('TikTok is not connected yet (clip tiktok setup / login): clips will be cut, but uploads will fail until you connect it.');
+  if (a.foreground) { await AP.run(dir); return; }
+  const log = fs.openSync(path.join(dir, 'autopilot.log'), 'a');
+  const p = spawn(process.execPath, [path.join(__dirname, 'autopilot.js'), dir], { detached: true, stdio: ['ignore', log, log], env: process.env });
+  p.unref();
+  U.ok(`Autopilot running in the background: ${path.relative(process.cwd(), dir)}`);
+  U.log(U.color.dim(`  status: clip auto-status ${path.relative(process.cwd(), dir)}    log: ${path.relative(process.cwd(), path.join(dir, 'autopilot.log'))}\n  stop:   clip auto-stop ${path.relative(process.cwd(), dir)}`));
+}
+function autoStatus(dir) {
+  const { alive, st } = require('./autopilot').summary(dir);
+  if (!st) { U.log(alive ? 'Starting…' : 'No state yet.'); return; }
+  U.log(`${alive ? U.color.green('running') : U.color.yellow('stopped')} · ${st.url || 'simulation'} · recorded ${U.fmtTime(st.recordedSeconds || 0)} · chat ${st.chatMessages || 0} messages · judge ${st.judge} · upload ${st.upload}`);
+  const by = {}; (st.moments || []).forEach((m) => { by[m.status] = (by[m.status] || 0) + 1; });
+  U.log(`moments: ${Object.entries(by).map(([k, v]) => `${v} ${k}`).join(', ') || 'none yet'} · uploads today: ${(st.uploads || []).filter((u) => new Date(u.at).toDateString() === new Date().toDateString()).length}`);
+  for (const m of (st.moments || []).slice(-10)) U.log(`  ${m.id} ${U.fmtTime(m.peak)} ${String(m.status).padEnd(13)} ${m.funny != null ? 'funny ' + m.funny + ' ' : ''}${m.heading ? '"' + m.heading + '" ' : ''}${m.file ? U.color.dim(m.file) : ''}${m.error ? U.color.red(' ' + m.error) : ''}`);
+}
+
 /* ---------- cli ---------- */
 async function cli(a) {
   const sub = a._[0];
@@ -394,8 +477,44 @@ async function cli(a) {
       return;
     }
     case 'live-stop': { const d = dirArg(); liveStop(d); U.ok('Recorder stopped'); return; }
-    default: U.fail('clip fetch | analyze | frames | cut | live | live-check | live-stop | layouts');
+    case 'tiktok': return require('./tiktok').cli(a);
+    case 'auto-frame': {
+      const url = a._[1]; if (!url) U.fail('clip auto-frame <live url>  (saves one frame to find the facecam position)');
+      needYtdlp();
+      const r = await U.run('yt-dlp', ['--no-warnings', '-g', '-f', 'best[height<=1080]/best', url]);
+      const media = r.stdout.toString().trim().split('\n')[0];
+      const out = path.resolve(a.out || 'live-frame.jpg');
+      await U.ffmpeg(['-i', media, '-frames:v', '1', '-q:v', '2', out]);
+      U.ok(`Saved ${path.relative(process.cwd(), out)}: look where the facecam is and write it as cam "x,y,w,h" (fractions of width/height) into autopilot.json`);
+      return;
+    }
+    case 'auto': return autoStart(a);
+    case 'auto-status': return autoStatus(dirArgAuto(a));
+    case 'auto-stop': {
+      const d = dirArgAuto(a); const pidf = path.join(d, 'autopilot.pid');
+      if (!U.exists(pidf)) U.fail('The autopilot is not running in ' + d);
+      try { process.kill(parseInt(fs.readFileSync(pidf, 'utf8'), 10), 'SIGTERM'); } catch (e) { fs.rmSync(pidf, { force: true }); }
+      U.ok('Autopilot stopping (recording and chat end, clips stay in out/)'); return;
+    }
+    case 'auto-approve': {
+      const d = dirArgAuto(a); const ids = a._.slice(2); if (!ids.length) U.fail('clip auto-approve <dir> m003 [m004 …]');
+      const AP = require('./autopilot');
+      if (AP.summary(d).alive) { U.ensureDir(path.join(d, 'approve')); ids.forEach((id) => fs.writeFileSync(path.join(d, 'approve', id), '')); U.ok(`Approved ${ids.join(', ')}: the autopilot uploads them next (daily limit and gap still apply)`); return; }
+      const st = U.readJSON(path.join(d, 'state.json'));
+      const cfg = AP.loadConfig(d);
+      for (const id of ids) {
+        const m = st.moments.find((x) => x.id === id); if (!m || !m.file) { U.warn(`${id}: no finished clip`); continue; }
+        const file = path.join(d, m.file);
+        const title = fs.readFileSync(file.replace(/\.mp4$/, '.txt'), 'utf8').trim();
+        const r = await require('./tiktok').upload(file, { mode: a.mode || (cfg.upload.mode === 'none' ? 'draft' : cfg.upload.mode), title, privacy: cfg.upload.privacy, seconds: m.seconds });
+        Object.assign(m, { status: 'uploaded', tiktok: r, uploadedAt: new Date().toISOString() });
+        st.uploads.push({ id, at: m.uploadedAt });
+        U.ok(`${id} uploaded (${r.mode}): ${r.status}`);
+      }
+      U.writeJSON(path.join(d, 'state.json'), st); return;
+    }
+    default: U.fail('clip fetch | analyze | frames | cut | live | live-check | live-stop | layouts | auto | auto-status | auto-stop | auto-approve | tiktok');
   }
 }
 
-module.exports = { cli, fetchSource, analyzeDir, frames, cut, liveStart, liveCheck, liveStop, buildAss, LAYOUTS };
+module.exports = { cli, fetchSource, analyzeDir, frames, cut, renderClip, renderHeadings, postText, platformOf, liveStart, liveCheck, liveStop, buildAss, cropDetect, LAYOUTS };

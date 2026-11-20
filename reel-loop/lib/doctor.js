@@ -10,6 +10,7 @@ const INSTALL = {
   fonts: { size: '~35 MB', why: 'the typefaces the styles use', all: 'cd reel-loop && npm install' },
   'yt-dlp': { size: '~3 MB', why: 'only for the stream clipper: downloads parts of YouTube/Twitch/Kick streams', mac: 'brew install yt-dlp', win: 'winget install yt-dlp', linux: 'pip install yt-dlp' },
   'edge-tts': { size: '~1 MB', why: 'a free narrator voice (Microsoft Edge voices, needs internet)', all: 'pip install edge-tts' },
+  streamlink: { size: '~10 MB', why: 'records live streams reliably and skips Twitch ad breaks (live autopilot)', all: 'pip install streamlink' },
 };
 function how(k) { const i = INSTALL[k]; const p = process.platform; return i.all || (p === 'darwin' ? i.mac : p === 'win32' ? i.win : i.linux); }
 
@@ -36,6 +37,12 @@ async function doctor(opts = {}) {
   add('Voice: built-in system voice', ps.system, ps.system ? (process.platform === 'darwin' ? 'say' : process.platform === 'win32' ? 'Windows SAPI' : 'espeak') : 'optional', null, true);
   const yt = U.which('yt-dlp');
   add('Clipper: yt-dlp', !!yt, yt ? 'found' : 'optional, only for stream clipping', 'yt-dlp', true);
+  const sl = U.which('streamlink');
+  add('Live autopilot: streamlink', !!sl, sl ? 'found (filters Twitch ads)' : 'optional, recommended for Twitch live recording', 'streamlink', true);
+  const claude = require('./clipper/judge').hasClaudeCredentials();
+  add('Live autopilot: Claude judge', claude, claude ? 'ANTHROPIC_API_KEY set' : 'optional: export ANTHROPIC_API_KEY=… (else the chat/audio score decides alone)', null, true);
+  const tt = require('./clipper/tiktok').loggedIn();
+  add('Live autopilot: TikTok upload', tt, tt ? 'connected' : 'optional: clip tiktok setup, then clip tiktok login', null, true);
   const voiceAny = ps.elevenlabs || ps.openai || ps.edge || ps.system;
   U.log(U.color.bold('\nReel Loop setup check\n'));
   for (const r of rows) U.log(`${r.ok ? U.color.green('✓') : r.optional ? U.color.yellow('○') : U.color.red('✗')} ${r.name.padEnd(30)} ${U.color.dim(r.detail || '')}`);

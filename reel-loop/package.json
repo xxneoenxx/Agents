@@ -15,6 +15,7 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.11.0",
     "@fontsource/anton": "^5.2.0",
     "@fontsource/archivo-black": "^5.2.0",
     "@fontsource/bebas-neue": "^5.2.0",

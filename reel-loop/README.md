@@ -59,6 +59,51 @@ Jedes fertige Video wird in der Liste abgehakt und in `videos/autopilot-log.md` 
 ```
 Lädt nur Ton, Untertitel und Chat (nie die ganzen 10 Stunden) und findet Momente über Schreie, Lautstärke-Spitzen, Chat-Explosionen und Hype-Wörter. Claude liest auf den Vorschaubildern den Spielbildschirm (WASTED, BUSTED …) und schreibt Überschriften. Du wählst aus, dann kommen fertige 1080×1920-Clips mit 60 fps: Überschrift, Wort-für-Wort-Untertitel, Zoom auf die Reaktion, ohne schwarze Balken, Layout A–E, dazu eine Caption mit Credit an den Streamer. Kampagnen-Regeln (Länge, Hashtags, Werbekennzeichnung) stehen einmal in `campaign.json`. Der Live-Modus prüft laufende Streams alle 10–15 Minuten.
 
+## GTA-6-Live-Autopilot: Stream schauen, lustige Momente clippen, zu TikTok hochladen
+
+Der Autopilot läuft im Hintergrund, solange der Stream live ist:
+
+1. **Aufnehmen:** Der Stream wird in 30-Sekunden-Stücken mitgeschnitten (mit `yt-dlp`, oder mit `streamlink`, das Twitch-Werbepausen überspringt). Gespeichert wird nur die letzte Stunde.
+2. **Chat lesen:** Twitch-Chat anonym ohne Account, YouTube-Live-Chat über yt-dlp. Für Kick gibt es keinen Chat, dort entscheiden Ton und KI.
+3. **Lustiges erkennen:** Alle halbe Sekunde wird gezählt: Lach-Explosionen im Chat (KEKW, LUL, OMEGALUL, 😂, 💀 …), Chat-Tempo, „clip it“-Rufe, Lautstärke-Spitzen und Schreie.
+4. **Bewerten:** Mit `ANTHROPIC_API_KEY` schaut sich Claude pro Moment vier Bilder, den Chat und (mit `OPENAI_API_KEY`) die gesprochenen Worte an. Claude entscheidet, ob der Moment wirklich lustig und TikTok-tauglich ist, und schreibt eine deutsche Überschrift. Ohne Key entscheidet der Punktwert, und die Überschrift kommt aus Vorlagen.
+5. **Schneiden:** 1080×1920 mit 60 fps, Layout A–E, Überschrift, Zoom auf die Reaktion, Untertitel, Caption mit Credit an den Streamer und Hashtags.
+6. **Hochladen:** über die offizielle TikTok-API, standardmäßig als **Entwurf** in deine TikTok-Inbox (dort tippst du nur noch auf Posten). Es gibt ein Tageslimit (`maxPerDay`) und einen Mindestabstand zwischen zwei Posts (`minGapMinutes`).
+
+```bash
+# einmalig: eigene TikTok-Entwickler-App (kostenlos) anlegen, Schritte zeigt:
+node reel-loop/bin/loop.js clip tiktok setup
+node reel-loop/bin/loop.js clip tiktok setup --key <client key> --secret <client secret>
+node reel-loop/bin/loop.js clip tiktok login
+
+# Konfiguration anlegen und ausfüllen (url, permission, streamer, layout …)
+node reel-loop/bin/loop.js clip auto --init
+
+# erst testen: eine alte Aufnahme + Chat-Replay, nichts wird hochgeladen
+node reel-loop/bin/loop.js clip auto --simulate aufnahme.mp4 --sim-chat chat.json --speed 4 --dry-run --foreground
+
+# live starten, Status ansehen, stoppen
+node reel-loop/bin/loop.js clip auto
+node reel-loop/bin/loop.js clip auto-status clips/auto-<kanal>-<datum>
+node reel-loop/bin/loop.js clip auto-stop clips/auto-<kanal>-<datum>
+```
+
+**Wichtig zu TikTok:** Öffentlich *direkt* posten (`"upload": {"mode": "direct"}`) erlaubt TikTok erst, wenn deine App von TikTok geprüft wurde. Bis dahin sind Direkt-Posts nur für dich sichtbar, und dein Account muss auf privat stehen. Entwürfe (Standard) brauchen nur einen Fingertipp in der App. Mit `--review` wartet jeder Clip zusätzlich auf dein OK (`clip auto-approve <ordner> m003`).
+
+**Wichtig zum Clippen:** Der Autopilot startet nur, wenn in `autopilot.json` unter `permission` steht, woher deine Erlaubnis kommt, z. B. aus einer Clipping-Kampagne des Streamers. Fremde Streams ohne Erlaubnis hochzuladen kann zu Urheberrechts-Strikes und gesperrten Accounts führen.
+
+| Einstellung | Bedeutung |
+|---|---|
+| `detect.threshold` | höher = weniger, aber stärkere Momente (Standard 6) |
+| `detect.minLaughs` | mindestens so viele Lach-Nachrichten in 10 s (Standard 5) |
+| `detect.chatLagSeconds` | wie viele Sekunden der Chat nach dem Moment reagiert (Standard 4) |
+| `judge.minScore` | Claudes Mindestwert für „lustig“ von 0 bis 10 (Standard 7) |
+| `judge.model` | Standard `claude-opus-5-5`; günstiger z. B. `claude-haiku-5-5` |
+| `clip.layout` / `clip.cam` | Layout A–E; Facecam-Rechteck für A/C/D (`clip auto-frame <url>` hilft) |
+| `upload.mode` | `draft` (Standard), `direct` oder `none` (nur speichern) |
+| `upload.maxPerDay` / `minGapMinutes` | höchstens 8 Posts am Tag, 20 Minuten Abstand (Standard) |
+| `notify.webhook` | Discord- oder Slack-Webhook für Meldungen zu jedem Clip |
+
 ## Styles
 
 13 eigene Styles, jeder mit Regeln für Farben, Schrift, Bewegung, Struktur, Sound und Stimme (`styles/`):
@@ -118,5 +163,7 @@ Jeder Befehl lässt sich gefahrlos wiederholen: Stimme, Rendering und Mix werden
 - Die Karte ist stilisiert, keine echte Geografie (eigene SVG-Pfade sind möglich).
 - Mit OpenAI- oder System-Stimmen sind die Wort-Timings geschätzt. ElevenLabs und Edge liefern echte.
 - Die Moment-Erkennung im Clipper ist eine Heuristik. Die Entscheidung trifft der Agent anhand der Bilder, und du wählst aus.
-- Der Live-Modus braucht einen laufenden Rechner.
+- Der Live-Modus und der Autopilot brauchen einen Rechner, der die ganze Zeit läuft und Internet hat.
+- Die Autopilot-Erkennung lebt vom Chat. Auf Twitch klappt das am besten, bei Kick gibt es keinen Chat. Ob ein Moment wirklich lustig ist, beurteilt am zuverlässigsten Claude (mit API-Key) oder du selbst im Freigabe-Modus.
+- Öffentliche Direkt-Posts erlaubt TikTok erst nach der Prüfung deiner App. Ohne Prüfung bleiben Entwürfe oder private Posts.
 - Nur Streamer clippen, die es erlauben, und immer credits geben. Views kann niemand versprechen.

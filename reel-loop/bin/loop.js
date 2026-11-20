@@ -47,6 +47,17 @@ Stream clipper
   clip cut <dir> --pick c01,c03 [--layout A|B|C|D|E] [--cam x,y,w,h] [--captions on|off] [--heading box|outline] [--fps 60]
   clip live <url> [--every 12] / clip live-check <dir> / clip live-stop <dir>
   clip layouts                        What layouts A-E look like
+
+Live autopilot (watches a live stream, clips funny moments, uploads to TikTok)
+  clip auto --init                    Write an autopilot.json template (url, permission, layout, upload …)
+  clip auto [url] [--config autopilot.json] [--review] [--dry-run] [--layout A --cam x,y,w,h]
+                                      Start in the background (drafts to TikTok by default)
+  clip auto --simulate rec.mp4 --sim-chat chat.jsonl --speed 4 --dry-run --foreground
+                                      Test the detection on a recording first
+  clip auto-status <dir> · clip auto-stop <dir> · clip auto-approve <dir> m003
+  clip auto-frame <url>               One frame from the live stream, to find the facecam
+  clip tiktok setup --key … --secret … · clip tiktok login · clip tiktok status
+  clip tiktok upload <file.mp4> [--mode draft|direct] [--privacy SELF_ONLY]
 `;
 
 async function main() {
