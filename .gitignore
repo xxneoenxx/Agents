@@ -1,0 +1,7 @@
+node_modules/
+# your rendered videos and clips stay local
+videos/
+clips/
+style-previews/
+style-learn-*/
+.frames-*/

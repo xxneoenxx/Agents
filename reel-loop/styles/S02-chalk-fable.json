@@ -1,0 +1,137 @@
+{
+  "id": "S02",
+  "name": "Chalk Fable",
+  "category": "Story",
+  "tags": [
+    "moral",
+    "lesson",
+    "story",
+    "life",
+    "kindness",
+    "fable",
+    "parable",
+    "motivation",
+    "stick",
+    "quiet",
+    "wisdom",
+    "choices"
+  ],
+  "summary": "A quiet stick-figure fable drawn in chalk on a dark green board. Few words, simple poses, one lesson at the end.",
+  "bestFor": "Short moral stories, life lessons, 'two people did X, one did Y' parables.",
+  "sample": "Make a 45 second Chalk Fable (S02) about two neighbours and a broken fence",
+  "palette": {
+    "bg": "#1f2b26",
+    "bg2": "#26352e",
+    "fg": "#f2efe6",
+    "muted": "#b8c2b9",
+    "accent": "#f6d365",
+    "accent2": "#f28b82",
+    "accent3": "#9fd8cb",
+    "card": "rgba(255,255,255,.07)",
+    "cardFg": "#f2efe6",
+    "line": "#f2efe6",
+    "hlBg": "#f6d365",
+    "hlFg": "#1f2b26"
+  },
+  "fonts": {
+    "display": {
+      "family": "Patrick Hand",
+      "pkg": "patrick-hand",
+      "weights": [
+        400
+      ],
+      "fallback": "'Comic Sans MS', 'Chalkboard SE', 'Patrick Hand', cursive"
+    },
+    "body": {
+      "family": "Kalam",
+      "pkg": "kalam",
+      "weights": [
+        400,
+        700
+      ],
+      "fallback": "'Comic Sans MS', 'Chalkboard SE', 'Patrick Hand', cursive"
+    },
+    "mono": {
+      "family": "Kalam",
+      "pkg": "kalam",
+      "weights": [
+        700
+      ],
+      "fallback": "'Comic Sans MS', 'Chalkboard SE', 'Patrick Hand', cursive"
+    }
+  },
+  "type": {
+    "case": "none",
+    "tracking": "0",
+    "leading": 1.08,
+    "displayWeight": 400,
+    "bodyWeight": 700,
+    "scale": 1.05
+  },
+  "shape": {
+    "radius": 34,
+    "stroke": 11,
+    "shadow": "none",
+    "cardBorder": "4px dashed rgba(242,239,230,.55)"
+  },
+  "background": {
+    "kind": "chalk",
+    "grain": 0.12,
+    "vignette": 0.45
+  },
+  "motion": {
+    "reveal": "fade",
+    "stagger": 0.1,
+    "transition": "fade",
+    "drift": 0.02
+  },
+  "captions": {
+    "enabled": true,
+    "style": "plain",
+    "size": 58,
+    "maxWords": 5
+  },
+  "sound": {
+    "music": "lofi",
+    "musicVolume": 0.24,
+    "sfx": "soft",
+    "sfxVolume": 0.4
+  },
+  "voice": {
+    "tone": "soft, slow storyteller, gentle pauses",
+    "wps": 2.2,
+    "providers": {
+      "openai": "fable",
+      "elevenlabs": "Lily",
+      "edge": {
+        "en": "en-GB-SoniaNeural",
+        "de": "de-DE-KatjaNeural"
+      },
+      "system": {
+        "mac": "Samantha",
+        "espeak": "en"
+      }
+    }
+  },
+  "structure": [
+    "Setup: who, where, one line",
+    "Conflict: what goes wrong (pose change)",
+    "Choice: two paths, or one surprising act",
+    "Consequence: a quiet beat",
+    "Moral: one sentence on its own scene"
+  ],
+  "scenes": [
+    "stick",
+    "text",
+    "quote",
+    "choice",
+    "cta"
+  ],
+  "rules": [
+    "Characters are stick figures only, max 2 on screen",
+    "Moods change with poses: sad, think, happy",
+    "Leave 1 s of silence before the moral",
+    "No numbers, no charts"
+  ],
+  "css": ".display{text-shadow:0 0 3px rgba(255,255,255,.35)} .fig svg{filter:drop-shadow(0 0 2px rgba(255,255,255,.45))} .bubble{border:4px dashed rgba(242,239,230,.6);box-shadow:none} .bubble:after{border-top-color:rgba(242,239,230,.25)}"
+}

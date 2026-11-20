@@ -1,0 +1,136 @@
+{
+  "id": "S09",
+  "name": "Fork in the Road",
+  "category": "Story",
+  "tags": [
+    "choice",
+    "would you rather",
+    "suspense",
+    "series",
+    "story",
+    "interactive",
+    "survival",
+    "what would you do",
+    "part",
+    "cliffhanger",
+    "dilemma"
+  ],
+  "summary": "A you-choose suspense series. Black and red, huge condensed type, two options, a ticking countdown, and a cliffhanger that sends people to part two.",
+  "bestFor": "'What would you do?' dilemmas, survival choices, story series with parts.",
+  "sample": "Make a 40 second Fork in the Road (S09) episode: you wake up on a sinking ship",
+  "palette": {
+    "bg": "#0a0a0a",
+    "bg2": "#1a0b0b",
+    "fg": "#ffffff",
+    "muted": "#a8a8a8",
+    "accent": "#ff2a2a",
+    "accent2": "#ff2a2a",
+    "accent3": "#f5f5f5",
+    "card": "#161616",
+    "cardFg": "#ffffff",
+    "line": "#ffffff",
+    "hlBg": "#ff2a2a",
+    "hlFg": "#ffffff"
+  },
+  "fonts": {
+    "display": {
+      "family": "Anton",
+      "pkg": "anton",
+      "weights": [
+        400
+      ]
+    },
+    "body": {
+      "family": "Inter",
+      "pkg": "inter",
+      "weights": [
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    "mono": {
+      "family": "Bebas Neue",
+      "pkg": "bebas-neue",
+      "weights": [
+        400
+      ]
+    }
+  },
+  "type": {
+    "case": "uppercase",
+    "tracking": "0.005em",
+    "leading": 0.98,
+    "displayWeight": 400,
+    "bodyWeight": 800,
+    "scale": 1.05
+  },
+  "shape": {
+    "radius": 18,
+    "stroke": 12,
+    "shadow": "0 18px 50px rgba(0,0,0,.6)"
+  },
+  "background": {
+    "kind": "radial",
+    "grain": 0.09,
+    "vignette": 0.6
+  },
+  "motion": {
+    "reveal": "zoom",
+    "stagger": 0.07,
+    "transition": "flash",
+    "drift": 0.05
+  },
+  "captions": {
+    "enabled": true,
+    "style": "outline",
+    "size": 64,
+    "maxWords": 3,
+    "uppercase": true,
+    "on": "#ff2a2a"
+  },
+  "sound": {
+    "music": "suspense",
+    "musicVolume": 0.26,
+    "sfx": "punchy",
+    "sfxVolume": 0.65
+  },
+  "voice": {
+    "tone": "tense, cinematic, second person ('you')",
+    "wps": 2.7,
+    "providers": {
+      "openai": "ash",
+      "elevenlabs": "Liam",
+      "edge": {
+        "en": "en-US-GuyNeural",
+        "de": "de-DE-ConradNeural"
+      },
+      "system": {
+        "mac": "Alex",
+        "espeak": "en-us"
+      }
+    }
+  },
+  "structure": [
+    "Cold open: 'You wake up...' in 3 s",
+    "Stakes: what you lose if you are wrong",
+    "Choice: A or B with a 3-2-1 countdown",
+    "Reveal: what most people picked",
+    "Cliffhanger: 'Part 2 decides if you survive' + follow"
+  ],
+  "scenes": [
+    "hook",
+    "text",
+    "choice",
+    "number",
+    "cta"
+  ],
+  "rules": [
+    "Speak to 'you' the whole time",
+    "Every episode ends unresolved",
+    "Countdown is always 3 seconds"
+  ],
+  "css": ".ch-card.b{background:#f5f5f5;color:#0a0a0a} .ch-card.a{background:#ff2a2a;color:#fff} .ttl{text-shadow:0 8px 30px rgba(0,0,0,.6)}"
+}

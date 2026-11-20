@@ -1,0 +1,175 @@
+{
+  "title": "Warum der Panamakanal Treppen für Schiffe hat",
+  "language": "de",
+  "targetSeconds": 45,
+  "fps": 30,
+  "style": "S01",
+  "handle": "@deinkanal",
+  "voice": {
+    "provider": "auto"
+  },
+  "music": {},
+  "post": {
+    "caption": "Warum der Panamakanal Treppen für Schiffe hat 🚢",
+    "hashtags": [
+      "panamakanal",
+      "wissen",
+      "geschichte",
+      "lernen"
+    ]
+  },
+  "hookOptions": [
+    "Warum baut man Treppen für Schiffe?",
+    "Dieser Kanal hebt Schiffe 26 Meter hoch.",
+    "Frankreich ist hier gescheitert. Die USA nicht."
+  ],
+  "hookChoice": 0,
+  "scenes": [
+    {
+      "id": "s01",
+      "type": "hook",
+      "see": "Schiff-Emoji, Frage groß im Bild",
+      "voice": "Warum baut man Treppen für Schiffe?",
+      "data": {
+        "kicker": "Panamakanal",
+        "text": "Warum baut man *Treppen* für Schiffe?",
+        "emoji": "🚢"
+      }
+    },
+    {
+      "id": "s02",
+      "type": "map",
+      "see": "Karte: Route vom Atlantik über Panama zum Pazifik",
+      "voice": "Panama ist der schmale Streifen zwischen zwei Ozeanen. Wer hier durchfährt, spart sich dreizehntausend Kilometer um Südamerika.",
+      "data": {
+        "pins": [
+          {
+            "x": 300,
+            "y": 330,
+            "label": "Atlantik",
+            "emoji": "🌊",
+            "at": "word:Panama"
+          },
+          {
+            "x": 520,
+            "y": 520,
+            "label": "Panama",
+            "emoji": "🇵🇦",
+            "at": "word:Ozeanen"
+          },
+          {
+            "x": 700,
+            "y": 700,
+            "label": "Pazifik",
+            "emoji": "🌅",
+            "at": "word:durchfährt"
+          }
+        ],
+        "vehicle": "🚢"
+      }
+    },
+    {
+      "id": "s03",
+      "type": "number",
+      "see": "26 m zählt hoch",
+      "voice": "Aber in der Mitte ist das Land hoch. Der Gatúnsee liegt sechsundzwanzig Meter über dem Meer.",
+      "data": {
+        "kicker": "Die Mitte ist hoch",
+        "value": 26,
+        "suffix": " m",
+        "label": "liegt der Gatúnsee *über dem Meer*",
+        "emoji": "🏞️",
+        "at": 0.5,
+        "countDur": 2.2
+      }
+    },
+    {
+      "id": "s04",
+      "type": "compare",
+      "see": "Frankreich (Durchgraben) gegen USA (Schleusen), USA gewinnt",
+      "voice": "Frankreich wollte ab 1881 einfach durchgraben. Die USA bauten stattdessen Stufen.",
+      "data": {
+        "left": {
+          "emoji": "🇫🇷",
+          "title": "Durchgraben",
+          "value": "1881",
+          "points": [
+            "Berge abtragen",
+            "1889 gescheitert"
+          ]
+        },
+        "right": {
+          "emoji": "🇺🇸",
+          "title": "Schleusen",
+          "value": "1904",
+          "points": [
+            "Schiffe anheben",
+            "1914 eröffnet"
+          ],
+          "at": "word:USA"
+        },
+        "winner": "right"
+      }
+    },
+    {
+      "id": "s05",
+      "type": "steps",
+      "see": "Vier Schritte einer Schleuse",
+      "voice": "So funktioniert eine Schleuse: Das Schiff fährt ein. Die Tore schließen sich. Wasser strömt hinein und hebt es an. Dann öffnet sich das nächste Tor.",
+      "data": {
+        "title": "So funktioniert eine *Schleuse*",
+        "steps": [
+          {
+            "text": "Schiff fährt ein",
+            "emoji": "🚢"
+          },
+          {
+            "text": "Tore schließen sich",
+            "emoji": "🚪"
+          },
+          {
+            "text": "Wasser hebt das Schiff",
+            "emoji": "🌊"
+          },
+          {
+            "text": "Nächstes Tor öffnet sich",
+            "emoji": "✅"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "type": "number",
+      "see": "200 Mio. Liter Süßwasser pro Schiff",
+      "voice": "Jede Durchfahrt kostet rund zweihundert Millionen Liter Süßwasser, direkt aus dem See.",
+      "data": {
+        "value": 200,
+        "suffix": " Mio.",
+        "label": "Liter Süßwasser *pro Schiff*",
+        "emoji": "💧"
+      }
+    },
+    {
+      "id": "s07",
+      "type": "text",
+      "see": "Schluss-Gedanke",
+      "voice": "Die Treppen sind also keine Schwäche. Sie sind der Trick.",
+      "data": {
+        "text": "Die Treppen sind *der Trick*."
+      }
+    },
+    {
+      "id": "s08",
+      "type": "cta",
+      "see": "Frage an die Zuschauer, Folgen-Button",
+      "voice": "Hättest du einfach durchgegraben? Schreib es in die Kommentare.",
+      "data": {
+        "text": "Hättest du *durchgegraben*?",
+        "emoji": "👇",
+        "handle": "@deinkanal",
+        "button": "Folgen"
+      }
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "id": "S01",
+  "name": "Atlas Flight",
+  "category": "Explainer",
+  "tags": [
+    "geography",
+    "map",
+    "places",
+    "country",
+    "city",
+    "history",
+    "trade",
+    "war",
+    "border",
+    "why",
+    "travel",
+    "route",
+    "river",
+    "canal",
+    "island",
+    "empire"
+  ],
+  "summary": "A flying-map why-story. The camera glides over a stylised map, pins drop, a route draws itself, and a calm narrator explains why a place is the way it is.",
+  "bestFor": "Why-questions about places, borders, routes and the history of a region.",
+  "sample": "Make a 60 second video on why the Panama Canal needs locks, in the Atlas Flight style (S01)",
+  "palette": {
+    "bg": "#0f2a3d",
+    "bg2": "#1c4a66",
+    "fg": "#f6f1e7",
+    "muted": "#a9bccb",
+    "accent": "#ffb547",
+    "accent2": "#ff6b5b",
+    "accent3": "#7fd1b9",
+    "card": "#f6f1e7",
+    "cardFg": "#10202c",
+    "cardAccent": "#d9480f",
+    "land": "#e9dcc3",
+    "water": "#1b4865",
+    "coast": "#0e3550",
+    "hlBg": "#ffb547",
+    "hlFg": "#10202c"
+  },
+  "fonts": {
+    "display": {
+      "family": "Archivo Black",
+      "pkg": "archivo-black",
+      "weights": [
+        400
+      ]
+    },
+    "body": {
+      "family": "Inter",
+      "pkg": "inter",
+      "weights": [
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "pkg": "jetbrains-mono",
+      "weights": [
+        500,
+        700
+      ]
+    }
+  },
+  "type": {
+    "case": "none",
+    "tracking": "-0.01em",
+    "leading": 1.04,
+    "displayWeight": 400,
+    "bodyWeight": 700,
+    "scale": 1
+  },
+  "shape": {
+    "radius": 26,
+    "stroke": 12,
+    "shadow": "0 18px 50px rgba(0,0,0,.35)"
+  },
+  "background": {
+    "kind": "gradient",
+    "grain": 0.07,
+    "vignette": 0.35
+  },
+  "motion": {
+    "reveal": "rise",
+    "stagger": 0.08,
+    "transition": "zoom",
+    "drift": 0.035
+  },
+  "captions": {
+    "enabled": true,
+    "style": "box",
+    "size": 60,
+    "maxWords": 4
+  },
+  "sound": {
+    "music": "calm",
+    "musicVolume": 0.2,
+    "sfx": "soft",
+    "sfxVolume": 0.55
+  },
+  "voice": {
+    "tone": "calm, curious documentary narrator, warm and clear",
+    "wps": 2.6,
+    "providers": {
+      "openai": "onyx",
+      "elevenlabs": "George",
+      "edge": {
+        "en": "en-US-GuyNeural",
+        "de": "de-DE-ConradNeural"
+      },
+      "system": {
+        "mac": "Daniel",
+        "espeak": "en"
+      }
+    }
+  },
+  "structure": [
+    "Hook (0-3 s): the surprising question over the map overview",
+    "Context: fly to the place, pin drops",
+    "Problem: the obstacle, as a big number or a compare",
+    "How it works: steps, one per line of voice",
+    "Twist / payoff: the fact nobody expects",
+    "Outro: a question that invites comments"
+  ],
+  "scenes": [
+    "map",
+    "hook",
+    "number",
+    "steps",
+    "compare",
+    "timeline",
+    "text",
+    "cta"
+  ],
+  "rules": [
+    "Open on the map, never on a talking title",
+    "One idea per scene, 2-6 seconds each",
+    "Every pin gets a short label (max 2 words)",
+    "Numbers are rounded and said out loud the same way they are shown"
+  ],
+  "css": ""
+}

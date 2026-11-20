@@ -1,0 +1,147 @@
+{
+  "id": "S04",
+  "name": "Ink & Gilt Chronicle",
+  "category": "Story",
+  "tags": [
+    "history",
+    "ancient",
+    "empire",
+    "king",
+    "queen",
+    "war",
+    "medieval",
+    "rome",
+    "legend",
+    "myth",
+    "chronicle",
+    "dynasty",
+    "battle"
+  ],
+  "summary": "History told like an illuminated chronicle: parchment, ink-black serif type, gold accents, timelines and sepia maps.",
+  "bestFor": "History stories, rulers, battles, how an empire rose and fell.",
+  "sample": "Make a 60 second Ink & Gilt Chronicle (S04) on how Rome went from city to empire",
+  "palette": {
+    "bg": "#efe2c4",
+    "bg2": "#e2cfa5",
+    "fg": "#2a1d10",
+    "muted": "#6f5a3e",
+    "accent": "#b0802a",
+    "accent2": "#8c2f1b",
+    "accent3": "#3f5e4a",
+    "card": "rgba(255,250,236,.72)",
+    "cardFg": "#2a1d10",
+    "line": "#2a1d10",
+    "land": "#d9c08e",
+    "water": "#c4b08a",
+    "coast": "#7a5d33",
+    "grid": "rgba(42,29,16,.08)",
+    "hlBg": "#b0802a",
+    "hlFg": "#fff6e0"
+  },
+  "fonts": {
+    "display": {
+      "family": "Cinzel",
+      "pkg": "cinzel",
+      "weights": [
+        700,
+        900
+      ],
+      "fallback": "Georgia, 'DejaVu Serif', serif"
+    },
+    "body": {
+      "family": "Fraunces",
+      "pkg": "fraunces",
+      "weights": [
+        500,
+        700,
+        800
+      ],
+      "fallback": "Georgia, 'DejaVu Serif', serif"
+    },
+    "mono": {
+      "family": "Cinzel",
+      "pkg": "cinzel",
+      "weights": [
+        700
+      ],
+      "fallback": "Georgia, 'DejaVu Serif', serif"
+    }
+  },
+  "type": {
+    "case": "none",
+    "tracking": "0.01em",
+    "leading": 1.08,
+    "displayWeight": 900,
+    "bodyWeight": 700,
+    "scale": 0.95
+  },
+  "shape": {
+    "radius": 10,
+    "stroke": 10,
+    "shadow": "0 10px 30px rgba(60,40,10,.18)",
+    "cardBorder": "3px solid rgba(138,106,42,.65)"
+  },
+  "background": {
+    "kind": "parchment",
+    "grain": 0.1,
+    "vignette": 0.25
+  },
+  "motion": {
+    "reveal": "fade",
+    "stagger": 0.1,
+    "transition": "paper",
+    "drift": 0.03
+  },
+  "captions": {
+    "enabled": true,
+    "style": "plain",
+    "size": 56,
+    "maxWords": 5,
+    "on": "#8c2f1b"
+  },
+  "sound": {
+    "music": "epic",
+    "musicVolume": 0.22,
+    "sfx": "soft",
+    "sfxVolume": 0.45
+  },
+  "voice": {
+    "tone": "grave, cinematic historian, measured",
+    "wps": 2.4,
+    "providers": {
+      "openai": "onyx",
+      "elevenlabs": "Daniel",
+      "edge": {
+        "en": "en-GB-RyanNeural",
+        "de": "de-DE-ConradNeural"
+      },
+      "system": {
+        "mac": "Daniel",
+        "espeak": "en-gb"
+      }
+    }
+  },
+  "structure": [
+    "Hook: the end of the story first (a fall, a mystery)",
+    "Rewind: the year it began (timeline)",
+    "Rise: three turning points",
+    "Crack: the mistake",
+    "End: what is left today",
+    "Outro: what would you have done?"
+  ],
+  "scenes": [
+    "title",
+    "timeline",
+    "map",
+    "quote",
+    "number",
+    "text",
+    "cta"
+  ],
+  "rules": [
+    "Years are big and gold",
+    "Max one map per video",
+    "Quotes only if they are real and attributed"
+  ],
+  "css": ".ttl,.list-title{color:#2a1d10} .tl-dot{background:#f5ead0} .pin-lab{font-family:var(--font-display)} .map{filter:sepia(.25)} .bubble{border:3px solid rgba(138,106,42,.65)}"
+}

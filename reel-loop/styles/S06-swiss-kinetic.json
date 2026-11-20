@@ -1,0 +1,143 @@
+{
+  "id": "S06",
+  "name": "Swiss Kinetic",
+  "category": "Type",
+  "tags": [
+    "typography",
+    "business",
+    "marketing",
+    "startup",
+    "product",
+    "launch",
+    "tips",
+    "productivity",
+    "list",
+    "bold",
+    "minimal",
+    "tech",
+    "ai"
+  ],
+  "summary": "Kinetic typography in a strict Swiss grid: off-white paper, heavy black uppercase type, one red accent, hard cuts and whip pans.",
+  "bestFor": "Tips, product launches, business ideas, punchy lists.",
+  "sample": "Make a 30 second Swiss Kinetic (S06) video: 5 rules for better meetings",
+  "palette": {
+    "bg": "#f3f1ec",
+    "bg2": "#ebe8e1",
+    "fg": "#0d0d0d",
+    "muted": "#5c5c5c",
+    "accent": "#ff2d1f",
+    "accent2": "#0d0d0d",
+    "accent3": "#ff2d1f",
+    "card": "#ffffff",
+    "cardFg": "#0d0d0d",
+    "line": "#0d0d0d",
+    "hlBg": "#ff2d1f",
+    "hlFg": "#ffffff",
+    "grid": "rgba(0,0,0,.06)"
+  },
+  "fonts": {
+    "display": {
+      "family": "Inter",
+      "pkg": "inter",
+      "weights": [
+        800,
+        900
+      ]
+    },
+    "body": {
+      "family": "Inter",
+      "pkg": "inter",
+      "weights": [
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "pkg": "jetbrains-mono",
+      "weights": [
+        500,
+        700
+      ]
+    }
+  },
+  "type": {
+    "case": "uppercase",
+    "tracking": "-0.045em",
+    "leading": 0.92,
+    "displayWeight": 900,
+    "bodyWeight": 750,
+    "scale": 1.08
+  },
+  "shape": {
+    "radius": 0,
+    "stroke": 12,
+    "shadow": "none",
+    "cardBorder": "5px solid #0d0d0d"
+  },
+  "background": {
+    "kind": "grid",
+    "grain": 0.04,
+    "vignette": 0
+  },
+  "motion": {
+    "reveal": "wipe",
+    "stagger": 0.07,
+    "transition": "whip",
+    "drift": 0.04
+  },
+  "captions": {
+    "enabled": true,
+    "style": "highlight",
+    "size": 58,
+    "maxWords": 3,
+    "uppercase": true,
+    "on": "#ff2d1f"
+  },
+  "sound": {
+    "music": "upbeat",
+    "musicVolume": 0.24,
+    "sfx": "punchy",
+    "sfxVolume": 0.6
+  },
+  "voice": {
+    "tone": "confident, fast, punchy presenter",
+    "wps": 3.0,
+    "providers": {
+      "openai": "ash",
+      "elevenlabs": "Liam",
+      "edge": {
+        "en": "en-US-AndrewNeural",
+        "de": "de-DE-FlorianMultilingualNeural"
+      },
+      "system": {
+        "mac": "Alex",
+        "espeak": "en-us"
+      }
+    }
+  },
+  "structure": [
+    "Hook: a bold claim in 3-5 words",
+    "Promise: what you get",
+    "Points: one per scene, numbered",
+    "Proof: one number",
+    "Outro: save this"
+  ],
+  "scenes": [
+    "hook",
+    "text",
+    "list",
+    "number",
+    "compare",
+    "cta"
+  ],
+  "rules": [
+    "Max 6 words per text scene",
+    "Cuts every 1.5-3 s",
+    "Only black, white and one red"
+  ],
+  "css": ".ttl{color:#0d0d0d} .cta-btn{border-radius:0} .li-mark,.st-n{border-radius:0} .card{box-shadow:none} .emoji-big{filter:grayscale(1) contrast(1.3)}"
+}

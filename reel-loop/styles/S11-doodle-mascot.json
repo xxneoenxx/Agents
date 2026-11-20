@@ -1,0 +1,138 @@
+{
+  "id": "S11",
+  "name": "Doodle Mascot",
+  "category": "Character",
+  "tags": [
+    "mascot",
+    "character",
+    "funny",
+    "relatable",
+    "comedy",
+    "life",
+    "work",
+    "school",
+    "daily",
+    "habit",
+    "cartoon",
+    "doodle"
+  ],
+  "summary": "A marker doodle on white dotted paper: a friendly stick mascot reacts to everyday life, with yellow highlighter on the key words.",
+  "bestFor": "Relatable comedy, habits, school and work life, quick tips with a character.",
+  "sample": "Make a 30 second Doodle Mascot (S11) video about trying to wake up early",
+  "palette": {
+    "bg": "#ffffff",
+    "bg2": "#f7f7f2",
+    "fg": "#141414",
+    "muted": "#555555",
+    "accent": "#ff8a00",
+    "accent2": "#2f6bff",
+    "accent3": "#14c38e",
+    "card": "#ffffff",
+    "cardFg": "#141414",
+    "line": "#141414",
+    "grid": "rgba(0,0,0,.12)",
+    "hlBg": "#ffe94d",
+    "hlFg": "#141414"
+  },
+  "fonts": {
+    "display": {
+      "family": "Permanent Marker",
+      "pkg": "permanent-marker",
+      "weights": [
+        400
+      ],
+      "fallback": "'Comic Sans MS', 'Chalkboard SE', 'Patrick Hand', cursive"
+    },
+    "body": {
+      "family": "Nunito",
+      "pkg": "nunito",
+      "weights": [
+        800,
+        900
+      ]
+    },
+    "mono": {
+      "family": "Permanent Marker",
+      "pkg": "permanent-marker",
+      "weights": [
+        400
+      ],
+      "fallback": "'Comic Sans MS', 'Chalkboard SE', 'Patrick Hand', cursive"
+    }
+  },
+  "type": {
+    "case": "none",
+    "tracking": "0",
+    "leading": 1.08,
+    "displayWeight": 400,
+    "bodyWeight": 800,
+    "scale": 1
+  },
+  "shape": {
+    "radius": 26,
+    "stroke": 12,
+    "shadow": "6px 6px 0 #141414",
+    "cardBorder": "5px solid #141414"
+  },
+  "background": {
+    "kind": "dots",
+    "grain": 0.03,
+    "vignette": 0
+  },
+  "motion": {
+    "reveal": "pop",
+    "stagger": 0.07,
+    "transition": "slideX",
+    "drift": 0.02
+  },
+  "captions": {
+    "enabled": true,
+    "style": "highlight",
+    "size": 58,
+    "maxWords": 4,
+    "on": "#ffe94d"
+  },
+  "sound": {
+    "music": "playful",
+    "musicVolume": 0.22,
+    "sfx": "punchy",
+    "sfxVolume": 0.6
+  },
+  "voice": {
+    "tone": "playful, expressive, a little sarcastic",
+    "wps": 2.8,
+    "providers": {
+      "openai": "verse",
+      "elevenlabs": "Charlie",
+      "edge": {
+        "en": "en-US-AnaNeural",
+        "de": "de-DE-AmalaNeural"
+      },
+      "system": {
+        "mac": "Samantha",
+        "espeak": "en-us"
+      }
+    }
+  },
+  "structure": [
+    "Hook: the mascot in a relatable situation",
+    "Struggle: 2-3 beats, pose changes",
+    "Fail: the funny moment",
+    "Fix: the tip",
+    "Outro: 'tag a friend who...'"
+  ],
+  "scenes": [
+    "stick",
+    "hook",
+    "list",
+    "meters",
+    "choice",
+    "cta"
+  ],
+  "rules": [
+    "The mascot appears in at least half the scenes",
+    "One highlighted word per text scene",
+    "Jokes land on a pose change"
+  ],
+  "css": ".ttl{color:#141414} .fig svg{filter:drop-shadow(4px 4px 0 rgba(0,0,0,.08))} .bubble{border:5px solid #141414;box-shadow:6px 6px 0 #141414} .bubble:after{border-top-color:#141414} .cta-btn{border:5px solid #141414;box-shadow:6px 6px 0 #141414}"
+}

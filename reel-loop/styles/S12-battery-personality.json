@@ -1,0 +1,139 @@
+{
+  "id": "S12",
+  "name": "Battery Personality",
+  "category": "Character",
+  "tags": [
+    "personality",
+    "zodiac",
+    "types",
+    "relationships",
+    "psychology",
+    "test",
+    "friends",
+    "energy",
+    "levels",
+    "traits",
+    "introvert",
+    "extrovert",
+    "funny"
+  ],
+  "summary": "Personality as battery bars: soft pastel cards, chunky rounded type, levels that fill up and drain, and a playful narrator comparing types.",
+  "bestFor": "Personality types, zodiac signs, 'introvert vs extrovert', relatable energy levels.",
+  "sample": "Make a 45 second Battery Personality (S12) video: social battery of introverts vs extroverts",
+  "palette": {
+    "bg": "#fff4ec",
+    "bg2": "#ffe6d6",
+    "fg": "#2d1b3d",
+    "muted": "#7a6487",
+    "accent": "#ff7a59",
+    "accent2": "#7c5cff",
+    "accent3": "#29c4a9",
+    "card": "#ffffff",
+    "cardFg": "#2d1b3d",
+    "line": "#2d1b3d",
+    "hlBg": "#ffd43b",
+    "hlFg": "#2d1b3d",
+    "grid": "rgba(45,27,61,.06)"
+  },
+  "fonts": {
+    "display": {
+      "family": "Nunito",
+      "pkg": "nunito",
+      "weights": [
+        900
+      ]
+    },
+    "body": {
+      "family": "Nunito",
+      "pkg": "nunito",
+      "weights": [
+        700,
+        800,
+        900
+      ]
+    },
+    "mono": {
+      "family": "Nunito",
+      "pkg": "nunito",
+      "weights": [
+        900
+      ]
+    }
+  },
+  "type": {
+    "case": "none",
+    "tracking": "-0.02em",
+    "leading": 1.02,
+    "displayWeight": 900,
+    "bodyWeight": 800,
+    "scale": 1
+  },
+  "shape": {
+    "radius": 36,
+    "stroke": 12,
+    "shadow": "0 14px 34px rgba(45,27,61,.12)"
+  },
+  "background": {
+    "kind": "gradient",
+    "grain": 0.04,
+    "vignette": 0
+  },
+  "motion": {
+    "reveal": "pop",
+    "stagger": 0.07,
+    "transition": "slide",
+    "drift": 0.03
+  },
+  "captions": {
+    "enabled": true,
+    "style": "box",
+    "size": 58,
+    "maxWords": 4,
+    "bg": "#2d1b3d",
+    "fg": "#ffffff",
+    "on": "#ffd43b"
+  },
+  "sound": {
+    "music": "playful",
+    "musicVolume": 0.22,
+    "sfx": "punchy",
+    "sfxVolume": 0.55
+  },
+  "voice": {
+    "tone": "warm, teasing, conversational",
+    "wps": 2.8,
+    "providers": {
+      "openai": "shimmer",
+      "elevenlabs": "Charlotte",
+      "edge": {
+        "en": "en-US-EmmaNeural",
+        "de": "de-DE-SeraphinaMultilingualNeural"
+      },
+      "system": {
+        "mac": "Samantha",
+        "espeak": "en-us"
+      }
+    }
+  },
+  "structure": [
+    "Hook: 'Your social battery explained'",
+    "Types: one meters scene per type",
+    "Versus: compare two types",
+    "Drain: what empties the battery (list)",
+    "Outro: 'which one are you?'"
+  ],
+  "scenes": [
+    "hook",
+    "meters",
+    "compare",
+    "list",
+    "choice",
+    "cta"
+  ],
+  "rules": [
+    "Levels are 0-100 and believable",
+    "Every type gets an emoji",
+    "Never mean, always teasing"
+  ],
+  "css": ".ttl{color:#2d1b3d} .mt-body{border-color:#2d1b3d} .mt-nub{background:#2d1b3d}"
+}

@@ -1,0 +1,140 @@
+{
+  "id": "S05",
+  "name": "Cut Paper",
+  "category": "Explainer",
+  "tags": [
+    "explainer",
+    "kids",
+    "science",
+    "how",
+    "food",
+    "nature",
+    "craft",
+    "simple",
+    "school",
+    "fun",
+    "animals"
+  ],
+  "summary": "Bright paper cut-outs on kraft paper. Cards sit slightly crooked with hard shadows, things pop in like they were just laid on the desk.",
+  "bestFor": "Friendly explainers, how-things-work for everyone, food and nature facts.",
+  "sample": "Make a 45 second Cut Paper (S05) explainer on why bread rises",
+  "palette": {
+    "bg": "#d8bf94",
+    "bg2": "#cbb083",
+    "fg": "#2b211a",
+    "muted": "#5d4a39",
+    "accent": "#ff5e3a",
+    "accent2": "#2f80ed",
+    "accent3": "#27ae60",
+    "card": "#fffaf0",
+    "cardFg": "#2b211a",
+    "cardAccent": "#e8431f",
+    "line": "#2b211a",
+    "land": "#f4e3c1",
+    "water": "#7fb6d5",
+    "coast": "#2b211a",
+    "hlBg": "#ffd23f",
+    "hlFg": "#2b211a"
+  },
+  "fonts": {
+    "display": {
+      "family": "Archivo Black",
+      "pkg": "archivo-black",
+      "weights": [
+        400
+      ]
+    },
+    "body": {
+      "family": "Nunito",
+      "pkg": "nunito",
+      "weights": [
+        700,
+        800,
+        900
+      ]
+    },
+    "mono": {
+      "family": "Nunito",
+      "pkg": "nunito",
+      "weights": [
+        900
+      ]
+    }
+  },
+  "type": {
+    "case": "none",
+    "tracking": "-0.01em",
+    "leading": 1.04,
+    "displayWeight": 400,
+    "bodyWeight": 800,
+    "scale": 1
+  },
+  "shape": {
+    "radius": 8,
+    "stroke": 12,
+    "shadow": "10px 12px 0 rgba(60,40,20,.28)"
+  },
+  "background": {
+    "kind": "paper",
+    "grain": 0.1,
+    "vignette": 0.15
+  },
+  "motion": {
+    "reveal": "pop",
+    "stagger": 0.07,
+    "transition": "paper",
+    "drift": 0.02
+  },
+  "captions": {
+    "enabled": true,
+    "style": "box",
+    "size": 60,
+    "maxWords": 4,
+    "bg": "#fffaf0",
+    "fg": "#2b211a"
+  },
+  "sound": {
+    "music": "playful",
+    "musicVolume": 0.2,
+    "sfx": "punchy",
+    "sfxVolume": 0.6
+  },
+  "voice": {
+    "tone": "bright, friendly teacher, smiling",
+    "wps": 2.7,
+    "providers": {
+      "openai": "coral",
+      "elevenlabs": "Jessica",
+      "edge": {
+        "en": "en-US-JennyNeural",
+        "de": "de-DE-KatjaNeural"
+      },
+      "system": {
+        "mac": "Samantha",
+        "espeak": "en"
+      }
+    }
+  },
+  "structure": [
+    "Hook: a funny 'did you know' with a big emoji",
+    "What: the simple answer in one line",
+    "How: 3-4 steps",
+    "Wow: one number",
+    "Outro: try it yourself"
+  ],
+  "scenes": [
+    "hook",
+    "icon",
+    "steps",
+    "list",
+    "number",
+    "compare",
+    "cta"
+  ],
+  "rules": [
+    "Every scene has one emoji or picture",
+    "Short words, kid-friendly",
+    "Cards are a bit crooked, never perfectly straight"
+  ],
+  "css": ".li:nth-child(odd),.st-box:nth-of-type(odd){rotate:-1.2deg} .li:nth-child(even),.st-box:nth-of-type(even){rotate:1deg} .cmp-card.left{rotate:-1.5deg} .cmp-card.right{rotate:1.5deg} .emoji-big{filter:drop-shadow(8px 10px 0 rgba(60,40,20,.25))} .ttl{color:#2b211a}"
+}

@@ -1,0 +1,141 @@
+{
+  "id": "S10",
+  "name": "Blueprint",
+  "category": "Explainer",
+  "tags": [
+    "engineering",
+    "how it works",
+    "machine",
+    "technology",
+    "invention",
+    "building",
+    "car",
+    "plane",
+    "device",
+    "mechanism",
+    "architecture",
+    "physics"
+  ],
+  "summary": "A technical drawing come to life: blueprint blue, white grid lines, labelled steps and mono call-outs, like an engineer sketching for you.",
+  "bestFor": "How machines, buildings and inventions work, step by step.",
+  "sample": "Make a 60 second Blueprint (S10) video on how a jet engine works",
+  "palette": {
+    "bg": "#0b3d91",
+    "bg2": "#0f4fb5",
+    "fg": "#ffffff",
+    "muted": "#b9cdf5",
+    "accent": "#ffd166",
+    "accent2": "#7ae7ff",
+    "accent3": "#ffffff",
+    "card": "rgba(255,255,255,.06)",
+    "cardFg": "#ffffff",
+    "line": "#ffffff",
+    "grid": "rgba(255,255,255,.14)",
+    "land": "#2e6fd6",
+    "water": "#0b3d91",
+    "coast": "#ffffff",
+    "hlBg": "#ffd166",
+    "hlFg": "#0b3d91"
+  },
+  "fonts": {
+    "display": {
+      "family": "Space Grotesk",
+      "pkg": "space-grotesk",
+      "weights": [
+        700
+      ]
+    },
+    "body": {
+      "family": "Space Grotesk",
+      "pkg": "space-grotesk",
+      "weights": [
+        500,
+        700
+      ]
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "pkg": "jetbrains-mono",
+      "weights": [
+        500,
+        700
+      ]
+    }
+  },
+  "type": {
+    "case": "none",
+    "tracking": "-0.02em",
+    "leading": 1.02,
+    "displayWeight": 700,
+    "bodyWeight": 600,
+    "scale": 1
+  },
+  "shape": {
+    "radius": 4,
+    "stroke": 9,
+    "shadow": "none",
+    "cardBorder": "3px solid rgba(255,255,255,.85)"
+  },
+  "background": {
+    "kind": "blueprint",
+    "grain": 0.05,
+    "vignette": 0.3
+  },
+  "motion": {
+    "reveal": "wipe",
+    "stagger": 0.06,
+    "transition": "wipe",
+    "drift": 0.03
+  },
+  "captions": {
+    "enabled": true,
+    "style": "highlight",
+    "size": 56,
+    "maxWords": 4,
+    "on": "#ffd166"
+  },
+  "sound": {
+    "music": "calm",
+    "musicVolume": 0.2,
+    "sfx": "soft",
+    "sfxVolume": 0.5
+  },
+  "voice": {
+    "tone": "clear, precise engineer, friendly",
+    "wps": 2.6,
+    "providers": {
+      "openai": "echo",
+      "elevenlabs": "Chris",
+      "edge": {
+        "en": "en-US-BrianNeural",
+        "de": "de-DE-FlorianMultilingualNeural"
+      },
+      "system": {
+        "mac": "Alex",
+        "espeak": "en-us"
+      }
+    }
+  },
+  "structure": [
+    "Hook: the machine and the one question",
+    "Parts: label the 3-4 main parts",
+    "Flow: steps in order",
+    "Number: the impressive spec",
+    "Outro: what to explain next"
+  ],
+  "scenes": [
+    "hook",
+    "steps",
+    "list",
+    "number",
+    "timeline",
+    "compare",
+    "cta"
+  ],
+  "rules": [
+    "Every step names one part",
+    "Mono labels for parts (kicker)",
+    "White lines only, yellow for the key part"
+  ],
+  "css": ".card{box-shadow:none} .li-mark,.st-n{border-radius:4px} .kicker{color:#7ae7ff}"
+}

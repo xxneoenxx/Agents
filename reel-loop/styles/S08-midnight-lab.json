@@ -1,0 +1,141 @@
+{
+  "id": "S08",
+  "name": "Midnight Lab",
+  "category": "Explainer",
+  "tags": [
+    "science",
+    "space",
+    "physics",
+    "biology",
+    "brain",
+    "body",
+    "universe",
+    "chemistry",
+    "quantum",
+    "black hole",
+    "health",
+    "why",
+    "dark"
+  ],
+  "summary": "Dark, glowing science answers. Deep blue-black space, drifting light, cyan and violet accents, a calm voice that makes big things feel close.",
+  "bestFor": "Science 'what would happen if' and 'why does' questions, space, the human body.",
+  "sample": "Make a 60 second Midnight Lab (S08) video: what happens if you fall into a black hole",
+  "palette": {
+    "bg": "#05060f",
+    "bg2": "#0d1230",
+    "fg": "#eef2ff",
+    "muted": "#8f9bc4",
+    "accent": "#4fd1ff",
+    "accent2": "#b57bff",
+    "accent3": "#ff7ab6",
+    "card": "rgba(255,255,255,.06)",
+    "cardFg": "#eef2ff",
+    "line": "#4fd1ff",
+    "hlBg": "#4fd1ff",
+    "hlFg": "#05060f"
+  },
+  "fonts": {
+    "display": {
+      "family": "Space Grotesk",
+      "pkg": "space-grotesk",
+      "weights": [
+        700
+      ]
+    },
+    "body": {
+      "family": "Inter",
+      "pkg": "inter",
+      "weights": [
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "pkg": "jetbrains-mono",
+      "weights": [
+        500,
+        700
+      ]
+    }
+  },
+  "type": {
+    "case": "none",
+    "tracking": "-0.03em",
+    "leading": 1.02,
+    "displayWeight": 700,
+    "bodyWeight": 650,
+    "scale": 1
+  },
+  "shape": {
+    "radius": 26,
+    "stroke": 10,
+    "shadow": "0 0 40px rgba(79,209,255,.18)",
+    "cardBorder": "1.5px solid rgba(79,209,255,.45)"
+  },
+  "background": {
+    "kind": "glow",
+    "grain": 0.06,
+    "vignette": 0.5
+  },
+  "motion": {
+    "reveal": "blur",
+    "stagger": 0.08,
+    "transition": "zoom",
+    "drift": 0.04
+  },
+  "captions": {
+    "enabled": true,
+    "style": "plain",
+    "size": 58,
+    "maxWords": 4,
+    "on": "#4fd1ff"
+  },
+  "sound": {
+    "music": "suspense",
+    "musicVolume": 0.2,
+    "sfx": "soft",
+    "sfxVolume": 0.5
+  },
+  "voice": {
+    "tone": "calm, awed science narrator",
+    "wps": 2.5,
+    "providers": {
+      "openai": "sage",
+      "elevenlabs": "Daniel",
+      "edge": {
+        "en": "en-US-EricNeural",
+        "de": "de-DE-FlorianMultilingualNeural"
+      },
+      "system": {
+        "mac": "Daniel",
+        "espeak": "en"
+      }
+    }
+  },
+  "structure": [
+    "Hook: the 'what if' question",
+    "Scale: a number that is hard to imagine",
+    "Step by step: what happens, second by second",
+    "Twist: what science still does not know",
+    "Outro: question for the comments"
+  ],
+  "scenes": [
+    "hook",
+    "number",
+    "steps",
+    "timeline",
+    "compare",
+    "text",
+    "cta"
+  ],
+  "rules": [
+    "Big numbers get a comparison people know",
+    "Glow only on the key word",
+    "Keep the voice calm, never shouting"
+  ],
+  "css": ".display .a1{text-shadow:0 0 24px rgba(79,209,255,.6)} .bignum{text-shadow:0 0 40px rgba(79,209,255,.45)}"
+}

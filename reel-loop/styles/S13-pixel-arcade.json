@@ -1,0 +1,143 @@
+{
+  "id": "S13",
+  "name": "Pixel Arcade",
+  "category": "Art",
+  "tags": [
+    "gaming",
+    "retro",
+    "pixel",
+    "game",
+    "roast",
+    "glow up",
+    "level up",
+    "arcade",
+    "8-bit",
+    "nerd",
+    "challenge",
+    "speedrun",
+    "internet"
+  ],
+  "summary": "An 8-bit arcade screen: pixel font, chunky borders, neon green and pink, level-up counters and chiptune-flavoured music.",
+  "bestFor": "Gaming topics, 'level up' self-improvement, roasts and glow-ups, internet culture.",
+  "sample": "Make a 30 second Pixel Arcade (S13) video: leveling up your morning routine",
+  "palette": {
+    "bg": "#1a1033",
+    "bg2": "#24174a",
+    "fg": "#f8f8f2",
+    "muted": "#9d8fd1",
+    "accent": "#39ff88",
+    "accent2": "#ff4fd8",
+    "accent3": "#ffe14d",
+    "card": "#24174a",
+    "cardFg": "#f8f8f2",
+    "line": "#39ff88",
+    "grid": "rgba(57,255,136,.10)",
+    "hlBg": "#39ff88",
+    "hlFg": "#1a1033"
+  },
+  "fonts": {
+    "display": {
+      "family": "Press Start 2P",
+      "pkg": "press-start-2p",
+      "weights": [
+        400
+      ],
+      "fallback": "'Courier New', monospace"
+    },
+    "body": {
+      "family": "Space Grotesk",
+      "pkg": "space-grotesk",
+      "weights": [
+        700
+      ]
+    },
+    "mono": {
+      "family": "Press Start 2P",
+      "pkg": "press-start-2p",
+      "weights": [
+        400
+      ],
+      "fallback": "'Courier New', monospace"
+    }
+  },
+  "type": {
+    "case": "uppercase",
+    "tracking": "0",
+    "leading": 1.35,
+    "displayWeight": 400,
+    "bodyWeight": 700,
+    "scale": 0.62,
+    "bodyScale": 1.0
+  },
+  "shape": {
+    "radius": 0,
+    "stroke": 12,
+    "shadow": "8px 8px 0 #000",
+    "cardBorder": "5px solid #f8f8f2"
+  },
+  "background": {
+    "kind": "grid",
+    "grain": 0.05,
+    "vignette": 0.45
+  },
+  "motion": {
+    "reveal": "type",
+    "stagger": 0.06,
+    "transition": "flash",
+    "drift": 0.0
+  },
+  "captions": {
+    "enabled": true,
+    "style": "box",
+    "size": 50,
+    "maxWords": 3,
+    "bg": "#000000",
+    "fg": "#f8f8f2",
+    "on": "#39ff88",
+    "font": "Press Start 2P",
+    "uppercase": true
+  },
+  "sound": {
+    "music": "chip",
+    "musicVolume": 0.2,
+    "sfx": "punchy",
+    "sfxVolume": 0.6
+  },
+  "voice": {
+    "tone": "energetic game announcer",
+    "wps": 2.8,
+    "providers": {
+      "openai": "ash",
+      "elevenlabs": "Liam",
+      "edge": {
+        "en": "en-US-AndrewNeural",
+        "de": "de-DE-FlorianMultilingualNeural"
+      },
+      "system": {
+        "mac": "Alex",
+        "espeak": "en-us"
+      }
+    }
+  },
+  "structure": [
+    "Hook: 'LEVEL 1:' the starting point",
+    "Quests: list of upgrades",
+    "Stats: meters going up",
+    "Boss: the hardest part",
+    "Outro: 'Press follow to continue'"
+  ],
+  "scenes": [
+    "hook",
+    "list",
+    "meters",
+    "number",
+    "choice",
+    "cta"
+  ],
+  "rules": [
+    "Pixel font for headings only, body text stays readable",
+    "Short words, game language",
+    "Counters and levels everywhere"
+  ],
+  "css": ".li-mark,.st-n{border-radius:0} .cta-btn{border-radius:0;box-shadow:8px 8px 0 #000} .bar-track,.bar-fill{border-radius:0} .mt-body{border-radius:0;border-color:#f8f8f2} .mt-nub{background:#f8f8f2;border-radius:0} .display{line-height:1.35} .li-text,.st-text{font-family:var(--font-body)} .ttl{text-shadow:6px 6px 0 #000}"
+}

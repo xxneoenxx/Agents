@@ -1,0 +1,35 @@
+{
+  "name": "reel-loop",
+  "version": "1.0.0",
+  "description": "One line in, one finished animated vertical video out. A 12-step agent loop for Claude Code (and other coding agents), plus a stream clipper.",
+  "private": true,
+  "license": "MIT",
+  "bin": {
+    "reel-loop": "bin/loop.js"
+  },
+  "scripts": {
+    "doctor": "node bin/loop.js doctor",
+    "demo": "node bin/loop.js demo"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@fontsource/anton": "^5.2.0",
+    "@fontsource/archivo-black": "^5.2.0",
+    "@fontsource/bebas-neue": "^5.2.0",
+    "@fontsource/caveat": "^5.2.0",
+    "@fontsource/cinzel": "^5.2.0",
+    "@fontsource/dm-serif-display": "^5.2.0",
+    "@fontsource/fraunces": "^5.2.0",
+    "@fontsource/inter": "^5.2.0",
+    "@fontsource/jetbrains-mono": "^5.2.0",
+    "@fontsource/kalam": "^5.2.0",
+    "@fontsource/nunito": "^5.2.0",
+    "@fontsource/patrick-hand": "^5.2.0",
+    "@fontsource/permanent-marker": "^5.2.0",
+    "@fontsource/press-start-2p": "^5.2.0",
+    "@fontsource/space-grotesk": "^5.2.0",
+    "playwright": "1.63.0"
+  }
+}

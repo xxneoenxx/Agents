@@ -1,0 +1,134 @@
+{
+  "id": "S03",
+  "name": "Neon Sayings",
+  "category": "Type",
+  "tags": [
+    "quote",
+    "saying",
+    "wisdom",
+    "motivation",
+    "psychology",
+    "dark",
+    "glow",
+    "stick",
+    "mindset",
+    "discipline",
+    "stoic"
+  ],
+  "summary": "Glowing stick figures and short sayings on pure black. Neon lines, slow fades, a deep voice and a dark ambient bed.",
+  "bestFor": "Mindset, stoic quotes, psychology facts, one-sentence truths.",
+  "sample": "Make a 30 second Neon Sayings (S03) video: 'Discipline is choosing what you want most over what you want now'",
+  "palette": {
+    "bg": "#030306",
+    "bg2": "#0b0b18",
+    "fg": "#e9fbff",
+    "muted": "#7d93a8",
+    "accent": "#00e5ff",
+    "accent2": "#ff3dcb",
+    "accent3": "#7c4dff",
+    "card": "rgba(255,255,255,.04)",
+    "cardFg": "#e9fbff",
+    "line": "#00e5ff",
+    "hlBg": "#00e5ff",
+    "hlFg": "#030306"
+  },
+  "fonts": {
+    "display": {
+      "family": "Space Grotesk",
+      "pkg": "space-grotesk",
+      "weights": [
+        500,
+        700
+      ]
+    },
+    "body": {
+      "family": "Space Grotesk",
+      "pkg": "space-grotesk",
+      "weights": [
+        500,
+        700
+      ]
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "pkg": "jetbrains-mono",
+      "weights": [
+        500,
+        700
+      ]
+    }
+  },
+  "type": {
+    "case": "none",
+    "tracking": "-0.02em",
+    "leading": 1.05,
+    "displayWeight": 700,
+    "bodyWeight": 600,
+    "scale": 1
+  },
+  "shape": {
+    "radius": 24,
+    "stroke": 9,
+    "shadow": "0 0 30px rgba(0,229,255,.25)",
+    "cardBorder": "2px solid rgba(0,229,255,.7)"
+  },
+  "background": {
+    "kind": "glow",
+    "grain": 0.05,
+    "vignette": 0.55
+  },
+  "motion": {
+    "reveal": "blur",
+    "stagger": 0.12,
+    "transition": "fade",
+    "drift": 0.03
+  },
+  "captions": {
+    "enabled": true,
+    "style": "plain",
+    "size": 56,
+    "maxWords": 4,
+    "on": "#00e5ff"
+  },
+  "sound": {
+    "music": "suspense",
+    "musicVolume": 0.22,
+    "sfx": "soft",
+    "sfxVolume": 0.4
+  },
+  "voice": {
+    "tone": "deep, slow, intimate, almost whispering",
+    "wps": 2.1,
+    "providers": {
+      "openai": "onyx",
+      "elevenlabs": "Brian",
+      "edge": {
+        "en": "en-US-ChristopherNeural",
+        "de": "de-DE-ConradNeural"
+      },
+      "system": {
+        "mac": "Daniel",
+        "espeak": "en"
+      }
+    }
+  },
+  "structure": [
+    "Hook: the saying's first half, alone",
+    "Picture: a figure acts it out",
+    "Turn: the second half lands",
+    "Echo: the whole saying once more, glowing"
+  ],
+  "scenes": [
+    "text",
+    "stick",
+    "quote",
+    "icon",
+    "cta"
+  ],
+  "rules": [
+    "Max 12 words on screen at once",
+    "Slow: 2-3 s per idea",
+    "Glow on lines and key words only"
+  ],
+  "css": ".fig svg{filter:drop-shadow(0 0 6px var(--accent)) drop-shadow(0 0 22px var(--accent))} .display .a1,.display .a2{text-shadow:0 0 22px currentColor} .ttl{text-shadow:0 0 18px rgba(0,229,255,.35)} .ground{box-shadow:0 0 18px var(--accent)}"
+}

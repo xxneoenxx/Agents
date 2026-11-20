@@ -1,0 +1,143 @@
+{
+  "id": "S07",
+  "name": "Data Pop",
+  "category": "Data",
+  "tags": [
+    "data",
+    "statistics",
+    "numbers",
+    "money",
+    "economy",
+    "ranking",
+    "compare",
+    "percent",
+    "chart",
+    "country",
+    "facts",
+    "finance",
+    "salary"
+  ],
+  "summary": "Bright, clean charts that move: counters roll, bars race, meters fill. Light lilac background, bold colours, a fast friendly voice.",
+  "bestFor": "Rankings, money facts, 'X vs Y' comparisons, surprising statistics.",
+  "sample": "Make a 45 second Data Pop (S07) video ranking the most visited cities in the world",
+  "palette": {
+    "bg": "#f4f1ff",
+    "bg2": "#e9e3ff",
+    "fg": "#1b1340",
+    "muted": "#6b648f",
+    "accent": "#6c3cff",
+    "accent2": "#ff4f8b",
+    "accent3": "#00c2a8",
+    "card": "#ffffff",
+    "cardFg": "#1b1340",
+    "line": "#1b1340",
+    "hlBg": "#ffe066",
+    "hlFg": "#1b1340",
+    "grid": "rgba(108,60,255,.08)"
+  },
+  "fonts": {
+    "display": {
+      "family": "Space Grotesk",
+      "pkg": "space-grotesk",
+      "weights": [
+        700
+      ]
+    },
+    "body": {
+      "family": "Inter",
+      "pkg": "inter",
+      "weights": [
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "pkg": "jetbrains-mono",
+      "weights": [
+        500,
+        700
+      ]
+    }
+  },
+  "type": {
+    "case": "none",
+    "tracking": "-0.03em",
+    "leading": 1.0,
+    "displayWeight": 700,
+    "bodyWeight": 750,
+    "scale": 1
+  },
+  "shape": {
+    "radius": 30,
+    "stroke": 12,
+    "shadow": "0 16px 40px rgba(60,30,160,.14)"
+  },
+  "background": {
+    "kind": "dots",
+    "grain": 0.03,
+    "vignette": 0
+  },
+  "motion": {
+    "reveal": "pop",
+    "stagger": 0.07,
+    "transition": "slide",
+    "drift": 0.03
+  },
+  "captions": {
+    "enabled": true,
+    "style": "box",
+    "size": 58,
+    "maxWords": 4,
+    "bg": "#1b1340",
+    "fg": "#ffffff",
+    "on": "#ffe066"
+  },
+  "sound": {
+    "music": "upbeat",
+    "musicVolume": 0.2,
+    "sfx": "punchy",
+    "sfxVolume": 0.6
+  },
+  "voice": {
+    "tone": "upbeat, quick, curious host",
+    "wps": 2.9,
+    "providers": {
+      "openai": "nova",
+      "elevenlabs": "Jessica",
+      "edge": {
+        "en": "en-US-AriaNeural",
+        "de": "de-DE-SeraphinaMultilingualNeural"
+      },
+      "system": {
+        "mac": "Samantha",
+        "espeak": "en-us"
+      }
+    }
+  },
+  "structure": [
+    "Hook: the most surprising number first",
+    "Context: what we are measuring",
+    "Race: bars or meters, bottom to top",
+    "Twist: the outlier",
+    "Outro: guess the next one in the comments"
+  ],
+  "scenes": [
+    "number",
+    "bars",
+    "meters",
+    "compare",
+    "list",
+    "hook",
+    "cta"
+  ],
+  "rules": [
+    "Every number has a unit",
+    "Max 6 bars per chart",
+    "Round numbers, say the source in the description"
+  ],
+  "css": ".bar-track{background:rgba(108,60,255,.12)} .ttl{color:#1b1340}"
+}
